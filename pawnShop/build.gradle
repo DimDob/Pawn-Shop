@@ -8,8 +8,20 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '21'
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
+
+//The directory in which the documentary will be generated
+def buildDir = layout.projectDirectory.dir("backend_core_documentation")
+
+javadoc {
+	source = sourceSets.main.allJava.filter { file ->
+		file.text.contains('/**') && !file.text.contains('@param')
+	}
+	destinationDir = file("${buildDir}/docs/javadoc")
+}
+
 
 configurations {
 	compileOnly {
@@ -29,6 +41,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+	implementation 'org.springframework.data:spring-data-jpa:3.2.3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.hibernate:hibernate-core:5.6.10.Final'
+	implementation 'jakarta.persistence:jakarta.persistence-api:3.0.0'
 }
 
 tasks.named('test') {
