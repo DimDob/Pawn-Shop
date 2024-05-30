@@ -50,5 +50,8 @@ public class Product {
     @Column
     public BigDecimal sellingPrice;
 
+    @Column(name = "picture_url", columnDefinition = "TEXT")
+    public String pictureUrl;
+
 
 }
