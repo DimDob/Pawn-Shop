@@ -1,11 +1,9 @@
-package com.example.pawnShop.Entity.Product;
+package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
