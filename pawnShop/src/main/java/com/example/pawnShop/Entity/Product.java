@@ -26,9 +26,9 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "Products")
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Data
+@AllArgsConstructor
+@Builder
 public class Product {
 
     @Id
