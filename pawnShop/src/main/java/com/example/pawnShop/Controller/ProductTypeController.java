@@ -22,25 +22,25 @@ public class ProductTypeController {
         return ResponseEntity.ok(productsTypes);
     }
     @GetMapping("/get_by_id")
-    public ResponseEntity<ProductTypeDto> getProductTypeById(UUID id){
+    public ResponseEntity<ProductTypeDto> getProductTypeById(@RequestParam UUID id){
         var productType = productTypeService.getProductTypeById(id);
 
         return ResponseEntity.ok(productType);
     }
     @PostMapping("/add")
-    public ResponseEntity<String> addProductType(String productTypeName){
+    public ResponseEntity<String> addProductType(@RequestParam String productTypeName){
         var newProductTypeName = productTypeService.addProductType(productTypeName);
 
         return ResponseEntity.ok(newProductTypeName);
     }
     @PostMapping("/modify")
-    public ResponseEntity<String> addProductType(ProductTypeDto modifiedProductType){
+    public ResponseEntity<String> addProductType(@RequestBody ProductTypeDto modifiedProductType){
         var modifiedProductTypeName = productTypeService.updateProductType(modifiedProductType);
 
         return ResponseEntity.ok(modifiedProductTypeName);
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteProductType(UUID id){
+    public ResponseEntity<String> deleteProductType(@RequestParam UUID id){
         var removedProductTypeName = productTypeService.deleteProductType(id);
 
         return ResponseEntity.ok(removedProductTypeName);

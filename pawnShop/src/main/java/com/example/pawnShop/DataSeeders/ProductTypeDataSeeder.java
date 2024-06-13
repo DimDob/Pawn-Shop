@@ -39,10 +39,9 @@ public class ProductTypeDataSeeder implements CommandLineRunner {
         productTypes.add(new ProductType(UUID.fromString("cc182299-4aa8-4d12-98e9-5a670b757e80"), "Сребро"));
         productTypes.add(new ProductType(UUID.fromString("21683274-b521-44d4-b396-47077e348377"), "Бижу"));
 
-        int currentCountOfProductTypes = productTypes.size();
         int dbCountOfProductTypes = productTypeRepository.getCountOfRecords();
 
-        if(currentCountOfProductTypes < dbCountOfProductTypes){
+        if(dbCountOfProductTypes <= 0){
             productTypeRepository.saveAll(productTypes);
         }
     }
