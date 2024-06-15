@@ -1,6 +1,7 @@
 package com.example.pawnShop.Service;
 
 import com.example.pawnShop.Dto.Product.ProductTypeDto;
+import com.example.pawnShop.Entity.ProductType;
 import com.example.pawnShop.Factory.Contract.ProductFactory;
 import com.example.pawnShop.ManualMapper.Contract.ProductManualMapper;
 import com.example.pawnShop.Repository.ProductTypeRepository;
@@ -27,7 +28,7 @@ public class ProductTypeServiceImp implements ProductTypeService {
     public ProductTypeDto getProductTypeById(UUID id) {
 
         //todo decide how to manage exceptions
-        var productType = repository.findById(id).orElseThrow();
+        ProductType productType = repository.findById(id).orElseThrow();
 
         return mapper.mapToProductTypeDto(productType);
     }
@@ -45,7 +46,7 @@ public class ProductTypeServiceImp implements ProductTypeService {
         if(!isWordApproved(name)){
             return "";
         }
-        var newProduct = factory.createProductType(name);
+        ProductType newProduct = factory.createProductType(name);
 
         repository.save(newProduct);
 
@@ -53,18 +54,25 @@ public class ProductTypeServiceImp implements ProductTypeService {
     }
 
     @Override
-    public String updateProductType(ProductTypeDto productTypeDto) {
-        var productType = repository.findById(productTypeDto.getId()).orElseThrow();
-        productType.setName(productTypeDto.getName());
+    public String updateProductType(UUID id, ProductTypeDto productTypeDto) {
+        if(!isWordApproved(productTypeDto.getName())){
+            return "";
+        }
 
-        repository.save(productType);
+        ProductType productType = repository.findById(id).orElseThrow();
+        if(productTypeDto.getName() != null){
+            productType.setName(productTypeDto.getName());
+            repository.save(productType);
 
-        return productType.getName();
+            return productTypeDto.getName();
+        }
+
+        return "";
     }
 
     @Override
     public String deleteProductType(UUID id) {
-        var productType = repository.findById(id).orElseThrow();
+        ProductType productType = repository.findById(id).orElseThrow();
 
         repository.delete(productType);
 

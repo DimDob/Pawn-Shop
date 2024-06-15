@@ -11,37 +11,37 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/product_type")
+@RequestMapping("/product_type")
 public class ProductTypeController {
     private final ProductTypeService productTypeService;
 
-    @GetMapping("/get_all")
+    @GetMapping()
     public ResponseEntity<List<ProductTypeDto>> getAllProductsTypes(){
-        var productsTypes = productTypeService.getAllProductsTypes();
+        List<ProductTypeDto> productsTypes = productTypeService.getAllProductsTypes();
 
         return ResponseEntity.ok(productsTypes);
     }
-    @GetMapping("/get_by_id")
-    public ResponseEntity<ProductTypeDto> getProductTypeById(@RequestParam UUID id){
-        var productType = productTypeService.getProductTypeById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductTypeDto> getProductTypeById(@PathVariable UUID id){
+        ProductTypeDto productType = productTypeService.getProductTypeById(id);
 
         return ResponseEntity.ok(productType);
     }
-    @PostMapping("/add")
-    public ResponseEntity<String> addProductType(@RequestParam String productTypeName){
-        var newProductTypeName = productTypeService.addProductType(productTypeName);
+    @PutMapping("/{newProductTypeName}")
+    public ResponseEntity<String> addProductType(@PathVariable String newProductTypeName){
+        String productTypeName = productTypeService.addProductType(newProductTypeName);
 
-        return ResponseEntity.ok(newProductTypeName);
+        return ResponseEntity.ok(productTypeName);
     }
-    @PostMapping("/modify")
-    public ResponseEntity<String> addProductType(@RequestBody ProductTypeDto modifiedProductType){
-        var modifiedProductTypeName = productTypeService.updateProductType(modifiedProductType);
+    @PatchMapping("/{id}")
+    public ResponseEntity<String> modifyProductType(@PathVariable UUID id, @RequestBody ProductTypeDto modifiedProductType){
+        String modifiedProductTypeName = productTypeService.updateProductType(id, modifiedProductType);
 
         return ResponseEntity.ok(modifiedProductTypeName);
     }
-    @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteProductType(@RequestParam UUID id){
-        var removedProductTypeName = productTypeService.deleteProductType(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteProductType(@PathVariable UUID id){
+        String removedProductTypeName = productTypeService.deleteProductType(id);
 
         return ResponseEntity.ok(removedProductTypeName);
     }

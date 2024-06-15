@@ -9,6 +9,6 @@ public interface ProductTypeService {
     ProductTypeDto getProductTypeById(UUID id);
     List<ProductTypeDto> getAllProductsTypes();
     String addProductType(String name);
-    String updateProductType(ProductTypeDto productTypeDto);
+    String updateProductType(UUID id, ProductTypeDto productTypeDto);
     String deleteProductType(UUID id);
 }
