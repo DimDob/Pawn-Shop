@@ -27,28 +27,29 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "Products")
-@Getter
-@Setter
-@RequiredArgsConstructor
+@Table(name = "product")
+@Data
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Setter
-    @Column
-    public String name;
+    private String name;
 
-    @Column
-    public BigDecimal marketPrice;
+    @Column(name = "market_price")
+    private BigDecimal marketPrice;
 
-    @Column
-    public BigDecimal pawnPrice;
+    @Column(name = "pawn_percentage")
+    private BigDecimal pawnPercentage;
 
-    @Column
-    public BigDecimal sellingPrice;
+    @Column(name = "second_hand_price")
+    private BigDecimal secondHandPrice;
+
+    @Column(name = "picture_url", columnDefinition = "TEXT")
+    private String pictureUrl;
+
+
 
 
 }
