@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Data
 public class Product {
 
