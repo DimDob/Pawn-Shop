@@ -1,9 +1,11 @@
-package com.example.pawnShop.Entity;
+package com.example.pawnShop.Entity.Product;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -25,28 +27,29 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "Products")
+@Table(name = "products")
 @Data
-@AllArgsConstructor
-@Builder
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Setter
-    @Column
-    public String name;
+    private String name;
 
-    @Column
-    public BigDecimal marketPrice;
+    @Column(name = "market_price")
+    private BigDecimal marketPrice;
 
-    @Column
-    public BigDecimal pawnPrice;
+    @Column(name = "pawn_percentage")
+    private BigDecimal pawnPercentage;
 
-    @Column
-    public BigDecimal sellingPrice;
+    @Column(name = "second_hand_price")
+    private BigDecimal secondHandPrice;
+
+    @Column(name = "picture_url", columnDefinition = "TEXT")
+    private String pictureUrl;
+
+
 
 
 }
