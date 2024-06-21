@@ -1,6 +1,7 @@
 package com.example.pawnShop.Controller;
 
 import com.example.pawnShop.Dto.Product.ProductTypeDto;
+import com.example.pawnShop.Dto.Product.ProductTypeNameDto;
 import com.example.pawnShop.Service.Contract.ProductTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,21 +28,21 @@ public class ProductTypeController {
 
         return ResponseEntity.ok(productType);
     }
-    @PutMapping("/{newProductTypeName}")
-    public ResponseEntity<String> addProductType(@PathVariable String newProductTypeName){
-        String productTypeName = productTypeService.addProductType(newProductTypeName);
+    @PostMapping()
+    public ResponseEntity<ProductTypeDto> addProductType(@RequestBody ProductTypeNameDto newProductTypeName){
+        ProductTypeDto productTypeName = productTypeService.addProductType(newProductTypeName.getName());
 
         return ResponseEntity.ok(productTypeName);
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<String> modifyProductType(@PathVariable UUID id, @RequestBody ProductTypeDto modifiedProductType){
-        String modifiedProductTypeName = productTypeService.updateProductType(id, modifiedProductType);
+    public ResponseEntity<ProductTypeDto> modifyProductType(@PathVariable UUID id, @RequestBody ProductTypeDto modifiedProductType){
+        ProductTypeDto modifiedProductTypeName = productTypeService.updateProductType(id, modifiedProductType);
 
         return ResponseEntity.ok(modifiedProductTypeName);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProductType(@PathVariable UUID id){
-        String removedProductTypeName = productTypeService.deleteProductType(id);
+    public ResponseEntity<ProductTypeDto> deleteProductType(@PathVariable UUID id){
+        ProductTypeDto removedProductTypeName = productTypeService.deleteProductType(id);
 
         return ResponseEntity.ok(removedProductTypeName);
     }

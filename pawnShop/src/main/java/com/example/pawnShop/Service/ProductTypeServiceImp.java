@@ -39,24 +39,24 @@ public class ProductTypeServiceImp implements ProductTypeService {
     }
 
     @Override
-    public String addProductType(String name) {
+    public ProductTypeDto addProductType(String name) {
         if(name.isBlank() || name.isEmpty()){
-            return "";
+            return null;
         }
         if(!isWordApproved(name)){
-            return "";
+            return null;
         }
         ProductType newProduct = factory.createProductType(name);
 
         repository.save(newProduct);
 
-        return name;
+        return mapper.mapToProductTypeDto(newProduct);
     }
 
     @Override
-    public String updateProductType(UUID id, ProductTypeDto productTypeDto) {
+    public ProductTypeDto updateProductType(UUID id, ProductTypeDto productTypeDto) {
         if(!isWordApproved(productTypeDto.getName())){
-            return "";
+            return null;
         }
 
         ProductType productType = repository.findById(id).orElseThrow();
@@ -64,19 +64,19 @@ public class ProductTypeServiceImp implements ProductTypeService {
             productType.setName(productTypeDto.getName());
             repository.save(productType);
 
-            return productTypeDto.getName();
+            return productTypeDto;
         }
 
-        return "";
+        return null;
     }
 
     @Override
-    public String deleteProductType(UUID id) {
+    public ProductTypeDto deleteProductType(UUID id) {
         ProductType productType = repository.findById(id).orElseThrow();
-
+        ProductTypeDto deletedProductType = mapper.mapToProductTypeDto(productType);
         repository.delete(productType);
 
-        return productType.getName();
+        return deletedProductType;
     }
 
     //Check word for cyrillic and approved symbols

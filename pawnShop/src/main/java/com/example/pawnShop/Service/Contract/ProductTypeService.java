@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface ProductTypeService {
     ProductTypeDto getProductTypeById(UUID id);
     List<ProductTypeDto> getAllProductsTypes();
-    String addProductType(String name);
-    String updateProductType(UUID id, ProductTypeDto productTypeDto);
-    String deleteProductType(UUID id);
+    ProductTypeDto addProductType(String name);
+    ProductTypeDto updateProductType(UUID id, ProductTypeDto productTypeDto);
+    ProductTypeDto deleteProductType(UUID id);
 }
