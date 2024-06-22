@@ -9,4 +9,7 @@ export class LoginService {
 
   private apiUrl: string = 'http://localhost:8080/users';
 
+  // TODO When sending the data from the input form BE has to check whether an user is administartor or not and return to FE
+
+
 }

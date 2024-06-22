@@ -1,35 +1,44 @@
-<ul class="nav">
-    <li (click)="showLogin()">Login</li>
-    <li (click)="showSignup()">Sign up</li>
-    <li (click)="showForgotPassword()">Forgot password</li>
-    <li (click)="showSubscribe()">Subscribe</li>
-    <li (click)="showContactUs()">Contact us</li>
-</ul>
-
-<div class="wrapper">
+<div class="wrapper" id="'loginComponent">
     <div class="rec-prism">
+        
         <div class="face face-top">
             <div class="content">
-                <h2>Subscribe</h2>
-                <small>Enter your email so we can send you the latest updates!</small>
-                <form (submit)="showThankYou(); (false)">
+                <h2>Create employee account</h2>
+                <small>Enter your email so we could check whether you have administrator rights!</small>
+                
+                <form #adminForm="ngForm" (ngSubmit)="checkIfUserIsAdmin()">
                     <div class="field-wrapper">
-                        <input type="text" name="email" placeholder="email" [(ngModel)]="prismDetails.subscribeEmail" />
-                        <label>e-mail</label>
+                        <input type="text" name="email" placeholder="Email" [(ngModel)]="prismDetails.administratorEmail" required />
+                        <label>E-mail</label>
                     </div>
                     <div class="field-wrapper">
-                        <input type="submit" value="Submit" />
+                        <input (click)="onUserCheck()" type="submit" value="Submit" />
                     </div>
                 </form>
+        
+                <!-- Show different content based on whether the user is an admin -->
+                <ng-container *ngIf="user.isAdmin !== undefined">
+                    <ng-container *ngIf="user.isAdmin; else notAdmin">
+                        <div>
+                            The user with the provided email has administrator rights!
+                        </div>
+                    </ng-container>
+                    
+                    <ng-template #notAdmin>
+                        <div>
+                            <p>The provided user does not have administrator rights. Please contact your administrator.</p>
+                        </div>
+                    </ng-template>
+                </ng-container>
             </div>
         </div>
-
+        
         <div class="face face-front">
             <div class="content">
                 <h2>Login</h2>
 
                 <!-- Here is the username input of the prism -->
-                <form (submit)="showThankYou(); (false)">
+                <form (submit)="showThankYou(); (false)" >
                     <div class="field-wrapper">
                         <input [(ngModel)]="prismDetails.loginUsername" type="text" name="username"
                             placeholder="username" />
@@ -48,10 +57,9 @@
 
                     <!-- Here is the submit button -->
                     <div class="field-wrapper">
-                        <input type="submit" value="Submit" />
+                        <input (click)="userLoging()" type="submit" value="Submit"   />
                     </div>
                     <span class="psw" (click)="showForgotPassword()">Forgot Password?</span>
-                    <span class="signup" (click)="showSignup()">Not an user? Sign up</span>
                 </form>
             </div>
         </div>
@@ -77,7 +85,7 @@
 
         <div class="face face-right">
             <div class="content">
-                <h2>Sign up</h2>
+                <h2>Create an account for an employee</h2>
                 <form (submit)="showThankYou(); (false)">
                     <div class="field-wrapper">
                         <input type="text" name="email" placeholder="email" />

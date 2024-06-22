@@ -2,7 +2,7 @@ import { PrismData } from "../login_interfaces.ts/prismData";
 
 const prismDetailsTemplate: PrismData = {
     prismTransform: "",
-    subscribeEmail: "",
+    administratorEmail: "",
     loginUsername: "",
     loginPassword: "",
     forgotPasswordEmail: "",
@@ -12,7 +12,8 @@ const prismDetailsTemplate: PrismData = {
     contactName: "",
     contactEmail: "",
     contactMessage: "",
-    showingThankYou: ""
+    showingThankYou: "",
+    forgotPassword: false,
   };
 
   export default prismDetailsTemplate;

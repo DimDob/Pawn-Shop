@@ -9,13 +9,12 @@ import { LoginComponent } from './components/auth_component/login/login.componen
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
-    
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
