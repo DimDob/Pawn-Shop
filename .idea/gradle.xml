@@ -4,11 +4,8 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="delegatedBuild" value="true" />
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/pawnShop" />
-        <option name="gradleJvm" value="21 (2)" />
+        <option name="gradleHome" value="$PROJECT_DIR$/../../../../../Gradle/gradle-8.7" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/pawnShop" />
