@@ -6,10 +6,6 @@ const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth/login', component: LoginComponent },
-  // { path: 'auth/signup', component: SignupComponent },
-  // { path: 'auth/forgot-password', component: ForgotPasswordComponent },
-  // { path: 'auth/subscribe', component: SubscribeComponent },
-  // { path: 'auth/contact-us', component: ContactUsComponent }
 ];
 
 @NgModule({
