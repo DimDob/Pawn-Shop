@@ -5,7 +5,7 @@ const prismDetailsTemplate: PrismData = {
     administratorEmail: "",
     loginUsername: "",
     loginPassword: "",
-    forgotPasswordEmail: "",
+    forgotPasswordEmail: false,
     signupEmail: "",
     signupPassword: "",
     signupPassword2: "",

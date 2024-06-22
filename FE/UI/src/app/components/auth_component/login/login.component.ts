@@ -1,10 +1,8 @@
-import { Component, ElementRef, AfterViewInit, OnInit, SimpleChange, SimpleChanges, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, AfterViewInit, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { PrismData } from './login_interfaces.ts/prismData';
 import prismDetailsTemplate from './templates/prismDetails.template';
 import { User } from './login_interfaces.ts/User';
-import mockedUser from './templates/user.template';
 import userTemplate from './templates/user.template';
-import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -31,8 +29,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-  this.prismDetails = prismDetailsTemplate
-  this.user = userTemplate
+  this.prismDetails = {...prismDetailsTemplate}
+  this.user = {...userTemplate}
   }
 
   userLoging() {
@@ -42,13 +40,9 @@ export class LoginComponent implements AfterViewInit, OnInit {
   onUserCheck() {
     this.userCheck.emit(this.user)
   }
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['mainButtonsRef']) {
-      this.prismDetails.forgotPassword = false
-    }
-  }
+
   checkIfUserIsAdmin() { 
-    if (this.prismDetails.administratorEmail === 'admin') {
+    if (this.prismDetails.administratorEmail === 'admin') { //Here it will be replaced with actual email, which we will check in the DB
       this.user.isAdmin = true
       
     }  else {
@@ -58,6 +52,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
   }
   showSignup(): void {
     if (this.prism) {
+      // This better be done in ngOnChanges() 
+      this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateY(-90deg)";
     }
   }
@@ -77,12 +73,14 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   showCreateEmployeeAccount(): void {
     if (this.prism) {
+      this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateX(-90deg)";
     }
   }
 
   showContactUs(): void {
     if (this.prism) {
+      this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateY(90deg)";
     }
   }

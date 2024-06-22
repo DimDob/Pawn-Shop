@@ -6,7 +6,7 @@ export interface PrismData {
   administratorEmail?: string;
   loginUsername: string ;
   loginPassword: string;
-  forgotPasswordEmail?: string;
+  forgotPasswordEmail?: boolean;
   signupEmail?: string;
   signupPassword?: string;
   signupPassword2?: string;
