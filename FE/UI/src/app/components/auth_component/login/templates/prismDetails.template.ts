@@ -1,18 +1,18 @@
 import { PrismData } from "../login_interfaces.ts/prismData";
 
 const prismDetailsTemplate: PrismData = {
-    prismTransform: null,
-    subscribeEmail: null,
+    prismTransform: "",
+    subscribeEmail: "",
     loginUsername: "",
-    loginPassword: null,
-    forgotPasswordEmail: null,
-    signupEmail: null,
-    signupPassword: null,
-    signupPassword2: null,
-    contactName: null,
-    contactEmail: null,
-    contactMessage: null,
-    showingThankYou: null
+    loginPassword: "",
+    forgotPasswordEmail: "",
+    signupEmail: "",
+    signupPassword: "",
+    signupPassword2: "",
+    contactName: "",
+    contactEmail: "",
+    contactMessage: "",
+    showingThankYou: ""
   };
 
   export default prismDetailsTemplate;

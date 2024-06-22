@@ -1,14 +1,14 @@
 export interface PrismData {
-    prismTransform: any;
-  subscribeEmail: any;
+    prismTransform: string;
+  subscribeEmail: string;
   loginUsername: string ;
-  loginPassword?: any;
-  forgotPasswordEmail: any;
-  signupEmail: any;
-  signupPassword: any;
-  signupPassword2: any;
-  contactName: any;
-  contactEmail: any;
-  contactMessage: any;
-  showingThankYou: any;
+  loginPassword: string;
+  forgotPasswordEmail: string;
+  signupEmail: string;
+  signupPassword: string;
+  signupPassword2: string;
+  contactName: string;
+  contactEmail: string;
+  contactMessage: string;
+  showingThankYou: string;
 }
