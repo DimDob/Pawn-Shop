@@ -10,7 +10,7 @@ import userTemplate from './templates/user.template';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements AfterViewInit, OnInit {
-  
+
 
   @Output() userCheck: EventEmitter<User> = new EventEmitter<User>()
 
@@ -19,13 +19,13 @@ export class LoginComponent implements AfterViewInit, OnInit {
   public prismDetails: PrismData
 
   public user: User;
-  
-  prism: HTMLElement; 
+
+  prism: HTMLElement;
 
   constructor(private elementRef: ElementRef) {}
 
   ngAfterViewInit() {
-    this.prism = this.elementRef.nativeElement.querySelector(".rec-prism"); 
+    this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
   }
 
   ngOnInit(): void {
@@ -41,10 +41,10 @@ export class LoginComponent implements AfterViewInit, OnInit {
     this.userCheck.emit(this.user)
   }
 
-  checkIfUserIsAdmin() { 
+  checkIfUserIsAdmin() {
     if (this.prismDetails.administratorEmail === 'admin') { //Here it will be replaced with actual email, which we will check in the DB
       this.user.isAdmin = true
-      
+
     }  else {
       this.user.isAdmin = false
 
@@ -52,7 +52,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
   }
   showSignup(): void {
     if (this.prism) {
-      // This better be done in ngOnChanges() 
+      // This better be done in ngOnChanges()
       this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateY(-90deg)";
     }
@@ -61,6 +61,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
   showLogin(): void {
     if (this.prism) {
       this.prism.style.transform = "translateZ(-100px)";
+
     }
   }
 
@@ -68,6 +69,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = true;
       this.prism.style.transform = "translateZ(-100px) rotateY(-180deg)";
+       
     }
   }
 
@@ -75,6 +77,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateX(-90deg)";
+
+
     }
   }
 
@@ -82,12 +86,22 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateY(90deg)";
+
+
     }
   }
 
   showThankYou(): void {
     if (this.prism) {
       this.prism.style.transform = "translateZ(-100px) rotateX(90deg)";
+
+    }
+  }
+
+
+  clearUserDetails() {
+    this.prismDetails = {
+      ...prismDetailsTemplate,
     }
   }
 

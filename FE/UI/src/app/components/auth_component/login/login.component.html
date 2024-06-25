@@ -1,11 +1,11 @@
 <div class="wrapper" id="'loginComponent">
     <div class="rec-prism">
-        
+
         <div class="face face-top">
             <div class="content">
                 <h2>Create employee account</h2>
                 <small>Enter your email so we could check whether you have administrator rights!</small>
-                
+
                 <form #adminForm="ngForm" (ngSubmit)="checkIfUserIsAdmin()">
                     <div class="field-wrapper">
                         <input type="text" name="email" placeholder="Email" [(ngModel)]="prismDetails.administratorEmail" required />
@@ -15,7 +15,7 @@
                         <input (click)="onUserCheck()" type="submit" value="Submit" />
                     </div>
                 </form>
-        
+
                 <!-- Show different content based on whether the user is an admin -->
                 <ng-container *ngIf="user.isAdmin !== undefined">
                     <ng-container *ngIf="user.isAdmin; else notAdmin">
@@ -23,7 +23,7 @@
                             The user with the provided email has administrator rights!
                         </div>
                     </ng-container>
-                    
+
                     <ng-template #notAdmin>
                         <div>
                             <p>The provided user does not have administrator rights. Please contact your administrator.</p>
@@ -32,7 +32,7 @@
                 </ng-container>
             </div>
         </div>
-        
+
         <div class="face face-front">
             <div class="content">
                 <h2>Login</h2>
@@ -57,7 +57,7 @@
 
                     <!-- Here is the submit button -->
                     <div class="field-wrapper">
-                        <input (click)="userLoging()" type="submit" value="Submit"   />
+                        <input (click)="userLoging(); clearUserDetails()" type="submit" value="Submit"  />
                     </div>
                     <span class="psw" (click)="showForgotPassword()">Forgot Password?</span>
                 </form>
@@ -72,12 +72,12 @@
 
                 <form (submit)="showThankYou(); (false)">
                     <div class="field-wrapper">
-                        <input type="text" [(ngModel)]="prismDetails.forgotPasswordEmail" name="Email"
+                        <input type="text" [(ngModel)]=" prismDetails.forgotPasswordEmail " name="Email"
                             placeholder="Email" />
                         <label>E-mail Address</label>
                     </div>
                     <div class="field-wrapper">
-                        <input type="submit" value="Submit" />
+                        <input type="submit" value="Submit" (click)="clearUserDetails()" />
                     </div>
                 </form>
             </div>
@@ -126,7 +126,7 @@
                         <label>Your message</label>
                     </div>
                     <div class="field-wrapper">
-                        <input type="submit" value="Submit" [(ngModel)]="prismDetails.contactMessage" />
+                        <input type="submit" value="Submit" [(ngModel)]="prismDetails.contactMessage" (click)="clearUserDetails()" />
                     </div>
                 </form>
             </div>

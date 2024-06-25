@@ -48,7 +48,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   handleUserLoging(userCredentials: PrismData) {
-    console.log(userCredentials);
     this.prismDetails = userCredentials;
   }
 }

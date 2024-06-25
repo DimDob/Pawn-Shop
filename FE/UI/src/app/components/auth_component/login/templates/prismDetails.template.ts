@@ -1,19 +1,19 @@
 import { PrismData } from "../login_interfaces.ts/prismData";
 
 const prismDetailsTemplate: PrismData = {
-    prismTransform: "",
-    administratorEmail: "",
-    loginUsername: "",
+    prismTransform:  undefined,
+    administratorEmail:  undefined,
+    loginUsername:  "",
     loginPassword: "",
-    forgotPasswordEmail: false,
-    signupEmail: "",
-    signupPassword: "",
-    signupPassword2: "",
-    contactName: "",
-    contactEmail: "",
-    contactMessage: "",
-    showingThankYou: "",
-    forgotPassword: false,
+    forgotPasswordEmail: undefined,
+    signupEmail:  undefined,
+    signupPassword:  undefined,
+    signupPassword2:  undefined,
+    contactName:  undefined,
+    contactEmail:  undefined,
+    contactMessage:  undefined,
+    showingThankYou:  undefined,
+    forgotPassword: undefined,
   };
 
   export default prismDetailsTemplate;
