@@ -38,10 +38,10 @@
                 <h2>Login</h2>
 
                 <!-- Here is the username input of the prism -->
-                <form (submit)="showThankYou(); (false)" >
+                <form #logingForm="ngForm" (submit)="showThankYou(); (false)" >
                     <div class="field-wrapper">
                         <input [(ngModel)]="prismDetails.loginUsername" type="text" name="username"
-                            placeholder="username" />
+                            placeholder="username" required/>
                         <label>username</label>
                     </div>
                 </form>
@@ -50,14 +50,14 @@
                 <form>
                     <div class="field-wrapper">
                         <input [(ngModel)]="prismDetails.loginPassword" type="password" name="password"
-                            placeholder="password" autocomplete="new-password" />
+                            placeholder="password" autocomplete="new-password" required/>
 
                         <label>password</label>
                     </div>
 
                     <!-- Here is the submit button -->
                     <div class="field-wrapper">
-                        <input (click)="userLoging(); clearUserDetails()" type="submit" value="Submit"  />
+                        <input (click)="userLoging(logingForm); clearUserDetails()" type="submit" value="Submit"  />
                     </div>
                     <span class="psw" (click)="showForgotPassword()">Forgot Password?</span>
                 </form>

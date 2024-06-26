@@ -36,8 +36,14 @@ export class LoginComponent implements AfterViewInit, OnInit {
     this.userCredentials.emit(this.prismDetails);
   }
 
-  userLoging() {
-    this.userCredentials.emit(this.prismDetails)
+  userLoging(logingForm: NgForm) {
+    if (logingForm.invalid) {
+      return
+    }
+
+    this.userCredentials.emit(this.prismDetails);
+
+    logingForm.reset();
   }
 
   createAccount(createAccountForm: NgForm) {
