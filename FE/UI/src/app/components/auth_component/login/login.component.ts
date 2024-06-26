@@ -39,7 +39,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (logingForm.invalid) {
       return
     }
-
+    
     this.userCredentials.emit(this.prismDetails);
 
     logingForm.reset();
@@ -83,7 +83,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   showLogin(): void {
     if (this.prism) {
-      this.prismDetails.forgotPassword = false;  
+      this.prismDetails.forgotPassword = false;
       this.prism.style.transform = "translateZ(-100px)";
     }
   }
