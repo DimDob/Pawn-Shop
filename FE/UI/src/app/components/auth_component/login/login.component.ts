@@ -32,7 +32,6 @@ export class LoginComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.prismDetails = { ...prismDetailsTemplate }
     this.user = { ...userTemplate }
-    this.userCredentials.emit(this.prismDetails);
   }
 
   userLoging(logingForm: NgForm) {
