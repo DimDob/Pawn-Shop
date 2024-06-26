@@ -23,21 +23,32 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   prism: HTMLElement;
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(private elementRef: ElementRef) { }
 
   ngAfterViewInit() {
     this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
     this.showLogin();
   }
-  
+
   ngOnInit(): void {
-    this.prismDetails = {...prismDetailsTemplate}
-    this.user = {...userTemplate}
+    this.prismDetails = { ...prismDetailsTemplate }
+    this.user = { ...userTemplate }
     this.userCredentials.emit(this.prismDetails);
   }
 
   userLoging() {
-    this.userCredentials.emit(this.prismDetails)    
+    this.userCredentials.emit(this.prismDetails)
+  }
+
+  createAccount(createAccountForm: NgForm) {
+    if (createAccountForm.invalid) {
+      return
+    }
+
+    const { signupEmail, signupPassword, signupPassword2 } = this.prismDetails;
+    debugger
+    //implement logic for creating an account
+    createAccountForm.reset();
   }
 
   onUserCheck() {
@@ -52,7 +63,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prismDetails.administratorEmail === 'admin') { //Here it will be replaced with actual email, which we will check in the DB
       this.user.isAdmin = true
 
-    }  else {
+    } else {
       this.user.isAdmin = false
 
     }
@@ -76,7 +87,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = true;
       this.prism.style.transform = "translateZ(-100px) rotateY(-180deg)";
-       
+
     }
   }
 

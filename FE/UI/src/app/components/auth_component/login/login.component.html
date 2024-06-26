@@ -86,9 +86,9 @@
         <div class="face face-right">
             <div class="content">
                 <h2>Create an account for an employee</h2>
-                <form (submit)="showThankYou(); (false)">
+                <form #createAccountForm="ngForm" (submit)="showThankYou(); (false)">
                     <div class="field-wrapper">
-                        <input type="text" name="email" placeholder="email" />
+                        <input type="text" name="email" placeholder="email"  [(ngModel)]="prismDetails.signupEmail"/>
                         <label>E-mail</label>
                     </div>
                     <div class="field-wrapper">
@@ -102,7 +102,7 @@
                         <label>Please re-enter the password</label>
                     </div>
                     <div class="field-wrapper">
-                        <input type="submit" value="Submit" />
+                        <input (click)="createAccount(createAccountForm)" type="submit" value="Submit" />
                     </div>
                     <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
                 </form>
