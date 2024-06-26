@@ -27,7 +27,6 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
-    this.showLogin();
   }
 
   ngOnInit(): void {
@@ -84,7 +83,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   showLogin(): void {
     if (this.prism) {
-      this.prismDetails.forgotPassword = true;
+      this.prismDetails.forgotPassword = false;  
       this.prism.style.transform = "translateZ(-100px)";
     }
   }
