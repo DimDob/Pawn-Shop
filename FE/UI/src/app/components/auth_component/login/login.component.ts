@@ -3,6 +3,7 @@ import { PrismData } from './login_interfaces.ts/prismData';
 import prismDetailsTemplate from './templates/prismDetails.template';
 import { User } from './login_interfaces.ts/User';
 import userTemplate from './templates/user.template';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -43,7 +44,11 @@ export class LoginComponent implements AfterViewInit, OnInit {
     this.userCheck.emit(this.user)
   }
 
-  checkIfUserIsAdmin() {
+  checkIfUserIsAdmin(adminForm: NgForm) {
+    if (adminForm.invalid) {
+      return
+    }
+
     if (this.prismDetails.administratorEmail === 'admin') { //Here it will be replaced with actual email, which we will check in the DB
       this.user.isAdmin = true
 

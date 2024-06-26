@@ -6,7 +6,7 @@
                 <h2>Create employee account</h2>
                 <small>Enter your email so we could check whether you have administrator rights!</small>
 
-                <form #adminForm="ngForm" (ngSubmit)="checkIfUserIsAdmin()">
+                <form #adminForm="ngForm" (ngSubmit)="checkIfUserIsAdmin(adminForm)">
                     <div class="field-wrapper">
                         <input type="text" name="email" placeholder="Email" [(ngModel)]="prismDetails.administratorEmail" required />
                         <label>E-mail</label>
