@@ -20,8 +20,7 @@ public class ProductTypeDataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<ProductType> productTypes = new ArrayList<>() {
-        };
+        List<ProductType> productTypes = new ArrayList<>();
         productTypes.add(new ProductType(UUID.fromString("2a6ae85c-aeee-4452-a58b-ce54d801daef"), "Телефон"));
         productTypes.add(new ProductType(UUID.fromString("7698cfb6-697d-409b-a7e4-dc21fa621647"), "Таблет"));
         productTypes.add(new ProductType(UUID.fromString("7d853cb2-d59a-46ca-905a-09948ac3fc51"), "Телевизор"));

@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "Product_Type")
+@Table(name = "products_types")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
