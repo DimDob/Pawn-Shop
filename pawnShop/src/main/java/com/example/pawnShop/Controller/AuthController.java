@@ -22,7 +22,6 @@ public class AuthController {
         LoginResponseDto login = authService.login(loginRequestDto);
 
         return ResponseEntity.ok(login);
-
     }
 
 

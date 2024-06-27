@@ -31,8 +31,8 @@ public class AuthServiceImp implements AuthService {
         if(user == null){
             return null;
         }
-        String encodedPassword = passwordEncoder.encode(loginRequestDto.getPassword());
-        if(!user.getPassword().equals(encodedPassword)){
+
+        if(passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())){
             return null;
         }
 
