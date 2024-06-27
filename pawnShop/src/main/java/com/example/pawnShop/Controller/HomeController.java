@@ -11,4 +11,12 @@ public class HomeController {
     public String index(){
         return "You are in the index page.";
     }
+    @GetMapping("/admin")
+    public String adminIndex(){
+        return "You are in the admin index page.";
+    }
+    @GetMapping("/superAdmin")
+    public String superAdmin(){
+        return "You are in the super admin index page.";
+    }
 }

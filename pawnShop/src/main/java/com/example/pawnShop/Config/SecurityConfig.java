@@ -29,10 +29,17 @@ public class SecurityConfig {
                 //todo look for some better configuration of csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
-                    registry.requestMatchers("/home/**").permitAll();
+                    registry.requestMatchers("/home/index").permitAll();
+                    registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
+                    registry.requestMatchers("/home/admin").hasRole("ADMIN");
                     registry.anyRequest().authenticated();
         })
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+                .formLogin(httpSecurityFormLoginConfigurer -> {
+                    httpSecurityFormLoginConfigurer
+                            .loginProcessingUrl("/login")
+                            .successHandler(new AuthenticationSuccessHandler())
+                            .permitAll();
+                })
                 .build();
     }
 
