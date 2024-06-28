@@ -31,17 +31,11 @@ public class SecurityConfig {
                 //todo look for some better configuration of csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
-                    registry.requestMatchers("/home/index").permitAll();
+                    registry.requestMatchers("/home/index", "/auth/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
                     registry.requestMatchers("/home/admin").hasRole("ADMIN");
                     registry.anyRequest().authenticated();
         })
-                .formLogin(httpSecurityFormLoginConfigurer -> {
-                    httpSecurityFormLoginConfigurer
-                            .loginProcessingUrl("/login")
-                            .successHandler(new AuthenticationSuccessHandler())
-                            .permitAll();
-                })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

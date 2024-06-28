@@ -5,6 +5,5 @@ import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
 import com.example.pawnShop.Entity.AppUser;
 
 public interface AuthFactory {
-    public LoginResponseDto createLoginResponseDto(AppUser user);
     public AppUser createUser (RegisterRequestDto registerRequestDto, String encodedPassword);
 }

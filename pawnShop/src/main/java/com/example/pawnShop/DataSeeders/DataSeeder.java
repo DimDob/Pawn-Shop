@@ -82,7 +82,7 @@ public class DataSeeder implements CommandLineRunner {
         superAdmin.setEmail("superAdmin@admin.com");
         superAdmin.setFirstName("Super");
         superAdmin.setLastName("Admin");
-        superAdmin.setRoles(List.of(Role.ROLE_SUPER_ADMIN, Role.ROLE_ADMIN));
+        superAdmin.setRoles(List.of(Role.ROLE_SUPER_ADMIN, Role.ROLE_ADMIN, Role.ROLE_USER));
         String hashedPassword = passwordEncoder.encode("superAdmin123!");
         superAdmin.setPassword(hashedPassword);
         superAdmin.setEnable(true);
@@ -96,7 +96,7 @@ public class DataSeeder implements CommandLineRunner {
         firstAdmin.setLastName("Admin");
         firstAdmin.setPassword(regularPassword);
         firstAdmin.setEnable(true);
-        firstAdmin.setRoles(List.of(Role.ROLE_ADMIN));
+        firstAdmin.setRoles(List.of(Role.ROLE_ADMIN, Role.ROLE_USER));
         firstAdmin.setIsAdmin(true);
 
         AppUser secondAdmin = new AppUser();
@@ -106,7 +106,7 @@ public class DataSeeder implements CommandLineRunner {
         secondAdmin.setLastName("Admin");
         secondAdmin.setPassword(regularPassword);
         secondAdmin.setEnable(true);
-        secondAdmin.setRoles(List.of(Role.ROLE_ADMIN));
+        secondAdmin.setRoles(List.of(Role.ROLE_ADMIN, Role.ROLE_USER));
         secondAdmin.setIsAdmin(true);
 
         AppUser worker = new AppUser();

@@ -7,7 +7,14 @@ import com.example.pawnShop.Entity.AppUser;
 import com.example.pawnShop.Factory.Contract.AuthFactory;
 import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
+import com.example.pawnShop.Service.Contract.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,22 +27,30 @@ public class AuthServiceImp implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthFactory authFactory;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
     @Override
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
-        if(loginRequestDto == null){
-            return null;
-        }
-        AppUser user = userRepository.findByEmail(loginRequestDto.getEmail()).orElse(null);
-        if(user == null){
-            return null;
-        }
+        try {
+            if (loginRequestDto == null) {
+                return null;
+            }
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
 
-        if(passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())){
-            return null;
-        }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            AppUser user = (AppUser) authentication.getPrincipal();
 
-        return authFactory.createLoginResponseDto(user);
+            return LoginResponseDto.builder()
+                    .username(user.getEmail())
+                    .token(jwtService.generateJwtToken(user))
+                    .isAdmin(user.getIsAdmin())
+                    .build();
+
+        } catch (AuthenticationException e){
+            return  null;
+        }
     }
 
     @Override
