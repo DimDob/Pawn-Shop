@@ -62,7 +62,7 @@ public class PawnShop {
     private UUID adminId;
 
     @OneToMany(mappedBy = "pawnShop")
-    private List<User> employees;
+    private List<AppUser> employees;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "payments_pawnshops",

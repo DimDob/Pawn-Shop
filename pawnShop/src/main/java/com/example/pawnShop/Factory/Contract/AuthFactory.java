@@ -2,9 +2,9 @@ package com.example.pawnShop.Factory.Contract;
 
 import com.example.pawnShop.Dto.Auth.LoginResponseDto;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
-import com.example.pawnShop.Entity.User;
+import com.example.pawnShop.Entity.AppUser;
 
 public interface AuthFactory {
-    public LoginResponseDto createLoginResponseDto(User user);
-    public User createUser (RegisterRequestDto registerRequestDto, String encodedPassword);
+    public LoginResponseDto createLoginResponseDto(AppUser user);
+    public AppUser createUser (RegisterRequestDto registerRequestDto, String encodedPassword);
 }

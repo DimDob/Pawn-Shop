@@ -75,48 +75,48 @@ public class DataSeeder implements CommandLineRunner {
   }
     @Bean
     private void setUsers(){
-        List<User> users = new ArrayList<>();
+        List<AppUser> users = new ArrayList<>();
 
-        User superAdmin = new User();
+        AppUser superAdmin = new AppUser();
         superAdmin.setId(UUID.fromString("2bd8729c-997d-4adb-a19e-9392bc42c7d8"));
         superAdmin.setEmail("superAdmin@admin.com");
         superAdmin.setFirstName("Super");
         superAdmin.setLastName("Admin");
-        superAdmin.setRole(Role.ROLE_SUPER_ADMIN);
+        superAdmin.setRoles(List.of(Role.ROLE_SUPER_ADMIN, Role.ROLE_ADMIN));
         String hashedPassword = passwordEncoder.encode("superAdmin123!");
         superAdmin.setPassword(hashedPassword);
         superAdmin.setEnable(true);
         superAdmin.setIsAdmin(true);
 
         String regularPassword = passwordEncoder.encode("admin123!");
-        User firstAdmin = new User();
+        AppUser firstAdmin = new AppUser();
         firstAdmin.setId(UUID.fromString("f3028111-6be5-4930-86ca-d4c62418f149"));
         firstAdmin.setEmail("firstAdmin@admin.com");
         firstAdmin.setFirstName("First");
         firstAdmin.setLastName("Admin");
         firstAdmin.setPassword(regularPassword);
         firstAdmin.setEnable(true);
-        firstAdmin.setRole(Role.ROLE_ADMIN);
+        firstAdmin.setRoles(List.of(Role.ROLE_ADMIN));
         firstAdmin.setIsAdmin(true);
 
-        User secondAdmin = new User();
+        AppUser secondAdmin = new AppUser();
         secondAdmin.setId(UUID.fromString("795d12bd-6f24-4167-930e-8632ce112f3d"));
         secondAdmin.setEmail("secondAdmin@admin.com");
         secondAdmin.setFirstName("Second");
         secondAdmin.setLastName("Admin");
         secondAdmin.setPassword(regularPassword);
         secondAdmin.setEnable(true);
-        secondAdmin.setRole(Role.ROLE_ADMIN);
+        secondAdmin.setRoles(List.of(Role.ROLE_ADMIN));
         secondAdmin.setIsAdmin(true);
 
-        User worker = new User();
+        AppUser worker = new AppUser();
         worker.setId(UUID.fromString("464e2747-a872-41fa-aafd-6cc4957a7002"));
         worker.setEmail("worker@admin.com");
         worker.setFirstName("Worker the First");
         worker.setLastName("Worker");
         worker.setPassword(regularPassword);
         worker.setEnable(true);
-        worker.setRole(Role.ROLE_USER);
+        worker.setRoles(List.of(Role.ROLE_USER));
         worker.setIsAdmin(false);
 
         users.add(superAdmin);
@@ -187,7 +187,7 @@ public class DataSeeder implements CommandLineRunner {
     @Bean
     private void setPawnShop(){
         List<Address> addresses = addressRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
-        List<User> users = userRepository.findAll();
+        List<AppUser> users = userRepository.findAll();
         List<Payment> payments = paymentRepository.findAll();
 
         List<PawnShop> pawnShops = new ArrayList<>();

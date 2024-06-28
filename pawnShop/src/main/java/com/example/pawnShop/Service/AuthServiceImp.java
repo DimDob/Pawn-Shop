@@ -3,7 +3,7 @@ package com.example.pawnShop.Service;
 import com.example.pawnShop.Dto.Auth.LoginRequestDto;
 import com.example.pawnShop.Dto.Auth.LoginResponseDto;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
-import com.example.pawnShop.Entity.User;
+import com.example.pawnShop.Entity.AppUser;
 import com.example.pawnShop.Factory.Contract.AuthFactory;
 import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class AuthServiceImp implements AuthService {
         if(loginRequestDto == null){
             return null;
         }
-        User user = userRepository.findByEmail(loginRequestDto.getEmail()).orElse(null);
+        AppUser user = userRepository.findByEmail(loginRequestDto.getEmail()).orElse(null);
         if(user == null){
             return null;
         }
@@ -44,11 +43,11 @@ public class AuthServiceImp implements AuthService {
         if(registerRequestDto == null){
             return false;
         }
-        Optional<User> user = userRepository.findByEmail(registerRequestDto.getEmail());
+        Optional<AppUser> user = userRepository.findByEmail(registerRequestDto.getEmail());
 
         if(user.isPresent()){
             String encodedPassword = passwordEncoder.encode(registerRequestDto.getPassword());
-            User newUser = authFactory.createUser(registerRequestDto, encodedPassword);
+            AppUser newUser = authFactory.createUser(registerRequestDto, encodedPassword);
 
             userRepository.save(newUser);
 
