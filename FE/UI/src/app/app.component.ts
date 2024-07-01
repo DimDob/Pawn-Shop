@@ -26,6 +26,10 @@ export class AppComponent implements AfterViewInit {
     this.isEverythingInitialized = true;
   }
 
+  get isForgotPassword() {
+    return this.loginComponent.prismDetails.forgotPassword
+  }
+
   public user: User;
 
   public prismDetails: PrismData;
@@ -48,7 +52,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   handleUserLoging(userCredentials: PrismData) {
-    console.log(userCredentials);
     this.prismDetails = userCredentials;
   }
 }
