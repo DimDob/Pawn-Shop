@@ -40,8 +40,6 @@ export class LoginComponent implements AfterViewInit, OnInit {
     }
     
     this.userCredentials.emit(this.prismDetails);
-
-    logingForm.reset();
   }
 
   createAccount(createAccountForm: NgForm) {
@@ -50,9 +48,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     }
 
     const { signupEmail, signupPassword, signupPassword2 } = this.prismDetails;
-    debugger
     //implement logic for creating an account
-    createAccountForm.reset();
   }
 
   onUserCheck() {

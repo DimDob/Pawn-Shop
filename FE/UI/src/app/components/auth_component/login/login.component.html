@@ -86,21 +86,21 @@
                 <h2>Create an account for an employee</h2>
                 <form #createAccountForm="ngForm" (submit)="showThankYou(); (false)">
                     <div class="field-wrapper">
-                        <input type="text" name="email" placeholder="email"  [(ngModel)]="prismDetails.signupEmail"/>
+                        <input type="text" name="email" placeholder="email"  [(ngModel)]="prismDetails.signupEmail" required/>
                         <label>E-mail</label>
                     </div>
                     <div class="field-wrapper">
                         <input [(ngModel)]="prismDetails.signupPassword" type="password" name="password"
-                            placeholder="password" autocomplete="new-password" />
+                            placeholder="password" autocomplete="new-password" required/>
                         <label>Password</label>
                     </div>
                     <div class="field-wrapper">
                         <input [(ngModel)]="prismDetails.signupPassword2" type="password" name="re-entered-password"
-                            placeholder="Please re-enter the password" autocomplete="new-password" />
+                            placeholder="Please re-enter the password" autocomplete="new-password" required/>
                         <label>Please re-enter the password</label>
                     </div>
                     <div class="field-wrapper">
-                        <input (click)="createAccount(createAccountForm)" type="submit" value="Submit" />
+                        <input (click)="createAccount(createAccountForm); clearUserDetails()" type="submit" value="Submit" />
                     </div>
                     <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
                 </form>
