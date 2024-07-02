@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,9 +57,12 @@ public class AuthServiceImp implements AuthService {
         if(registerRequestDto == null){
             return false;
         }
+        if(!registerRequestDto.getPassword().equals(registerRequestDto.getConfirmPassword())){
+            return false;
+        }
         Optional<AppUser> user = userRepository.findByEmail(registerRequestDto.getEmail());
 
-        if(user.isPresent()){
+        if(user.isEmpty()){
             String encodedPassword = passwordEncoder.encode(registerRequestDto.getPassword());
             AppUser newUser = authFactory.createUser(registerRequestDto, encodedPassword);
 

@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry ->{
                     registry.requestMatchers("/home/index", "/auth/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
-                    registry.requestMatchers("/home/admin").hasRole("ADMIN");
+                    registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN","ADMIN");
                     registry.anyRequest().authenticated();
         })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

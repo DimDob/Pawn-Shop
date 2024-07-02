@@ -1,7 +1,6 @@
 package com.example.pawnShop.Dto.Auth;
 
-import com.example.pawnShop.Entity.Role;
-import com.example.pawnShop.Validation.PasswordMatcher.PasswordMatcher;
+import com.example.pawnShop.Validation.PasswordValidator.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,8 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@PasswordMatcher(password = "password",
-                 confirmPassword = "confirmPassword")
 public class RegisterRequestDto {
 
     @NotNull
@@ -27,6 +24,7 @@ public class RegisterRequestDto {
     private String lastName;
 
     @NotNull
+    @ValidPassword
     private String password;
 
     @NotNull
