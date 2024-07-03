@@ -3,6 +3,7 @@ import { PrismData } from './login_interfaces.ts/prismData';
 import prismDetailsTemplate from './templates/prismDetails.template';
 import { User } from './login_interfaces.ts/User';
 import userTemplate from './templates/user.template';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import userTemplate from './templates/user.template';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements AfterViewInit, OnInit {
-  
+
 
   @Output() userCheck: EventEmitter<User> = new EventEmitter<User>()
 
@@ -19,40 +20,57 @@ export class LoginComponent implements AfterViewInit, OnInit {
   public prismDetails: PrismData
 
   public user: User;
-  
-  prism: HTMLElement; 
 
-  constructor(private elementRef: ElementRef) {}
+  prism: HTMLElement;
+
+  constructor(private elementRef: ElementRef) { }
 
   ngAfterViewInit() {
-    this.prism = this.elementRef.nativeElement.querySelector(".rec-prism"); 
+    this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
   }
 
   ngOnInit(): void {
-  this.prismDetails = {...prismDetailsTemplate}
-  this.user = {...userTemplate}
+    this.prismDetails = { ...prismDetailsTemplate }
+    this.user = { ...userTemplate }
   }
 
-  userLoging() {
-    this.userCredentials.emit(this.prismDetails)
+  userLoging(logingForm: NgForm) {
+    if (logingForm.invalid) {
+      return
+    }
+    
+    this.userCredentials.emit(this.prismDetails);
+  }
+
+  createAccount(createAccountForm: NgForm) {
+    if (createAccountForm.invalid) {
+      return
+    }
+
+    const { signupEmail, signupPassword, signupPassword2 } = this.prismDetails;
+    //implement logic for creating an account
   }
 
   onUserCheck() {
     this.userCheck.emit(this.user)
   }
 
-  checkIfUserIsAdmin() { 
+  checkIfUserIsAdmin(adminForm: NgForm) {
+    if (adminForm.invalid) {
+      return
+    }
+
     if (this.prismDetails.administratorEmail === 'admin') { //Here it will be replaced with actual email, which we will check in the DB
       this.user.isAdmin = true
-      
-    }  else {
+
+    } else {
       this.user.isAdmin = false
 
     }
   }
   showSignup(): void {
     if (this.prism) {
-      // This better be done in ngOnChanges() 
+      // This better be done in ngOnChanges()
       this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateY(-90deg)";
     }
@@ -60,6 +78,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   showLogin(): void {
     if (this.prism) {
+      this.prismDetails.forgotPassword = false;
       this.prism.style.transform = "translateZ(-100px)";
     }
   }
@@ -68,6 +87,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = true;
       this.prism.style.transform = "translateZ(-100px) rotateY(-180deg)";
+
     }
   }
 
@@ -75,6 +95,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateX(-90deg)";
+
+
     }
   }
 
@@ -82,12 +104,22 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = false
       this.prism.style.transform = "translateZ(-100px) rotateY(90deg)";
+
+
     }
   }
 
   showThankYou(): void {
     if (this.prism) {
       this.prism.style.transform = "translateZ(-100px) rotateX(90deg)";
+
+    }
+  }
+
+
+  clearUserDetails() {
+    this.prismDetails = {
+      ...prismDetailsTemplate,
     }
   }
 
