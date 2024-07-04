@@ -4,6 +4,7 @@ import com.example.pawnShop.Dto.Product.ProductTypeDto;
 import com.example.pawnShop.Dto.Product.ProductTypeNameDto;
 import com.example.pawnShop.Service.Contract.ProductTypeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/product_type")
 public class ProductTypeController {
+    @Autowired
     private final ProductTypeService productTypeService;
 
     @GetMapping()

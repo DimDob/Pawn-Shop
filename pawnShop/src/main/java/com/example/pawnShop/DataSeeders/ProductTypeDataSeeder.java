@@ -2,6 +2,7 @@ package com.example.pawnShop.DataSeeders;
 
 import com.example.pawnShop.Entity.ProductType;
 import com.example.pawnShop.Repository.ProductTypeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Component
 public class ProductTypeDataSeeder implements CommandLineRunner {
 
+    @Autowired
     private final ProductTypeRepository productTypeRepository;
 
     public ProductTypeDataSeeder(ProductTypeRepository productTypeRepository) {

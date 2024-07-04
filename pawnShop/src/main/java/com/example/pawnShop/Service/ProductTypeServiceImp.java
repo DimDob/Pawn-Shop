@@ -8,6 +8,7 @@ import com.example.pawnShop.Repository.ProductTypeRepository;
 import com.example.pawnShop.Service.Contract.ProductTypeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,11 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class ProductTypeServiceImp implements ProductTypeService {
 
+    @Autowired
     private final ProductTypeRepository repository;
+    @Autowired
     private final ProductManualMapper mapper;
+    @Autowired
     private final ProductFactory factory;
 
     @Override

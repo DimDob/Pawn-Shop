@@ -9,6 +9,7 @@ import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
 import com.example.pawnShop.Service.Contract.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,10 +24,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthServiceImp implements AuthService {
 
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final AuthFactory authFactory;
+    @Autowired
     private final AuthenticationManager authenticationManager;
+    @Autowired
     private final JwtService jwtService;
 
     @Override

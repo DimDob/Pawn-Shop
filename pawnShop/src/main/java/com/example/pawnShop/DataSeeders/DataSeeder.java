@@ -3,6 +3,7 @@ package com.example.pawnShop.DataSeeders;
 import com.example.pawnShop.Entity.*;
 import com.example.pawnShop.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Sort;
@@ -19,12 +20,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
 
+    @Autowired
     private final CityRepository cityRepository;
+    @Autowired
     private final AddressRepository addressRepository;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
+    @Autowired
     private final UserRepository userRepository;
+    @Autowired
     private final PaymentTypeRepository paymentTypeRepository;
+    @Autowired
     private final PaymentRepository paymentRepository;
+    @Autowired
     private final PawnShopRepository pawnShopRepository;
 
     @Override
