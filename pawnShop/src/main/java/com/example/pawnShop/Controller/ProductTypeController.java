@@ -2,6 +2,7 @@ package com.example.pawnShop.Controller;
 
 import com.example.pawnShop.Dto.Product.ProductTypeDto;
 import com.example.pawnShop.Dto.Product.ProductTypeNameDto;
+import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.ProductTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,33 +20,50 @@ public class ProductTypeController {
     private final ProductTypeService productTypeService;
 
     @GetMapping()
-    public ResponseEntity<List<ProductTypeDto>> getAllProductsTypes(){
-        List<ProductTypeDto> productsTypes = productTypeService.getAllProductsTypes();
+    public ResponseEntity<?> getAllProductsTypes(){
 
-        return ResponseEntity.ok(productsTypes);
+        Result<List<ProductTypeDto>> result = productTypeService.getAllProductsTypes();
+        if(!result.isSuccess()){
+            return ResponseEntity.ok(result.getError());
+        }
+
+        return ResponseEntity.ok(result.getValue());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ProductTypeDto> getProductTypeById(@PathVariable UUID id){
-        ProductTypeDto productType = productTypeService.getProductTypeById(id);
+    public ResponseEntity<?> getProductTypeById(@PathVariable UUID id){
+        Result<ProductTypeDto> result = productTypeService.getProductTypeById(id);
+        if(!result.isSuccess()){
+            return ResponseEntity.ok(result.getError());
+        }
 
-        return ResponseEntity.ok(productType);
+        return ResponseEntity.ok(result.getValue());
     }
     @PostMapping()
-    public ResponseEntity<ProductTypeDto> addProductType(@RequestBody ProductTypeNameDto newProductTypeName){
-        ProductTypeDto productTypeName = productTypeService.addProductType(newProductTypeName.getName());
+    public ResponseEntity<?> addProductType(@RequestBody ProductTypeNameDto newProductTypeName){
 
-        return ResponseEntity.ok(productTypeName);
+        Result<ProductTypeDto> result = productTypeService.addProductType(newProductTypeName.getName());
+        if(!result.isSuccess()){
+            return ResponseEntity.ok(result.getError());
+        }
+
+        return ResponseEntity.ok(result.getValue());
     }
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductTypeDto> modifyProductType(@PathVariable UUID id, @RequestBody ProductTypeDto modifiedProductType){
-        ProductTypeDto modifiedProductTypeName = productTypeService.updateProductType(id, modifiedProductType);
+    public ResponseEntity<?> modifyProductType(@PathVariable UUID id, @RequestBody ProductTypeDto modifiedProductType){
+        Result<ProductTypeDto> result = productTypeService.updateProductType(id, modifiedProductType);
+        if(!result.isSuccess()){
+            return ResponseEntity.ok(result.getError());
+        }
 
-        return ResponseEntity.ok(modifiedProductTypeName);
+        return ResponseEntity.ok(result.getValue());
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductTypeDto> deleteProductType(@PathVariable UUID id){
-        ProductTypeDto removedProductTypeName = productTypeService.deleteProductType(id);
+    public ResponseEntity<?> deleteProductType(@PathVariable UUID id){
+       Result<ProductTypeDto> result = productTypeService.deleteProductType(id);
+       if(!result.isSuccess()){
+           return ResponseEntity.ok(result.getError());
+       }
 
-        return ResponseEntity.ok(removedProductTypeName);
+        return ResponseEntity.ok(result.getValue());
     }
 }
