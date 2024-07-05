@@ -44,9 +44,6 @@ public class AuthServiceImp implements AuthService {
             }
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
-            if(!authentication.isAuthenticated()){
-               return  Result.error("Incorrect email or password.");
-            }
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             AppUser user = (AppUser) authentication.getPrincipal();
@@ -59,7 +56,7 @@ public class AuthServiceImp implements AuthService {
 
         } catch (AuthenticationException e){
 
-            return  Result.error("Something went wrong");
+            return  Result.error("Incorrect email or password.");
         }
     }
 

@@ -15,12 +15,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginRequestDto {
 
-    @Email
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @NotNull
     private String email;
 
     @NotNull
-    @Min(value = 6, message = "Password should contains minimum of 6 characters")
-    @Max(value = 24, message = "Password should contains maximum of 24 characters" )
     private String password;
 }
