@@ -12,7 +12,7 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements AfterViewInit, OnInit {
 
-
+  
   @Output() userCheck: EventEmitter<User> = new EventEmitter<User>()
 
   @Output() userCredentials: EventEmitter<PrismData> = new EventEmitter<PrismData>()
@@ -42,13 +42,11 @@ export class LoginComponent implements AfterViewInit, OnInit {
     this.userCredentials.emit(this.prismDetails);
   }
 
-  createAccount(createAccountForm: NgForm) {
-    if (createAccountForm.invalid) {
-      return
-    }
+  handleUserRegister(prismDetails: PrismData) {
+    this.prismDetails = prismDetails;
 
-    const { signupEmail, signupPassword, signupPassword2 } = this.prismDetails;
-    //implement logic for creating an account
+    this.clearUserDetails();
+    this.showThankYou();
   }
 
   onUserCheck() {
