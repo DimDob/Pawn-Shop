@@ -1,4 +1,4 @@
-package com.example.pawnShop.Entity.Product;
+package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +23,7 @@ import java.util.UUID;
  * @see lombok.Getter
  * @see lombok.Setter
  * @see lombok.AllArgsConstructor
- * @see javax.persistence.Entity
+ * //@see javax.persistence.Entity
  */
 
 @Entity
