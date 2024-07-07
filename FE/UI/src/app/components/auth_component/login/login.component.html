@@ -86,7 +86,9 @@
         <div class="face face-right">
             <div class="content">
                 <h2>Create an account for an employee</h2>
+                <!-- Register component template -->
                 <app-register [prismDetails]="prismDetails" (userRegister)="handleUserRegister($event)" />
+
                 <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
             </div>
         </div>

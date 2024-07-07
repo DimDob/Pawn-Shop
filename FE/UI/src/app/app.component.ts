@@ -9,7 +9,7 @@ import {
 import { LoginComponent } from './components/auth_component/login/login.component';
 import { User } from './components/auth_component/login/login_interfaces.ts/User';
 import { PrismData } from './components/auth_component/login/login_interfaces.ts/prismData';
-import { LoginService } from './components/auth_component/login/login.service';
+import { AuthService } from './app.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent implements AfterViewInit {
 
   public isEverythingInitialized: boolean;
 
-  constructor(private loginService: LoginService) { }
+  constructor(private authService: AuthService) { }
 
   ngAfterViewInit() {
     this.isEverythingInitialized = true;
@@ -55,9 +55,9 @@ export class AppComponent implements AfterViewInit {
   }
 
   handleUserLoging(userCredentials: PrismData) {
+    const loginEndpoint = 'http://localhost:8080/auth/login'
     this.prismDetails = userCredentials;
 
-    const { loginUsername, loginPassword } = this.prismDetails
-    this.loginService.loginUser(loginUsername, loginPassword);
+    this.authService.handleUserLoging(userCredentials, loginEndpoint);
   }
 }

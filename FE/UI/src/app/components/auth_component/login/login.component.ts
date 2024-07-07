@@ -12,7 +12,6 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements AfterViewInit, OnInit {
 
-  
   @Output() userCheck: EventEmitter<User> = new EventEmitter<User>()
 
   @Output() userCredentials: EventEmitter<PrismData> = new EventEmitter<PrismData>()
@@ -38,7 +37,6 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (logingForm.invalid) {
       return
     }
-    
     this.userCredentials.emit(this.prismDetails);
   }
 
