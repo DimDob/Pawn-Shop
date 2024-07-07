@@ -58,6 +58,6 @@ export class AppComponent implements AfterViewInit {
     this.prismDetails = userCredentials;
 
     const { loginUsername, loginPassword } = this.prismDetails
-    this.loginService.loginUser(loginUsername, loginPassword);
+    this.loginService.loginUser(loginUsername, loginPassword).subscribe();
   }
 }
