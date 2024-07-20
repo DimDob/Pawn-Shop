@@ -13,12 +13,12 @@ $smoke: #f9f9fa;
 $coral: #ff5751;
 $navy-blue: #42509e;
 $green: #07ad90;
- 
+
 .nav {
-  margin: $spacing 0; 
+  margin: $spacing 0;
   padding: 0;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 
   li {
     list-style-type: none;
@@ -27,19 +27,19 @@ $green: #07ad90;
     color: $navy-blue;
     position: relative;
     cursor: pointer;
-    padding: $spacing; 
-    border: 2px solid transparent; 
-    border-radius: 0.5px; 
+    padding: $spacing;
+    border: 2px solid transparent;
+    border-radius: 0.5px;
     transition: all ease-in-out 0.3s;
     flex: 1;
-    
+
     &:hover {
-      background-color: $smoke; 
-      border-color: $navy-blue; 
+      background-color: $smoke;
+      border-color: $navy-blue;
     }
   }
 
   &:not(:last-child) {
-    margin-bottom: $spacing / 2; 
+    margin-bottom: $spacing / 2;
   }
 }
