@@ -14,6 +14,8 @@ const prismDetailsTemplate: PrismData = {
     contactMessage:  undefined,
     showingThankYou:  undefined,
     forgotPassword: undefined,
+    changedPassword: undefined,
+    changedPassword2: undefined,
   };
 
   export default prismDetailsTemplate;

@@ -15,4 +15,6 @@ export interface PrismData {
   contactMessage?: string;
   showingThankYou?: string;
   forgotPassword?: boolean
+  changedPassword?: string;
+  changedPassword2?: string;
 }
