@@ -9,6 +9,7 @@ import { RegisterComponent } from './components/auth_component/register/register
 import { HttpClientModule } from '@angular/common/http'
 import { AuthService } from './app.service';
 import { ChangePasswordComponent } from './components/auth_component/change-password/change-password.component';
+import { MatchPasswordsDirective } from './components/auth_component/directives/password-match.directive';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ChangePasswordComponent } from './components/auth_component/change-pass
     LoginComponent,
     RegisterComponent,
     ChangePasswordComponent,
+    MatchPasswordsDirective,
   ],
   imports: [
     BrowserModule,
