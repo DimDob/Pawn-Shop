@@ -4,15 +4,24 @@
         <label>E-mail</label>
     </div>
     <div class="field-wrapper">
-        <input [(ngModel)]="prismDetails.signupPassword" type="password" name="password" placeholder="password"
-            autocomplete="new-password" required />
+        <input [(ngModel)]="prismDetails.signupPassword" type="password" name="password" placeholder="password" required/>
         <label>Password</label>
     </div>
     <div class="field-wrapper">
         <input [(ngModel)]="prismDetails.signupPassword2" type="password" name="re-entered-password"
-            placeholder="Please re-enter the password" autocomplete="new-password" required />
+            placeholder="Please re-enter the password" autocomplete="new-password" 
+            [appMatchPasswords]="prismDetails.signupPassword"
+            #reEnteredPasswordInput="ngModel"
+            ngModel
+            required 
+        />
         <label>Please re-enter the password</label>
     </div>
+
+    <ng-container *ngIf="reEnteredPasswordInput.touched">
+        <p class="error" *ngIf="reEnteredPasswordInput.errors?.['matchPasswords']">Passwords must match</p>
+    </ng-container>
+    
     <div class="field-wrapper">
         <input type="submit" value="Submit" />
     </div>
