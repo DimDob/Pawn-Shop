@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { PrismData } from "./components/auth_component/login/login_interfaces.ts/prismData";
 import { Injectable } from "@angular/core";
+import { Subscription } from "rxjs";
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  handleUserLoging(userCredentials: PrismData, endpoint: string) {
+  handleUserLoging(userCredentials: PrismData, endpoint: string): Subscription {
 
     return this.http.post<PrismData>(endpoint, {
       ...userCredentials
@@ -22,7 +23,7 @@ export class AuthService {
     });
   }
 
-  handlerUserRegister(userCredentials: PrismData, endpoint: string) {
+  handlerUserRegister(userCredentials: PrismData, endpoint: string): Subscription {
 
     return this.http.post<PrismData>(endpoint, {
       ...userCredentials
@@ -36,7 +37,7 @@ export class AuthService {
     })
   }
 
-  handlerChangePassword(userCredentials: PrismData, endpoint: string) {
+  handlerChangePassword(userCredentials: PrismData, endpoint: string): Subscription {
 
     return this.http.post<PrismData>(endpoint, {
       ...userCredentials

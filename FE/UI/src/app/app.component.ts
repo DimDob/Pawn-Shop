@@ -2,8 +2,6 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { LoginComponent } from './components/auth_component/login/login.component';
