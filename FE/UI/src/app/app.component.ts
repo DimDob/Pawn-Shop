@@ -17,12 +17,17 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./app.component.scss'], 
 })
 export class AppComponent implements OnInit {
+
   @ViewChild(LoginComponent) loginComponent: LoginComponent;
+
   @ViewChild('navButtons') navButtonsContainer: ElementRef;
 
   public currentRoute: string;
+
   public user: User;
+
   public prismDetails: PrismData;
+
   private host = 'http://localhost:8080/'; // Change when we get a host
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -57,6 +62,7 @@ export class AppComponent implements OnInit {
   handleUserCheck(user: User) {
     this.user = user;
   }
+
   handleUserLoging(userCredentials: PrismData) {
     const loginEndpoint = '/auth/login';
     this.prismDetails = userCredentials;
@@ -67,6 +73,8 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/pawn-shop/main-page']);
       },
       error: (err) => {
+        this.router.navigate(['/pawn-shop/main-page']);
+
         console.error('Login failed', err);
       }
     });
