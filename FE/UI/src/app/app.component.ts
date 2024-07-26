@@ -73,8 +73,6 @@ export class AppComponent implements OnInit {
         this.router.navigate(['/pawn-shop/main-page']);
       },
       error: (err) => {
-        this.router.navigate(['/pawn-shop/main-page']);
-
         console.error('Login failed', err);
       }
     });
