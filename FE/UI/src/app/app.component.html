@@ -1,11 +1,5 @@
-<ng-container *ngIf="isEverythingInitialized" #navButtons>
-    <ul class="nav">
-      <li (click)="showLogin()">Login</li>
-      <li *ngIf="isForgotPassword" (click)="showForgotPassword()">Forgot password</li>
-      <li (click)="showCreateEmployeeAccount()">Create employee account</li>
-      <li *ngIf="user?.isAdmin" (click)="showSignup()">Create account</li>
-    </ul>
-  </ng-container>
-<app-login
+<app-login  *ngIf="currentRoute === '/auth/login'"
 (userCheck)="handleUserCheck($event)"
 (userCredentials)="handleUserLoging($event)"></app-login>
+
+<app-main-page *ngIf="currentRoute === '/pawn-shop/main-page'"></app-main-page>
