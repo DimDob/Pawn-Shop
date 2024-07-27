@@ -4,6 +4,7 @@ import prismDetailsTemplate from './templates/prismDetails.template';
 import { User } from './login_interfaces.ts/User';
 import userTemplate from './templates/user.template';
 import { NgForm } from '@angular/forms';
+import { AuthService } from '../../../app.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   prism: HTMLElement;
 
-  constructor(private elementRef: ElementRef) { }
+  constructor(private elementRef: ElementRef, private authService: AuthService) { }
 
   ngAfterViewInit() {
     this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
@@ -42,6 +43,10 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   handleUserRegister(prismDetails: PrismData) {
     this.prismDetails = prismDetails;
+
+    const endpoint = 'http://localhost:8080/auth/register';
+
+    this.authService.handlerUserRegister(prismDetails, endpoint);
 
     this.clearUserDetails();
     this.showThankYou();

@@ -2,7 +2,7 @@
  * The interface transfers user data from the UI
  */
 export interface PrismData {
-    prismTransform?: string;
+  prismTransform?: string;
   administratorEmail?: string;
   loginUsername: string ;
   loginPassword: string;
@@ -15,4 +15,6 @@ export interface PrismData {
   contactMessage?: string;
   showingThankYou?: string;
   forgotPassword?: boolean
+  changedPassword?: string;
+  changedPassword2?: string;
 }
