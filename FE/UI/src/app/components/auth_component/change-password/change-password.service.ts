@@ -8,9 +8,8 @@ import { PrismData } from "../login/login_interfaces.ts/prismData";
   })
   export class ChangePasswordService extends AuthService {
 
-    private changePasswordEndpoint: string = 'auth/change-password';
+    private changePasswordEndpoint: string = 'http://localhost:8080/auth/change-password';
 
-    // Add activatedRouter and take userId from path -> Send POST to BE 
     constructor(
         http: HttpClient,
         private authService: AuthService,
@@ -18,7 +17,7 @@ import { PrismData } from "../login/login_interfaces.ts/prismData";
         super(http);
       }
 
-    public changePassword(prismDetails: PrismData, userId: string ) {
+    public changePassword(prismDetails: PrismData, userId: string | null) {
         return this.authService.handlerChangePassword(
             {...prismDetails},
              `${this.changePasswordEndpoint}/${userId}`
