@@ -21,17 +21,25 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   public user: User;
 
-  prism: HTMLElement;
+  public isEverythingInitialized: boolean
+
+  public prism: HTMLElement;
 
   constructor(private elementRef: ElementRef, private authService: AuthService) { }
 
   ngAfterViewInit() {
+    this.isEverythingInitialized = true;
+
     this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
   }
 
   ngOnInit(): void {
     this.prismDetails = { ...prismDetailsTemplate }
     this.user = { ...userTemplate }
+  }
+
+  get isForgotPassword() {
+    return this.prismDetails.forgotPassword
   }
 
   userLoging(logingForm: NgForm) {

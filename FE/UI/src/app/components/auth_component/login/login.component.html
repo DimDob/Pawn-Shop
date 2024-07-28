@@ -1,3 +1,13 @@
+<ng-container *ngIf="isEverythingInitialized" #navButtons>
+    <ul class="nav">
+      <li (click)="showLogin()">Login</li>
+      <li *ngIf="isForgotPassword" (click)="showForgotPassword()">Forgot password</li>
+      <li (click)="showCreateEmployeeAccount()">Create employee account</li>
+      <li *ngIf="user?.isAdmin" (click)="showSignup()">Create account</li>
+    </ul>
+  </ng-container>
+
+
 <div class="wrapper" id="'loginComponent">
     <div class="rec-prism">
 

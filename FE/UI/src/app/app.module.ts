@@ -8,6 +8,8 @@ import { LoginComponent } from './components/auth_component/login/login.componen
 import { RegisterComponent } from './components/auth_component/register/register.component';
 import { HttpClientModule } from '@angular/common/http'
 import { AuthService } from './app.service';
+import { MainPageComponent } from './components/main_page_component/main-page/main-page.component';
+import { AuthComponent } from './components/auth_component/auth/auth.component';
 import { ChangePasswordComponent } from './components/auth_component/change-password/change-password.component';
 import { MatchPasswordsDirective } from './components/auth_component/directives/password-match.directive';
 import { ChangePasswordService } from './components/auth_component/change-password/change-password.service';
@@ -17,6 +19,8 @@ import { ChangePasswordService } from './components/auth_component/change-passwo
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    MainPageComponent,
+    AuthComponent,
     ChangePasswordComponent,
     MatchPasswordsDirective,
   ],
