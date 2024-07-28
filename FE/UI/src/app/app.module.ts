@@ -10,6 +10,9 @@ import { HttpClientModule } from '@angular/common/http'
 import { AuthService } from './app.service';
 import { MainPageComponent } from './components/main_page_component/main-page/main-page.component';
 import { AuthComponent } from './components/auth_component/auth/auth.component';
+import { ChangePasswordComponent } from './components/auth_component/change-password/change-password.component';
+import { MatchPasswordsDirective } from './components/auth_component/directives/password-match.directive';
+import { ChangePasswordService } from './components/auth_component/change-password/change-password.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +21,8 @@ import { AuthComponent } from './components/auth_component/auth/auth.component';
     RegisterComponent,
     MainPageComponent,
     AuthComponent
+    ChangePasswordComponent,
+    MatchPasswordsDirective,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +30,7 @@ import { AuthComponent } from './components/auth_component/auth/auth.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, ChangePasswordService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
