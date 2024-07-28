@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth/login', component: AuthComponent },
-  {path: 'pawn-shop/main-page', component: MainPageComponent} 
+  {path: 'pawn-shop/main-page', component: MainPageComponent},
   { path: 'auth/change-password/:userId', component: ChangePasswordComponent },
 ];
 

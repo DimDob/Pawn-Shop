@@ -41,6 +41,6 @@ export class ChangePasswordComponent implements OnInit {
     }
     
     this.userId = this.activeRoute.snapshot.paramMap.get('userId');
-    this.changePasswordSubscription = this.changePasswordService.changePassword(this.prismDetails, this.userId);
+    this.changePasswordSubscription = this.changePasswordService.changePassword(this.prismDetails, this.userId)
   }
 }

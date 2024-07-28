@@ -20,7 +20,7 @@ import { ChangePasswordService } from './components/auth_component/change-passwo
     LoginComponent,
     RegisterComponent,
     MainPageComponent,
-    AuthComponent
+    AuthComponent,
     ChangePasswordComponent,
     MatchPasswordsDirective,
   ],

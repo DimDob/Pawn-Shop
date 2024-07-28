@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AuthService } from "../../../app.service";
 import { HttpClient } from "@angular/common/http";
 import { PrismData } from "../login/login_interfaces.ts/prismData";
+import { Subscription } from "rxjs";
 
 @Injectable({
     providedIn: 'root',
@@ -17,11 +18,11 @@ import { PrismData } from "../login/login_interfaces.ts/prismData";
         super(http);
       }
 
-    public changePassword(prismDetails: PrismData, userId: string | null) {
+    public changePassword(prismDetails: PrismData, userId: string | null): Subscription {
         return this.authService.handlerChangePassword(
             {...prismDetails},
              `${this.changePasswordEndpoint}/${userId}`
-        )
+        ).subscribe()
     }
   }
   
