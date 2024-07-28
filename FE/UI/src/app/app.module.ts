@@ -9,13 +9,15 @@ import { RegisterComponent } from './components/auth_component/register/register
 import { HttpClientModule } from '@angular/common/http'
 import { AuthService } from './app.service';
 import { MainPageComponent } from './components/main_page_component/main-page/main-page.component';
+import { AuthComponent } from './components/auth_component/auth/auth.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    MainPageComponent
+    MainPageComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
