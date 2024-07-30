@@ -29,13 +29,23 @@ import java.util.UUID;
 @Entity
 @Table(name = "products")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Product {
+
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
 
     @Column(name = "market_price")
     private BigDecimal marketPrice;
@@ -49,7 +59,33 @@ public class Product {
     @Column(name = "picture_url", columnDefinition = "TEXT")
     private String pictureUrl;
 
+    public Product setId(UUID id) {
+        this.id = id;
+        return this;
+    }
 
+    public Product setName(String name) {
+        this.name = name;
+        return this;
+    }
 
+    public Product setMarketPrice(BigDecimal marketPrice) {
+        this.marketPrice = marketPrice;
+        return this;
+    }
 
+    public Product setPawnPercentage(BigDecimal pawnPercentage) {
+        this.pawnPercentage = pawnPercentage;
+        return this;
+    }
+
+    public Product setSecondHandPrice(BigDecimal secondHandPrice) {
+        this.secondHandPrice = secondHandPrice;
+        return this;
+    }
+
+    public Product setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+        return this;
+    }
 }
