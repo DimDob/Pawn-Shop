@@ -30,11 +30,11 @@ export class MainPageComponent implements OnInit {
     model: 'something'
   } 
   ngOnInit(): void {
-    this.shoes= [this.shoe1, this.shoe2]
+    this.shoes = [this.shoe1, this.shoe2]
     console.log(this.shoes)
   }  
 
-  requestPurchase(){
+  requestPurchase() {
     // TODO check if product is available at the db
   }
 }

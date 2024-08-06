@@ -1,24 +1,24 @@
 <div class="container">
-    <div class="card" *ngFor="let shoe of shoes">
-      <div class="imgBx">
-        <img [src]="shoe.picture" alt="{{ shoe.manufacturer }} {{ shoe.model }}">
+  <div class="card" *ngFor="let shoe of shoes">
+    <div class="imgBx">
+      <img [src]="shoe.picture" alt="{{ shoe.manufacturer }} {{ shoe.model }}">
+    </div>
+
+    <div class="contentBx">
+      <h2>{{ shoe.manufacturer }} {{ shoe.model }}</h2>
+
+      <div class="size">
+        <h3>Size :</h3>
+        <span>{{ shoe.size }}</span>
       </div>
-  
-      <div class="contentBx">
-        <h2>{{ shoe.manufacturer }} {{ shoe.model }}</h2>
-  
-        <div class="size">
-          <h3>Size :</h3>
-          <span>{{ shoe.size }}</span>
-        </div>
-  
-        <div class="color">
-          <h3>Color :</h3>
-          <span>{{ shoe.color }}</span>
-        </div>
-        
-        <a (click)="requestPurchase()">Buy Now</a>
+
+      <div class="color">
+        <h3>Color :</h3>
+        <span>{{ shoe.color }}</span>
       </div>
+
+      <a (click)="requestPurchase()">Buy Now</a>
     </div>
   </div>
-  
+  <app-main-page-pagination [length]="100" [pageSize]="10" />
+</div>
