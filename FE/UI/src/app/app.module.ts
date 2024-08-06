@@ -15,14 +15,12 @@ import { AuthComponent } from './components/auth_component/auth/auth.component';
 import { ChangePasswordComponent } from './components/auth_component/change-password/change-password.component';
 import { MatchPasswordsDirective } from './components/auth_component/directives/password-match.directive';
 import { ChangePasswordService } from './components/auth_component/change-password/change-password.service';
-import { MainPagePaginationComponent } from './components/main_page_component/main-page-pagination/main-page-pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    MainPageComponent,
     AuthComponent,
     ChangePasswordComponent,
     MatchPasswordsDirective,
@@ -31,7 +29,7 @@ import { MainPagePaginationComponent } from './components/main_page_component/ma
     BrowserModule,
     BrowserAnimationsModule,
     MatPaginatorModule,
-    MainPagePaginationComponent,
+    MainPageComponent,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,

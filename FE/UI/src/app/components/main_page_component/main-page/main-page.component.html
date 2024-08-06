@@ -20,5 +20,10 @@
       <a (click)="requestPurchase()">Buy Now</a>
     </div>
   </div>
-  <app-main-page-pagination [length]="100" [pageSize]="10" />
+  <mat-paginator 
+              [length]="length"
+              [pageSize]="pageSize"
+              aria-label="Select page"
+              (page)="handlePageEvent($event)">
+  </mat-paginator>
 </div>
