@@ -13,6 +13,7 @@ import { AuthComponent } from './components/auth_component/auth/auth.component';
 import { ChangePasswordComponent } from './components/auth_component/change-password/change-password.component';
 import { MatchPasswordsDirective } from './components/auth_component/directives/password-match.directive';
 import { ChangePasswordService } from './components/auth_component/change-password/change-password.service';
+import { MainHeaderComponent } from './components/main-header/main-header.component';
 import { SearchIconComponent } from './components/icons/search-icon/search-icon.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CloseIconComponent } from "./components/icons/close-icon/close-icon.component";
@@ -26,6 +27,7 @@ import { CloseIconComponent } from "./components/icons/close-icon/close-icon.com
     AuthComponent,
     ChangePasswordComponent,
     MatchPasswordsDirective,
+    MainHeaderComponent,
   ],
   imports: [
     BrowserModule,
