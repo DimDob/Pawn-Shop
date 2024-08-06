@@ -13,6 +13,9 @@ import { AuthComponent } from './components/auth_component/auth/auth.component';
 import { ChangePasswordComponent } from './components/auth_component/change-password/change-password.component';
 import { MatchPasswordsDirective } from './components/auth_component/directives/password-match.directive';
 import { ChangePasswordService } from './components/auth_component/change-password/change-password.service';
+import { SearchIconComponent } from './components/icons/search-icon/search-icon.component';
+import { MatIconModule } from '@angular/material/icon';
+import { CloseIconComponent } from "./components/icons/close-icon/close-icon.component";
 
 @NgModule({
   declarations: [
@@ -28,8 +31,11 @@ import { ChangePasswordService } from './components/auth_component/change-passwo
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
-  ],
+    HttpClientModule,
+    SearchIconComponent,
+    MatIconModule,
+    CloseIconComponent
+],
   providers: [AuthService, ChangePasswordService],
   bootstrap: [AppComponent]
 })
