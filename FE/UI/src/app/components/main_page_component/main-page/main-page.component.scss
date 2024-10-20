@@ -1,4 +1,5 @@
 // UI\src\app\components\main_page_component\main-page\main-page.component.scss
+
 @import url("https://fonts.googleapis.com/css?family=Poppins:100,300,400,500,600,700,800,800i,900&display=swap");
 
 * {
@@ -7,31 +8,16 @@
   font-family: "Poppins", sans-serif;
 }
 
-/* Стилове за хедъра */
-.header-content {
-  display: flex;
-  align-items: center;
-  width: 100%;
+body {
+  background: #131313;
 }
 
-.search-bar,
-.category-dropdown {
-  margin-right: 20px;
-}
-
-.spacer {
-  flex: 1 1 auto; /* Изтласква тулбар опциите вдясно */
-}
-
-.toolbar-options button {
-  margin-left: 10px;
-}
-
-/* Стилове за показване на 5 продукта в ред */
+/* Стилове за контейнера на продуктите */
 .container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  padding: 20px;
 }
 
 .container .card {
@@ -39,21 +25,10 @@
   margin-bottom: 20px;
 }
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: #131313;
-}
-
-.container {
-  position: relative;
-}
-
+/* Останалите стилове остават непроменени */
 .container .card {
   position: relative;
-  width: 320px;
+  width: 100%; /* Пълна ширина спрямо flex контейнера */
   height: 450px;
   background: #232323;
   border-radius: 20px;

@@ -1,0 +1,34 @@
+<!-- UI\src\app\components\header_component\header\header.component.html -->
+
+<mat-toolbar color="primary">
+  <div class="header-content">
+    <!-- Търсачка вляво -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Search products" />
+      </mat-form-field>
+    </div>
+
+    <!-- Падащо меню за категории в центъра -->
+    <div class="category-dropdown">
+      <mat-form-field appearance="outline" class="category-field">
+        <mat-label>Category</mat-label>
+        <mat-select (selectionChange)="onCategoryChange($event.value)">
+          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Разделител за изтласкване на опциите вдясно -->
+    <span class="spacer"></span>
+
+    <!-- Тулбар опции вдясно -->
+    <div class="toolbar-options">
+      <button mat-button>About Us</button>
+      <button mat-button>Products</button>
+      <button mat-button>My Account</button>
+      <button mat-button>Contacts</button>
+    </div>
+  </div>
+</mat-toolbar>

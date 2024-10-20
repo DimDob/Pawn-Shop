@@ -22,8 +22,10 @@ import { MatIconModule } from "@angular/material/icon"; // За иконите (
 import { MatInputModule } from "@angular/material/input"; // За търсачката
 import { MatSelectModule } from "@angular/material/select"; // За падащото меню
 
+import { HeaderComponent } from "./components/header_component/header/header.component";
+
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule],
   providers: [AuthService, ChangePasswordService, SeedDataService],
   bootstrap: [AppComponent]

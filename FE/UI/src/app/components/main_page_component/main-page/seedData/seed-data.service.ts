@@ -13,7 +13,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -21,7 +22,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -29,7 +31,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -37,7 +40,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -45,7 +49,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -53,7 +58,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -61,7 +67,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -69,7 +76,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -77,7 +85,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -85,7 +94,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -93,7 +103,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -101,7 +112,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -109,7 +121,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -117,7 +130,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -125,7 +139,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -133,7 +148,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -141,7 +157,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -149,7 +166,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -157,7 +175,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -165,7 +184,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -173,7 +193,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -181,7 +202,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -189,7 +211,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -197,7 +220,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     },
     {
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -205,7 +229,8 @@ export class SeedDataService {
       size: 12,
       sex: "male",
       manufacturer: "Nike",
-      model: "Air Max"
+      model: "Air Max",
+      category: "Shoes"
     },
     {
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
@@ -213,7 +238,8 @@ export class SeedDataService {
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
-      model: "Spezial Shoes"
+      model: "Spezial Shoes",
+      category: "Shoes"
     }
   ];
 }

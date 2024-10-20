@@ -6,4 +6,5 @@ export interface Shoes {
   sex: "male" | "female";
   manufacturer: string;
   model: string;
+  category: string;
 }

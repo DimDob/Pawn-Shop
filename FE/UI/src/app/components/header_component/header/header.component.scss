@@ -1,0 +1,33 @@
+// UI\src\app\components\header_component\header\header.component.scss
+
+.header-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-bar {
+  flex: 1;
+}
+
+.search-field {
+  width: 100%; /* Увеличава ширината на търсачката */
+}
+
+.category-dropdown {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.category-field {
+  width: 50%; /* Центрира падащото меню */
+}
+
+.spacer {
+  flex: 1 1 auto; /* Изтласква тулбар опциите вдясно */
+}
+
+.toolbar-options button {
+  margin-left: 10px;
+}
