@@ -9,6 +9,7 @@ import { SeedDataService } from "./seedData/seed-data.service";
 })
 export class MainPageComponent implements OnInit {
   public shoes: Shoes[];
+  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"]; // Добавени категории
 
   constructor(private seedDataService: SeedDataService) {}
 

@@ -1,4 +1,37 @@
 <!-- UI\src\app\components\main_page_component\main-page\main-page.component.html -->
+
+<!-- Добавен хедър с търсачка, категория и тулбар -->
+<mat-toolbar>
+  <div class="header-content">
+    <!-- Търсачка вляво -->
+    <div class="search-bar">
+      <mat-form-field appearance="outline">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="Search products" />
+      </mat-form-field>
+    </div>
+    <!-- Падащо меню за категории в средата -->
+    <div class="category-dropdown">
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!-- Разделител за изтласкване на опциите вдясно -->
+    <span class="spacer"></span>
+    <!-- Тулбар опции вдясно -->
+    <div class="toolbar-options">
+      <button mat-button>About Us</button>
+      <button mat-button>Products</button>
+      <button mat-button>My Account</button>
+      <button mat-button>Contacts</button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<!-- Съществуващите продуктови карти -->
 <div class="container">
   <div class="card" *ngFor="let shoe of shoes">
     <div class="imgBx">
