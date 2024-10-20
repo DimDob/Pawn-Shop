@@ -1,8 +1,5 @@
 <!-- UI\src\app\components\main_page_component\main-page\main-page.component.html -->
 
-<!-- Включване на HeaderComponent -->
-<app-header (categorySelected)="filterByCategory($event)"></app-header>
-
 <!-- Съществуващите продуктови карти -->
 <div class="container">
   <div class="card" *ngFor="let shoe of filteredShoes">
