@@ -1,31 +1,31 @@
-import { Component, ElementRef, AfterViewInit, OnInit, SimpleChanges, Output, EventEmitter } from '@angular/core';
-import { PrismData } from './login_interfaces.ts/prismData';
-import prismDetailsTemplate from './templates/prismDetails.template';
-import { User } from './login_interfaces.ts/User';
-import userTemplate from './templates/user.template';
-import { NgForm } from '@angular/forms';
-import { AuthService } from '../../../app.service';
+// UI\src\app\components\auth_component\login\login.component.ts
+import { Component, ElementRef, AfterViewInit, OnInit, SimpleChanges, Output, EventEmitter } from "@angular/core";
+import { PrismData } from "./login_interfaces.ts/prismData";
+import prismDetailsTemplate from "./templates/prismDetails.template";
+import { User } from "./login_interfaces.ts/User";
+import userTemplate from "./templates/user.template";
+import { NgForm } from "@angular/forms";
+import { AuthService } from "../../../app.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements AfterViewInit, OnInit {
+  @Output() userCheck: EventEmitter<User> = new EventEmitter<User>();
 
-  @Output() userCheck: EventEmitter<User> = new EventEmitter<User>()
+  @Output() userCredentials: EventEmitter<PrismData> = new EventEmitter<PrismData>();
 
-  @Output() userCredentials: EventEmitter<PrismData> = new EventEmitter<PrismData>()
-
-  public prismDetails: PrismData
+  public prismDetails: PrismData;
 
   public user: User;
 
-  public isEverythingInitialized: boolean
+  public isEverythingInitialized: boolean;
 
   public prism: HTMLElement;
 
-  constructor(private elementRef: ElementRef, private authService: AuthService) { }
+  constructor(private elementRef: ElementRef, private authService: AuthService) {}
 
   ngAfterViewInit() {
     this.isEverythingInitialized = true;
@@ -34,17 +34,17 @@ export class LoginComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.prismDetails = { ...prismDetailsTemplate }
-    this.user = { ...userTemplate }
+    this.prismDetails = { ...prismDetailsTemplate };
+    this.user = { ...userTemplate };
   }
 
   get isForgotPassword() {
-    return this.prismDetails.forgotPassword
+    return this.prismDetails.forgotPassword;
   }
 
   userLoging(logingForm: NgForm) {
     if (logingForm.invalid) {
-      return
+      return;
     }
     this.userCredentials.emit(this.prismDetails);
   }
@@ -52,7 +52,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
   handleUserRegister(prismDetails: PrismData) {
     this.prismDetails = prismDetails;
 
-    const endpoint = 'http://localhost:8080/auth/register';
+    const endpoint = "http://localhost:8080/auth/register";
 
     this.authService.handlerUserRegister(prismDetails, endpoint);
 
@@ -61,26 +61,25 @@ export class LoginComponent implements AfterViewInit, OnInit {
   }
 
   onUserCheck() {
-    this.userCheck.emit(this.user)
+    this.userCheck.emit(this.user);
   }
 
   checkIfUserIsAdmin(adminForm: NgForm) {
     if (adminForm.invalid) {
-      return
+      return;
     }
 
-    if (this.prismDetails.administratorEmail === 'admin') { //Here it will be replaced with actual email, which we will check in the DB
-      this.user.isAdmin = true
-
+    if (this.prismDetails.administratorEmail === "admin") {
+      //Here it will be replaced with actual email, which we will check in the DB
+      this.user.isAdmin = true;
     } else {
-      this.user.isAdmin = false
-
+      this.user.isAdmin = false;
     }
   }
   showSignup(): void {
     if (this.prism) {
       // This better be done in ngOnChanges()
-      this.prismDetails.forgotPassword = false
+      this.prismDetails.forgotPassword = false;
       this.prism.style.transform = "translateZ(-100px) rotateY(-90deg)";
     }
   }
@@ -96,40 +95,32 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.prism) {
       this.prismDetails.forgotPassword = true;
       this.prism.style.transform = "translateZ(-100px) rotateY(-180deg)";
-
     }
   }
 
   showCreateEmployeeAccount(): void {
     if (this.prism) {
-      this.prismDetails.forgotPassword = false
+      this.prismDetails.forgotPassword = false;
       this.prism.style.transform = "translateZ(-100px) rotateX(-90deg)";
-
-
     }
   }
 
   showContactUs(): void {
     if (this.prism) {
-      this.prismDetails.forgotPassword = false
+      this.prismDetails.forgotPassword = false;
       this.prism.style.transform = "translateZ(-100px) rotateY(90deg)";
-
-
     }
   }
 
   showThankYou(): void {
     if (this.prism) {
       this.prism.style.transform = "translateZ(-100px) rotateX(90deg)";
-
     }
   }
-
 
   clearUserDetails() {
     this.prismDetails = {
-      ...prismDetailsTemplate,
-    }
+      ...prismDetailsTemplate
+    };
   }
-
 }
