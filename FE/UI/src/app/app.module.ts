@@ -23,11 +23,12 @@ import { MatInputModule } from "@angular/material/input"; // За търсачк
 import { MatSelectModule } from "@angular/material/select"; // За падащото меню
 
 import { HeaderComponent } from "./components/header_component/header/header.component";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule],
-  providers: [AuthService, ChangePasswordService, SeedDataService],
+  providers: [AuthService, ChangePasswordService, SeedDataService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
