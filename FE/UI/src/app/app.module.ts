@@ -14,11 +14,12 @@ import { AuthComponent } from "./components/auth_component/auth/auth.component";
 import { ChangePasswordComponent } from "./components/auth_component/change-password/change-password.component";
 import { MatchPasswordsDirective } from "./components/auth_component/directives/password-match.directive";
 import { ChangePasswordService } from "./components/auth_component/change-password/change-password.service";
+import { SeedDataService } from "./components/main_page_component/main-page/seedData/seed-data.service";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
-  providers: [AuthService, ChangePasswordService],
+  providers: [AuthService, ChangePasswordService, SeedDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
