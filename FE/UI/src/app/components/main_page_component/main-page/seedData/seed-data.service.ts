@@ -297,7 +297,7 @@ export class SeedDataService {
     },
     {
       id: 25,
-      picture: "https://gspawn.com/products/2001-st-louis-rams-super-bowl-team-signed-football",
+      picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "blue",
       size: 12,
       sex: "male",
