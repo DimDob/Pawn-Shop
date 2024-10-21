@@ -32,6 +32,11 @@ export class HeaderComponent {
     });
   }
 
+  // Нова функция за обновяване на страницата
+  refreshPage() {
+    window.location.reload(); // Обновяване на страницата
+  }
+
   onCategoryChange(category: string) {
     this.searchService.setSelectedCategory(category); // Използване на SearchService
   }

@@ -12,6 +12,7 @@
 
 .search-field {
   width: 100%; /* Увеличава ширината на търсачката */
+  padding-left: 50px;
 }
 
 .category-dropdown {
@@ -47,4 +48,10 @@
   width: 24px; // Размер на иконата
   height: 24px;
   margin-left: 10px; // Отстояние от останалите елементи
+}
+.header-icon {
+  width: 32px; /* Увеличава размера на иконата */
+  height: 32px;
+  margin-left: 5px; /* Увеличава разстоянието между иконата и другите елементи */
+  cursor: pointer; /* Променяме курсора при задържане */
 }

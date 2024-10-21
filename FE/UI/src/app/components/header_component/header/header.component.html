@@ -2,7 +2,9 @@
 
 <mat-toolbar color="primary">
   <div class="header-content">
-    <!-- Търсачка вляво -->
+    <a [routerLink]="['/pawn-shop/main-page']" (click)="refreshPage()">
+      <img src="../../../../favicon.ico" alt="Icon" class="header-icon" />
+    </a>
     <div class="search-bar">
       <mat-form-field appearance="outline" class="search-field">
         <mat-label>Search</mat-label>
@@ -33,8 +35,6 @@
         <mat-icon [style.color]="isCartPage ? 'purple' : 'white'">shopping_cart</mat-icon>
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </button>
-      <!-- Добавена икона от favicon.ico -->
-      <img src="assets/favicon.ico" alt="Icon" class="header-icon" />
     </div>
   </div>
 </mat-toolbar>
