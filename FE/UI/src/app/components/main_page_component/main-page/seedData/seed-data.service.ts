@@ -16,7 +16,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -28,7 +28,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -40,7 +40,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 300
     },
     {
@@ -52,7 +52,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -64,7 +64,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 500
     },
     {
@@ -76,7 +76,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -88,7 +88,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -100,7 +100,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -112,7 +112,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -124,7 +124,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -136,7 +136,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -148,19 +148,19 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
       id: 13,
-      picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
+      picture: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Arduino_ftdi_chip-1.jpg",
       color: "blue",
       size: 12,
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Electronics",
       price: 100
     },
     {
@@ -172,7 +172,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -184,19 +184,19 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
       id: 16,
-      picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
+      picture: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Fingerring_av_guld_med_rubin_och_rosenstenar%2C_1700-tal_-_Hallwylska_museet_-_110184.tif/lossy-page1-1280px-Fingerring_av_guld_med_rubin_och_rosenstenar%2C_1700-tal_-_Hallwylska_museet_-_110184.tif.jpg",
       color: "black",
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Jewelry",
       price: 100
     },
     {
@@ -208,19 +208,19 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
       id: 18,
-      picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
+      picture: "https://upload.wikimedia.org/wikipedia/en/3/34/GuyLaroche_suit_jacket_83d40m_black_skirt_late1959_early1960_vintage.png",
       color: "black",
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -232,19 +232,19 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
       id: 20,
-      picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
+      picture: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
       color: "black",
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Art",
       price: 100
     },
     {
@@ -256,7 +256,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -268,7 +268,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -280,7 +280,7 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
@@ -292,19 +292,19 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     },
     {
       id: 25,
-      picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
+      picture: "https://gspawn.com/products/2001-st-louis-rams-super-bowl-team-signed-football",
       color: "blue",
       size: 12,
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Products",
+      category: "Other",
       price: 100
     },
     {
@@ -316,7 +316,7 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Products",
+      category: "Clothes",
       price: 100
     }
   ];

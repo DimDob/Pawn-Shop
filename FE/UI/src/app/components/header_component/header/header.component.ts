@@ -12,7 +12,7 @@ import { SearchService } from "../../../services/search.service"; // Импор�
   styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent {
-  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"];
+  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
   public searchTerm: string = ""; // Добавено търсене
 
   cartItemCount: number = 0;

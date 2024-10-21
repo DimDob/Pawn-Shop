@@ -16,7 +16,7 @@ import { Subscription } from "rxjs";
 export class MainPageComponent implements OnInit, OnDestroy {
   public products: Products[];
   public filteredProducts: Products[];
-  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"];
+  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
   public selectedCategory: string = "";
   public searchTerm: string = "";
 

@@ -2,5 +2,7 @@
 export enum Category {
   ELECTRONICS = "Electronics",
   CLOTHING = "Clothing",
-  PRODUCTS = "Products"
+  JEWELRY = "Jewelry",
+  OTHER = "Other",
+  ART = "Art"
 }
