@@ -1,4 +1,5 @@
 // UI\src\app\app.module.ts
+
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 
@@ -31,10 +32,12 @@ import { FooterComponent } from "./components/footer_component/footer/footer.com
 import { CartPageComponent } from "./components/cart_page_component/cart-page/cart-page.component";
 import { SuccessPageComponent } from "./components/success_page_component/success-page/success-page.component";
 import { DetailsPageComponent } from "./components/details_page_component/details-page/details-page.component";
+import { SearchService } from "./services/search.service"; // Импортиране на SearchService
+
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, BrowserModule, AppRoutingModule],
-  providers: [AuthService, ChangePasswordService, SeedDataService, provideAnimationsAsync()],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule],
+  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

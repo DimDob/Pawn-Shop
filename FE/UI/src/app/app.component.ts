@@ -1,4 +1,5 @@
 // UI\src\app\app.component.ts
+
 import { Component } from "@angular/core";
 
 @Component({
@@ -6,4 +7,6 @@ import { Component } from "@angular/core";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent {}
+export class AppComponent {
+  // Премахнати функции за обработка на търсене и категория от Header
+}

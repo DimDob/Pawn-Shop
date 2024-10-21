@@ -15,6 +15,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -26,6 +27,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -37,6 +39,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 300
     },
@@ -48,6 +51,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -59,6 +63,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 500
     },
@@ -70,6 +75,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -81,6 +87,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -92,6 +99,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -103,6 +111,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -114,6 +123,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -125,6 +135,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -136,6 +147,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -147,6 +159,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -158,6 +171,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -169,6 +183,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -180,6 +195,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -191,6 +207,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -202,6 +219,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -213,6 +231,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -224,6 +243,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -235,6 +255,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -246,6 +267,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -257,6 +279,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -268,6 +291,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     },
@@ -279,6 +303,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
+      name: "Nike Air Max",
       category: "Products",
       price: 100
     },
@@ -290,6 +315,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
+      name: "Adidas Spezial Shoes",
       category: "Products",
       price: 100
     }

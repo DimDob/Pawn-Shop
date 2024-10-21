@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+// UI\src\app\components\header_component\header\header.component.ts
+
+import { Component } from "@angular/core";
 import { CartService } from "../../../services/cart.service";
-import { Router, NavigationEnd, Event } from "@angular/router";
+import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
+import { SearchService } from "../../../services/search.service"; // Импортиране на SearchService
 
 @Component({
   selector: "app-header",
@@ -10,13 +13,16 @@ import { filter } from "rxjs/operators";
 })
 export class HeaderComponent {
   public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"];
-
-  @Output() categorySelected = new EventEmitter<string>();
+  public searchTerm: string = ""; // Добавено търсене
 
   cartItemCount: number = 0;
   isCartPage: boolean = false;
 
-  constructor(private cartService: CartService, private router: Router) {
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private searchService: SearchService // Инжектиране на SearchService
+  ) {
     this.cartService.items$.subscribe(items => {
       this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
     });
@@ -27,6 +33,10 @@ export class HeaderComponent {
   }
 
   onCategoryChange(category: string) {
-    this.categorySelected.emit(category);
+    this.searchService.setSelectedCategory(category); // Използване на SearchService
+  }
+
+  onSearch() {
+    this.searchService.setSearchTerm(this.searchTerm); // Използване на SearchService
   }
 }

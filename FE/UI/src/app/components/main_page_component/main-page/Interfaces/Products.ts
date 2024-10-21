@@ -7,6 +7,7 @@ export interface Products {
   sex: "male" | "female";
   manufacturer: string;
   model: string;
+  name: string; // Добавено име
   category: string;
   price: number; // Добавена цена
 }
