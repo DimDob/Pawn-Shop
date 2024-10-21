@@ -8,13 +8,18 @@ import { AuthComponent } from "./components/auth_component/auth/auth.component";
 import { ChangePasswordComponent } from "./components/auth_component/change-password/change-password.component";
 import { AboutUsComponent } from "./components/about_us_component/about-us/about-us.component";
 import { ContactsComponent } from "./components/contacts_component/contacts/contacts.component";
-
+import { DetailsPageComponent } from "./components/details_page_component/details-page/details-page.component";
+import { CartPageComponent } from "./components/cart_page_component/cart-page/cart-page.component";
+import { SuccessPageComponent } from "./components/success_page_component/success-page/success-page.component";
 const routes: Routes = [
   { path: "", redirectTo: "pawn-shop/main-page", pathMatch: "full" },
+  { path: "product/:id", component: DetailsPageComponent },
   { path: "auth", redirectTo: "auth/login", pathMatch: "full" },
   { path: "auth/login", component: AuthComponent },
   { path: "pawn-shop/main-page", component: MainPageComponent },
   { path: "auth/change-password/:userId", component: ChangePasswordComponent },
+  { path: "cart", component: CartPageComponent },
+  { path: "success", component: SuccessPageComponent },
   { path: "about-us", component: AboutUsComponent },
   { path: "contacts", component: ContactsComponent }
 ];

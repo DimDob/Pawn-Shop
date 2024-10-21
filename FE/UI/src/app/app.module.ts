@@ -27,9 +27,12 @@ import { provideAnimationsAsync } from "@angular/platform-browser/animations/asy
 
 import { AboutUsComponent } from "./components/about_us_component/about-us/about-us.component";
 import { ContactsComponent } from "./components/contacts_component/contacts/contacts.component";
-
+import { FooterComponent } from "./components/footer_component/footer/footer.component";
+import { CartPageComponent } from "./components/cart_page_component/cart-page/cart-page.component";
+import { SuccessPageComponent } from "./components/success_page_component/success-page/success-page.component";
+import { DetailsPageComponent } from "./components/details_page_component/details-page/details-page.component";
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, BrowserModule, AppRoutingModule],
   providers: [AuthService, ChangePasswordService, SeedDataService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
