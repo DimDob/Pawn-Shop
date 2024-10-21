@@ -3,6 +3,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Shoes } from "./Interfaces/Shoes";
 import { SeedDataService } from "./seedData/seed-data.service";
+import { Router } from "@angular/router";
+import { CartService } from "../../../services/cart.service";
 
 @Component({
   selector: "app-main-page",
@@ -11,27 +13,21 @@ import { SeedDataService } from "./seedData/seed-data.service";
 })
 export class MainPageComponent implements OnInit {
   public shoes: Shoes[];
-  public filteredShoes: Shoes[]; // Добавено за филтриране
-  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"]; // Добавени категории
+  public filteredShoes: Shoes[];
+  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"];
 
-  constructor(private seedDataService: SeedDataService) {}
+  constructor(private seedDataService: SeedDataService, private router: Router, private cartService: CartService) {}
 
   ngOnInit(): void {
     this.shoes = this.seedDataService.shoes;
-    this.filteredShoes = this.shoes; // Инициализиране с всички продукти
-    console.log(this.shoes);
+    this.filteredShoes = this.shoes;
   }
 
-  requestPurchase() {
-    // TODO check if product is available at the db
+  goToDetails(id: number) {
+    this.router.navigate(["/product", id]);
   }
 
-  // Филтриране по категория
-  filterByCategory(category: string) {
-    if (category === "All") {
-      this.filteredShoes = this.shoes;
-    } else {
-      this.filteredShoes = this.shoes.filter(shoe => shoe.category === category);
-    }
+  requestPurchase(shoe: Shoes) {
+    this.cartService.addToCart(shoe);
   }
 }

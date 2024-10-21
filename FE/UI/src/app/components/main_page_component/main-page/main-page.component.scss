@@ -37,6 +37,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer; /* Добавен курсор pointer на целия карт */
 }
 
 .container .card:before {
@@ -163,21 +164,20 @@ body {
   cursor: default;
 }
 
-.container .card .contentBx a {
+/* Добавени стилове за бутона "Buy Now" */
+.container .card .contentBx .buy-now {
   display: inline-block;
   padding: 10px 20px;
-  background: #fff;
+  background: #05c65d;
   border-radius: 4px;
   margin-top: 10px;
   text-decoration: none;
   font-weight: 600;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: 0.5s;
+  color: white;
+  cursor: pointer; /* Добавен курсор pointer на бутона */
+  transition: background 0.3s ease;
 }
 
-.container .card:hover .contentBx a {
-  opacity: 1;
-  transform: translateY(0px);
-  transition-delay: 0.7s;
+.container .card .contentBx .buy-now:hover {
+  background: #049b4c; /* Промяна на цвета при ховър */
 }
