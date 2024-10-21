@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -34,8 +35,8 @@ public class AppUser implements UserDetails {
 
     private Boolean enable;
 
-    // TODO
     @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Role.class)
     private List<Role> roles;
 
     @ManyToOne
@@ -44,7 +45,7 @@ public class AppUser implements UserDetails {
 
     private Boolean isAdmin;
 
-    public AppUser(){
+    public AppUser() {
         enable = true;
     }
 
@@ -83,7 +84,7 @@ public class AppUser implements UserDetails {
         return enable;
     }
 
-    private List<? extends GrantedAuthority> mapRoleToGrantedAuthority(){
+    private List<? extends GrantedAuthority> mapRoleToGrantedAuthority() {
 
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Role s : roles) {

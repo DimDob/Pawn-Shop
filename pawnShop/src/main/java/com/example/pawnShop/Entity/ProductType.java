@@ -42,5 +42,9 @@ public class ProductType {
     private String name;
 
     @OneToOne
-    Product product;
+    private Product product;
+
+    public ProductType(UUID uuid, String productTypeName) {
+
+    }
 }
