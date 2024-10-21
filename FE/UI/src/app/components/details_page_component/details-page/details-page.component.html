@@ -1,12 +1,12 @@
 <!-- UI\src\app\components\details_page_component\details-page\details-page.component.html/  -->
-<div class="details-container" *ngIf="shoe">
-  <img [src]="shoe.picture" alt="{{ shoe.manufacturer }} {{ shoe.model }}" />
-  <h2>{{ shoe.manufacturer }} {{ shoe.model }}</h2>
-  <p>Size: {{ shoe.size }}</p>
-  <p>Color: {{ shoe.color }}</p>
-  <p>Sex: {{ shoe.sex }}</p>
-  <p>Category: {{ shoe.category }}</p>
-  <p>Price: ${{ shoe.price }}</p>
+<div class="details-container" *ngIf="product">
+  <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
+  <h2>{{ product.manufacturer }} {{ product.model }}</h2>
+  <p>Size: {{ product.size }}</p>
+  <p>Color: {{ product.color }}</p>
+  <p>Sex: {{ product.sex }}</p>
+  <p>Category: {{ product.category }}</p>
+  <p>Price: ${{ product.price }}</p>
 
   <div class="quantity">
     <label for="quantity">Quantity:</label>

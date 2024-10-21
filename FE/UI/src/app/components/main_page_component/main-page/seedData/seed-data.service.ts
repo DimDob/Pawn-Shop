@@ -1,12 +1,12 @@
 // UI\src\app\components\main_page_component\main-page\seedData\seed-data.component.ts
 import { Injectable } from "@angular/core";
-import { Shoes } from "../Interfaces/Shoes";
+import { Products } from "../Interfaces/Products";
 
 @Injectable({
   providedIn: "root"
 })
 export class SeedDataService {
-  public shoes: Shoes[] = [
+  public products: Products[] = [
     {
       id: 1,
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
@@ -15,7 +15,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -26,7 +26,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -37,7 +37,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 300
     },
     {
@@ -48,7 +48,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -59,7 +59,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 500
     },
     {
@@ -70,7 +70,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -81,7 +81,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -92,7 +92,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -103,7 +103,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -114,7 +114,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -125,7 +125,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -136,7 +136,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -147,7 +147,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -158,7 +158,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -169,7 +169,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -180,7 +180,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -191,7 +191,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -202,7 +202,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -213,7 +213,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -224,7 +224,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -235,7 +235,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -246,7 +246,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -257,7 +257,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -268,7 +268,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -279,7 +279,7 @@ export class SeedDataService {
       sex: "male",
       manufacturer: "Nike",
       model: "Air Max",
-      category: "Shoes",
+      category: "Products",
       price: 100
     },
     {
@@ -290,7 +290,7 @@ export class SeedDataService {
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      category: "Shoes",
+      category: "Products",
       price: 100
     }
   ];

@@ -2,26 +2,26 @@
 
 <!-- Съществуващите продуктови карти -->
 <div class="container">
-  <div class="card" *ngFor="let shoe of filteredShoes" (click)="goToDetails(shoe.id)">
+  <div class="card" *ngFor="let product of filteredProducts" (click)="goToDetails(product.id)">
     <div class="imgBx">
-      <img [src]="shoe.picture" alt="{{ shoe.manufacturer }} {{ shoe.model }}" />
+      <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
     </div>
 
     <div class="contentBx">
-      <h2>{{ shoe.manufacturer }} {{ shoe.model }}</h2>
+      <h2>{{ product.manufacturer }} {{ product.model }}</h2>
 
       <div class="size">
         <h3>Size :</h3>
-        <span>{{ shoe.size }}</span>
+        <span>{{ product.size }}</span>
       </div>
 
       <div class="color">
         <h3>Color :</h3>
-        <span>{{ shoe.color }}</span>
+        <span>{{ product.color }}</span>
       </div>
 
       <!-- Добавен клас 'buy-now' за стилизиране -->
-      <a class="buy-now" (click)="requestPurchase(shoe); $event.stopPropagation()">Buy Now</a>
+      <a class="buy-now" (click)="requestPurchase(product); $event.stopPropagation()">Buy Now</a>
     </div>
   </div>
 </div>

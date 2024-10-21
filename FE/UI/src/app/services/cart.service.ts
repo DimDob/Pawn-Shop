@@ -2,41 +2,41 @@
 
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { Shoes } from "../components/main_page_component/main-page/Interfaces/Shoes";
+import { Products } from "../components/main_page_component/main-page/Interfaces/Products";
 
 @Injectable({
   providedIn: "root"
 })
 export class CartService {
-  private itemsSubject = new BehaviorSubject<{ shoe: Shoes; quantity: number }[]>([]);
+  private itemsSubject = new BehaviorSubject<{ product: Products; quantity: number }[]>([]);
   items$ = this.itemsSubject.asObservable();
 
   constructor() {}
 
-  addToCart(shoe: Shoes, quantity: number = 1) {
+  addToCart(product: Products, quantity: number = 1) {
     const items = this.itemsSubject.getValue();
-    const existingItem = items.find(item => item.shoe.id === shoe.id);
+    const existingItem = items.find(item => item.product.id === product.id);
     if (existingItem) {
       existingItem.quantity += quantity;
     } else {
-      items.push({ shoe, quantity });
+      items.push({ product, quantity });
     }
     this.itemsSubject.next(items);
   }
 
-  removeFromCart(shoeId: number) {
+  removeFromCart(productId: number) {
     let items = this.itemsSubject.getValue();
-    items = items.filter(item => item.shoe.id !== shoeId);
+    items = items.filter(item => item.product.id !== productId);
     this.itemsSubject.next(items);
   }
 
-  updateQuantity(shoeId: number, quantity: number) {
+  updateQuantity(productId: number, quantity: number) {
     const items = this.itemsSubject.getValue();
-    const item = items.find(item => item.shoe.id === shoeId);
+    const item = items.find(item => item.product.id === productId);
     if (item) {
       item.quantity = quantity;
       if (item.quantity <= 0) {
-        this.removeFromCart(shoeId);
+        this.removeFromCart(productId);
       } else {
         this.itemsSubject.next(items);
       }
@@ -49,6 +49,6 @@ export class CartService {
 
   getTotalCost(): number {
     const items = this.itemsSubject.getValue();
-    return items.reduce((total, item) => total + item.shoe.price * item.quantity, 0);
+    return items.reduce((total, item) => total + item.product.price * item.quantity, 0);
   }
 }

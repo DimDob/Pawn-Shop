@@ -2,7 +2,7 @@
 
 import { Component, OnInit } from "@angular/core";
 import { CartService } from "../../../services/cart.service";
-import { Shoes } from "../../main_page_component/main-page/Interfaces/Shoes";
+import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { Router } from "@angular/router";
 
 @Component({
@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
   styleUrls: ["./cart-page.component.scss"]
 })
 export class CartPageComponent implements OnInit {
-  cartItems: { shoe: Shoes; quantity: number }[] = [];
+  cartItems: { product: Products; quantity: number }[] = [];
   totalCost: number = 0;
 
   constructor(private cartService: CartService, private router: Router) {}
@@ -23,20 +23,20 @@ export class CartPageComponent implements OnInit {
     });
   }
 
-  increaseQuantity(shoeId: number) {
-    this.cartService.updateQuantity(shoeId, this.getQuantity(shoeId) + 1);
+  increaseQuantity(productId: number) {
+    this.cartService.updateQuantity(productId, this.getQuantity(productId) + 1);
   }
 
-  decreaseQuantity(shoeId: number) {
-    this.cartService.updateQuantity(shoeId, this.getQuantity(shoeId) - 1);
+  decreaseQuantity(productId: number) {
+    this.cartService.updateQuantity(productId, this.getQuantity(productId) - 1);
   }
 
-  removeItem(shoeId: number) {
-    this.cartService.removeFromCart(shoeId);
+  removeItem(productId: number) {
+    this.cartService.removeFromCart(productId);
   }
 
-  getQuantity(shoeId: number): number {
-    const item = this.cartItems.find(item => item.shoe.id === shoeId);
+  getQuantity(productId: number): number {
+    const item = this.cartItems.find(item => item.product.id === productId);
     return item ? item.quantity : 0;
   }
 

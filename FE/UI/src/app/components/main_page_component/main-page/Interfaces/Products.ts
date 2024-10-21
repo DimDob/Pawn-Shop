@@ -1,5 +1,5 @@
-// UI\src\app\components\main_page_component\main-page\Interfaces\Shoes.ts
-export interface Shoes {
+// UI\src\app\components\main_page_component\main-page\Interfaces\Products.ts
+export interface Products {
   id: number; // Добавено ID
   picture: string;
   color: string;
