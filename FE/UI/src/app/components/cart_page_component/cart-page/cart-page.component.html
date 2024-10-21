@@ -1,0 +1,26 @@
+<!-- UI\src\app\components\cart_page_component\cart-page\cart-page.component.html -->
+
+<div class="cart-container" *ngIf="cartItems.length > 0; else emptyCart">
+  <div class="cart-item" *ngFor="let item of cartItems">
+    <img [src]="item.shoe.picture" alt="{{ item.shoe.manufacturer }} {{ item.shoe.model }}" />
+    <div class="item-details">
+      <h2>{{ item.shoe.manufacturer }} {{ item.shoe.model }}</h2>
+      <p>Price: ${{ item.shoe.price }}</p>
+      <div class="quantity-controls">
+        <button (click)="decreaseQuantity(item.shoe.id)">-</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increaseQuantity(item.shoe.id)">+</button>
+      </div>
+      <button (click)="removeItem(item.shoe.id)">Remove</button>
+    </div>
+  </div>
+
+  <div class="total-cost">
+    <h3>Total Cost: ${{ totalCost }}</h3>
+    <button (click)="purchase()">Purchase</button>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <p>Your cart is empty.</p>
+</ng-template>
