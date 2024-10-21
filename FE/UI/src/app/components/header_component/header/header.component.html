@@ -29,6 +29,10 @@
       <button mat-button>Products</button>
       <button mat-button>My Account</button>
       <button mat-button [routerLink]="['/contacts']">Contacts</button>
+      <button mat-icon-button [routerLink]="['/cart']">
+        <mat-icon [style.color]="isCartPage ? 'purple' : 'white'">shopping_cart</mat-icon>
+        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+      </button>
     </div>
   </div>
 </mat-toolbar>

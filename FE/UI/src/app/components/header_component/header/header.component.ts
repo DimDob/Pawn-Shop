@@ -1,6 +1,7 @@
-// UI\src\app\components\header_component\header\header.component.ts
-
 import { Component, EventEmitter, Output } from "@angular/core";
+import { CartService } from "../../../services/cart.service";
+import { Router, NavigationEnd, Event } from "@angular/router";
+import { filter } from "rxjs/operators";
 
 @Component({
   selector: "app-header",
@@ -8,13 +9,23 @@ import { Component, EventEmitter, Output } from "@angular/core";
   styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent {
-  // Категории за падащото меню
   public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Collectables", "Art"];
 
-  // Събитие за филтриране по категория
   @Output() categorySelected = new EventEmitter<string>();
 
-  // Изпраща избраната категория към родителския компонент
+  cartItemCount: number = 0;
+  isCartPage: boolean = false;
+
+  constructor(private cartService: CartService, private router: Router) {
+    this.cartService.items$.subscribe(items => {
+      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
+    });
+
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(event => {
+      this.isCartPage = event.urlAfterRedirects === "/cart";
+    });
+  }
+
   onCategoryChange(category: string) {
     this.categorySelected.emit(category);
   }
