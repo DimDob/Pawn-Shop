@@ -29,6 +29,6 @@ public class Address {
     private City city;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "address")
-    private List<PawnShop> pawnShops;
+    @OneToOne(mappedBy = "address")
+    private PawnShop pawnShops;
 }

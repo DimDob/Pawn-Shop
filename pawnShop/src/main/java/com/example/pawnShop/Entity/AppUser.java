@@ -34,6 +34,7 @@ public class AppUser implements UserDetails {
 
     private Boolean enable;
 
+    // TODO
     @Enumerated(EnumType.STRING)
     private List<Role> roles;
 
