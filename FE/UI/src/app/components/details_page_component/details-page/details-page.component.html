@@ -1,0 +1,17 @@
+<!-- UI\src\app\components\details_page_component\details-page\details-page.component.html/  -->
+<div class="details-container" *ngIf="shoe">
+  <img [src]="shoe.picture" alt="{{ shoe.manufacturer }} {{ shoe.model }}" />
+  <h2>{{ shoe.manufacturer }} {{ shoe.model }}</h2>
+  <p>Size: {{ shoe.size }}</p>
+  <p>Color: {{ shoe.color }}</p>
+  <p>Sex: {{ shoe.sex }}</p>
+  <p>Category: {{ shoe.category }}</p>
+  <p>Price: ${{ shoe.price }}</p>
+
+  <div class="quantity">
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" [(ngModel)]="quantity" min="1" />
+  </div>
+
+  <button (click)="addToCart()">Add to Cart</button>
+</div>

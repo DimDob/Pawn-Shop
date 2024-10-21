@@ -1,0 +1,34 @@
+// UI\src\app\components\details_page_component\details-page\details-page.component.scss
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.details-container img {
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.details-container h2 {
+  margin-bottom: 10px;
+}
+
+.details-container p {
+  margin: 5px 0;
+}
+
+.quantity {
+  margin: 20px 0;
+}
+
+.quantity input {
+  width: 60px;
+  margin-left: 10px;
+}
+
+button {
+  padding: 10px 20px;
+}
