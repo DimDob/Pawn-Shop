@@ -11,40 +11,28 @@
   flex: 1;
 
   .search-field {
-    width: 100%; /* Увеличава ширината на търсачката */
+    width: 100%;
     padding-left: 50px;
 
-    /* Задава бял цвят на текст, граници и лейбъл */
-    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-      color: #ffffff !important; // Граници
+    // Променихме цвета на границата на зелено
+    ::ng-deep .mat-form-field-outline {
+      stroke: #009d34 !important;
     }
 
+    // Променихме цвета на лейбъла на зелено
     ::ng-deep .mat-form-field-label {
-      color: #ffffff !important; // Лейбъл
+      color: #009d34 !important;
     }
 
+    // Променихме цвета на въведения текст на зелено
     ::ng-deep input.mat-input-element {
-      color: #ffffff !important; // Въведен текст
+      color: #009d34 !important;
     }
 
-    ::ng-deep .mat-form-field-ripple {
-      background-color: #ffffff !important; // Рипъл ефект
-    }
-
-    /* Placeholder стилове */
+    // Променихме цвета на placeholder-а на зелено
     ::ng-deep input.mat-input-element::placeholder {
-      color: #ffffff !important;
-      opacity: 1; /* Задължително за Firefox */
-    }
-
-    ::ng-deep input.mat-input-element:-ms-input-placeholder {
-      /* Internet Explorer 10-11 */
-      color: #ffffff !important;
-    }
-
-    ::ng-deep input.mat-input-element::-ms-input-placeholder {
-      /* Microsoft Edge */
-      color: #ffffff !important;
+      color: #009d34 !important;
+      opacity: 1;
     }
   }
 }
@@ -55,31 +43,42 @@
   justify-content: center;
 
   .category-field {
-    width: 50%; /* Центрира падащото меню */
+    width: 50%;
 
-    /* Задава бял цвят на текст, граници и лейбъл */
-    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-      color: #ffffff !important; // Граници
+    // Променихме цвета на границата на зелено
+    ::ng-deep .mat-form-field-outline {
+      stroke: #009d34 !important;
     }
 
+    // Променихме цвета на лейбъла на зелено
     ::ng-deep .mat-form-field-label {
-      color: #ffffff !important; // Лейбъл
+      color: #009d34 !important;
     }
 
+    // Променихме цвета на избраната стойност на зелено
     ::ng-deep .mat-select-value {
-      color: #ffffff !important; // Избрана стойност
+      color: #009d34 !important;
     }
 
+    // Променихме цвета на стрелката на зелено
     ::ng-deep .mat-select-arrow {
-      color: #ffffff !important; // Стрелка
+      color: #009d34 !important;
     }
 
-    ::ng-deep .mat-form-field-ripple {
-      background-color: #ffffff !important; // Рипъл ефект
+    // Стилове за опциите в падащото меню
+    ::ng-deep .mat-select-panel .mat-option {
+      color: #ffffff !important; // Бял текст
+      background-color: #009d34 !important; // Зелен фон
     }
 
-    /* Placeholder стилове, ако има */
-    ::ng-deep .mat-select-placeholder {
+    // Променихме цвета на отметката при избрана категория на черно
+    ::ng-deep .mat-option.mat-selected .mat-option-pseudo-checkbox {
+      background-color: #000000 !important;
+    }
+
+    // Променихме цвета на избраната опция
+    ::ng-deep .mat-option.mat-selected {
+      background-color: #009d34 !important;
       color: #ffffff !important;
     }
   }
@@ -120,4 +119,3 @@
   margin-left: 5px; /* Увеличава разстоянието между иконата и другите елементи */
   cursor: pointer; /* Променяме курсора при задържане */
 }
-

@@ -36,9 +36,10 @@ import { SearchService } from "./services/search.service";
 import { MyAccountComponent } from "./components/my_account_component/my-account/my-account.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ReactiveFormsModule } from "@angular/forms";
+import { MatPaginatorModule } from "@angular/material/paginator";
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, FontAwesomeModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, FontAwesomeModule, MatPaginatorModule],
   providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })

@@ -11,14 +11,23 @@
 body {
   background: #131313;
 }
-
-/* Стилове за контейнера на продуктите */
-.container {
+.main-page-container {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  padding: 20px;
+  flex-direction: column;
+  min-height: 100vh; /* Височина на 100% от видимата част на екрана */
 }
+
+.container {
+  display: grid; /* Променено от flex на grid за по-добро подреждане */
+  grid-template-columns: repeat(5, 1fr); /* 5 колони */
+  grid-gap: 20px; /* Разстояние между картите */
+  padding: 20px;
+  flex: 1; /* Заема наличното пространство между заглавието и пагинацията */
+}
+
+// .paginator {
+//   margin: 20px auto;
+// }
 
 .container .card {
   flex: 0 0 calc(20% - 10px); /* Всеки карт заема 20% от ширината минус 10px */

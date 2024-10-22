@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { CartService } from "../../../services/cart.service";
 import { SearchService } from "../../../services/search.service"; // Импортиране на SearchService
 import { Subscription } from "rxjs";
+import { PageEvent } from "@angular/material/paginator";
 
 @Component({
   selector: "app-main-page",
@@ -14,6 +15,11 @@ import { Subscription } from "rxjs";
   styleUrls: ["./main-page.component.scss"]
 })
 export class MainPageComponent implements OnInit, OnDestroy {
+  pageSize = 25;
+  pageIndex = 0;
+  totalProducts = 0;
+  paginatedProducts: Products[] = [];
+
   public products: Products[];
   public filteredProducts: Products[];
   public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
@@ -46,6 +52,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
       this.applyFilters();
     });
     this.subscriptions.add(categorySub);
+    this.applyFilters();
   }
 
   ngOnDestroy(): void {
@@ -61,10 +68,25 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   applyFilters() {
-    this.filteredProducts = this.products.filter(product => {
+    const filtered = this.products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
       const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
       return matchesSearch && matchesCategory;
     });
+    this.filteredProducts = filtered;
+    this.totalProducts = filtered.length;
+    this.paginateProducts();
+  }
+
+  paginateProducts() {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedProducts = this.filteredProducts.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.paginateProducts();
   }
 }
