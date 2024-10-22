@@ -2,8 +2,7 @@
 import { HttpClient } from "@angular/common/http";
 import { PrismData } from "./components/auth_component/login/login_interfaces.ts/prismData";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-
+import { Observable, of } from "rxjs";
 @Injectable({
   providedIn: "root"
 })
@@ -26,5 +25,9 @@ export class AuthService {
     return this.http.post<PrismData>(endpoint, {
       ...userCredentials
     });
+  }
+  verifyPassword(currentPassword: string): Observable<boolean> {
+    // Симулиране на проверка на паролата
+    return of(currentPassword === "correct_password"); // Замени с реална логика
   }
 }

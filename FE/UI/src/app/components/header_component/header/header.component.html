@@ -29,7 +29,7 @@
     <div class="toolbar-options">
       <button mat-button [routerLink]="['/about-us']">About Us</button>
       <button mat-button>Products</button>
-      <button mat-button>My Account</button>
+      <button mat-button [routerLink]="['/my-account']">My Account</button>
       <button mat-button [routerLink]="['/contacts']">Contacts</button>
       <button mat-icon-button [routerLink]="['/cart']">
         <mat-icon [style.color]="isCartPage ? 'purple' : 'white'">shopping_cart</mat-icon>

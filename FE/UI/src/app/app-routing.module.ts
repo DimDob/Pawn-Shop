@@ -11,11 +11,13 @@ import { ContactsComponent } from "./components/contacts_component/contacts/cont
 import { DetailsPageComponent } from "./components/details_page_component/details-page/details-page.component";
 import { CartPageComponent } from "./components/cart_page_component/cart-page/cart-page.component";
 import { SuccessPageComponent } from "./components/success_page_component/success-page/success-page.component";
+import { MyAccountComponent } from "./components/my_account_component/my-account/my-account.component";
 const routes: Routes = [
   { path: "", redirectTo: "pawn-shop/main-page", pathMatch: "full" },
   { path: "product/:id", component: DetailsPageComponent },
   { path: "auth", redirectTo: "auth/login", pathMatch: "full" },
   { path: "auth/login", component: AuthComponent },
+  { path: "my-account", component: MyAccountComponent },
   { path: "pawn-shop/main-page", component: MainPageComponent },
   { path: "auth/change-password/:userId", component: ChangePasswordComponent },
   { path: "cart", component: CartPageComponent },
