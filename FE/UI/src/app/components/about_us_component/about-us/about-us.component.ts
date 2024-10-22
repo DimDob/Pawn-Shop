@@ -1,3 +1,4 @@
+// UI\src\app\components\about_us_component\about-us\about-us.component.ts
 import { Component } from "@angular/core";
 
 @Component({
