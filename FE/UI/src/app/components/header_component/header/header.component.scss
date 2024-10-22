@@ -120,31 +120,31 @@
   margin-left: 5px; /* Увеличава разстоянието между иконата и другите елементи */
   cursor: pointer; /* Променяме курсора при задържане */
 }
-::ng-deep input::placeholder {
-  color: green;
-}
-/* header.component.scss */
-::ng-deep input::placeholder {
-  color: white;
-}
+// ::ng-deep input::placeholder {
+//   color: green;
+// }
+// /* header.component.scss */
+// ::ng-deep input::placeholder {
+//   color: white;
+// }
 
-::ng-deep mat-label {
-  color: white !important;
-}
+// ::ng-deep mat-label {
+//   color: white !important;
+// }
 
-::ng-deep mat-option {
-  color: white !important;
-}
+// ::ng-deep mat-option {
+//   color: white !important;
+// }
 
-::ng-deep .mat-select-panel {
-  background-color: #009d34 !important;
-}
+// ::ng-deep .mat-select-panel {
+//   background-color: #009d34 !important;
+// }
 
-::ng-deep .mat-option {
-  background-color: #009d34 !important;
-  color: white !important;
-}
+// ::ng-deep .mat-option {
+//   background-color: #009d34 !important;
+//   color: white !important;
+// }
 
-::ng-deep .mat-option:hover {
-  background-color: darken(#009d34, 10%) !important;
-}
+// ::ng-deep .mat-option:hover {
+//   background-color: darken(#009d34, 10%) !important;
+// }
