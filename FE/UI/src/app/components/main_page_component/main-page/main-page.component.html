@@ -1,6 +1,28 @@
 <!-- UI\src\app\components\main_page_component\main-page\main-page.component.html -->
 
 <div class="main-page-container">
+  <div class="controls">
+    <mat-form-field appearance="fill">
+      <mat-label>Sort</mat-label>
+      <mat-select [(value)]="selectedSortOption" (selectionChange)="applyFilters()">
+        <mat-option value="">No Sorting</mat-option>
+        <mat-option value="priceAsc">Price (Low to High)</mat-option>
+        <mat-option value="priceDesc">Price (High to Low)</mat-option>
+        <mat-option value="nameAsc">Name (A-Z)</mat-option>
+        <mat-option value="nameDesc">Name (Z-A)</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
+        <mat-option value="">All</mat-option>
+        <mat-option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <!-- Нова обвивка за управление на подредбата -->
   <div class="container">
     <div class="card" *ngFor="let product of paginatedProducts" (click)="goToDetails(product.id)">

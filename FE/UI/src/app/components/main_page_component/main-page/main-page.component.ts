@@ -26,6 +26,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public selectedCategory: string = "";
   public searchTerm: string = "";
 
+  // Добавена променлива за сортиране
+  public selectedSortOption: string = ""; // Променлива за избраната опция за сортиране
+
   private subscriptions: Subscription = new Subscription(); // За управление на абонаментите
 
   constructor(
@@ -67,14 +70,35 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.cartService.addToCart(product);
   }
 
+  // Актуализирана функция за филтриране с добавена логика за сортиране
   applyFilters() {
-    const filtered = this.products.filter(product => {
+    let filtered = this.products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
       const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
       return matchesSearch && matchesCategory;
     });
+
+    // Логика за сортиране според избраната опция
+    if (this.selectedSortOption) {
+      switch (this.selectedSortOption) {
+        case "priceAsc":
+          filtered.sort((a, b) => a.price - b.price);
+          break;
+        case "priceDesc":
+          filtered.sort((a, b) => b.price - a.price);
+          break;
+        case "nameAsc":
+          filtered.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "nameDesc":
+          filtered.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+      }
+    }
+
     this.filteredProducts = filtered;
     this.totalProducts = filtered.length;
+    this.pageIndex = 0; // Ресет на индекс на страницата при ново филтриране
     this.paginateProducts();
   }
 
