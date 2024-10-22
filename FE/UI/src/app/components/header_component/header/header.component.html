@@ -8,14 +8,13 @@
     <div class="search-bar">
       <mat-form-field appearance="outline" class="search-field">
         <mat-label style="color: #ffffff">Search</mat-label>
-        <input matInput placeholder="Search products" [(ngModel)]="searchTerm" (input)="onSearch()" />
+        <input matInput placeholder="Search products" [(ngModel)]="searchTerm" (input)="onSearch()" /><!-- this is dark still -->
       </mat-form-field>
     </div>
 
     <div class="category-dropdown">
       <mat-form-field appearance="outline" class="category-field">
-        <mat-label style="color: #ffffff">Category</mat-label
-        ><!-- this is dark still -->
+        <mat-label style="color: #ffffff">Category</mat-label>
         <mat-select (selectionChange)="onCategoryChange($event.value)">
           <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option
           ><!-- this is dark still -->
