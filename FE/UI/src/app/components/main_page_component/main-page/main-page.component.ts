@@ -1,11 +1,10 @@
 // UI\src\app\components\main_page_component\main-page\main-page.component.ts
-
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Products } from "./Interfaces/Products";
 import { SeedDataService } from "./seedData/seed-data.service";
 import { Router } from "@angular/router";
 import { CartService } from "../../../services/cart.service";
-import { SearchService } from "../../../services/search.service"; // Импортиране на SearchService
+import { SearchService } from "../../../services/search.service";
 import { Subscription } from "rxjs";
 import { PageEvent } from "@angular/material/paginator";
 
@@ -27,16 +26,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public searchTerm: string = "";
 
   // Добавена променлива за сортиране
-  public selectedSortOption: string = ""; // Променлива за избраната опция за сортиране
+  public selectedSortOption: string = "";
 
-  private subscriptions: Subscription = new Subscription(); // За управление на абонаментите
+  private subscriptions: Subscription = new Subscription();
 
-  constructor(
-    private seedDataService: SeedDataService,
-    private router: Router,
-    private cartService: CartService,
-    private searchService: SearchService // Инжектиране на SearchService
-  ) {}
+  constructor(private seedDataService: SeedDataService, private router: Router, private cartService: CartService, private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.products = this.seedDataService.products;
@@ -55,11 +49,19 @@ export class MainPageComponent implements OnInit, OnDestroy {
       this.applyFilters();
     });
     this.subscriptions.add(categorySub);
+
+    // Абониране за избрана опция за сортиране
+    const sortSub = this.searchService.sortOption$.subscribe(option => {
+      this.selectedSortOption = option;
+      this.applyFilters();
+    });
+    this.subscriptions.add(sortSub);
+
     this.applyFilters();
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.unsubscribe(); // Отписване при унищожаване на компонента
+    this.subscriptions.unsubscribe();
   }
 
   goToDetails(id: number) {
@@ -70,7 +72,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.cartService.addToCart(product);
   }
 
-  // Актуализирана функция за филтриране с добавена логика за сортиране
   applyFilters() {
     let filtered = this.products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
@@ -78,7 +79,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
       return matchesSearch && matchesCategory;
     });
 
-    // Логика за сортиране според избраната опция
     if (this.selectedSortOption) {
       switch (this.selectedSortOption) {
         case "priceAsc":
@@ -98,7 +98,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
     this.filteredProducts = filtered;
     this.totalProducts = filtered.length;
-    this.pageIndex = 0; // Ресет на индекс на страницата при ново филтриране
+    this.pageIndex = 0;
     this.paginateProducts();
   }
 

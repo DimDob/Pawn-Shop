@@ -1,6 +1,83 @@
 <!-- UI\src\app\components\footer_component\footer\footer.component.html -->
-<footer class="footer">
-  <div class="footer-content">
-    <p>&copy; 2024 PawnShop. All rights reserved.</p>
+<footer [ngClass]="footerClasses">
+  <div class="container">
+    <section class="footer-section">
+      <!-- Добавено заглавие 'Information' -->
+      <div class="information-section">
+        <ul class="footer-links">
+          <p class="section-title">Information</p>
+          <li>
+            <!-- fix style routerLink problems here -->
+            <a class="router-link-custom">
+              <fa-icon [icon]="faPhone" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>Call +359 123 456 789</p>
+            </a>
+          </li>
+          <li>
+            <!-- fix style routerLink problems here -->
+            <a class="router-link-custom">
+              <fa-icon [icon]="faEnvelope" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>support&#64;PawnShop.com</p>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/about-us" class="router-link-custom">
+              <fa-icon [icon]="faInfoCircle" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>About Us</p>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/contacts" class="router-link-custom">
+              <fa-icon [icon]="faMapMarkerAlt" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>Contacts</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Линкове за сортиране -->
+      <div class="combined-links">
+        <p class="section-title">Sort</p>
+        <a (click)="sortBy('priceAsc')" class="hover-underline">Price (Low to High)</a>
+        <a (click)="sortBy('priceDesc')" class="hover-underline">Price (High to Low)</a>
+        <a (click)="sortBy('nameAsc')" class="hover-underline">Name (A-Z)</a>
+        <a (click)="sortBy('nameDesc')" class="hover-underline">Name (Z-A)</a>
+      </div>
+
+      <!-- Линкове за категории -->
+      <div class="categories-links">
+        <p class="section-title">Categories</p>
+        <a (click)="filterByCategory('')" class="hover-underline">All</a>
+        <a (click)="filterByCategory('Electronics')" class="hover-underline">Electronics</a>
+        <a (click)="filterByCategory('Clothes')" class="hover-underline">Clothes</a>
+        <a (click)="filterByCategory('Jewelry')" class="hover-underline">Jewelry</a>
+        <a (click)="filterByCategory('Art')" class="hover-underline">Art</a>
+        <a (click)="filterByCategory('Other')" class="hover-underline">Other</a>
+      </div>
+
+      <!-- Линкове за посещение -->
+      <div class="visit-links">
+        <p class="section-title">Visit</p>
+        <a routerLink="/my-account" class="hover-underline">My Account</a>
+        <a routerLink="/cart" class="hover-underline">My Cart</a>
+        <a routerLink="/logout" class="hover-underline">Logout</a>
+      </div>
+
+      <!-- Социални мрежи -->
+      <div class="social-links">
+        <p class="section-title">Stay in Touch</p>
+        <div class="social-icons">
+          <a href="https://www.instagram.com" class="social-icon">
+            <fa-icon [icon]="faInstagram" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+          </a>
+          <a href="https://www.facebook.com" class="social-icon">
+            <fa-icon [icon]="faFacebook" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+          </a>
+          <a href="https://www.linkedin.com" class="social-icon">
+            <fa-icon [icon]="faLinkedin" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
 </footer>
