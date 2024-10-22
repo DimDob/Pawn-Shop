@@ -7,25 +7,25 @@
     </a>
     <div class="search-bar">
       <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Search</mat-label>
-        <input matInput placeholder="Search products" [(ngModel)]="searchTerm" (input)="onSearch()" />
+        <mat-label style="color: #009d34">Search</mat-label
+        ><!-- this is dark still -->
+        <input  matInput placeholder="Search products" [(ngModel)]="searchTerm" (input)="onSearch()" /><!-- this is dark still -->
       </mat-form-field>
     </div>
 
-    <!-- Падащо меню за категории в центъра -->
     <div class="category-dropdown">
       <mat-form-field appearance="outline" class="category-field">
-        <mat-label>Category</mat-label>
+        <mat-label>Category</mat-label
+        ><!-- this is dark still -->
         <mat-select (selectionChange)="onCategoryChange($event.value)">
-          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option
+          ><!-- this is dark still -->
         </mat-select>
       </mat-form-field>
     </div>
 
-    <!-- Разделител за изтласкване на опциите вдясно -->
     <span class="spacer"></span>
 
-    <!-- Тулбар опции вдясно -->
     <div class="toolbar-options">
       <button mat-button [routerLink]="['/about-us']">About Us</button>
       <button mat-button>Products</button>

@@ -4,33 +4,96 @@
   display: flex;
   align-items: center;
   width: 100%;
+  color: #ffffff; // Задава бял цвят на текста във всички елементи в хедъра
 }
 
 .search-bar {
   flex: 1;
-}
 
-.search-field {
-  width: 100%; /* Увеличава ширината на търсачката */
-  padding-left: 50px;
+  .search-field {
+    width: 100%; /* Увеличава ширината на търсачката */
+    padding-left: 50px;
+
+    /* Задава бял цвят на текст, граници и лейбъл */
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+      color: #ffffff !important; // Граници
+    }
+
+    ::ng-deep .mat-form-field-label {
+      color: #ffffff !important; // Лейбъл
+    }
+
+    ::ng-deep input.mat-input-element {
+      color: #ffffff !important; // Въведен текст
+    }
+
+    ::ng-deep .mat-form-field-ripple {
+      background-color: #ffffff !important; // Рипъл ефект
+    }
+
+    /* Placeholder стилове */
+    ::ng-deep input.mat-input-element::placeholder {
+      color: #ffffff !important;
+      opacity: 1; /* Задължително за Firefox */
+    }
+
+    ::ng-deep input.mat-input-element:-ms-input-placeholder {
+      /* Internet Explorer 10-11 */
+      color: #ffffff !important;
+    }
+
+    ::ng-deep input.mat-input-element::-ms-input-placeholder {
+      /* Microsoft Edge */
+      color: #ffffff !important;
+    }
+  }
 }
 
 .category-dropdown {
   flex: 1;
   display: flex;
   justify-content: center;
-}
 
-.category-field {
-  width: 50%; /* Центрира падащото меню */
+  .category-field {
+    width: 50%; /* Центрира падащото меню */
+
+    /* Задава бял цвят на текст, граници и лейбъл */
+    ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+      color: #ffffff !important; // Граници
+    }
+
+    ::ng-deep .mat-form-field-label {
+      color: #ffffff !important; // Лейбъл
+    }
+
+    ::ng-deep .mat-select-value {
+      color: #ffffff !important; // Избрана стойност
+    }
+
+    ::ng-deep .mat-select-arrow {
+      color: #ffffff !important; // Стрелка
+    }
+
+    ::ng-deep .mat-form-field-ripple {
+      background-color: #ffffff !important; // Рипъл ефект
+    }
+
+    /* Placeholder стилове, ако има */
+    ::ng-deep .mat-select-placeholder {
+      color: #ffffff !important;
+    }
+  }
 }
 
 .spacer {
   flex: 1 1 auto; /* Изтласква тулбар опциите вдясно */
 }
 
-.toolbar-options button {
-  margin-left: 10px;
+.toolbar-options {
+  button {
+    margin-left: 10px;
+    color: #ffffff !important; // Задава бял цвят на текстовете на бутоните
+  }
 }
 
 .cart-count {
@@ -48,10 +111,40 @@
   width: 24px; // Размер на иконата
   height: 24px;
   margin-left: 10px; // Отстояние от останалите елементи
+  cursor: pointer; /* Променяме курсора при задържане */
 }
+
 .header-icon {
   width: 32px; /* Увеличава размера на иконата */
   height: 32px;
   margin-left: 5px; /* Увеличава разстоянието между иконата и другите елементи */
   cursor: pointer; /* Променяме курсора при задържане */
+}
+::ng-deep input::placeholder {
+  color: green;
+}
+/* header.component.scss */
+::ng-deep input::placeholder {
+  color: white;
+}
+
+::ng-deep mat-label {
+  color: white !important;
+}
+
+::ng-deep mat-option {
+  color: white !important;
+}
+
+::ng-deep .mat-select-panel {
+  background-color: #009d34 !important;
+}
+
+::ng-deep .mat-option {
+  background-color: #009d34 !important;
+  color: white !important;
+}
+
+::ng-deep .mat-option:hover {
+  background-color: darken(#009d34, 10%) !important;
 }
