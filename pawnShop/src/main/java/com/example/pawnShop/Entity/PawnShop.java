@@ -55,7 +55,7 @@ public class PawnShop {
     private Boolean isViesRegistered;
 
     @OneToOne
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @Column(nullable = false)
