@@ -36,5 +36,16 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
+  frontend:
+    container_name: angular-app
+    build:
+      context: ../FE/UI
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    restart: on-failure
+
 volumes:
   db-data:

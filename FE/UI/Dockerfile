@@ -14,13 +14,14 @@ RUN npm install
 COPY . .
 
 # Step 6: Build the Angular app
-RUN npm run build --prod
+RUN npm run build
 
 # Step 7: Use the official NGINX image to serve the Angular app
 FROM nginx:alpine
 
 # Step 8: Copy the build output from the previous stage to the NGINX container
-COPY --from=build /app/dist/your-angular-app-name /usr/share/nginx/html
+# Променете този ред според името на вашето приложение в angular.json
+COPY --from=build /app/dist/browser /usr/share/nginx/html
 
 # Step 9: Expose port 80 to access the application
 EXPOSE 80
