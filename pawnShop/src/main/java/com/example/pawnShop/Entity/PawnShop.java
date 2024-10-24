@@ -13,10 +13,10 @@ import java.util.UUID;
 /**
  * Represents a product type in the pawn shop.
  * This class is a JPA entity mapped to the 'pawns_shops' table in the database.
-
+ * <p>
  * This class uses Lombok annotations to generate boilerplate code such as
  * getters, setters, and constructors.
-
+ * <p>
  * The {@code PawnShop} class has the following properties:
  * - id: A unique identifier for each pawn shop (auto-generated),
  * - name: The name of the type of product,
@@ -54,8 +54,8 @@ public class PawnShop {
 
     private Boolean isViesRegistered;
 
-    @ManyToOne
-    @JoinColumn(name = "address_id")
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @Column(nullable = false)
@@ -66,8 +66,8 @@ public class PawnShop {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "payments_pawnshops",
-        joinColumns = @JoinColumn(name = "pawnshop_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "payment_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "pawnshop_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_id", referencedColumnName = "id"))
     private List<Payment> payments;
 
     private LocalDate registrationDate;
