@@ -10,5 +10,6 @@ import lombok.*;
 @Builder
 public class ProductTypeDto {
     private Long id;
+    //test
     private String name;
 }
