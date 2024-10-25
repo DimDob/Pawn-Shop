@@ -112,34 +112,29 @@ describe("HeaderComponent", () => {
     fixture.detectChanges();
   });
 
-  // Тест за създаване на компонента
-  it("трябва да се създаде HeaderComponent", () => {
+  it("must create HeaderComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  // Тест за актуализиране на броя на предметите в количката
-  it("трябва да актуализира cartItemCount при промяна на количката", () => {
+  it("must update cartItemCount when cart changes", () => {
     mockCartService.addToCart({ id: 1, price: 100 }, 2);
     fixture.detectChanges();
     expect(component.cartItemCount).toBe(2);
   });
 
-  // Тест за определяне дали текущата страница е количка
-  it("трябва да определи дали е страница на количката", () => {
+  it("must determine if the current page is the cart page", () => {
     mockRouter.navigate("/cart");
     fixture.detectChanges();
     expect(component.isCartPage).toBeTrue();
   });
 
-  // Тест за промяна на категорията
-  it("трябва да извика setSelectedCategory при промяна на категорията", () => {
+  it("must call setSelectedCategory when the category changes", () => {
     const spy = spyOn(mockSearchService, "setSelectedCategory");
     component.onCategoryChange("Electronics");
     expect(spy).toHaveBeenCalledWith("Electronics");
   });
 
-  // Тест за извършване на търсене
-  it("трябва да извика setSearchTerm при търсене", () => {
+  it("must call setSearchTerm when searching", () => {
     const spy = spyOn(mockSearchService, "setSearchTerm");
     component.searchTerm = "Laptop";
     component.onSearch();

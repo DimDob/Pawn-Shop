@@ -8,13 +8,11 @@ import { of } from "rxjs";
 import { provideRouter, Routes } from "@angular/router";
 import { Component } from "@angular/core";
 
-// Създаваме празен компонент за success страницата
 @Component({
   template: ""
 })
 class SuccessComponent {}
 
-// Дефинираме тестови рутове
 const routes: Routes = [{ path: "success", component: SuccessComponent }];
 
 describe("CartPageComponent", () => {
@@ -23,7 +21,6 @@ describe("CartPageComponent", () => {
   let cartService: jasmine.SpyObj<CartService>;
   let router: Router;
 
-  // Мокнати данни за тестване
   const mockProducts = {
     id: 1,
     picture: "test.jpg",
@@ -40,20 +37,13 @@ describe("CartPageComponent", () => {
   const mockCartItems = [{ product: mockProducts, quantity: 2 }];
 
   beforeEach(async () => {
-    // Създаваме шпиони за сървисите
     cartService = jasmine.createSpyObj("CartService", ["updateQuantity", "removeFromCart", "clearCart", "getTotalCost"], {
       items$: of(mockCartItems)
     });
 
     await TestBed.configureTestingModule({
-      declarations: [
-        CartPageComponent,
-        SuccessComponent // Добавяме компонента в declarations
-      ],
-      providers: [
-        { provide: CartService, useValue: cartService },
-        provideRouter(routes) // Използваме тестовите рутове
-      ]
+      declarations: [CartPageComponent, SuccessComponent],
+      providers: [{ provide: CartService, useValue: cartService }, provideRouter(routes)]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CartPageComponent);
@@ -103,10 +93,9 @@ describe("CartPageComponent", () => {
 
   it("should handle purchase", fakeAsync(() => {
     component.purchase();
-    tick(); // Изчакваме навигацията да приключи
+    tick();
 
     expect(cartService.clearCart).toHaveBeenCalled();
-    // Проверяваме дали URL-ът е коректен след навигацията
     expect(router.url).toBe("/success");
   }));
 });

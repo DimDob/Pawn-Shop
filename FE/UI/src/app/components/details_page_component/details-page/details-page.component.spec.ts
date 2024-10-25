@@ -9,13 +9,13 @@ import { of } from "rxjs";
 import { provideRouter } from "@angular/router";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 
-// Мока за ActivatedRoute
+// Mock for ActivatedRoute
 class MockActivatedRoute {
   snapshot = {
     paramMap: {
       get: (key: string) => {
         if (key === "id") {
-          return "1"; // Връща ID за тест
+          return "1";
         }
         return null;
       }
@@ -23,7 +23,7 @@ class MockActivatedRoute {
   };
 }
 
-// Мока за SeedDataService
+// Mock for SeedDataService
 class MockSeedDataService {
   public products: Products[] = [
     {
@@ -38,14 +38,14 @@ class MockSeedDataService {
       category: "Clothes",
       price: 100
     }
-    // Можете да добавите повече продукти ако е необходимо
+    // You can add more Products if needed
   ];
 }
 
-// Мока за CartService
+// Mock for CartService
 class MockCartService {
   addToCart(product: any, quantity: number = 1) {
-    // Празен метод за спайване
+    // Empty method for spying
   }
 }
 
@@ -63,12 +63,7 @@ describe("DetailsPageComponent", () => {
 
     await TestBed.configureTestingModule({
       declarations: [DetailsPageComponent],
-      providers: [
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: SeedDataService, useValue: mockSeedDataService },
-        { provide: CartService, useValue: mockCartService },
-        provideRouter([]) // Използване на provideRouter вместо RouterTestingModule
-      ]
+      providers: [{ provide: ActivatedRoute, useValue: mockActivatedRoute }, { provide: SeedDataService, useValue: mockSeedDataService }, { provide: CartService, useValue: mockCartService }, provideRouter([])]
     }).compileComponents();
   });
 
@@ -78,33 +73,28 @@ describe("DetailsPageComponent", () => {
     fixture.detectChanges();
   });
 
-  // Тест за създаване на компонента
-  it("трябва да се създаде DetailsPageComponent", () => {
+  it("must create DetailsPageComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  // Тест за инициализиране на продукта в ngOnInit
-  it("трябва да инициализира правилно продукта в ngOnInit", () => {
+  it("must initialize the product correctly in ngOnInit", () => {
     expect(component.product).toEqual(mockSeedDataService.products[0]);
   });
 
-  // Тест за добавяне на продукт към количката
-  it("трябва да извика addToCart на CartService при добавяне към количката", () => {
+  it("must call addToCart on CartService when adding to cart", () => {
     const spy = spyOn(mockCartService, "addToCart");
     component.quantity = 2;
     component.addToCart();
     expect(spy).toHaveBeenCalledWith(mockSeedDataService.products[0], 2);
   });
 
-  // Тест за добавяне на продукт със стандартно количество
-  it("трябва да извика addToCart с количество 1 по подразбиране", () => {
+  it("must call addToCart with quantity 1 by default", () => {
     const spy = spyOn(mockCartService, "addToCart");
     component.addToCart();
     expect(spy).toHaveBeenCalledWith(mockSeedDataService.products[0], 1);
   });
 
-  // Тест за добавяне на продукт, когато количеството е нула или по-малко
-  it("трябва да добави продукт с количество 0 или по-малко", () => {
+  it("must add a product with quantity 0 or less", () => {
     const spy = spyOn(mockCartService, "addToCart");
     component.quantity = 0;
     component.addToCart();
