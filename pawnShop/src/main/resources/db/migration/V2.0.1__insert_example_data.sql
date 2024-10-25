@@ -28,7 +28,6 @@ VALUES ('55f19c4e-9200-461a-bc53-b65b638d0668', 'bd9ae96b-87d6-4e4d-8716-5455021
        ('2107dad7-0fed-4389-8f04-27b1e7f62564', 'bd9ae96b-87d6-4e4d-8716-545502126ef8', '2024-05-01 00:00:00',
         '2024-06-01 00:00:00');
 
-
 INSERT INTO pawn_shops (id, name, uic, is_vies_registered, address_id, admin_id, registration_date, is_active)
 VALUES ('6283c5d4-a525-4e90-987a-94d87a3620f8', 'Залози ЕООД', '123456789', true,
         '8626bd1b-a64f-4a6b-91bb-07eb5d6c57f2', 'f3028111-6be5-4930-86ca-d4c62418f149', '2024-05-01', true),
@@ -52,9 +51,3 @@ VALUES ('2a6ae85c-aeee-4452-a58b-ce54d801daef', 'Телефон', 7, NULL),
        ('99bef4ec-767b-4833-a6f5-ce387b7499f1', 'Злато', 5, NULL),
        ('cc182299-4aa8-4d12-98e9-5a670b757e80', 'Сребро', 6, NULL),
        ('21683274-b521-44d4-b396-47077e348377', 'Бижу', 4, NULL);
-
-
-
-
-
-

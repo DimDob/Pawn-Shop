@@ -52,5 +52,4 @@ public class Product {
     @OneToOne
     ProductType productType;
 
-
 }

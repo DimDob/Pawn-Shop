@@ -33,7 +33,7 @@ public class SecurityConfig {
                 //todo look for some better configuration of csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(registry ->{
-                    registry.requestMatchers("/home/index", "/auth/**").permitAll();
+                    registry.requestMatchers("/home/index", "/auth/**", "/data/expose/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
                     registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN","ADMIN");
                     registry.anyRequest().authenticated();

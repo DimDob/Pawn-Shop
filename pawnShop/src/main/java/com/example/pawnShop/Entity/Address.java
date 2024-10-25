@@ -29,5 +29,5 @@ public class Address {
 
     @OneToOne(mappedBy = "address")
     @JoinColumn(name = "pawnshop_id", referencedColumnName = "id")
-    private PawnShop pawnShops;
+    private PawnShop pawnShop;
 }
