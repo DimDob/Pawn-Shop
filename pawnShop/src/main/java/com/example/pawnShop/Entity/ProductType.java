@@ -40,4 +40,11 @@ public class ProductType {
 
     @Column(unique = true, nullable = false, length = PRODUCT_TYPE_NAME_MAX_LENGTH)
     private String name;
+
+    @OneToOne
+    private Product product;
+
+    public ProductType(UUID uuid, String productTypeName) {
+
+    }
 }
