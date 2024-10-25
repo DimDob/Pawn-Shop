@@ -1,12 +1,12 @@
 // UI\src\app\app.component.spec.ts
 import { TestBed } from "@angular/core/testing";
-import { RouterTestingModule } from "@angular/router/testing";
+import { provideRouter } from "@angular/router";
 import { AppComponent } from "./app.component";
 
 describe("AppComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [provideRouter],
       declarations: [AppComponent]
     }).compileComponents();
   });
