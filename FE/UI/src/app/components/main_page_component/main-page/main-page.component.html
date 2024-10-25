@@ -23,7 +23,7 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <!-- Нова обвивка за управление на подредбата -->
+
   <div class="container">
     <div class="card" *ngFor="let product of paginatedProducts" (click)="goToDetails(product.id)">
       <div class="imgBx">
@@ -43,7 +43,6 @@
           <span>{{ product.color }}</span>
         </div>
 
-        <!-- Добавен клас 'buy-now' за стилизиране -->
         <a class="buy-now" (click)="requestPurchase(product); $event.stopPropagation()">Buy Now</a>
       </div>
     </div>

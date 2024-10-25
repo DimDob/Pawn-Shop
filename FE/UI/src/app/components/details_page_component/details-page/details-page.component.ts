@@ -17,8 +17,8 @@ export class DetailsPageComponent implements OnInit {
   constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService) {}
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get("id")!; //?
-    this.product = this.seedDataService.products.find(product => product.id === id)!; //?
+    const id = +this.route.snapshot.paramMap.get("id")!;
+    this.product = this.seedDataService.products.find(product => product.id === id)!;
   }
 
   addToCart() {

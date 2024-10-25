@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "../../../app.service";
 import { Router } from "@angular/router";
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 @Component({
   selector: "app-my-account",
   templateUrl: "./my-account.component.html",
@@ -13,7 +13,7 @@ export class MyAccountComponent implements OnInit {
   public myAccountForm: FormGroup;
   public faUser = faUser;
   public errorMessage: string = "";
-  private userId: string = "123"; // Замени с реалния userId
+  private userId: string = "123"; // Replace with the actual userId
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
 
@@ -25,7 +25,7 @@ export class MyAccountComponent implements OnInit {
       currentPassword: ["", Validators.required]
     });
 
-    // Зареждане на данните на потребителя, ако са налични
+    // Load user data if available
   }
 
   onSubmit() {
@@ -35,11 +35,11 @@ export class MyAccountComponent implements OnInit {
 
     const { username, email, shopAddress, currentPassword } = this.myAccountForm.value;
 
-    // Проверка на текущата парола
+    // Check current password
     this.authService.verifyPassword(currentPassword).subscribe({
       next: isValid => {
         if (isValid) {
-          // Актуализиране на данните на потребителя
+          // Update user data
           alert("Account details updated successfully");
         } else {
           this.errorMessage = "Incorrect current password";

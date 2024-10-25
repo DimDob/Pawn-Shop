@@ -13,16 +13,12 @@ import { SearchService } from "../../../shared-services/search.service"; // Им
 })
 export class HeaderComponent {
   public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
-  public searchTerm: string = ""; // Добавено търсене
+  public searchTerm: string = "";
 
   cartItemCount: number = 0;
   isCartPage: boolean = false;
 
-  constructor(
-    private cartService: CartService,
-    private router: Router,
-    private searchService: SearchService // Инжектиране на SearchService
-  ) {
+  constructor(private cartService: CartService, private router: Router, private searchService: SearchService) {
     this.cartService.items$.subscribe(items => {
       this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
     });
@@ -33,10 +29,10 @@ export class HeaderComponent {
   }
 
   onCategoryChange(category: string) {
-    this.searchService.setSelectedCategory(category); // Използване на SearchService
+    this.searchService.setSelectedCategory(category);
   }
 
   onSearch() {
-    this.searchService.setSearchTerm(this.searchTerm); // Използване на SearchService
+    this.searchService.setSearchTerm(this.searchTerm);
   }
 }

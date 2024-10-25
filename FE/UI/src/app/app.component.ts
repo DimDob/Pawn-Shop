@@ -7,6 +7,4 @@ import { Component } from "@angular/core";
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"]
 })
-export class AppComponent {
-  // Премахнати функции за обработка на търсене и категория от Header
-}
+export class AppComponent {}

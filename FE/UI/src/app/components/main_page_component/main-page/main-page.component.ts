@@ -25,7 +25,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public selectedCategory: string = "";
   public searchTerm: string = "";
 
-  // Добавена променлива за сортиране
   public selectedSortOption: string = "";
 
   private subscriptions: Subscription = new Subscription();
@@ -36,21 +35,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.products = this.seedDataService.products;
     this.filteredProducts = this.products;
 
-    // Абониране за търсен термин
     const searchSub = this.searchService.searchTerm$.subscribe(term => {
       this.searchTerm = term.toLowerCase();
       this.applyFilters();
     });
     this.subscriptions.add(searchSub);
 
-    // Абониране за избрана категория
     const categorySub = this.searchService.selectedCategory$.subscribe(category => {
       this.selectedCategory = category;
       this.applyFilters();
     });
     this.subscriptions.add(categorySub);
 
-    // Абониране за избрана опция за сортиране
     const sortSub = this.searchService.sortOption$.subscribe(option => {
       this.selectedSortOption = option;
       this.applyFilters();

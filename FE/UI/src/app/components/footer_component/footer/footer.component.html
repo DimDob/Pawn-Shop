@@ -2,19 +2,16 @@
 <footer [ngClass]="footerClasses">
   <div class="container">
     <section class="footer-section">
-      <!-- Добавено заглавие 'Information' -->
       <div class="information-section">
         <ul class="footer-links">
           <p class="section-title">Information</p>
           <li>
-            <!-- fix style routerLink problems here -->
             <a class="router-link-custom">
               <fa-icon [icon]="faPhone" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
               <p>Call +359 123 456 789</p>
             </a>
           </li>
           <li>
-            <!-- fix style routerLink problems here -->
             <a class="router-link-custom">
               <fa-icon [icon]="faEnvelope" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
               <p>support&#64;PawnShop.com</p>
@@ -35,7 +32,7 @@
         </ul>
       </div>
 
-      <!-- Линкове за сортиране -->
+      <!-- Links for sorting -->
       <div class="combined-links">
         <p class="section-title">Sort</p>
         <a (click)="sortBy('priceAsc')" class="hover-underline">Price (Low to High)</a>
@@ -44,7 +41,7 @@
         <a (click)="sortBy('nameDesc')" class="hover-underline">Name (Z-A)</a>
       </div>
 
-      <!-- Линкове за категории -->
+      <!-- Links for categories -->
       <div class="categories-links">
         <p class="section-title">Categories</p>
         <a (click)="filterByCategory('')" class="hover-underline">All</a>
@@ -55,7 +52,7 @@
         <a (click)="filterByCategory('Other')" class="hover-underline">Other</a>
       </div>
 
-      <!-- Линкове за посещение -->
+      <!-- Links for visiting -->
       <div class="visit-links">
         <p class="section-title">Visit</p>
         <a routerLink="/my-account" class="hover-underline">My Account</a>
@@ -63,7 +60,7 @@
         <a routerLink="/logout" class="hover-underline">Logout</a>
       </div>
 
-      <!-- Социални мрежи -->
+      <!-- Social networks -->
       <div class="social-links">
         <p class="section-title">Stay in Touch</p>
         <div class="social-icons">

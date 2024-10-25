@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  color: #ffffff; // Задава бял цвят на текста във всички елементи в хедъра
+  color: #ffffff;
 }
 
 .search-bar {
@@ -14,22 +14,18 @@
     width: 100%;
     padding-left: 50px;
 
-    // Променихме цвета на границата на зелено
     ::ng-deep .mat-form-field-outline {
       stroke: #009d34 !important;
     }
 
-    // Променихме цвета на лейбъла на зелено
     ::ng-deep .mat-form-field-label {
       color: #009d34 !important;
     }
 
-    // Променихме цвета на въведения текст на зелено
     ::ng-deep input.mat-input-element {
       color: #009d34 !important;
     }
 
-    // Променихме цвета на placeholder-а на зелено
     ::ng-deep input.mat-input-element::placeholder {
       color: #009d34 !important;
       opacity: 1;
@@ -45,38 +41,31 @@
   .category-field {
     width: 50%;
 
-    // Променихме цвета на границата на зелено
     ::ng-deep .mat-form-field-outline {
       stroke: #009d34 !important;
     }
 
-    // Променихме цвета на лейбъла на зелено
     ::ng-deep .mat-form-field-label {
       color: #009d34 !important;
     }
 
-    // Променихме цвета на избраната стойност на зелено
     ::ng-deep .mat-select-value {
       color: #009d34 !important;
     }
 
-    // Променихме цвета на стрелката на зелено
     ::ng-deep .mat-select-arrow {
       color: #009d34 !important;
     }
 
-    // Стилове за опциите в падащото меню
     ::ng-deep .mat-select-panel .mat-option {
-      color: #ffffff !important; // Бял текст
-      background-color: #009d34 !important; // Зелен фон
+      color: #ffffff !important;
+      background-color: #009d34 !important; 
     }
 
-    // Променихме цвета на отметката при избрана категория на черно
     ::ng-deep .mat-option.mat-selected .mat-option-pseudo-checkbox {
       background-color: #000000 !important;
     }
 
-    // Променихме цвета на избраната опция
     ::ng-deep .mat-option.mat-selected {
       background-color: #009d34 !important;
       color: #ffffff !important;
@@ -85,13 +74,13 @@
 }
 
 .spacer {
-  flex: 1 1 auto; /* Изтласква тулбар опциите вдясно */
+  flex: 1 1 auto;
 }
 
 .toolbar-options {
   button {
     margin-left: 10px;
-    color: #ffffff !important; // Задава бял цвят на текстовете на бутоните
+    color: #ffffff !important;
   }
 }
 
@@ -107,15 +96,15 @@
 }
 
 .header-icon {
-  width: 24px; // Размер на иконата
+  width: 24px;
   height: 24px;
-  margin-left: 10px; // Отстояние от останалите елементи
-  cursor: pointer; /* Променяме курсора при задържане */
+  margin-left: 10px;
+  cursor: pointer;
 }
 
 .header-icon {
-  width: 32px; /* Увеличава размера на иконата */
+  width: 32px;
   height: 32px;
-  margin-left: 5px; /* Увеличава разстоянието между иконата и другите елементи */
-  cursor: pointer; /* Променяме курсора при задържане */
+  margin-left: 5px;
+  cursor: pointer;
 }

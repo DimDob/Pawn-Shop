@@ -10,7 +10,7 @@ import { SearchService } from "../../../shared-services/search.service";
   styleUrls: ["./footer.component.scss"]
 })
 export class FooterComponent {
-  // FontAwesome икони
+  // FontAwesome icons
   faPhone = faPhone;
   faEnvelope = faEnvelope;
   faInfoCircle = faInfoCircle;
@@ -19,25 +19,25 @@ export class FooterComponent {
   faFacebook = faFacebook;
   faLinkedin = faLinkedin;
 
-  // Класове за иконите
+  // Classes for icons
   iconColors = "text-white";
 
   constructor(private searchService: SearchService) {}
 
-  // Функция за сортиране
+  // Function for sorting
   sortBy(sortOption: string) {
     this.searchService.setSortOption(sortOption);
   }
 
-  // Функция за филтриране по категория
+  // Function for filtering by category
   filterByCategory(category: string) {
     this.searchService.setSelectedCategory(category);
   }
 
-  // Логика за класовете на футъра
+  // Logic for footer classes
   get footerClasses() {
     return {
-      "footer-visible": true // Може да добавите логика, ако е необходимо
+      "footer-visible": true // You can add logic if necessary
     };
   }
 }

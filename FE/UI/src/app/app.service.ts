@@ -27,7 +27,7 @@ export class AuthService {
     });
   }
   verifyPassword(currentPassword: string): Observable<boolean> {
-    // Симулиране на проверка на паролата
-    return of(currentPassword === "correct_password"); // Замени с реална логика
+    // Simulate checking the password
+    return of(currentPassword === "correct_password"); // Replace with actual password verification logic
   }
 }

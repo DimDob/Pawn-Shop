@@ -17,11 +17,11 @@ import { MatchPasswordsDirective } from "./components/auth_component/directives/
 import { ChangePasswordService } from "./components/auth_component/change-password/change-password.service";
 import { SeedDataService } from "./components/main_page_component/main-page/seedData/seed-data.service";
 
-import { MatToolbarModule } from "@angular/material/toolbar"; // За тулбара
-import { MatButtonModule } from "@angular/material/button"; // За бутоните
-import { MatIconModule } from "@angular/material/icon"; // За иконите (ако е необходимо)
-import { MatInputModule } from "@angular/material/input"; // За търсачката
-import { MatSelectModule } from "@angular/material/select"; // За падащото меню
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
 
 import { HeaderComponent } from "./components/header_component/header/header.component";
 import { provideAnimationsAsync } from "@angular/platform-browser/animations/async";
@@ -37,6 +37,7 @@ import { MyAccountComponent } from "./components/my_account_component/my-account
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatPaginatorModule } from "@angular/material/paginator";
+
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, FontAwesomeModule, MatPaginatorModule],
