@@ -1,7 +1,7 @@
 // UI\src\app\components\cart_page_component\cart-page\cart-page.component.ts
 
 import { Component, OnInit } from "@angular/core";
-import { CartService } from "../../../services/cart.service";
+import { CartService } from "./cart.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { Router } from "@angular/router";
 

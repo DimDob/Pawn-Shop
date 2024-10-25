@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
-import { CartService } from "../../../services/cart.service";
+import { CartService } from "../../cart_page_component/cart-page/cart.service";
 
 @Component({
   selector: "app-details-page",

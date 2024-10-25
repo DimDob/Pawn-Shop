@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Products } from "./Interfaces/Products";
 import { SeedDataService } from "./seedData/seed-data.service";
 import { Router } from "@angular/router";
-import { CartService } from "../../../services/cart.service";
+import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { SearchService } from "../../../services/search.service";
 import { Subscription } from "rxjs";
 import { PageEvent } from "@angular/material/paginator";
