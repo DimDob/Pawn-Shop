@@ -32,7 +32,7 @@ import { FooterComponent } from "./components/footer_component/footer/footer.com
 import { CartPageComponent } from "./components/cart_page_component/cart-page/cart-page.component";
 import { SuccessPageComponent } from "./components/success_page_component/success-page/success-page.component";
 import { DetailsPageComponent } from "./components/details_page_component/details-page/details-page.component";
-import { SearchService } from "./services/search.service";
+import { SearchService } from "./shared-services/search.service";
 import { MyAccountComponent } from "./components/my_account_component/my-account/my-account.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ReactiveFormsModule } from "@angular/forms";

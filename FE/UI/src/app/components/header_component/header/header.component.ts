@@ -4,7 +4,7 @@ import { Component } from "@angular/core";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
-import { SearchService } from "../../../services/search.service"; // Импортиране на SearchService
+import { SearchService } from "../../../shared-services/search.service"; // Импортиране на SearchService
 
 @Component({
   selector: "app-header",

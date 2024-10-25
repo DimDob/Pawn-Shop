@@ -1,4 +1,4 @@
-// UI\src\app\services\search.service.ts
+// UI\src\app\shared-services\search.service.ts
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
