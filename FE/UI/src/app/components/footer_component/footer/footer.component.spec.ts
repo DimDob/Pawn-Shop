@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FooterComponent } from "./footer.component";
-import { SearchService } from "../../../shared-services/search.service";
+import { SearchService } from "../../../shared/services/search.service";
 import { BehaviorSubject } from "rxjs";
 import { provideRouter } from "@angular/router";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";

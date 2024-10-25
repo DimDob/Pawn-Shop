@@ -2,7 +2,7 @@
 import { Component } from "@angular/core";
 import { faPhone, faEnvelope, faInfoCircle, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faFacebook, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { SearchService } from "../../../shared-services/search.service";
+import { SearchService } from "../../../shared/services/search.service";
 
 @Component({
   selector: "app-footer",

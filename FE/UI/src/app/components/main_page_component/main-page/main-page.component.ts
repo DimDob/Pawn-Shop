@@ -4,7 +4,7 @@ import { Products } from "./Interfaces/Products";
 import { SeedDataService } from "./seedData/seed-data.service";
 import { Router } from "@angular/router";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
-import { SearchService } from "../../../shared-services/search.service";
+import { SearchService } from "../../../shared/services/search.service";
 import { Subscription } from "rxjs";
 import { PageEvent } from "@angular/material/paginator";
 

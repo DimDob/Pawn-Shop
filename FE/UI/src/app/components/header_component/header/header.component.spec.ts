@@ -3,11 +3,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { HeaderComponent } from "./header.component";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
-import { SearchService } from "../../../shared-services/search.service";
+import { SearchService } from "../../../shared/services/search.service";
 import { BehaviorSubject } from "rxjs";
 import { provideRouter } from "@angular/router";
 import { Router, NavigationEnd } from "@angular/router";
-import { By } from "@angular/platform-browser";
 
 // Мока за CartService
 class MockCartService {

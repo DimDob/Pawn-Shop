@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { MainPageComponent } from "./main-page.component";
 import { SeedDataService } from "./seedData/seed-data.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
-import { SearchService } from "../../../shared-services/search.service";
+import { SearchService } from "../../../shared/services/search.service";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
