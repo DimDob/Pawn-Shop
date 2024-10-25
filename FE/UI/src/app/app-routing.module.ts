@@ -13,7 +13,7 @@ import { CartPageComponent } from "./components/cart_page_component/cart-page/ca
 import { SuccessPageComponent } from "./components/success_page_component/success-page/success-page.component";
 import { MyAccountComponent } from "./components/my_account_component/my-account/my-account.component";
 const routes: Routes = [
-  { path: "", redirectTo: "pawn-shop/main-page", pathMatch: "full" },
+  { path: "", redirectTo: "auth/login", pathMatch: "full" },
   { path: "product/:id", component: DetailsPageComponent },
   { path: "auth", redirectTo: "auth/login", pathMatch: "full" },
   { path: "auth/login", component: AuthComponent },
