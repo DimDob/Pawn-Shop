@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
-
+import { AuthService } from "../../../app.service";
 @Component({
   selector: "app-details-page",
   templateUrl: "./details-page.component.html",
@@ -12,33 +12,62 @@ import { CartService } from "../../cart_page_component/cart-page/cart.service";
 })
 export class DetailsPageComponent implements OnInit {
   product: Products | undefined;
-  quantity: number = 1;
+  quantity = 1;
+  isOwner = false; // Добавено
+  showConfirmModal = false; // Добавено
 
-  constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private seedDataService: SeedDataService,
+    private cartService: CartService,
+    private router: Router,
+    private authService: AuthService // Добавено
+  ) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get("id");
     if (idParam) {
-      // Check if id exists
       const id = +idParam;
       this.product = this.seedDataService.products.find(product => product.id === id);
       if (!this.product) {
-        // Check if product is found
         console.error(`Product with id ${id} not found.`);
-        this.router.navigate(["/not-found"]); // Redirect to not found page
+        this.router.navigate(["/not-found"]);
+      } else {
+        this.isOwner = this.product.ownerId === this.authService.currentUser.id;
       }
     } else {
       console.error("No id parameter provided.");
-      this.router.navigate(["/not-found"]); // Redirect to not found page
+      this.router.navigate(["/not-found"]);
     }
   }
 
   addToCart() {
     if (this.product) {
-      // Check if product exists
       this.cartService.addToCart(this.product, this.quantity);
     } else {
       console.error("Cannot add product to cart because product is not available.");
     }
+  }
+
+  editProduct() {
+    if (this.product) {
+      this.router.navigate(["/edit-product", this.product.id]);
+    }
+  }
+
+  confirmDelete() {
+    this.showConfirmModal = true;
+  }
+
+  deleteProduct() {
+    if (this.product) {
+      this.seedDataService.products = this.seedDataService.products.filter(p => p.id !== this.product?.id);
+      this.showConfirmModal = false;
+      this.router.navigate(["/pawn-shop/main-page"]);
+    }
+  }
+
+  cancelDelete() {
+    this.showConfirmModal = false;
   }
 }

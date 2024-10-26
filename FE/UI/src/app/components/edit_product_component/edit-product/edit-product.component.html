@@ -1,10 +1,11 @@
-<div class="add-product-container">
+<!-- UI\src\app\components\edit_product_component\edit-product\edit-product.component.html -->
+<div class="edit-product-container">
   <div class="icon">
-    <fa-icon [icon]="faBoxOpen" style="color: #009d34"></fa-icon>
+    <fa-icon [icon]="faEdit" style="color: #009d34"></fa-icon>
   </div>
-  <h2>{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h2>
+  <h2>Edit Product</h2>
 
-  <form [formGroup]="addProductForm" (ngSubmit)="submitForm()">
+  <form [formGroup]="editProductForm" (ngSubmit)="submitForm()">
     <div>
       <label>Product Name</label>
       <input formControlName="name" type="text" />
@@ -60,7 +61,7 @@
       <input type="file" (change)="onFileChange($event)" />
     </div>
 
-    <button type="submit" [disabled]="addProductForm.invalid">Add Product</button>
+    <button type="submit" [disabled]="editProductForm.invalid">Save Changes</button>
   </form>
 
   <p class="error-message">{{ errorMessage }}</p>

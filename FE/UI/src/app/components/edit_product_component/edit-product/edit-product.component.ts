@@ -1,27 +1,27 @@
-// UI\src\app\components\add_product_component\add-product\add-product.component.ts
+// UI\src\app\components\edit_product_component\edit-product\edit-product.component.ts
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "../../main_page_component/main-page/enums/Category";
-import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
+import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 
 @Component({
-  selector: "app-add-product",
-  templateUrl: "./add-product.component.html",
-  styleUrls: ["./add-product.component.scss"]
+  selector: "app-edit-product",
+  templateUrl: "./edit-product.component.html",
+  styleUrls: ["./edit-product.component.scss"]
 })
-export class AddProductComponent implements OnInit {
-  addProductForm: FormGroup;
+export class EditProductComponent implements OnInit {
+  editProductForm: FormGroup;
   categories = Object.values(Category);
   errorMessage = "";
-  public faBoxOpen = faBoxOpen;
+  public faEdit = faEdit;
 
-  isEditMode = false;
   productId: number | null = null;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private seedDataService: SeedDataService, private router: Router) {
-    this.addProductForm = this.fb.group({
+    this.editProductForm = this.fb.group({
       picture: [null],
       color: ["", Validators.required],
       size: ["", Validators.required],
@@ -34,10 +34,9 @@ export class AddProductComponent implements OnInit {
     });
   }
   onFileChange(event: any) {
-    // Обработваме избора на файл
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.addProductForm.patchValue({
+      this.editProductForm.patchValue({
         picture: file
       });
     }
@@ -46,9 +45,11 @@ export class AddProductComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const idParam = params.get("id");
       if (idParam) {
-        this.isEditMode = true;
         this.productId = +idParam;
         this.loadProductData();
+      } else {
+        console.error("No product ID provided.");
+        this.router.navigate(["/not-found"]);
       }
     });
   }
@@ -57,7 +58,7 @@ export class AddProductComponent implements OnInit {
     if (this.productId !== null) {
       const product = this.seedDataService.products.find(p => p.id === this.productId);
       if (product) {
-        this.addProductForm.patchValue(product);
+        this.editProductForm.patchValue(product);
       } else {
         console.error("Product not found");
         this.router.navigate(["/not-found"]);
@@ -66,20 +67,19 @@ export class AddProductComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.addProductForm.invalid) {
+    if (this.editProductForm.invalid) {
       return;
     }
-    const formData = this.addProductForm.value;
+    const updatedProduct: Products = {
+      id: this.productId!,
+      ...this.editProductForm.value
+    };
 
-    if (this.isEditMode && this.productId !== null) {
-      const index = this.seedDataService.products.findIndex(p => p.id === this.productId);
-      if (index !== -1) {
-        this.seedDataService.products[index] = { id: this.productId, ...formData };
-      }
+    const index = this.seedDataService.products.findIndex(p => p.id === this.productId);
+    if (index !== -1) {
+      this.seedDataService.products[index] = updatedProduct;
     } else {
-      const newId = this.seedDataService.products.length + 1;
-      const ownerId = 1; // Предполагаме, че текущият потребител има ID 1
-      this.seedDataService.products.push({ id: newId, ownerId, ...formData });
+      console.error("Product not found in the list.");
     }
 
     this.router.navigate(["/pawn-shop/main-page"]);

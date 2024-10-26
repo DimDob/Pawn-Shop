@@ -11,4 +11,5 @@ export interface Products {
   category: string;
   price: number;
   //quantityInStock: number; // add this later // not now
+  ownerId?: number;
 }

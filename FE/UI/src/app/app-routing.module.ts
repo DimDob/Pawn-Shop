@@ -16,6 +16,7 @@ import { SuccessPageComponent } from "./components/success_page_component/succes
 import { MyAccountComponent } from "./components/my_account_component/my-account/my-account.component";
 import { AddProductComponent } from "./components/add_product_component/add-product/add-product.component";
 import { MyProductsComponent } from "./components/my_products_component/my-products/my-products.component";
+import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
 const routes: Routes = [
   { path: "", redirectTo: "auth/login", pathMatch: "full" },
   { path: "product/:id", component: DetailsPageComponent },
@@ -29,7 +30,8 @@ const routes: Routes = [
   { path: "about-us", component: AboutUsComponent },
   { path: "contacts", component: ContactsComponent },
   { path: "add-product", component: AddProductComponent },
-  { path: "my-products", component: MyProductsComponent }
+  { path: "my-products", component: MyProductsComponent },
+  { path: "edit-product/:id", component: EditProductComponent }
 ];
 
 @NgModule({

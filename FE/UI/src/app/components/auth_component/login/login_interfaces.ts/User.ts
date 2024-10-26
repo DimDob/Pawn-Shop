@@ -4,8 +4,9 @@ import { PrismData } from "./prismData";
 /**
  * The interface describes whether the pawn shop
  */
-export interface User extends PrismData {
+export interface User {
+  id?: number;
+  loginUsername: string;
   isAdmin?: boolean;
-
   isEmployee?: boolean;
 }

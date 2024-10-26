@@ -10,10 +10,22 @@
   <p>Category: {{ product.category }}</p>
   <p>Price: ${{ product.price }}</p>
 
-  <div class="quantity">
+  <div class="quantity" *ngIf="!isOwner">
     <label for="quantity">Quantity:</label>
     <input type="number" id="quantity" [(ngModel)]="quantity" min="1" />
   </div>
 
-  <button (click)="addToCart()">Add to Cart</button>
+  <button (click)="addToCart()" *ngIf="!isOwner">Add to Cart</button>
+
+  <button (click)="editProduct()" *ngIf="isOwner">Edit</button>
+  <button (click)="confirmDelete()" *ngIf="isOwner">Delete</button>
+
+  <!-- Модален прозорец за потвърждение -->
+  <div class="modal" *ngIf="showConfirmModal">
+    <div class="modal-content">
+      <p>Are you sure?</p>
+      <button (click)="deleteProduct()">Delete</button>
+      <button (click)="cancelDelete()">Cancel</button>
+    </div>
+  </div>
 </div>
