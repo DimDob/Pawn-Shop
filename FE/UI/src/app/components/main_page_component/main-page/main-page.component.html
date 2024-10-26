@@ -1,5 +1,4 @@
 <!-- UI\src\app\components\main_page_component\main-page\main-page.component.html -->
-
 <div class="main-page-container">
   <div class="controls">
     <mat-form-field appearance="fill">
@@ -33,12 +32,12 @@
       <div class="contentBx">
         <h2>{{ product.manufacturer }} {{ product.model }}</h2>
 
-        <div class="size">
+        <div class="size" *ngIf="product.size !== undefined">
           <h3>Size :</h3>
           <span>{{ product.size }}</span>
         </div>
 
-        <div class="color">
+        <div class="color" *ngIf="product.color">
           <h3>Color :</h3>
           <span>{{ product.color }}</span>
         </div>

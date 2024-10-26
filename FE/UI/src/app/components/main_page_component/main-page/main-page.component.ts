@@ -70,7 +70,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   applyFilters() {
     let filtered = this.products.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
+      const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model?.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
       const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
       return matchesSearch && matchesCategory;
     });

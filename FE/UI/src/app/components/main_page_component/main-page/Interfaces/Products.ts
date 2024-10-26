@@ -2,11 +2,11 @@
 export interface Products {
   id: number;
   picture: string;
-  color: string;
-  size: number;
-  sex: "male" | "female";
-  manufacturer: string;
-  model: string;
+  color?: string;
+  size?: number;
+  sex?: "male" | "female";
+  manufacturer?: string;
+  model?: string;
   name: string;
   category: string;
   price: number;

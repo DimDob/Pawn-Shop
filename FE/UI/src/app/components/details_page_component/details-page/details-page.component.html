@@ -1,10 +1,12 @@
-<!-- UI\src\app\components\details_page_component\details-page\details-page.component.html/  -->
+<!-- UI\src\app\components\details_page_component\details-page\details-page.component.html -->
 <div class="details-container" *ngIf="product">
   <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
   <h2>{{ product.manufacturer }} {{ product.model }}</h2>
-  <p>Size: {{ product.size }}</p>
-  <p>Color: {{ product.color }}</p>
-  <p>Sex: {{ product.sex }}</p>
+
+  <p *ngIf="product.size !== undefined">Size: {{ product.size }}</p>
+  <p *ngIf="product.color">Color: {{ product.color }}</p>
+  <p *ngIf="product.sex">Sex: {{ product.sex }}</p>
+
   <p>Category: {{ product.category }}</p>
   <p>Price: ${{ product.price }}</p>
 
