@@ -3,6 +3,6 @@ export enum Category {
   ELECTRONICS = "Electronics",
   CLOTHING = "Clothing",
   JEWELRY = "Jewelry",
-  OTHER = "Other",
-  ART = "Art"
+  ART = "Art",
+  OTHER = "Other"
 }

@@ -25,13 +25,13 @@
       <select formControlName="category">
         <option value="">Select Category</option>
         <option *ngFor="let category of categories" [value]="category">
-          {{category}}
+          {{ category }}
         </option>
       </select>
     </div>
 
     <div>
-      <label>Price</label>
+      <label>Price (€)</label>
       <input formControlName="price" type="number" />
     </div>
 
@@ -41,7 +41,7 @@
     </div>
 
     <div>
-      <label>Size</label>
+      <label>Size (EU)</label>
       <input formControlName="size" type="number" />
     </div>
 
