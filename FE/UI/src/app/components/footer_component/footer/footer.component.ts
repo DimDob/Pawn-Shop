@@ -1,5 +1,5 @@
 // UI\src\app\components\footer_component\footer\footer.component.ts
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { faPhone, faEnvelope, faInfoCircle, faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { faInstagram, faFacebook, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { SearchService } from "../../../shared/services/search.service";
@@ -9,7 +9,7 @@ import { SearchService } from "../../../shared/services/search.service";
   templateUrl: "./footer.component.html",
   styleUrls: ["./footer.component.scss"]
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
   // FontAwesome icons
   faPhone = faPhone;
   faEnvelope = faEnvelope;
@@ -22,7 +22,15 @@ export class FooterComponent {
   // Classes for icons
   iconColors = "text-white";
 
+  footerClasses: { [key: string]: boolean } = {};
+
   constructor(private searchService: SearchService) {}
+
+  ngOnInit() {
+    this.footerClasses = {
+      "footer-visible": true
+    };
+  }
 
   // Function for sorting
   sortBy(sortOption: string) {
@@ -32,12 +40,5 @@ export class FooterComponent {
   // Function for filtering by category
   filterByCategory(category: string) {
     this.searchService.setSelectedCategory(category);
-  }
-
-  // Logic for footer classes
-  get footerClasses() {
-    return {
-      "footer-visible": true // You can add logic if necessary
-    };
   }
 }
