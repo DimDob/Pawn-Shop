@@ -1,17 +1,14 @@
 package com.example.pawnShop.Dto.Product;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.util.UUID;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 public class ProductTypeDto {
-    private UUID id;
+    private Long id;
     private String name;
 }
