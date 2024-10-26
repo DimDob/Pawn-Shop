@@ -6,7 +6,7 @@ import { User } from "./login_interfaces.ts/User";
 import userTemplate from "./templates/user.template";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../../../app.service";
-
+import { environment } from "../../../../environments/environment";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -57,8 +57,7 @@ export class LoginComponent {
 
   handleUserRegister(prismDetails: PrismData) {
     this.prismDetails = prismDetails;
-
-    const endpoint = "http://localhost:8080/auth/register";
+    const endpoint = environment.host + "/auth/register";
 
     this.authService.handlerUserRegister(prismDetails, endpoint);
 
