@@ -1,4 +1,12 @@
 // UI\src\app\components\cart_page_component\cart-page\cart-page.component.scss
+// center this class empty-cart-message
+.empty-cart-message {
+  text-align: start;
+  margin-top: 20px;
+  color: #009d34;
+  font-size: 20px;
+  margin-left: 20px;
+}
 
 .cart-container {
   padding: 20px;
