@@ -10,5 +10,5 @@ export interface Products {
   name: string;
   category: string;
   price: number;
-  //quantityInStock: number; // add this later
+  //quantityInStock: number; // add this later // not now
 }

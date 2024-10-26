@@ -1,0 +1,25 @@
+<div class="main-page-container">
+  <div class="container">
+    <div class="card" *ngFor="let product of products" (click)="goToDetails(product.id)">
+      <div class="imgBx">
+        <img [src]="product.picture" alt="{{ product.name }}" />
+      </div>
+
+      <div class="contentBx">
+        <h2>{{ product.name }}</h2>
+
+        <div class="size" *ngIf="product.size !== undefined">
+          <h3>Size :</h3>
+          <span>{{ product.size }}</span>
+        </div>
+
+        <div class="color" *ngIf="product.color">
+          <h3>Color :</h3>
+          <span>{{ product.color }}</span>
+        </div>
+
+        <a class="buy-now" (click)="goToDetails(product.id); $event.stopPropagation()">View Details</a>
+      </div>
+    </div>
+  </div>
+</div>
