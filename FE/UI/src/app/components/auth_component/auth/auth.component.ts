@@ -5,7 +5,7 @@ import { User } from "../login/login_interfaces.ts/User";
 import { PrismData } from "../login/login_interfaces.ts/prismData";
 import { AuthService } from "../../../app.service";
 import { Router } from "@angular/router";
-
+import { environment } from "../../../../environments/environment.development";
 @Component({
   selector: "app-auth",
   templateUrl: "./auth.component.html",
@@ -22,7 +22,7 @@ export class AuthComponent {
 
   public prismDetails: PrismData;
 
-  private host = "http://localhost:8080/"; // Change when we get a host
+  private host = environment.host;
 
   constructor(private authService: AuthService, private router: Router) {}
 
