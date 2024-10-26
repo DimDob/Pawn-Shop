@@ -41,4 +41,6 @@ export class FooterComponent implements OnInit {
   filterByCategory(category: string) {
     this.searchService.setSelectedCategory(category);
   }
+  public sortByOnClick = (sortOption: string) => this.sortBy(sortOption);
+  public filterByCategoryOnClick = (category: string) => this.filterByCategory(category);
 }

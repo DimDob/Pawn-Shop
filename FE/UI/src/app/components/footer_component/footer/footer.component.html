@@ -32,24 +32,23 @@
         </ul>
       </div>
 
-      <!-- Links for sorting -->
       <div class="combined-links">
         <p class="section-title">Sort</p>
-        <a (click)="sortBy('priceAsc')" class="hover-underline">Price (Low to High)</a>
-        <a (click)="sortBy('priceDesc')" class="hover-underline">Price (High to Low)</a>
-        <a (click)="sortBy('nameAsc')" class="hover-underline">Name (A-Z)</a>
-        <a (click)="sortBy('nameDesc')" class="hover-underline">Name (Z-A)</a>
+        <a (click)="sortByOnClick('priceAsc')" class="hover-underline">Price (Low to High)</a>
+        <a (click)="sortByOnClick('priceDesc')" class="hover-underline">Price (High to Low)</a>
+        <a (click)="sortByOnClick('nameAsc')" class="hover-underline">Name (A-Z)</a>
+        <a (click)="sortByOnClick('nameDesc')" class="hover-underline">Name (Z-A)</a>
       </div>
 
       <!-- Links for categories -->
       <div class="categories-links">
         <p class="section-title">Categories</p>
-        <a (click)="filterByCategory('')" class="hover-underline">All</a>
-        <a (click)="filterByCategory('Electronics')" class="hover-underline">Electronics</a>
-        <a (click)="filterByCategory('Clothes')" class="hover-underline">Clothes</a>
-        <a (click)="filterByCategory('Jewelry')" class="hover-underline">Jewelry</a>
-        <a (click)="filterByCategory('Art')" class="hover-underline">Art</a>
-        <a (click)="filterByCategory('Other')" class="hover-underline">Other</a>
+        <a (click)="filterByCategoryOnClick('')" class="hover-underline">All</a>
+        <a (click)="filterByCategoryOnClick('Electronics')" class="hover-underline">Electronics</a>
+        <a (click)="filterByCategoryOnClick('Clothes')" class="hover-underline">Clothes</a>
+        <a (click)="filterByCategoryOnClick('Jewelry')" class="hover-underline">Jewelry</a>
+        <a (click)="filterByCategoryOnClick('Art')" class="hover-underline">Art</a>
+        <a (click)="filterByCategoryOnClick('Other')" class="hover-underline">Other</a>
       </div>
 
       <!-- Links for visiting -->
