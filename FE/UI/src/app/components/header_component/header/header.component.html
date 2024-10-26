@@ -7,14 +7,14 @@
     </a>
     <div class="search-bar">
       <mat-form-field appearance="outline" class="search-field">
-        <mat-label style="color: #ffffff">Search</mat-label>
+        <mat-label>Search</mat-label>
         <input matInput placeholder="Search products" [(ngModel)]="searchTerm" (input)="onSearch()" />
       </mat-form-field>
     </div>
 
     <div class="category-dropdown">
       <mat-form-field appearance="outline" class="category-field">
-        <mat-label style="color: #ffffff">Category</mat-label>
+        <mat-label>Category</mat-label>
         <mat-select
           (selectionChange)="onCategoryChange($event.value)"
           #categorySelect

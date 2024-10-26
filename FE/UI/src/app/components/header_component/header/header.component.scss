@@ -5,6 +5,7 @@
   align-items: center;
   width: 100%;
   padding: 0 16px;
+  height: 100%;
 
   .header-icon {
     height: 40px;
@@ -14,21 +15,19 @@
   .search-bar {
     flex: 1;
     max-width: 500px;
-    margin: 0 16px;
+    margin: 8px 16px 0;
 
     .search-field {
       width: 100%;
-      font-size: 16px;
     }
   }
 
   .category-dropdown {
     width: 250px;
-    margin: 0 16px;
+    margin: 8px 16px 0;
 
     .category-field {
       width: 100%;
-      font-size: 16px;
     }
   }
 
@@ -142,7 +141,7 @@
 
 // header.component.scss
 .mat-toolbar {
-  height: 70px !important;
+  height: 80px !important;
   background-color: #009d34 !important;
   color: white !important;
 }
