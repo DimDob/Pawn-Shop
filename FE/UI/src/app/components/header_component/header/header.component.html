@@ -17,8 +17,7 @@
         <mat-label style="color: #ffffff">Category</mat-label>
         <mat-select (selectionChange)="onCategoryChange($event.value)">
           <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option
-          ><
+          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

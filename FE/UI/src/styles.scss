@@ -1,21 +1,48 @@
-// UI\src\styles.scss
-
 @use "@angular/material" as mat;
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
+// Define custom palette
+$custom-primary: (
+  50: #e0f2e9,
+  100: #b3e0c8,
+  200: #80cca3,
+  300: #4db87e,
+  400: #26a862,
+  500: #009d34,
+  600: #009530,
+  700: #008b29,
+  800: #008225,
+  900: #00701c,
+  A100: #b9ffca,
+  A200: #86ff9f,
+  A400: #53ff74,
+  A700: #3aff61,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: rgba(black, 0.87),
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+    A100: rgba(black, 0.87),
+    A200: rgba(black, 0.87),
+    A400: rgba(black, 0.87),
+    A700: rgba(black, 0.87)
+  )
+);
 
-// Основна тема
+// Include core Material styles
 @include mat.core();
 
-$primary: mat.define-palette(mat.$indigo-palette);
-$accent: mat.define-palette(mat.$pink-palette);
+// Define the palettes
+$primary: mat.define-palette($custom-primary, 500);
+$accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 $warn: mat.define-palette(mat.$red-palette);
 
+// Create the theme object
 $theme: mat.define-light-theme(
   (
     color: (
@@ -28,7 +55,16 @@ $theme: mat.define-light-theme(
   )
 );
 
+// Apply the theme to all Angular Material components
 @include mat.all-component-themes($theme);
+
+// Global styles
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .app-container {
   display: flex;
