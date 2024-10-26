@@ -15,7 +15,7 @@ export class HeaderComponent {
   public categories = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
   public searchTerm = "";
 
-  cartItemCount = 0;
+  public cartItemCount = 0;
   isCartPage = false;
 
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService) {
