@@ -11,10 +11,16 @@
 body {
   background: #131313;
 }
+
 .main-page-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+.controls {
+  padding-left: 20px; // Добавяме отстъп отляво
+  margin-top: 20px; // Добавяме малко отстъп отгоре за по-добър вид
 }
 
 .container {
