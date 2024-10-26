@@ -1,5 +1,4 @@
 // UI\src\app\components\header_component\header\header.component.ts
-
 import { Component, ViewEncapsulation } from "@angular/core";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Router, NavigationEnd } from "@angular/router";
@@ -37,4 +36,6 @@ export class HeaderComponent {
   onSearch() {
     this.searchService.setSearchTerm(this.searchTerm);
   }
+
+  // Добавени методи за навигация към Add Product и My Products
 }

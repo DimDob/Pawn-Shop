@@ -1,5 +1,4 @@
 <!-- UI\src\app\components\header_component\header\header.component.html -->
-
 <mat-toolbar color="primary">
   <div class="header-content">
     <a [routerLink]="['/pawn-shop/main-page']">
@@ -15,11 +14,7 @@
     <div class="category-dropdown">
       <mat-form-field appearance="outline" class="category-field">
         <mat-label>Category</mat-label>
-        <mat-select
-          (selectionChange)="onCategoryChange($event.value)"
-          #categorySelect
-          [panelClass]="'custom-select-panel'"
-          disableOptionCentering>
+        <mat-select (selectionChange)="onCategoryChange($event.value)" #categorySelect [panelClass]="'custom-select-panel'" disableOptionCentering>
           <mat-option value="">All</mat-option>
           <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
         </mat-select>
@@ -30,7 +25,14 @@
 
     <div class="toolbar-options">
       <button mat-button [routerLink]="['/about-us']">About Us</button>
-      <button mat-button>Products</button>
+
+      <!-- Добавяне на mat-menu към бутона Products -->
+      <button mat-button [matMenuTriggerFor]="productsMenu">Products</button>
+      <mat-menu #productsMenu="matMenu">
+        <button mat-menu-item [routerLink]="['/add-product']">Add Product</button>
+        <button mat-menu-item [routerLink]="['/my-products']">My Products</button>
+      </mat-menu>
+
       <button mat-button [routerLink]="['/my-account']">My Account</button>
       <button mat-button [routerLink]="['/contacts']">Contacts</button>
       <button mat-icon-button [routerLink]="['/cart']">
