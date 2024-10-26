@@ -12,7 +12,13 @@ import { AuthService } from "../../../app.service";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"]
 })
-export class LoginComponent implements AfterViewInit, OnInit {
+export class LoginComponent {
+  public showLoginOnClick = () => this.showLogin();
+  public showForgotPasswordOnClick = () => this.showForgotPassword();
+  public userLogingOnClick = (form: any) => {
+    this.userLoging(form);
+    this.clearUserDetails();
+  };
   @Output() userCheck: EventEmitter<User> = new EventEmitter<User>();
 
   @Output() userCredentials: EventEmitter<PrismData> = new EventEmitter<PrismData>();
