@@ -26,20 +26,20 @@
   <div class="container">
     <div class="card" *ngFor="let product of paginatedProducts" (click)="goToDetails(product.id)">
       <div class="imgBx">
-        <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
+        <img [src]="product?.picture" alt="{{ product?.manufacturer }} {{ product?.model }}" />
       </div>
 
       <div class="contentBx">
-        <h2>{{ product.manufacturer }} {{ product.model }}</h2>
+        <h2>{{ product?.manufacturer }} {{ product?.model }}</h2>
 
-        <div class="size" *ngIf="product.size !== undefined">
+        <div class="size" *ngIf="product?.size !== undefined">
           <h3>Size :</h3>
-          <span>{{ product.size }}</span>
+          <span>{{ product?.size }}</span>
         </div>
 
-        <div class="color" *ngIf="product.color">
+        <div class="color" *ngIf="product?.color">
           <h3>Color :</h3>
-          <span>{{ product.color }}</span>
+          <span>{{ product?.color }}</span>
         </div>
 
         <a class="buy-now" (click)="requestPurchase(product); $event.stopPropagation()">Buy Now</a>
