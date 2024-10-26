@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,7 +27,7 @@ public class Address {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @Column(nullable = false)
-    @OneToMany(mappedBy = "address")
-    private List<PawnShop> pawnShops;
+    @OneToOne(mappedBy = "address")
+    @JoinColumn(name = "pawnshop_id", referencedColumnName = "id")
+    private PawnShop pawnShop;
 }

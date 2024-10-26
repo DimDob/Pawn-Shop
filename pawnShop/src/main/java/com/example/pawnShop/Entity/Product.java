@@ -49,7 +49,7 @@ public class Product {
     @Column(name = "picture_url", columnDefinition = "TEXT")
     private String pictureUrl;
 
-
-
+    @OneToOne
+    ProductType productType;
 
 }

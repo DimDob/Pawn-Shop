@@ -18,54 +18,52 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/product_type")
 public class ProductTypeController {
+
     @Autowired
     private final ProductTypeService productTypeService;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<?> getAllProductsTypes(){
-
         Result<List<ProductTypeDto>> result = productTypeService.getAllProductsTypes();
         if(!result.isSuccess()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result.getError());
         }
-
         return ResponseEntity.ok(result.getValue());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductTypeById(@PathVariable UUID id){
         Result<ProductTypeDto> result = productTypeService.getProductTypeById(id);
         if(!result.isSuccess()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result.getError());
         }
-
         return ResponseEntity.ok(result.getValue());
     }
-    @PostMapping()
-    public ResponseEntity<?> addProductType(@RequestBody ProductTypeNameDto newProductTypeName){
 
+    @PostMapping
+    public ResponseEntity<?> addProductType(@RequestBody ProductTypeNameDto newProductTypeName){
         Result<ProductTypeDto> result = productTypeService.addProductType(newProductTypeName.getName());
         if(!result.isSuccess()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
-
         return ResponseEntity.status(HttpStatus.CREATED).body(result.getValue());
     }
+
     @PatchMapping("/{id}")
     public ResponseEntity<?> modifyProductType(@PathVariable UUID id, @RequestBody ProductTypeDto modifiedProductType){
         Result<ProductTypeDto> result = productTypeService.updateProductType(id, modifiedProductType);
         if(!result.isSuccess()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
-
         return ResponseEntity.ok(result.getValue());
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProductType(@PathVariable UUID id){
        Result<ProductTypeDto> result = productTypeService.deleteProductType(id);
        if(!result.isSuccess()){
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
        }
-
         return ResponseEntity.ok(result.getValue());
     }
 }
