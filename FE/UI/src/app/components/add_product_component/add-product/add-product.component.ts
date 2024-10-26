@@ -19,7 +19,7 @@ export class AddProductComponent {
       picture: [null],
       color: ["", Validators.required],
       size: ["", Validators.required],
-      sex: ["", Validators.required],
+      sex: [""], // Премахваме Validators.required
       manufacturer: ["", Validators.required],
       model: ["", Validators.required],
       name: ["", Validators.required],
