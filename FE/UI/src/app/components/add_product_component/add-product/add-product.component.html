@@ -1,54 +1,66 @@
 <div class="add-product-container">
-  <form [formGroup]="addProductForm" (ngSubmit)="submitForm()" enctype="multipart/form-data">
-    <mat-form-field appearance="fill">
-      <mat-label>Product Name</mat-label>
-      <input matInput formControlName="name" required />
-    </mat-form-field>
+  <div class="icon">
+    <fa-icon [icon]="faBoxOpen" style="color: #009d34"></fa-icon>
+  </div>
+  <h2>Add New Product</h2>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Manufacturer</mat-label>
-      <input matInput formControlName="manufacturer" />
-    </mat-form-field>
+  <form [formGroup]="addProductForm" (ngSubmit)="submitForm()">
+    <div>
+      <label>Product Name</label>
+      <input formControlName="name" type="text" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Model</mat-label>
-      <input matInput formControlName="model" />
-    </mat-form-field>
+    <div>
+      <label>Manufacturer</label>
+      <input formControlName="manufacturer" type="text" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Category</mat-label>
-      <mat-select formControlName="category" required>
-        <mat-option *ngFor="let category of categories" [value]="category">
-          {{ category }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+      <label>Model</label>
+      <input formControlName="model" type="text" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Price</mat-label>
-      <input matInput type="number" formControlName="price" required />
-    </mat-form-field>
+    <div>
+      <label>Category</label>
+      <select formControlName="category">
+        <option value="">Select Category</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{category}}
+        </option>
+      </select>
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Color</mat-label>
-      <input matInput formControlName="color" />
-    </mat-form-field>
+    <div>
+      <label>Price</label>
+      <input formControlName="price" type="number" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Size</mat-label>
-      <input matInput type="number" formControlName="size" />
-    </mat-form-field>
+    <div>
+      <label>Color</label>
+      <input formControlName="color" type="text" />
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Sex</mat-label>
-      <mat-select formControlName="sex">
-        <mat-option value="male">Male</mat-option>
-        <mat-option value="female">Female</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div>
+      <label>Size</label>
+      <input formControlName="size" type="number" />
+    </div>
 
-    <input type="file" (change)="onFileChange($event)" />
+    <div>
+      <label>Sex</label>
+      <select formControlName="sex">
+        <option value="">Select Sex</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
 
-    <button mat-raised-button color="primary" type="submit">Add Product</button>
+    <div>
+      <label>Product Image</label>
+      <input type="file" (change)="onFileChange($event)" />
+    </div>
+
+    <button type="submit" [disabled]="addProductForm.invalid">Add Product</button>
   </form>
+
+  <p class="error-message">{{ errorMessage }}</p>
 </div>

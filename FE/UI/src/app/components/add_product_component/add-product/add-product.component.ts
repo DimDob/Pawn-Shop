@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "../../main_page_component/main-page/enums/Category";
-
+import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 @Component({
   selector: "app-add-product",
   templateUrl: "./add-product.component.html",
@@ -11,18 +11,20 @@ export class AddProductComponent {
   // Създаваме форма за добавяне на продукт
   addProductForm: FormGroup;
   categories = Object.values(Category);
+  errorMessage: string = "";
+  public faBoxOpen = faBoxOpen;
 
   constructor(private fb: FormBuilder) {
     this.addProductForm = this.fb.group({
       picture: [null],
-      color: [""],
-      size: [""],
-      sex: [""],
-      manufacturer: [""],
-      model: [""],
-      name: [""],
-      category: [""],
-      price: [""]
+      color: ["", Validators.required],
+      size: ["", Validators.required],
+      sex: ["", Validators.required],
+      manufacturer: ["", Validators.required],
+      model: ["", Validators.required],
+      name: ["", Validators.required],
+      category: ["", Validators.required],
+      price: ["", [Validators.required, Validators.min(0)]]
     });
   }
 
