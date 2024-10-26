@@ -1,18 +1,20 @@
 // UI\src\app\components\header_component\header\header.component.ts
 
-import { Component } from "@angular/core";
+import { Component, ViewEncapsulation } from "@angular/core";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { SearchService } from "../../../shared/services/search.service";
+import { Category } from "../../main_page_component/main-page/enums/Category";
 
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"]
+  styleUrls: ["./header.component.scss"],
+  encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent {
-  public categories = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
+  public categories = Object.values(Category);
   public searchTerm = "";
 
   public cartItemCount = 0;

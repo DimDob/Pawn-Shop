@@ -23,7 +23,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   public products: Products[];
   public filteredProducts: Products[];
-  public categories: Category[] = [Category.ELECTRONICS, Category.CLOTHING, Category.JEWELRY, Category.ART, Category.OTHER];
+  public categories = Object.values(Category);
   public selectedCategory: Category | "" = ""; 
   public searchTerm = "";
 

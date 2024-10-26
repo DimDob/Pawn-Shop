@@ -15,7 +15,11 @@
     <div class="category-dropdown">
       <mat-form-field appearance="outline" class="category-field">
         <mat-label style="color: #ffffff">Category</mat-label>
-        <mat-select (selectionChange)="onCategoryChange($event.value)">
+        <mat-select
+          (selectionChange)="onCategoryChange($event.value)"
+          #categorySelect
+          [panelClass]="'custom-select-panel'"
+          disableOptionCentering>
           <mat-option value="">All</mat-option>
           <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
         </mat-select>

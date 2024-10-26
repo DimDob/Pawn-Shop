@@ -13,20 +13,22 @@
 
   .search-bar {
     flex: 1;
-    max-width: 400px;
+    max-width: 500px;
     margin: 0 16px;
 
     .search-field {
       width: 100%;
+      font-size: 16px;
     }
   }
 
   .category-dropdown {
-    width: 200px;
+    width: 250px;
     margin: 0 16px;
 
     .category-field {
       width: 100%;
+      font-size: 16px;
     }
   }
 
@@ -101,26 +103,46 @@
   .mat-mdc-form-field-subscript-wrapper {
     display: none;
   }
-}
 
-::ng-deep .mat-mdc-select-panel {
-  background: white;
+  .custom-select-panel {
+    margin-top: 4px !important;
+    min-width: calc(100% + 12px) !important;
+    transform: translateX(-6px) !important;
 
-  .mat-mdc-option {
-    color: rgba(0, 0, 0, 0.87) !important;
-
-    &:hover {
-      background: rgba(0, 157, 52, 0.1);
+    .mdc-list {
+      padding: 0 !important;
     }
 
-    &.mat-mdc-option-active {
-      background: rgba(0, 157, 52, 0.2);
+    .mat-mdc-option {
+      min-height: 48px !important;
+      padding: 0 16px;
+      color: rgba(0, 0, 0, 0.87) !important;
+      font-size: 16px;
+
+      &:hover {
+        background: rgba(0, 157, 52, 0.1);
+      }
+
+      &.mat-mdc-option-active {
+        background: rgba(0, 157, 52, 0.2);
+      }
     }
+  }
+
+  .mat-mdc-select {
+    .mat-mdc-select-trigger {
+      height: 100%;
+    }
+  }
+
+  .mat-mdc-form-field-infix {
+    min-height: 48px !important;
   }
 }
 
 // header.component.scss
 .mat-toolbar {
+  height: 70px !important;
   background-color: #009d34 !important;
   color: white !important;
 }
