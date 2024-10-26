@@ -12,11 +12,11 @@ import { SearchService } from "../../../shared/services/search.service";
   styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent {
-  public categories: string[] = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
-  public searchTerm: string = "";
+  public categories = ["Electronics", "Clothes", "Jewelry", "Art", "Other"];
+  public searchTerm = "";
 
-  cartItemCount: number = 0;
-  isCartPage: boolean = false;
+  cartItemCount = 0;
+  isCartPage = false;
 
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService) {
     this.cartService.items$.subscribe(items => {
