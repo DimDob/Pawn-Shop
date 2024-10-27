@@ -36,7 +36,9 @@ public class ProductType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+
+    // private UUID id; // original solution
+    private long id; // temporary solution // remove later
 
     @Column(unique = true, nullable = false, length = PRODUCT_TYPE_NAME_MAX_LENGTH)
     private String name;
