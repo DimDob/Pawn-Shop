@@ -26,15 +26,36 @@ export class AuthService {
 
     return this.http.post<AuthResponse>(endpoint, credentials, { headers }).pipe(
       tap(response => {
-        localStorage.setItem(this.tokenKey, response.token);
-        this.currentUser = {
-          loginUsername: response.username,
-          isAdmin: response.isAdmin
-        };
-        console.log("Успешен вход:", response);
+        console.log('Пълен отговор от сървъра:', response);
+        if (response && response.token) {
+          localStorage.setItem(this.tokenKey, response.token);
+          console.log('Токенът е запазен:', response.token);
+        }
+        if (response && response.token) {
+          localStorage.setItem(this.tokenKey, response.token);
+          this.currentUser = {
+            loginUsername: response.username,
+            isAdmin: response.isAdmin
+          };
+          console.log("Токенът е запазен в localStorage");
+        } else {
+          console.error("Не е получен токен от сървъра");
+        }
       }),
       catchError(this.handleError)
     );
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
   }
 
   private handleError(error: HttpErrorResponse) {
