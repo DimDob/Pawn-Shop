@@ -4,6 +4,7 @@ import { Component, OnInit } from "@angular/core";
 import { CartService } from "./cart.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { Router } from "@angular/router";
+import { signal, computed } from "@angular/core";
 
 @Component({
   selector: "app-cart-page",
@@ -11,24 +12,26 @@ import { Router } from "@angular/router";
   styleUrls: ["./cart-page.component.scss"]
 })
 export class CartPageComponent implements OnInit {
-  cartItems: { product: Products; quantity: number }[] = [];
-  totalCost: number = 0;
+  cartItems = signal<{ product: Products; quantity: number }[]>([]);
+
+  totalCost = computed(() => this.cartItems().reduce((total, item) => total + item.product.price * item.quantity, 0));
 
   constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.cartService.items$.subscribe(items => {
-      this.cartItems = items;
-      this.calculateTotal();
+      this.cartItems.set(items);
     });
   }
 
   increaseQuantity(productId: number) {
-    this.cartService.updateQuantity(productId, this.getQuantity(productId) + 1);
+    const currentQuantity = this.getQuantity(productId);
+    this.cartService.updateQuantity(productId, currentQuantity + 1);
   }
 
   decreaseQuantity(productId: number) {
-    this.cartService.updateQuantity(productId, this.getQuantity(productId) - 1);
+    const currentQuantity = this.getQuantity(productId);
+    this.cartService.updateQuantity(productId, currentQuantity - 1);
   }
 
   removeItem(productId: number) {
@@ -36,12 +39,8 @@ export class CartPageComponent implements OnInit {
   }
 
   getQuantity(productId: number): number {
-    const item = this.cartItems.find(item => item.product.id === productId);
+    const item = this.cartItems().find(item => item.product.id === productId);
     return item ? item.quantity : 0;
-  }
-
-  calculateTotal() {
-    this.totalCost = this.cartService.getTotalCost();
   }
 
   purchase() {

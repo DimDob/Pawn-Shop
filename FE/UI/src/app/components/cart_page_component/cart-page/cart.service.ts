@@ -13,15 +13,18 @@ export class CartService {
 
   constructor() {}
 
-  addToCart(product: Products, quantity: number = 1) {
+  public addToCart(product: Products, quantity: number = 1) {
     const items = this.itemsSubject.getValue();
     const existingItem = items.find(item => item.product.id === product.id);
+    // Update quantity if the product is already in the cart
+    let updatedItems;
     if (existingItem) {
-      existingItem.quantity += quantity;
+      updatedItems = items.map(item => (item.product.id === product.id ? { ...item, quantity: item.quantity + quantity } : item));
     } else {
-      items.push({ product, quantity });
+      // Add new item if the product is not in the cart
+      updatedItems = [...items, { product, quantity }];
     }
-    this.itemsSubject.next(items);
+    this.itemsSubject.next(updatedItems);
   }
 
   removeFromCart(productId: number) {
