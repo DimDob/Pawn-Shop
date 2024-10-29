@@ -1,9 +1,8 @@
-// UI\src\app\app-routing.module.ts
+// UI/src/app/app-routing.module.ts
 
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { authGuard } from "./shared/guards/auth.guard";
-import { adminGuard } from "./shared/guards/admin.guard";
 
 import { MainPageComponent } from "./components/main_page_component/main-page/main-page.component";
 import { AuthComponent } from "./components/auth_component/auth/auth.component";
@@ -28,6 +27,7 @@ const routes: Routes = [
   {
     path: "auth",
     component: AuthComponent,
+    canActivateChild: [authGuard],
     children: [
       { path: "", redirectTo: "login", pathMatch: "full" },
       { path: "login", component: AuthComponent },
