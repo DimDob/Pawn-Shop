@@ -7,6 +7,7 @@ import userTemplate from "./templates/user.template";
 import { NgForm } from "@angular/forms";
 import { AuthService } from "../../../app.service";
 import { environment } from "../../../../environments/environment";
+import { Router } from "@angular/router";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
@@ -32,7 +33,11 @@ export class LoginComponent {
 
   public loginError: string | null = null;
 
-  constructor(private elementRef: ElementRef, private authService: AuthService) {}
+  constructor(
+    private elementRef: ElementRef,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngAfterViewInit() {
     this.isEverythingInitialized = true;

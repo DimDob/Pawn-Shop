@@ -2,48 +2,56 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { PrismData } from "./components/auth_component/login/login_interfaces.ts/prismData";
 import { Injectable } from "@angular/core";
-import { Observable, of, throwError } from "rxjs";
+import { Observable, of, throwError, EMPTY, finalize } from "rxjs";
 import { User } from "./components/auth_component/login/login_interfaces.ts/User";
 import { AuthResponse } from "./components/auth_component/login/login_interfaces.ts/AuthResponse";
 import { tap, catchError } from "rxjs/operators";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class AuthService {
   private tokenKey = "auth_token";
-  currentUser: User;
+  private isAuthenticating = false;
 
-  constructor(private http: HttpClient) {
-    this.currentUser = { id: 1, loginUsername: "" };
-  }
+  constructor(private http: HttpClient) {}
 
   handleUserLoging(credentials: { email: string, password: string }, endpoint: string): Observable<AuthResponse> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
+    if (this.isAuthenticating) {
+      console.log('AuthService: Login already in progress');
+      return EMPTY;
+    }
 
-    return this.http.post<AuthResponse>(endpoint, credentials, { headers }).pipe(
+    this.isAuthenticating = true;
+    console.log('AuthService: Starting login process');
+
+    return this.http.post<AuthResponse>(endpoint, credentials).pipe(
       tap(response => {
-        console.log('Пълен отговор от сървъра:', response);
-        if (response && response.token) {
+        console.log('AuthService: Login successful');
+        if (response?.token) {
           localStorage.setItem(this.tokenKey, response.token);
-          console.log('Токенът е запазен:', response.token);
-        }
-        if (response && response.token) {
-          localStorage.setItem(this.tokenKey, response.token);
-          this.currentUser = {
-            loginUsername: response.username,
-            isAdmin: response.isAdmin
-          };
-          console.log("Токенът е запазен в localStorage");
-        } else {
-          console.error("Не е получен токен от сървъра");
         }
       }),
-      catchError(this.handleError)
+      catchError(error => {
+        console.error('AuthService: Login error', error);
+        return throwError(() => error);
+      }),
+      finalize(() => {
+        console.log('AuthService: Login process completed');
+        this.isAuthenticating = false;
+      })
     );
+  }
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem(this.tokenKey);
+    console.log('AuthService: Checking login status:', !!token);
+    return !!token;
+  }
+
+  logout(): void {
+    console.log('AuthService: Logging out');
+    localStorage.removeItem(this.tokenKey);
   }
 
   getToken(): string | null {
@@ -90,14 +98,5 @@ export class AuthService {
 
   verifyPassword(currentPassword: string): Observable<boolean> {
     return of(currentPassword === "correct_password");
-  }
-
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem(this.tokenKey);
-  }
-
-  logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    this.currentUser = { loginUsername: "" };
   }
 }

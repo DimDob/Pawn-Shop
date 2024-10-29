@@ -17,21 +17,76 @@ import { MyAccountComponent } from "./components/my_account_component/my-account
 import { AddProductComponent } from "./components/add_product_component/add-product/add-product.component";
 import { MyProductsComponent } from "./components/my_products_component/my-products/my-products.component";
 import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
+import { RegisterComponent } from "./components/auth_component/register/register.component";
+
 const routes: Routes = [
-  { path: "", redirectTo: "auth/login", pathMatch: "full" },
-  { path: "product/:id", component: DetailsPageComponent },
-  { path: "auth", redirectTo: "auth/login", pathMatch: "full" },
-  { path: "auth/login", component: AuthComponent },
-  { path: "my-account", component: MyAccountComponent },
-  { path: "pawn-shop/main-page", component: MainPageComponent },
-  { path: "auth/change-password/:userId", component: ChangePasswordComponent },
-  { path: "cart", component: CartPageComponent },
-  { path: "success", component: SuccessPageComponent },
+  {
+    path: "",
+    redirectTo: "auth/login",
+    pathMatch: "full"
+  },
+  {
+    path: "auth",
+    component: AuthComponent,
+    children: [
+      { path: "", redirectTo: "login", pathMatch: "full" },
+      { path: "login", component: AuthComponent },
+      { path: "register", component: RegisterComponent },
+      {
+        path: "change-password/:userId",
+        component: ChangePasswordComponent,
+        canActivate: [authGuard]
+      }
+    ]
+  },
+  {
+    path: "pawn-shop",
+    children: [
+      {
+        path: "main-page",
+        component: MainPageComponent,
+        canActivate: [authGuard]
+      }
+    ]
+  },
+  {
+    path: "cart",
+    component: CartPageComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "success",
+    component: SuccessPageComponent,
+    canActivate: [authGuard]
+  },
   { path: "about-us", component: AboutUsComponent },
   { path: "contacts", component: ContactsComponent },
-  { path: "add-product", component: AddProductComponent },
-  { path: "my-products", component: MyProductsComponent },
-  { path: "edit-product/:id", component: EditProductComponent }
+  {
+    path: "add-product",
+    component: AddProductComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "my-products",
+    component: MyProductsComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "edit-product/:id",
+    component: EditProductComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "product/:id",
+    component: DetailsPageComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "my-account",
+    component: MyAccountComponent,
+    canActivate: [authGuard]
+  },
+  { path: "**", redirectTo: "auth/login" } // Маршрут за 404 страници
 ];
 
 @NgModule({

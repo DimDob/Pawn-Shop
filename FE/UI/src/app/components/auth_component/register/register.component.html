@@ -5,11 +5,11 @@
     <label>E-mail</label>
   </div>
   <div class="field-wrapper">
-    <input [(ngModel)]="prismDetails.signupPassword" type="password" name="password" placeholder="password" required />
+    <input type="password" name="password" placeholder="password" [(ngModel)]="prismDetails.signupPassword" required />
     <label>Password</label>
   </div>
   <div class="field-wrapper">
-    <input [(ngModel)]="prismDetails.signupPassword2" type="password" name="re-entered-password" placeholder="Please re-enter the password" autocomplete="new-password" [appMatchPasswords]="prismDetails.signupPassword" #reEnteredPasswordInput="ngModel" ngModel required />
+    <input type="password" name="reEnteredPassword" placeholder="Please re-enter the password" [(ngModel)]="prismDetails.signupPassword2" [appMatchPasswords]="prismDetails.signupPassword" #reEnteredPasswordInput="ngModel" autocomplete="new-password" required />
     <label>Please re-enter the password</label>
   </div>
 
