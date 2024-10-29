@@ -42,8 +42,10 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 import { AddProductComponent } from "./components/add_product_component/add-product/add-product.component";
 import { MyProductsComponent } from "./components/my_products_component/my-products/my-products.component";
 import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
+import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
+
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule],
   providers: [AuthService, ChangePasswordService, SeedDataService, SearchService],
   bootstrap: [AppComponent]

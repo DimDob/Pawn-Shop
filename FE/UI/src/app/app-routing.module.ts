@@ -17,6 +17,7 @@ import { AddProductComponent } from "./components/add_product_component/add-prod
 import { MyProductsComponent } from "./components/my_products_component/my-products/my-products.component";
 import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
 import { RegisterComponent } from "./components/auth_component/register/register.component";
+import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
 
 const routes: Routes = [
   {
@@ -86,7 +87,7 @@ const routes: Routes = [
     component: MyAccountComponent,
     canActivate: [authGuard]
   },
-  { path: "**", redirectTo: "auth/login" } // Маршрут за 404 страници
+  { path: "**", component: NotFoundComponent }
 ];
 
 @NgModule({
