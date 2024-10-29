@@ -19,32 +19,37 @@ export class CartPageComponent implements OnInit {
   constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
-    this.cartService.items$.subscribe(items => {
-      this.cartItems.set(items);
+    this.cartService.items$.subscribe({
+      next: items => {
+        this.cartItems.set(items);
+      },
+      error: error => {
+        console.error("Failed to load cart items", error);
+      }
     });
   }
 
-  increaseQuantity(productId: number) {
+  increaseQuantity = (productId: number) => {
     const currentQuantity = this.getQuantity(productId);
     this.cartService.updateQuantity(productId, currentQuantity + 1);
-  }
+  };
 
-  decreaseQuantity(productId: number) {
+  decreaseQuantity = (productId: number) => {
     const currentQuantity = this.getQuantity(productId);
     this.cartService.updateQuantity(productId, currentQuantity - 1);
-  }
+  };
 
-  removeItem(productId: number) {
+  removeItem = (productId: number) => {
     this.cartService.removeFromCart(productId);
-  }
+  };
 
-  getQuantity(productId: number): number {
+  getQuantity = (productId: number): number => {
     const item = this.cartItems().find(item => item.product.id === productId);
     return item ? item.quantity : 0;
-  }
+  };
 
-  purchase() {
+  purchase = () => {
     this.cartService.clearCart();
     this.router.navigate(["/success"]);
-  }
+  };
 }
