@@ -18,4 +18,6 @@ export interface PrismData {
   forgotPassword?: boolean;
   changedPassword?: string;
   changedPassword2?: string;
+  email?: string;
+  password?: string;
 }

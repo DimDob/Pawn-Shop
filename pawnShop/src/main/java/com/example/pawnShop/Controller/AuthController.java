@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
     @Autowired
     private final AuthService authService;
@@ -27,6 +28,7 @@ public class AuthController {
         }
         return ResponseEntity.ok(result.getValue());
     }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@Validated @RequestBody RegisterRequestDto registerRequestDto){
         Result<Boolean> result = authService.register(registerRequestDto);
@@ -35,6 +37,4 @@ public class AuthController {
         }
         return ResponseEntity.ok("You are registered!!!");
     }
-
-
 }

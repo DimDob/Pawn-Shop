@@ -47,16 +47,25 @@ export class AuthComponent {
   }
 
   handleUserLoging(userCredentials: PrismData) {
-    const loginEndpoint = "/auth/login";
-    this.prismDetails = userCredentials;
+    const loginEndpoint = "auth/login";
 
-    this.authService.handleUserLoging(userCredentials, `${this.host}${loginEndpoint}`).subscribe({
-      next: () => {
-        // Routing will work when BE is started & running
+    const credentials = {
+      email: userCredentials.loginUsername,
+      password: userCredentials.loginPassword
+    };
+
+    console.log('Опит за вход с:', credentials);
+
+    this.authService.handleUserLoging(credentials, `${this.host}/${loginEndpoint}`).subscribe({
+      next: (response) => {
+        console.log('Успешна автентикация:', response);
         this.router.navigate(["/pawn-shop/main-page"]);
       },
-      error: err => {
-        console.error("Login failed", err);
+      error: (error) => {
+        console.error("Грешка при вход:", error.message);
+        if (this.loginComponent) {
+          this.loginComponent.loginError = "Грешен имейл или парола";
+        }
       }
     });
   }

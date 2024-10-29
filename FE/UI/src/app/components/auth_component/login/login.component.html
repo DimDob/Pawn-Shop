@@ -44,7 +44,7 @@
       <div class="content">
         <h2>Login</h2>
 
-        <form #logingForm="ngForm" (submit)="showThankYou(); (false)">
+        <form #logingForm="ngForm" (ngSubmit)="userLogingOnClick(logingForm)">
           <div class="field-wrapper">
             <input [(ngModel)]="prismDetails.loginUsername" type="text" name="username" placeholder="username" required />
             <label>username</label>
@@ -56,8 +56,13 @@
           </div>
 
           <div class="field-wrapper">
-            <input (click)="userLogingOnClick(logingForm)" type="submit" value="Submit" />
+            <input type="submit" value="Submit" />
           </div>
+
+          <div *ngIf="loginError" class="error-message">
+            {{ loginError }}
+          </div>
+
           <span class="psw" (click)="showForgotPasswordOnClick()">Forgot Password?</span>
         </form>
       </div>

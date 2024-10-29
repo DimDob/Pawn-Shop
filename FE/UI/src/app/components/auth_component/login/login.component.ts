@@ -17,7 +17,6 @@ export class LoginComponent {
   public showForgotPasswordOnClick = () => this.showForgotPassword();
   public userLogingOnClick = (form: any) => {
     this.userLoging(form);
-    this.clearUserDetails();
   };
   @Output() userCheck: EventEmitter<User> = new EventEmitter<User>();
 
@@ -30,6 +29,8 @@ export class LoginComponent {
   public isEverythingInitialized: boolean;
 
   public prism: HTMLElement;
+
+  public loginError: string | null = null;
 
   constructor(private elementRef: ElementRef, private authService: AuthService) {}
 
@@ -49,9 +50,18 @@ export class LoginComponent {
   }
 
   userLoging(logingForm: NgForm) {
+    this.loginError = null;
+
     if (logingForm.invalid) {
+      this.loginError = "Моля, попълнете всички полета";
       return;
     }
+
+    const credentials = {
+      email: this.prismDetails.loginUsername,
+      password: this.prismDetails.loginPassword
+    };
+
     this.userCredentials.emit(this.prismDetails);
   }
 

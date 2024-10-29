@@ -1,22 +1,58 @@
 // UI\src\app\app.service.ts
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { PrismData } from "./components/auth_component/login/login_interfaces.ts/prismData";
 import { Injectable } from "@angular/core";
-import { Observable, of } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { User } from "./components/auth_component/login/login_interfaces.ts/User";
+import { AuthResponse } from "./components/auth_component/login/login_interfaces.ts/AuthResponse";
+import { tap, catchError } from "rxjs/operators";
+
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
+  private tokenKey = "auth_token";
   currentUser: User;
+
   constructor(private http: HttpClient) {
-    this.currentUser = { id: 1, loginUsername: "testUser" };
+    this.currentUser = { id: 1, loginUsername: "" };
   }
 
-  handleUserLoging(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
-    return this.http.post<PrismData>(endpoint, {
-      ...userCredentials
+  handleUserLoging(credentials: { email: string, password: string }, endpoint: string): Observable<AuthResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
     });
+
+    return this.http.post<AuthResponse>(endpoint, credentials, { headers }).pipe(
+      tap(response => {
+        localStorage.setItem(this.tokenKey, response.token);
+        this.currentUser = {
+          loginUsername: response.username,
+          isAdmin: response.isAdmin
+        };
+        console.log("Успешен вход:", response);
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('Пълна грешка:', error);
+
+    let errorMessage = 'Възникна грешка при заявката';
+
+    if (error.status === 0) {
+      errorMessage = 'Няма връзка със сървъра. Моля, проверете дали back-end сървърът работи.';
+    } else if (error.status === 403) {
+      errorMessage = 'Грешни credentials или CORS проблем';
+    } else if (error.error instanceof ErrorEvent) {
+      errorMessage = `Клиентска грешка: ${error.error.message}`;
+    } else {
+      errorMessage = `Сървърна грешка: ${error.status}. Съобщение: ${error.message}`;
+    }
+
+    return throwError(() => new Error(errorMessage));
   }
 
   handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
@@ -30,8 +66,17 @@ export class AuthService {
       ...userCredentials
     });
   }
+
   verifyPassword(currentPassword: string): Observable<boolean> {
-    // Simulate checking the password
-    return of(currentPassword === "correct_password"); // Replace with actual password verification logic
+    return of(currentPassword === "correct_password");
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem(this.tokenKey);
+  }
+
+  logout(): void {
+    localStorage.removeItem(this.tokenKey);
+    this.currentUser = { loginUsername: "" };
   }
 }
