@@ -1,9 +1,9 @@
 <!-- UI\src\app\app.component.html -->
 
 <div class="app-container">
-  <app-header></app-header>
+  <app-header *ngIf="authService.isLoggedIn()"></app-header>
   <div class="content">
     <router-outlet></router-outlet>
   </div>
-  <app-footer></app-footer>
+  <app-footer *ngIf="authService.isLoggedIn()"></app-footer>
 </div>
