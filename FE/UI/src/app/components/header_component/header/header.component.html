@@ -33,7 +33,19 @@
         <button mat-menu-item [routerLink]="['/my-products']">My Products</button>
       </mat-menu>
 
-      <button mat-button [routerLink]="['/my-account']">My Account</button>
+      <!-- Заменяме стария My Account бутон с нов с падащо меню -->
+      <button mat-button [matMenuTriggerFor]="accountMenu">My Account</button>
+      <mat-menu #accountMenu="matMenu">
+        <button mat-menu-item [routerLink]="['/my-account']">
+          <mat-icon>person</mat-icon>
+          <span>My Account</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+
       <button mat-button [routerLink]="['/contacts']">Contacts</button>
       <button mat-icon-button [routerLink]="['/cart']">
         <mat-icon [style.color]="isCartPage ? 'purple' : 'white'">shopping_cart</mat-icon>

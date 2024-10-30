@@ -138,6 +138,16 @@
   .mat-mdc-form-field-infix {
     min-height: 48px !important;
   }
+
+  .mat-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .mat-icon {
+      margin-right: 8px;
+    }
+  }
 }
 
 // header.component.scss

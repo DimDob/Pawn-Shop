@@ -8,7 +8,7 @@ import { AuthResponse } from "./components/auth_component/login/login_interfaces
 import { tap, catchError } from "rxjs/operators";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthService {
   private tokenKey = "auth_token";
@@ -16,28 +16,28 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  handleUserLoging(credentials: { email: string, password: string }, endpoint: string): Observable<AuthResponse> {
+  handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
     if (this.isAuthenticating) {
-      console.log('AuthService: Login already in progress');
+      console.log("AuthService: Login already in progress");
       return EMPTY;
     }
 
     this.isAuthenticating = true;
-    console.log('AuthService: Starting login process');
+    console.log("AuthService: Starting login process");
 
     return this.http.post<AuthResponse>(endpoint, credentials).pipe(
       tap(response => {
-        console.log('AuthService: Login successful');
+        console.log("AuthService: Login successful");
         if (response?.token) {
           localStorage.setItem(this.tokenKey, response.token);
         }
       }),
       catchError(error => {
-        console.error('AuthService: Login error', error);
+        console.error("AuthService: Login error", error);
         return throwError(() => error);
       }),
       finalize(() => {
-        console.log('AuthService: Login process completed');
+        console.log("AuthService: Login process completed");
         this.isAuthenticating = false;
       })
     );
@@ -45,12 +45,12 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     const token = localStorage.getItem(this.tokenKey);
-    console.log('AuthService: Checking login status:', !!token);
+    console.log("AuthService: Checking login status:", !!token);
     return !!token;
   }
 
   logout(): void {
-    console.log('AuthService: Logging out');
+    console.log("AuthService: Logging out");
     localStorage.removeItem(this.tokenKey);
   }
 
@@ -61,20 +61,20 @@ export class AuthService {
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     });
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.error('Пълна грешка:', error);
+    console.error("Пълна грешка:", error);
 
-    let errorMessage = 'Възникна грешка при заявката';
+    let errorMessage = "Възникна грешка при заявката";
 
     if (error.status === 0) {
-      errorMessage = 'Няма връзка със сървъра. Моля, проверете дали back-end сървърът работи.';
+      errorMessage = "Няма връзка със сървъра. Моля, проверете дали back-end сървърът работи.";
     } else if (error.status === 403) {
-      errorMessage = 'Грешни credentials или CORS проблем';
+      errorMessage = "Грешни credentials или CORS проблем";
     } else if (error.error instanceof ErrorEvent) {
       errorMessage = `Клиентска грешка: ${error.error.message}`;
     } else {

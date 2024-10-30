@@ -5,7 +5,7 @@ import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
 import { SearchService } from "../../../shared/services/search.service";
 import { Category } from "../../main_page_component/main-page/enums/Category";
-
+import { AuthService } from "../../../app.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -19,7 +19,7 @@ export class HeaderComponent {
   public cartItemCount = 0;
   isCartPage = false;
 
-  constructor(private cartService: CartService, private router: Router, private searchService: SearchService) {
+  constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService) {
     this.cartService.items$.subscribe(items => {
       this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
     });
@@ -35,6 +35,11 @@ export class HeaderComponent {
 
   onSearch() {
     this.searchService.setSearchTerm(this.searchTerm);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(["/auth/login"]);
   }
 
   // Добавени методи за навигация към Add Product и My Products
