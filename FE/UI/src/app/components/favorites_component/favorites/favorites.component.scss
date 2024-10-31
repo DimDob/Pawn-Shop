@@ -54,13 +54,21 @@
       flex-direction: column;
       gap: 10px;
       padding: 0 15px;
+      min-width: 150px;
 
       button {
         display: flex;
         align-items: center;
-        gap: 5px;
+        justify-content: flex-start;
+        gap: 8px;
+        width: 100%;
+
+        span {
+          margin-left: 5px;
+        }
 
         mat-icon {
+          width: 24px;
           font-size: 24px;
           color: #009d34;
         }

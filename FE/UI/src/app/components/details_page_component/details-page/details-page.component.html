@@ -3,8 +3,9 @@
   <div class="image-container">
     <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
     <button mat-icon-button (click)="toggleFavorite()" class="favorite-button">
-      <mat-icon [style.color]="isFavorite ? '#ff4081' : '#666'">favorite</mat-icon>
+      <mat-icon [style.color]="isFavorite ? '#ff4081' : '#009d34'">favorite</mat-icon>
     </button>
+    <!-- Use color #666 or #009d34 -->
   </div>
   <h2>{{ product.manufacturer }} {{ product.model }}</h2>
 
