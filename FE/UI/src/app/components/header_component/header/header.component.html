@@ -1,7 +1,7 @@
 <!-- UI\src\app\components\header_component\header\header.component.html -->
 <mat-toolbar color="primary">
   <div class="header-content">
-    <a [routerLink]="['/pawn-shop/main-page']">
+    <a (click)="resetAndNavigateHome()" style="cursor: pointer;">
       <img src="../../../../favicon.ico" alt="Icon" class="header-icon" />
     </a>
     <div class="search-bar">
