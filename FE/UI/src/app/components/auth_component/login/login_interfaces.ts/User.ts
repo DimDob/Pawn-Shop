@@ -5,8 +5,8 @@ import { PrismData } from "./prismData";
  * The interface describes whether the pawn shop
  */
 export interface User {
-  id?: number;
+  id: string;
   loginUsername: string;
-  isAdmin?: boolean;
-  isEmployee?: boolean;
+  isAdmin: boolean;
+  isEmployee: boolean;
 }

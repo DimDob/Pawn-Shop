@@ -68,6 +68,24 @@
       background-color: darken(#009d34, 5%);
     }
   }
+
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px 0;
+
+    .edit-button {
+      background-color: #009d34;
+      margin-right: 10px;
+    }
+
+    .delete-button {
+      background-color: #ff4081;
+      margin-left: 10px;
+    }
+  }
 }
 
 .modal {

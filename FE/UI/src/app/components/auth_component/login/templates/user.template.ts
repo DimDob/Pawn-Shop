@@ -3,10 +3,10 @@ import { User } from "../login_interfaces.ts/User";
 import prismDetailsTemplate from "./prismDetails.template";
 
 const userTemplate: User = {
-  id: undefined,
+  id: "",
   loginUsername: "",
-  isAdmin: undefined,
-  isEmployee: undefined
+  isAdmin: false,
+  isEmployee: false
 };
 
 export default userTemplate;

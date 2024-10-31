@@ -26,11 +26,19 @@ export class DetailsPageComponent implements OnInit {
     if (idParam) {
       const id = idParam;
       this.product = this.seedDataService.products.find(product => product.id === id);
+
+      const currentUser = this.authService.getCurrentUser();
+      console.log("Current product:", this.product);
+      console.log("Current user:", currentUser);
+      console.log("Current user ID:", currentUser.id);
+
       if (!this.product) {
         console.error(`Product with id ${id} not found.`);
         this.router.navigate(["/not-found"]);
       } else {
-        this.isOwner = this.product.ownerId === this.authService.getCurrentUser().id;
+        console.log("Product owner ID:", this.product.ownerId);
+        this.isOwner = Boolean(currentUser.id && this.product.ownerId === currentUser.id);
+        console.log("Is owner check result:", this.isOwner);
         this.isFavorite = this.favoritesService.isProductFavorite(this.product.id);
       }
     } else {

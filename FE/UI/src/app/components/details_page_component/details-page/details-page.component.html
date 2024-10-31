@@ -7,7 +7,7 @@
     </button>
     <!-- Use color #666 or #009d34 -->
   </div>
-  <h2>{{ product.manufacturer }} {{ product.model }}</h2>
+  <h2>{{ product.name }}</h2>
 
   <p *ngIf="product.size !== undefined">Size: {{ product.size }}</p>
   <p *ngIf="product.color">Color: {{ product.color }}</p>
@@ -23,8 +23,10 @@
 
   <button (click)="addToCart()" *ngIf="!isOwner">Add to Cart</button>
 
-  <button (click)="editProduct()" *ngIf="isOwner">Edit</button>
-  <button (click)="confirmDelete()" *ngIf="isOwner">Delete</button>
+  <div class="button-container" *ngIf="isOwner">
+    <button class="edit-button" (click)="editProduct()">Edit</button>
+    <button class="delete-button" (click)="confirmDelete()">Delete</button>
+  </div>
 
   <!-- Модален прозорец за потвърждение -->
   <div class="modal" *ngIf="showConfirmModal">

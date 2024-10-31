@@ -72,7 +72,7 @@ export class AuthService {
     let errorMessage = "Възникна грешка при заявката";
 
     if (error.status === 0) {
-      errorMessage = "Няма връзка със сървъра. Мо��я, проверете дали back-end сървърът работи.";
+      errorMessage = "Няма връзка със сървъра. Моя, проверете дали back-end сървърът работи.";
     } else if (error.status === 403) {
       errorMessage = "Грешни credentials или CORS проблем";
     } else if (error.error instanceof ErrorEvent) {
@@ -101,30 +101,36 @@ export class AuthService {
   }
 
   getCurrentUser(): User {
-    // Get the token
+    console.log("AuthService: Getting current user");
     const token = this.getToken();
+
     if (!token) {
+      console.log("AuthService: No token found");
       return {
-        id: 0,
+        id: "",
         loginUsername: "",
         isAdmin: false,
         isEmployee: false
       };
     }
 
-    // Decode the JWT token
     try {
       const tokenPayload = JSON.parse(atob(token.split(".")[1]));
-      return {
-        id: tokenPayload.id,
-        loginUsername: tokenPayload.username,
-        isAdmin: tokenPayload.isAdmin,
-        isEmployee: tokenPayload.isEmployee
+      console.log("AuthService: Token payload:", tokenPayload);
+
+      const user = {
+        id: tokenPayload.userId || "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+        loginUsername: tokenPayload.username || tokenPayload.email,
+        isAdmin: tokenPayload.isAdmin || false,
+        isEmployee: tokenPayload.isEmployee || false
       };
+
+      console.log("AuthService: Returning user:", user);
+      return user;
     } catch (error) {
-      console.error("Error decoding the token:", error);
+      console.error("AuthService: Error decoding token:", error);
       return {
-        id: 0,
+        id: "",
         loginUsername: "",
         isAdmin: false,
         isEmployee: false
