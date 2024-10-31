@@ -13,27 +13,20 @@ import { AuthService } from "../../../app.service";
 export class DetailsPageComponent implements OnInit {
   product: Products | undefined;
   quantity = 1;
-  isOwner = false; // Добавено
-  showConfirmModal = false; // Добавено
-
-  constructor(
-    private route: ActivatedRoute,
-    private seedDataService: SeedDataService,
-    private cartService: CartService,
-    private router: Router,
-    private authService: AuthService // Добавено
-  ) {}
+  isOwner = false;
+  showConfirmModal = false;
+  constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService, private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get("id");
     if (idParam) {
-      const id = +idParam;
+      const id = idParam;
       this.product = this.seedDataService.products.find(product => product.id === id);
       if (!this.product) {
         console.error(`Product with id ${id} not found.`);
         this.router.navigate(["/not-found"]);
       } else {
-        // this.isOwner = this.product.ownerId === this.authService.currentUser.id;//fix this later
+        // this.isOwner = this.product.ownerId === this.authService.currentUser.id;
       }
     } else {
       console.error("No id parameter provided.");

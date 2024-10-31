@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations"; 
 import { of } from "rxjs";
 import { Products } from "./Interfaces/Products";
 import { PageEvent } from "@angular/material/paginator";
+import { Category } from "./enums/Category";
 
 describe("MainPageComponent", () => {
   let component: MainPageComponent;
@@ -26,20 +27,8 @@ describe("MainPageComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [MainPageComponent],
-      imports: [
-        HttpClientTestingModule,
-        BrowserAnimationsModule, // Включваме BrowserAnimationsModule за анимациите
-        MatFormFieldModule,
-        MatInputModule,
-        MatPaginatorModule,
-        MatSelectModule
-      ],
-      providers: [
-        SeedDataService,
-        CartService,
-        SearchService,
-        provideRouter([]) // Използваме provideRouter вместо RouterTestingModule
-      ]
+      imports: [HttpClientTestingModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSelectModule],
+      providers: [SeedDataService, CartService, SearchService, provideRouter([])]
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainPageComponent);
@@ -50,8 +39,8 @@ describe("MainPageComponent", () => {
 
     // Мокаем данни за продукти
     seedDataService.products = [
-      { id: 1, name: "Product1", category: "Electronics", model: "Model1", price: 100, picture: "", color: "", size: 0, sex: "male", manufacturer: "" },
-      { id: 2, name: "Product2", category: "Clothes", model: "Model2", price: 200, picture: "", color: "", size: 0, sex: "female", manufacturer: "" }
+      { id: "1", name: "Product1", category: Category.ELECTRONICS, model: "Model1", price: 100, picture: "", color: "", size: 0, sex: "male", manufacturer: "" },
+      { id: "2", name: "Product2", category: Category.CLOTHING, model: "Model2", price: 200, picture: "", color: "", size: 0, sex: "female", manufacturer: "" }
     ] as Products[];
     component.products = seedDataService.products;
     component.filteredProducts = component.products;
@@ -71,10 +60,10 @@ describe("MainPageComponent", () => {
   });
 
   it("should filter products based on selected category", () => {
-    component.selectedCategory = "Electronics";
+    component.selectedCategory = Category.ELECTRONICS;
     component.applyFilters();
     expect(component.filteredProducts.length).toBe(1);
-    expect(component.filteredProducts[0].category).toBe("Electronics");
+    expect(component.filteredProducts[0].category).toBe(Category.ELECTRONICS);
   });
 
   it("should sort products by price ascending", () => {
@@ -98,13 +87,13 @@ describe("MainPageComponent", () => {
 
   it("should navigate to product details page", () => {
     spyOn(component["router"], "navigate");
-    component.goToDetails(1);
-    expect(component["router"].navigate).toHaveBeenCalledWith(["/product", 1]);
+    component.goToDetails("1");
+    expect(component["router"].navigate).toHaveBeenCalledWith(["/product", "1"]);
   });
 
   it("should add a product to the cart", () => {
     spyOn(cartService, "addToCart");
-    const product: Products = { id: 1, name: "Product1", category: "Electronics", model: "Model1", price: 100, picture: "", color: "", size: 0, sex: "male", manufacturer: "" };
+    const product: Products = { id: "1", name: "Product1", category: Category.ELECTRONICS, model: "Model1", price: 100, picture: "", color: "", size: 0, sex: "male", manufacturer: "" };
     component.requestPurchase(product);
     expect(cartService.addToCart).toHaveBeenCalledWith(product);
   });

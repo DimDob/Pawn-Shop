@@ -23,19 +23,19 @@ export class CartPageComponent implements OnInit {
     });
   }
 
-  increaseQuantity(productId: number) {
+  increaseQuantity(productId: string) {
     this.cartService.updateQuantity(productId, this.getQuantity(productId) + 1);
   }
 
-  decreaseQuantity(productId: number) {
+  decreaseQuantity(productId: string) {
     this.cartService.updateQuantity(productId, this.getQuantity(productId) - 1);
   }
 
-  removeItem(productId: number) {
+  removeItem(productId: string) {
     this.cartService.removeFromCart(productId);
   }
 
-  getQuantity(productId: number): number {
+  getQuantity(productId: string): number {
     const item = this.cartItems.find(item => item.product.id === productId);
     return item ? item.quantity : 0;
   }

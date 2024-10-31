@@ -24,13 +24,13 @@ export class CartService {
     this.itemsSubject.next(items);
   }
 
-  removeFromCart(productId: number) {
+  removeFromCart(productId: string) {
     let items = this.itemsSubject.getValue();
     items = items.filter(item => item.product.id !== productId);
     this.itemsSubject.next(items);
   }
 
-  updateQuantity(productId: number, quantity: number) {
+  updateQuantity(productId: string, quantity: number) {
     const items = this.itemsSubject.getValue();
     const item = items.find(item => item.product.id === productId);
     if (item) {

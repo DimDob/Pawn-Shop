@@ -18,7 +18,7 @@ export class MyProductsComponent implements OnInit {
     this.products = this.seedDataService.products;
   }
 
-  goToDetails(id: number) {
+  goToDetails(id: string) {
     this.router.navigate(["/product", id]);
   }
 }

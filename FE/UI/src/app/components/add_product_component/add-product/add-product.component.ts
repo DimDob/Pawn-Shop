@@ -18,7 +18,7 @@ export class AddProductComponent implements OnInit {
   public faBoxOpen = faBoxOpen;
 
   isEditMode = false;
-  productId: number | null = null;
+  productId: string | null = null;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private seedDataService: SeedDataService, private router: Router) {
     this.addProductForm = this.fb.group({
@@ -47,7 +47,7 @@ export class AddProductComponent implements OnInit {
       const idParam = params.get("id");
       if (idParam) {
         this.isEditMode = true;
-        this.productId = +idParam;
+        this.productId = idParam;
         this.loadProductData();
       }
     });
@@ -77,9 +77,14 @@ export class AddProductComponent implements OnInit {
         this.seedDataService.products[index] = { id: this.productId, ...formData };
       }
     } else {
-      const newId = this.seedDataService.products.length + 1;
-      const ownerId = 1; // Предполагаме, че текущият потребител има ID 1
-      this.seedDataService.products.push({ id: newId, ownerId, ...formData });
+      const newId = Date.now().toString();
+      const ownerId = "1";
+      this.seedDataService.products.push({
+        id: newId,
+        ownerId,
+        ...formData,
+        category: formData.category as Category
+      });
     }
 
     this.router.navigate(["/pawn-shop/main-page"]);

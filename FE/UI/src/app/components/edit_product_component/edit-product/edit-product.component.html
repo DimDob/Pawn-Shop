@@ -61,6 +61,11 @@
       <input type="file" (change)="onFileChange($event)" />
     </div>
 
+    <div>
+      <label>ID</label>
+      <input formControlName="id" type="text" [value]="productId" readonly />
+    </div>
+
     <button type="submit" [disabled]="editProductForm.invalid">Save Changes</button>
   </form>
 

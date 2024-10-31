@@ -18,7 +18,7 @@ export class EditProductComponent implements OnInit {
   errorMessage = "";
   public faEdit = faEdit;
 
-  productId: number | null = null;
+  productId: string | null = null;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private seedDataService: SeedDataService, private router: Router) {
     this.editProductForm = this.fb.group({
@@ -45,7 +45,7 @@ export class EditProductComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const idParam = params.get("id");
       if (idParam) {
-        this.productId = +idParam;
+        this.productId = idParam;
         this.loadProductData();
       } else {
         console.error("No product ID provided.");

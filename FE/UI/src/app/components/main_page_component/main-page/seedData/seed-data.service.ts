@@ -1,6 +1,7 @@
 // UI\src\app\components\main_page_component\main-page\seedData\seed-data.component.ts
 import { Injectable } from "@angular/core";
 import { Products } from "../Interfaces/Products";
+import { Category } from "../enums/Category";
 
 @Injectable({
   providedIn: "root"
@@ -8,7 +9,7 @@ import { Products } from "../Interfaces/Products";
 export class SeedDataService {
   public products: Products[] = [
     {
-      id: 1,
+      id: "a1b2c3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -16,23 +17,25 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     },
     {
-      id: 2,
+      id: "b2c3d4e5-f6a7-8b9c-0d1e-f2a3b4c5d6e7",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
       sex: "female",
       manufacturer: "Adidas",
       model: "Spezial Shoes",
-      name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      name: "Adidas Spezial Shoes g",
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 3,
+      id: "c3d4e5f6-a7b8-9c0d-1e2f-a3b4c5d6e7f8",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -40,11 +43,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 300
+      category: Category.CLOTHING,
+      price: 300,
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
     },
     {
-      id: 4,
+      id: "d4e5f6a7-b8c9-0d1e-2f3a-b4c5d6e7f8a9",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -52,11 +56,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
     },
     {
-      id: 5,
+      id: "e5f6a7b8-c9d0-1e2f-3a4b-c5d6e7f8a9b0",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -64,11 +69,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 500
+      category: Category.CLOTHING,
+      price: 500,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     },
     {
-      id: 6,
+      id: "f6a7b8c9-d0e1-2f3a-4b5c-d6e7f8a9b0c1",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -76,11 +82,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 7,
+      id: "a7b8c9d0-e1f2-3a4b-5c6d-e7f8a9b0c1d2",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -88,11 +95,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
     },
     {
-      id: 8,
+      id: "b8c9d0e1-f2a3-4b5c-6d7e-f8a9b0c1d2e3",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -100,11 +108,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
     },
     {
-      id: 9,
+      id: "c9d0e1f2-a3b4-5c6d-7e8f-a9b0c1d2e3f4",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -112,11 +121,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 10,
+      id: "d0e1f2a3-b4c5-6d7e-8f9a-b0c1d2e3f4a5",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -124,11 +134,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     },
     {
-      id: 11,
+      id: "e1f2a3b4-c5d6-7e8f-9a0b-c1d2e3f4a5b6",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -136,11 +147,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
     },
     {
-      id: 12,
+      id: "f2a3b4c5-d6e7-8f9a-0b1c-d2e3f4a5b6c7",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -148,11 +160,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
     },
     {
-      id: 13,
+      id: "a3b4c5d6-e7f8-9a0b-1c2d-e3f4a5b6c7d8",
       picture: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Arduino_ftdi_chip-1.jpg",
       color: "blue",
       size: 12,
@@ -160,11 +173,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Electronics",
-      price: 100
+      category: Category.ELECTRONICS,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 14,
+      id: "b4c5d6e7-f8a9-0b1c-2d3e-f4a5b6c7d8e9",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -172,11 +186,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     },
     {
-      id: 15,
+      id: "c5d6e7f8-a9b0-1c2d-3e4f-a5b6c7d8e9f0",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -184,11 +199,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
     },
     {
-      id: 16,
+      id: "d6e7f8a9-b0c1-2d3e-4f5a-b6c7d8e9f0a1",
       picture: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Fingerring_av_guld_med_rubin_och_rosenstenar%2C_1700-tal_-_Hallwylska_museet_-_110184.tif/lossy-page1-1280px-Fingerring_av_guld_med_rubin_och_rosenstenar%2C_1700-tal_-_Hallwylska_museet_-_110184.tif.jpg",
       color: "black",
       size: 13,
@@ -196,11 +212,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Jewelry",
-      price: 100
+      category: Category.JEWELRY,
+      price: 100,
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
     },
     {
-      id: 17,
+      id: "e7f8a9b0-c1d2-3e4f-5a6b-c7d8e9f0a1b2",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -208,11 +225,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 18,
+      id: "f8a9b0c1-d2e3-4f5a-6b7c-d8e9f0a1b2c3",
       picture: "https://upload.wikimedia.org/wikipedia/en/3/34/GuyLaroche_suit_jacket_83d40m_black_skirt_late1959_early1960_vintage.png",
       color: "black",
       size: 13,
@@ -220,11 +238,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     },
     {
-      id: 19,
+      id: "a9b0c1d2-e3f4-5a6b-7c8d-e9f0a1b2c3d4",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -232,11 +251,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
     },
     {
-      id: 20,
+      id: "b0c1d2e3-f4a5-6b7c-8d9e-f0a1b2c3d4e5",
       picture: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
       color: "black",
       size: 13,
@@ -244,11 +264,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Art",
-      price: 100
+      category: Category.ART,
+      price: 100,
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
     },
     {
-      id: 21,
+      id: "c1d2e3f4-a5b6-7c8d-9e0f-a1b2c3d4e5f6",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -256,11 +277,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 22,
+      id: "d2e3f4a5-b6c7-8d9e-0f1a-b2c3d4e5f6a7",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -268,11 +290,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     },
     {
-      id: 23,
+      id: "e3f4a5b6-c7d8-9e0f-1a2b-c3d4e5f6a7b8",
       picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
       color: "blue",
       size: 12,
@@ -280,11 +303,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
     },
     {
-      id: 24,
+      id: "f4a5b6c7-d8e9-0f1a-2b3c-d4e5f6a7b8c9",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -292,11 +316,12 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
     },
     {
-      id: 25,
+      id: "a5b6c7d8-e9f0-1a2b-3c4d-e5f6a7b8c9d0",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "blue",
       size: 12,
@@ -304,11 +329,12 @@ export class SeedDataService {
       manufacturer: "Nike",
       model: "Air Max",
       name: "Nike Air Max",
-      category: "Other",
-      price: 100
+      category: Category.OTHER,
+      price: 100,
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
     },
     {
-      id: 26,
+      id: "b6c7d8e9-f0a1-2b3c-4d5e-f6a7b8c9d0e1",
       picture: "https://www.shutterstock.com/shutterstock/photos/2283568895/display_1500/stock-photo-white-sneaker-with-light-blue-accents-on-a-white-isolated-background-sport-concept-men-s-fashion-2283568895.jpg",
       color: "black",
       size: 13,
@@ -316,8 +342,9 @@ export class SeedDataService {
       manufacturer: "Adidas",
       model: "Spezial Shoes",
       name: "Adidas Spezial Shoes",
-      category: "Clothes",
-      price: 100
+      category: Category.CLOTHING,
+      price: 100,
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
     }
   ];
 }

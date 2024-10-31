@@ -24,7 +24,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public products: Products[];
   public filteredProducts: Products[];
   public categories = Object.values(Category);
-  public selectedCategory: Category | "" = ""; 
+  public selectedCategory: Category | "" = "";
   public searchTerm = "";
 
   public selectedSortOption = "";
@@ -62,7 +62,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  goToDetails(id: number) {
+  goToDetails(id: string) {
     this.router.navigate(["/product", id]);
   }
 
