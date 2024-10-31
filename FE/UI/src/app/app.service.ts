@@ -72,7 +72,7 @@ export class AuthService {
     let errorMessage = "Възникна грешка при заявката";
 
     if (error.status === 0) {
-      errorMessage = "Няма връзка със сървъра. Моля, проверете дали back-end сървърът работи.";
+      errorMessage = "Няма връзка със сървъра. Мо��я, проверете дали back-end сървърът работи.";
     } else if (error.status === 403) {
       errorMessage = "Грешни credentials или CORS проблем";
     } else if (error.error instanceof ErrorEvent) {
@@ -98,5 +98,37 @@ export class AuthService {
 
   verifyPassword(currentPassword: string): Observable<boolean> {
     return of(currentPassword === "correct_password");
+  }
+
+  getCurrentUser(): User {
+    // Get the token
+    const token = this.getToken();
+    if (!token) {
+      return {
+        id: 0,
+        loginUsername: "",
+        isAdmin: false,
+        isEmployee: false
+      };
+    }
+
+    // Decode the JWT token
+    try {
+      const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+      return {
+        id: tokenPayload.id,
+        loginUsername: tokenPayload.username,
+        isAdmin: tokenPayload.isAdmin,
+        isEmployee: tokenPayload.isEmployee
+      };
+    } catch (error) {
+      console.error("Error decoding the token:", error);
+      return {
+        id: 0,
+        loginUsername: "",
+        isAdmin: false,
+        isEmployee: false
+      };
+    }
   }
 }

@@ -26,7 +26,7 @@ export class DetailsPageComponent implements OnInit {
         console.error(`Product with id ${id} not found.`);
         this.router.navigate(["/not-found"]);
       } else {
-        // this.isOwner = this.product.ownerId === this.authService.currentUser.id;
+        this.isOwner = this.product.ownerId === this.authService.getCurrentUser().id;
       }
     } else {
       console.error("No id parameter provided.");
