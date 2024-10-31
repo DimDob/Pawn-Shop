@@ -9,6 +9,7 @@ import { SearchService } from "../../../shared/services/search.service";
 import { Subscription } from "rxjs";
 import { PageEvent } from "@angular/material/paginator";
 import { Category } from "./enums/Category";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: "app-main-page",
@@ -28,6 +29,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public searchTerm = "";
 
   public selectedSortOption = "";
+
+  public isGridView = true;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -110,5 +113,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.paginateProducts();
+  }
+
+  toggleView() {
+    console.log("Превключване на изглед");
+    this.isGridView = !this.isGridView;
   }
 }

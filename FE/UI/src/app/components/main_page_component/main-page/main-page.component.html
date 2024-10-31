@@ -1,48 +1,61 @@
 <!-- UI\src\app\components\main_page_component\main-page\main-page.component.html -->
 <div class="main-page-container">
   <div class="controls">
-    <mat-form-field appearance="fill">
-      <mat-label>Sort</mat-label>
-      <mat-select [(value)]="selectedSortOption" (selectionChange)="applyFilters()">
-        <mat-option value="">No Sorting</mat-option>
-        <mat-option value="priceAsc">Price (Low to High)</mat-option>
-        <mat-option value="priceDesc">Price (High to Low)</mat-option>
-        <mat-option value="nameAsc">Name (A-Z)</mat-option>
-        <mat-option value="nameDesc">Name (Z-A)</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="filter-controls">
+      <mat-form-field appearance="fill">
+        <mat-label>Sort</mat-label>
+        <mat-select [(value)]="selectedSortOption" (selectionChange)="applyFilters()">
+          <mat-option value="">No Sorting</mat-option>
+          <mat-option value="priceAsc">Price (Low to High)</mat-option>
+          <mat-option value="priceDesc">Price (High to Low)</mat-option>
+          <mat-option value="nameAsc">Name (A-Z)</mat-option>
+          <mat-option value="nameDesc">Name (Z-A)</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Category</mat-label>
-      <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
-        <mat-option value="">All</mat-option>
-        <mat-option *ngFor="let category of categories" [value]="category">
-          {{ category }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
+          <mat-option value="">All</mat-option>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="view-toggle">
+      <button mat-button (click)="toggleView()" [class.active]="isGridView">
+        <span>Grid</span>
+      </button>
+      <button mat-button (click)="toggleView()" [class.active]="!isGridView">
+        <span>List</span>
+      </button>
+    </div>
   </div>
 
-  <div class="container">
+  <div class="container" [class.list-view]="!isGridView">
     <div class="card" *ngFor="let product of paginatedProducts" (click)="goToDetails(product.id)">
       <div class="imgBx">
         <img [src]="product?.picture" alt="{{ product?.manufacturer }} {{ product?.model }}" />
       </div>
-
       <div class="contentBx">
-        <h2>{{ product?.manufacturer }} {{ product?.model }}</h2>
-
-        <div class="size" *ngIf="product?.size !== undefined">
-          <h3>Size :</h3>
-          <span>{{ product?.size }}</span>
+        <div class="product-info">
+          <h2>{{ product?.manufacturer }} {{ product?.model }}</h2>
+          <div class="details">
+            <div class="size" *ngIf="product?.size !== undefined">
+              <h3>Size:</h3>
+              <span>{{ product?.size }}</span>
+            </div>
+            <div class="color" *ngIf="product?.color">
+              <h3>Color:</h3>
+              <span>{{ product?.color }}</span>
+            </div>
+          </div>
         </div>
-
-        <div class="color" *ngIf="product?.color">
-          <h3>Color :</h3>
-          <span>{{ product?.color }}</span>
+        <div class="action-area">
+          <a class="buy-now" (click)="requestPurchase(product); $event.stopPropagation()">Buy Now</a>
         </div>
-
-        <a class="buy-now" (click)="requestPurchase(product); $event.stopPropagation()">Buy Now</a>
       </div>
     </div>
   </div>

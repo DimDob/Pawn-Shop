@@ -19,8 +19,48 @@ body {
 }
 
 .controls {
-  padding-left: 20px; // Добавяме отстъп отляво
-  margin-top: 20px; // Добавяме малко отстъп отгоре за по-добър вид
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  margin: 20px 20px -24px 20px;
+
+  .filter-controls {
+    display: flex;
+    gap: 20px;
+  }
+}
+
+.view-toggle {
+  display: flex;
+  gap: 10px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 8px 16px;
+
+    mat-icon {
+      font-size: 20px;
+    }
+
+    span {
+      font-size: 14px;
+    }
+
+    &.active {
+      color: #1bbfe9;
+      background: rgba(27, 191, 233, 0.1);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
 }
 
 .container {
@@ -29,6 +69,75 @@ body {
   grid-gap: 20px;
   padding: 20px;
   flex: 1;
+
+  &.list-view {
+    grid-template-columns: 1fr;
+
+    .card {
+      flex-direction: row;
+      height: 150px;
+      padding: 15px;
+
+      .imgBx {
+        width: 180px;
+        min-width: 180px;
+        height: 100%;
+        margin-right: 20px;
+
+        img {
+          max-height: 120px;
+        }
+      }
+
+      .contentBx {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0;
+
+        .product-info {
+          flex: 1;
+          text-align: left;
+
+          h2 {
+            margin-bottom: 10px;
+          }
+
+          .details {
+            display: flex;
+            gap: 20px;
+          }
+        }
+
+        .action-area {
+          margin-left: 20px;
+        }
+
+        .size,
+        .color {
+          opacity: 1;
+          visibility: visible;
+          padding: 0;
+
+          h3,
+          span {
+            display: inline;
+          }
+        }
+      }
+
+      &:hover .contentBx {
+        height: 100%;
+      }
+
+      &:hover:before {
+        clip-path: circle(70% at 50% 50%);
+      }
+    }
+  }
 }
 
 .container .card {
