@@ -60,5 +60,5 @@
     </div>
   </div>
 
-  <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[25]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
+  <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
 </div>

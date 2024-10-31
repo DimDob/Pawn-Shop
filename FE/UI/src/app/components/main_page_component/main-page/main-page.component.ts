@@ -17,7 +17,7 @@ import { MatIconModule } from "@angular/material/icon";
   styleUrls: ["./main-page.component.scss"]
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  pageSize = 25;
+  pageSize = Number(localStorage.getItem("preferredPageSize")) || 25;
   pageIndex = 0;
   totalProducts = 0;
   paginatedProducts: Products[] = [];
@@ -110,8 +110,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(event: PageEvent) {
+    console.log("Промяна на страница", event);
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+    localStorage.setItem("preferredPageSize", event.pageSize.toString());
     this.paginateProducts();
   }
 
