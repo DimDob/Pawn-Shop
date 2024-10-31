@@ -19,7 +19,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "b2c3d4e5-f6a7-8b9c-0d1e-f2a3b4c5d6e7",
@@ -32,7 +34,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes g",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 2,
+      isRunOutOfStock: false
     },
     {
       id: "c3d4e5f6-a7b8-9c0d-1e2f-a3b4c5d6e7f8",
@@ -45,7 +49,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 300,
-      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d",
+      quantityInStock: 3,
+      isRunOutOfStock: false
     },
     {
       id: "d4e5f6a7-b8c9-0d1e-2f3a-b4c5d6e7f8a9",
@@ -58,7 +64,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "e5f6a7b8-c9d0-1e2f-3a4b-c5d6e7f8a9b0",
@@ -71,7 +79,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 500,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "f6a7b8c9-d0e1-2f3a-4b5c-d6e7f8a9b0c1",
@@ -84,7 +94,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "a7b8c9d0-e1f2-3a4b-5c6d-e7f8a9b0c1d2",
@@ -97,7 +109,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d",
+      quantityInStock: 2,
+      isRunOutOfStock: false
     },
     {
       id: "b8c9d0e1-f2a3-4b5c-6d7e-f8a9b0c1d2e3",
@@ -110,7 +124,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149",
+      quantityInStock: 2,
+      isRunOutOfStock: false
     },
     {
       id: "c9d0e1f2-a3b4-5c6d-7e8f-a9b0c1d2e3f4",
@@ -123,7 +139,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 3,
+      isRunOutOfStock: false
     },
     {
       id: "d0e1f2a3-b4c5-6d7e-8f9a-b0c1d2e3f4a5",
@@ -136,7 +154,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 4,
+      isRunOutOfStock: false
     },
     {
       id: "e1f2a3b4-c5d6-7e8f-9a0b-c1d2e3f4a5b6",
@@ -149,7 +169,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d",
+      quantityInStock: 4,
+      isRunOutOfStock: false
     },
     {
       id: "f2a3b4c5-d6e7-8f9a-0b1c-d2e3f4a5b6c7",
@@ -162,7 +184,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149",
+      quantityInStock: 2,
+      isRunOutOfStock: false
     },
     {
       id: "a3b4c5d6-e7f8-9a0b-1c2d-e3f4a5b6c7d8",
@@ -175,7 +199,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.ELECTRONICS,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 3,
+      isRunOutOfStock: false
     },
     {
       id: "b4c5d6e7-f8a9-0b1c-2d3e-f4a5b6c7d8e9",
@@ -188,7 +214,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 2,
+      isRunOutOfStock: false
     },
     {
       id: "c5d6e7f8-a9b0-1c2d-3e4f-a5b6c7d8e9f0",
@@ -201,7 +229,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d",
+      quantityInStock: 3,
+      isRunOutOfStock: false
     },
     {
       id: "d6e7f8a9-b0c1-2d3e-4f5a-b6c7d8e9f0a1",
@@ -214,7 +244,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.JEWELRY,
       price: 100,
-      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "e7f8a9b0-c1d2-3e4f-5a6b-c7d8e9f0a1b2",
@@ -227,7 +259,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "f8a9b0c1-d2e3-4f5a-6b7c-d8e9f0a1b2c3",
@@ -240,7 +274,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "a9b0c1d2-e3f4-5a6b-7c8d-e9f0a1b2c3d4",
@@ -253,7 +289,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "b0c1d2e3-f4a5-6b7c-8d9e-f0a1b2c3d4e5",
@@ -266,7 +304,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.ART,
       price: 100,
-      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "c1d2e3f4-a5b6-7c8d-9e0f-a1b2c3d4e5f6",
@@ -279,7 +319,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "d2e3f4a5-b6c7-8d9e-0f1a-b2c3d4e5f6a7",
@@ -292,7 +334,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "e3f4a5b6-c7d8-9e0f-1a2b-c3d4e5f6a7b8",
@@ -305,7 +349,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d"
+      ownerId: "795d12bd-6f24-4167-930e-8632ce112f3d",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "f4a5b6c7-d8e9-0f1a-2b3c-d4e5f6a7b8c9",
@@ -318,7 +364,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149"
+      ownerId: "f3028111-6be5-4930-86ca-d4c62418f149",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "a5b6c7d8-e9f0-1a2b-3c4d-e5f6a7b8c9d0",
@@ -331,7 +379,9 @@ export class SeedDataService {
       name: "Nike Air Max",
       category: Category.OTHER,
       price: 100,
-      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8"
+      ownerId: "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     },
     {
       id: "b6c7d8e9-f0a1-2b3c-4d5e-f6a7b8c9d0e1",
@@ -344,7 +394,9 @@ export class SeedDataService {
       name: "Adidas Spezial Shoes",
       category: Category.CLOTHING,
       price: 100,
-      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002"
+      ownerId: "464e2747-a872-41fa-aafd-6cc4957a7002",
+      quantityInStock: 1,
+      isRunOutOfStock: false
     }
   ];
 }
