@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { FavoritesService } from "../../../services/favorites.service";
+import { FavoritesService } from "./favorites.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 

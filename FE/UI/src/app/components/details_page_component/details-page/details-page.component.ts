@@ -5,7 +5,7 @@ import { Products } from "../../main_page_component/main-page/Interfaces/Product
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { AuthService } from "../../../app.service";
-import { FavoritesService } from "../../../services/favorites.service";
+import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 @Component({
   selector: "app-details-page",
   templateUrl: "./details-page.component.html",
@@ -72,10 +72,10 @@ export class DetailsPageComponent implements OnInit {
   toggleFavorite() {
     if (this.product) {
       if (this.isFavorite) {
-        console.log("DetailsPageComponent: Премахване от любими");
+        console.log("DetailsPageComponent: Removing from favorites");
         this.favoritesService.removeFromFavorites(this.product.id);
       } else {
-        console.log("DetailsPageComponent: Добавяне към любими");
+        console.log("DetailsPageComponent: Adding to favorites");
         this.favoritesService.addToFavorites(this.product);
       }
       this.isFavorite = !this.isFavorite;

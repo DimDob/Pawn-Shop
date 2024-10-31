@@ -6,7 +6,7 @@ import { filter } from "rxjs/operators";
 import { SearchService } from "../../../shared/services/search.service";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { AuthService } from "../../../app.service";
-import { FavoritesService } from "../../../services/favorites.service";
+import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
