@@ -39,13 +39,13 @@
 
       h2 {
         margin: 0 0 10px;
-        color: #333;
+        color: #009d34;
         font-size: 1.25rem;
       }
 
       p {
         margin: 5px 0;
-        color: #666;
+        color: #009d34;
       }
     }
 
@@ -62,6 +62,7 @@
 
         mat-icon {
           font-size: 24px;
+          color: #009d34;
         }
 
         &:first-child {
@@ -71,6 +72,10 @@
         &:last-child {
           color: #f44336;
         }
+
+        &:last-child mat-icon {
+          color: #f44336;
+        }
       }
     }
   }
@@ -78,7 +83,7 @@
   .no-favorites {
     text-align: center;
     padding: 50px;
-    color: #666;
+    color: #009d34;
     font-size: 1.2rem;
   }
 }

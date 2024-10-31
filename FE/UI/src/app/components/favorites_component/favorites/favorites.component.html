@@ -13,9 +13,8 @@
         <button mat-icon-button (click)="addToCart(product); $event.stopPropagation()">
           <mat-icon>shopping_cart</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="removeFromFavorites(product.id); $event.stopPropagation()">
+        <button mat-icon-button (click)="removeFromFavorites(product.id); $event.stopPropagation()">
           <mat-icon>delete</mat-icon>
-          <span>Delete</span>
         </button>
       </div>
     </div>

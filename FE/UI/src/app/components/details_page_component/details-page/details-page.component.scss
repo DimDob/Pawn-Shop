@@ -4,40 +4,79 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+
+  .image-container {
+    position: relative;
+    margin-bottom: 20px;
+
+    img {
+      max-width: 300px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .favorite-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 50%;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  h2 {
+    color: #009d34;
+    margin-bottom: 20px;
+  }
+
+  p {
+    color: #009d34;
+    margin: 8px 0;
+  }
+
+  .quantity {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    input {
+      width: 60px;
+      padding: 8px;
+      border: 1px solid #009d34;
+      border-radius: 4px;
+    }
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #009d34;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+
+    &:hover {
+      background-color: darken(#009d34, 5%);
+    }
+  }
 }
 
-.details-container img {
-  max-width: 300px;
-  margin-bottom: 20px;
-}
-
-.details-container h2 {
-  margin-bottom: 10px;
-}
-
-.details-container p {
-  margin: 5px 0;
-}
-
-.quantity {
-  margin: 20px 0;
-}
-
-.quantity input {
-  width: 60px;
-  margin-left: 10px;
-}
-
-button {
-  padding: 10px 20px;
-}
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачен фон */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,4 +86,11 @@ button {
   background-color: white;
   padding: 20px;
   border-radius: 5px;
+}
+
+.quantity > label:nth-child(1) {
+  color: #009d34;
+}
+#quantity {
+  color: #009d34;
 }
