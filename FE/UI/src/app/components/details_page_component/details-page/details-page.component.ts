@@ -5,6 +5,7 @@ import { Products } from "../../main_page_component/main-page/Interfaces/Product
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { AuthService } from "../../../app.service";
+import { FavoritesService } from "../../../services/favorites.service";
 @Component({
   selector: "app-details-page",
   templateUrl: "./details-page.component.html",
@@ -15,7 +16,10 @@ export class DetailsPageComponent implements OnInit {
   quantity = 1;
   isOwner = false;
   showConfirmModal = false;
-  constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService, private router: Router, private authService: AuthService) {}
+  isFavorite = false;
+  constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService, private router: Router, private authService: AuthService, private favoritesService: FavoritesService) {
+    console.log("DetailsPageComponent: Инициализиране");
+  }
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get("id");
@@ -27,6 +31,7 @@ export class DetailsPageComponent implements OnInit {
         this.router.navigate(["/not-found"]);
       } else {
         this.isOwner = this.product.ownerId === this.authService.getCurrentUser().id;
+        this.isFavorite = this.favoritesService.isProductFavorite(this.product.id);
       }
     } else {
       console.error("No id parameter provided.");
@@ -62,5 +67,18 @@ export class DetailsPageComponent implements OnInit {
 
   cancelDelete() {
     this.showConfirmModal = false;
+  }
+
+  toggleFavorite() {
+    if (this.product) {
+      if (this.isFavorite) {
+        console.log("DetailsPageComponent: Премахване от любими");
+        this.favoritesService.removeFromFavorites(this.product.id);
+      } else {
+        console.log("DetailsPageComponent: Добавяне към любими");
+        this.favoritesService.addToFavorites(this.product);
+      }
+      this.isFavorite = !this.isFavorite;
+    }
   }
 }

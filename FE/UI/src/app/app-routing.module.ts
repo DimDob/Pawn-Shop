@@ -18,6 +18,7 @@ import { MyProductsComponent } from "./components/my_products_component/my-produ
 import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
 import { RegisterComponent } from "./components/auth_component/register/register.component";
 import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
+import { FavoritesComponent } from "./components/favorites_component/favorites/favorites.component";
 
 const routes: Routes = [
   {
@@ -85,6 +86,11 @@ const routes: Routes = [
   {
     path: "my-account",
     component: MyAccountComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "favorites",
+    component: FavoritesComponent,
     canActivate: [authGuard]
   },
   { path: "**", component: NotFoundComponent }

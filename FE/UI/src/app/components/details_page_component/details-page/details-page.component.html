@@ -3,6 +3,10 @@
   <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
   <h2>{{ product.manufacturer }} {{ product.model }}</h2>
 
+  <button mat-icon-button (click)="toggleFavorite()" class="favorite-button">
+    <mat-icon [style.color]="isFavorite ? 'red' : 'white'">favorite</mat-icon>
+  </button>
+
   <p *ngIf="product.size !== undefined">Size: {{ product.size }}</p>
   <p *ngIf="product.color">Color: {{ product.color }}</p>
   <p *ngIf="product.sex">Sex: {{ product.sex }}</p>

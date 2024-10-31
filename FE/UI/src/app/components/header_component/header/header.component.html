@@ -51,6 +51,10 @@
         <mat-icon [style.color]="isCartPage ? 'purple' : 'white'">shopping_cart</mat-icon>
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </button>
+      <button mat-icon-button [routerLink]="['/favorites']">
+        <mat-icon [style.color]="isFavoritesPage ? 'purple' : 'white'">favorite</mat-icon>
+        <span *ngIf="favoritesCount > 0" class="favorites-count">{{ favoritesCount }}</span>
+      </button>
     </div>
   </div>
 </mat-toolbar>

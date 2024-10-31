@@ -6,6 +6,7 @@ import { filter } from "rxjs/operators";
 import { SearchService } from "../../../shared/services/search.service";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { AuthService } from "../../../app.service";
+import { FavoritesService } from "../../../services/favorites.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -19,13 +20,22 @@ export class HeaderComponent {
   public cartItemCount = 0;
   isCartPage = false;
 
-  constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService) {
+  public favoritesCount = 0;
+  isFavoritesPage = false;
+
+  constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService, private favoritesService: FavoritesService) {
     this.cartService.items$.subscribe(items => {
       this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
     });
 
+    this.favoritesService.favorites$.subscribe(favorites => {
+      console.log("HeaderComponent: Updating favorites count");
+      this.favoritesCount = favorites.length;
+    });
+
     this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(event => {
       this.isCartPage = event.urlAfterRedirects === "/cart";
+      this.isFavoritesPage = event.urlAfterRedirects === "/favorites";
     });
   }
 
@@ -42,5 +52,5 @@ export class HeaderComponent {
     this.router.navigate(["/auth/login"]);
   }
 
-  // Добавени методи за навигация към Add Product и My Products
+  // Added methods for navigation to Add Product and My Products
 }
