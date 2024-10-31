@@ -1,6 +1,6 @@
 // UI\src\app\components\main_page_component\main-page\main-page.component.ts
 
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Products } from "./Interfaces/Products";
 import { SeedDataService } from "./seedData/seed-data.service";
@@ -10,6 +10,7 @@ import { Subscription } from "rxjs";
 import { PageEvent } from "@angular/material/paginator";
 import { Category } from "./enums/Category";
 import { MatIconModule } from "@angular/material/icon";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
   selector: "app-main-page",
@@ -18,7 +19,7 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   pageSize = Number(localStorage.getItem("preferredPageSize")) || 25;
-  pageIndex = 0;
+  pageIndex = Number(localStorage.getItem("currentPageIndex")) || 0;
   totalProducts = 0;
   paginatedProducts: Products[] = [];
 
@@ -34,11 +35,22 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription = new Subscription();
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   constructor(private seedDataService: SeedDataService, private router: Router, private cartService: CartService, private searchService: SearchService) {}
 
   ngOnInit(): void {
+    console.log("Инициализиране на компонента");
     this.products = this.seedDataService.products;
     this.filteredProducts = this.products;
+
+    this.pageSize = Number(localStorage.getItem("preferredPageSize")) || 25;
+    this.pageIndex = Number(localStorage.getItem("currentPageIndex")) || 0;
+
+    console.log("Заредени стойности от localStorage:", {
+      pageSize: this.pageSize,
+      pageIndex: this.pageIndex
+    });
 
     const searchSub = this.searchService.searchTerm$.subscribe(term => {
       this.searchTerm = term.toLowerCase();
@@ -63,6 +75,14 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    console.log("Синхронизиране на paginator");
+    if (this.paginator) {
+      this.paginator.pageIndex = this.pageIndex;
+      this.paginator.pageSize = this.pageSize;
+    }
   }
 
   goToDetails(id: string) {
@@ -99,7 +119,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
     this.filteredProducts = filtered;
     this.totalProducts = filtered.length;
-    this.pageIndex = 0;
+
+    const maxValidPageIndex = Math.ceil(this.totalProducts / this.pageSize) - 1;
+    if (this.pageIndex > maxValidPageIndex) {
+      console.log("Коригиране на индекса на страницата поради филтриране");
+      this.pageIndex = maxValidPageIndex >= 0 ? maxValidPageIndex : 0;
+      localStorage.setItem("currentPageIndex", this.pageIndex.toString());
+
+      if (this.paginator) {
+        this.paginator.pageIndex = this.pageIndex;
+      }
+    }
+
     this.paginateProducts();
   }
 
@@ -110,10 +141,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(event: PageEvent) {
-    console.log("Промяна на страница", event);
+    console.log("Промяна на страница и размер", event);
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+
     localStorage.setItem("preferredPageSize", event.pageSize.toString());
+    localStorage.setItem("currentPageIndex", event.pageIndex.toString());
+
     this.paginateProducts();
   }
 
