@@ -17,6 +17,7 @@ import { ChangePasswordComponent } from "./components/auth_component/change-pass
 import { MatchPasswordsDirective } from "./components/auth_component/directives/password-match.directive";
 import { ChangePasswordService } from "./components/auth_component/change-password/change-password.service";
 import { SeedDataService } from "./components/main_page_component/main-page/seedData/seed-data.service";
+import { ProductService } from "./shared/services/product.service";
 
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
@@ -50,7 +51,7 @@ import { NotificationService } from "./shared/services/notification.service";
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule],
-  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, NotificationService],
+  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, NotificationService, ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

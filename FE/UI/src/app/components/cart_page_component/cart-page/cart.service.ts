@@ -71,6 +71,6 @@ export class CartService {
 
   getTotalCost(): number {
     const items = this.itemsSubject.getValue();
-    return items.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    return items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0);
   }
 }

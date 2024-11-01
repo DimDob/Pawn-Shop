@@ -37,13 +37,14 @@
   <div class="container" [class.list-view]="!isGridView">
     <div class="card" *ngFor="let product of paginatedProducts" (click)="goToDetails(product.id)">
       <div class="imgBx">
-        <img [src]="product?.picture" alt="{{ product?.manufacturer }} {{ product?.model }}" />
+        <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
       </div>
       <div class="contentBx">
         <div class="product-info">
-          <h2>{{ product?.manufacturer }} {{ product?.model }}</h2>
+          <h2>{{ product?.name }} {{ product?.name }}</h2>
+          <div class="price">{{ product?.price | currency }}</div>
           <div class="details">
-            <div class="size" *ngIf="product?.size !== undefined">
+            <div class="size" *ngIf="product?.size">
               <h3>Size:</h3>
               <span>{{ product?.size }}</span>
             </div>

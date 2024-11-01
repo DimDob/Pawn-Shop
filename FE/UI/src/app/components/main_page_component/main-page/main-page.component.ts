@@ -3,7 +3,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Products } from "./Interfaces/Products";
-import { SeedDataService } from "./seedData/seed-data.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { SearchService } from "../../../shared/services/search.service";
 import { Subscription } from "rxjs";
@@ -11,6 +10,7 @@ import { PageEvent } from "@angular/material/paginator";
 import { Category } from "./enums/Category";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator } from "@angular/material/paginator";
+import { ProductService } from "../../../shared/services/product.service";
 
 @Component({
   selector: "app-main-page",
@@ -23,8 +23,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   totalProducts = 0;
   paginatedProducts: Products[] = [];
 
-  public products: Products[];
-  public filteredProducts: Products[];
+  public products: Products[] = [];
+  public filteredProducts: Products[] = [];
   public categories = Object.values(Category);
   public selectedCategory: Category | "" = "";
   public searchTerm = "";
@@ -37,12 +37,49 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private seedDataService: SeedDataService, private router: Router, private cartService: CartService, private searchService: SearchService) {}
+  constructor(private productService: ProductService, private router: Router, private cartService: CartService, private searchService: SearchService) {}
 
   ngOnInit(): void {
     console.log("Инициализиране на компонента");
-    this.products = this.seedDataService.products;
-    this.filteredProducts = this.products;
+
+    const searchSub = this.searchService.searchTerm$.subscribe(term => {
+      this.searchTerm = term.toLowerCase();
+      if (this.products) {
+        this.applyFilters();
+      }
+    });
+    this.subscriptions.add(searchSub);
+
+    const categorySub = this.searchService.selectedCategory$.subscribe(category => {
+      this.selectedCategory = category as Category;
+      if (this.products) {
+        this.applyFilters();
+      }
+    });
+    this.subscriptions.add(categorySub);
+
+    const sortSub = this.searchService.sortOption$.subscribe(option => {
+      this.selectedSortOption = option;
+      if (this.products) {
+        this.applyFilters();
+      }
+    });
+    this.subscriptions.add(sortSub);
+
+    this.productService.getAllProducts().subscribe({
+      next: (products) => {
+        console.log("Получени продукти от API:", products);
+        if (products && products.length > 0) {
+          console.log("Пример за цена на първия продукт:", products[0].price);
+          this.products = products;
+          this.filteredProducts = products;
+          this.applyFilters();
+        }
+      },
+      error: (error) => {
+        console.error("Грешка при зареждане на продукти:", error);
+      }
+    });
 
     this.pageSize = Number(localStorage.getItem("preferredPageSize")) || 25;
     this.pageIndex = Number(localStorage.getItem("currentPageIndex")) || 0;
@@ -51,26 +88,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
       pageSize: this.pageSize,
       pageIndex: this.pageIndex
     });
-
-    const searchSub = this.searchService.searchTerm$.subscribe(term => {
-      this.searchTerm = term.toLowerCase();
-      this.applyFilters();
-    });
-    this.subscriptions.add(searchSub);
-
-    const categorySub = this.searchService.selectedCategory$.subscribe(category => {
-      this.selectedCategory = category as Category;
-      this.applyFilters();
-    });
-    this.subscriptions.add(categorySub);
-
-    const sortSub = this.searchService.sortOption$.subscribe(option => {
-      this.selectedSortOption = option;
-      this.applyFilters();
-    });
-    this.subscriptions.add(sortSub);
-
-    this.applyFilters();
   }
 
   ngOnDestroy(): void {
@@ -94,6 +111,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   applyFilters() {
+    if (!this.products) {
+      console.log("No products to filter");
+      return;
+    }
+
     let filtered = this.products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model?.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
       const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;

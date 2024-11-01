@@ -2,6 +2,7 @@ create table products
 (
     id                  uuid         not null,
     color               varchar(255),
+    condition           varchar(2555),
     is_run_out_of_stock boolean,
     manufacturer        varchar(255) not null,
     model               varchar(255),
@@ -14,6 +15,6 @@ create table products
     sex                 varchar(255),
     size                integer,
     owner_id            uuid         not null,
-    product_type        uuid,
+    category            varchar(255),
     primary key (id)
 )

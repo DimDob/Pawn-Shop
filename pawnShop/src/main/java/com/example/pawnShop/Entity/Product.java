@@ -36,7 +36,10 @@ public class Product {
     private UUID id;
 
     @Column(name = "picture", columnDefinition = "TEXT")
-    private String pictureUrl;
+    private String picture;
+
+    @Basic
+    private String condition;
 
     @Basic
     private String color;
@@ -56,9 +59,8 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "product_type")
-    private ProductType productType;
+    @Column(name = "category")
+    private String category;
 
     @Basic
     private BigDecimal price;
