@@ -11,14 +11,14 @@ export class ProductService {
   private host = `${environment.host}/data/expose/products`;
 
   constructor(private http: HttpClient) {
-    console.log("ProductService: Инициализация");
+    console.log("ProductService: Initialization");
   }
 
   getAllProducts(): Observable<Products[]> {
-    console.log("ProductService: Извличане на всички продукти");
+    console.log("ProductService: Retrieving all products");
     return this.http.get<Products[]>(this.host).pipe(
       map(products => {
-        console.log("ProductService: Получени необработени данни:", products);
+        console.log("ProductService: Received raw data:", products);
         return products.map(product => {
           console.log("Processing product price:", product.price);
           return {

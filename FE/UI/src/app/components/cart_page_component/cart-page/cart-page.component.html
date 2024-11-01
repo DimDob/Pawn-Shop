@@ -1,7 +1,7 @@
 <!-- UI\src\app\components\cart_page_component\cart-page\cart-page.component.html -->
 
-<div class="cart-container" *ngIf="cartItems.length > 0; else emptyCart">
-  <div class="cart-item" *ngFor="let item of cartItems">
+<div class="cart-container" *ngIf="cartItems().length > 0; else emptyCart">
+  <div class="cart-item" *ngFor="let item of cartItems()">
     <img [src]="item.product.picture" alt="{{ item.product.manufacturer }} {{ item.product.model }}" />
     <div class="item-details">
       <h2>{{ item.product.manufacturer }} {{ item.product.model }}</h2>
@@ -16,7 +16,7 @@
   </div>
 
   <div class="total-cost">
-    <h3>Total Cost: ${{ totalCost }}</h3>
+    <h3>Total Cost: ${{ totalCost() }}</h3>
     <button (click)="purchase()">Purchase</button>
   </div>
 </div>

@@ -30,7 +30,7 @@ export class CartService {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
   }
 
-  addToCart(product: Products, quantity: number = 1) {
+  public addToCart(product: Products, quantity: number = 1) {
     const items = this.itemsSubject.getValue();
     const existingItem = items.find(item => item.product.id === product.id);
     if (existingItem) {
@@ -42,14 +42,14 @@ export class CartService {
     this.saveToLocalStorage(items);
   }
 
-  removeFromCart(productId: string) {
+  public removeFromCart(productId: string) {
     let items = this.itemsSubject.getValue();
     items = items.filter(item => item.product.id !== productId);
     this.itemsSubject.next(items);
     this.saveToLocalStorage(items);
   }
 
-  updateQuantity(productId: string, quantity: number) {
+  public updateQuantity(productId: string, quantity: number) {
     const items = this.itemsSubject.getValue();
     const item = items.find(item => item.product.id === productId);
     if (item) {
@@ -63,13 +63,13 @@ export class CartService {
     }
   }
 
-  clearCart() {
+  public clearCart() {
     console.log("CartService: Clearing cart");
     this.itemsSubject.next([]);
     localStorage.removeItem(this.STORAGE_KEY);
   }
 
-  getTotalCost(): number {
+  public getTotalCost(): number {
     const items = this.itemsSubject.getValue();
     return items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0);
   }

@@ -61,34 +61,34 @@ describe("CartPageComponent", () => {
   });
 
   it("should increase quantity", () => {
-    component.increaseQuantity(1);
-    expect(cartService.updateQuantity).toHaveBeenCalledWith(1, 3);
+    component.increaseQuantity("1");
+    expect(cartService.updateQuantity).toHaveBeenCalledWith("1", 3);
   });
 
   it("should decrease quantity", () => {
-    component.decreaseQuantity(1);
-    expect(cartService.updateQuantity).toHaveBeenCalledWith(1, 1);
+    component.decreaseQuantity("1");
+    expect(cartService.updateQuantity).toHaveBeenCalledWith("1", 1);
   });
 
   it("should remove item", () => {
-    component.removeItem(1);
-    expect(cartService.removeFromCart).toHaveBeenCalledWith(1);
+    component.removeItem("1");
+    expect(cartService.removeFromCart).toHaveBeenCalledWith("1");
   });
 
   it("should get correct quantity for product", () => {
-    const quantity = component.getQuantity(1);
+    const quantity = component.getQuantity("1");
     expect(quantity).toBe(2);
   });
 
   it("should return 0 quantity for non-existent product", () => {
-    const quantity = component.getQuantity(999);
+    const quantity = component.getQuantity("999");
     expect(quantity).toBe(0);
   });
 
   it("should calculate total cost", () => {
     cartService.getTotalCost.and.returnValue(200);
-    component.calculateTotal();
-    expect(component.totalCost).toBe(200);
+    component.totalCost();
+    expect(component.totalCost()).toBe(200);
   });
 
   it("should handle purchase", fakeAsync(() => {

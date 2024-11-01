@@ -53,21 +53,13 @@ export class HeaderComponent {
   }
 
   resetAndNavigateHome() {
-    console.log("Ресетиране на всички филтри и навигация към начална страница");
+    console.log("Reset and navigate to home");
     this.searchTerm = "";
     this.searchService.setSearchTerm("");
-
-    // Нулиране на категорията
     this.searchService.setSelectedCategory("");
-
-    // Нулиране на сортирането
     this.searchService.setSortOption("");
-
-    // Навигация към началната страница
     this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
       this.router.navigate(["/pawn-shop/main-page"]);
     });
   }
-
-  // Added methods for navigation to Add Product and My Products
 }

@@ -7,21 +7,21 @@ export const authGuard = (route: ActivatedRouteSnapshot, state: RouterStateSnaps
   const authService = inject(AuthService);
 
   const requestedUrl = state.url;
-  console.log("AuthGuard: Проверка на маршрута:", requestedUrl);
-  console.log("AuthGuard: Аутентикиран ли е потребителят:", authService.isLoggedIn());
+  console.log("AuthGuard: Checking route:", requestedUrl);
+  console.log("AuthGuard: Is user authenticated:", authService.isLoggedIn());
 
-  // За публични маршрути, винаги разрешаваме достъп
+  // For public routes, always allow access
   if (requestedUrl.startsWith("/auth") && !requestedUrl.startsWith("/auth/change-password")) {
     if (authService.isLoggedIn()) {
-      console.log("AuthGuard: Логнат потребител опитва да достъпи auth страници");
+      console.log("AuthGuard: Logged in user trying to access auth pages");
       return router.createUrlTree(["/pawn-shop/main-page"]);
     }
     return true;
   }
 
-  // За защитени маршрути
+  // For protected routes
   if (!authService.isLoggedIn()) {
-    console.log("AuthGuard: Неоторизиран опит за достъп");
+    console.log("AuthGuard: Unauthorized attempt to access protected route");
     return router.createUrlTree(["/auth/login"]);
   }
 

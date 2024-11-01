@@ -1,7 +1,6 @@
 .add-product-container {
   color: #009d34;
   margin-top: 70px;
-  // Добавяме padding отдолу за целия контейнер
   padding-bottom: 30px;
 
   .icon {
@@ -15,8 +14,6 @@
   }
 
   form {
-    // Променяме максималната ширина на формата
-    // Можете да промените тази стойност, ако искате по-широка форма
     max-width: 500px;
     margin: 0 auto;
 
@@ -28,17 +25,13 @@
         margin-bottom: 5px;
       }
 
-      // Общи стилове за input и select полета
       input,
       select {
-        // Можете да промените тази стойност, ако искате различна ширина
         width: 100%;
         padding: 8px;
         border: 1px solid #009d34;
         border-radius: 4px;
-        // Добавяме box-sizing за по-добър контрол на размерите
         box-sizing: border-box;
-        // Фиксираме височината на всички полета
         height: 40px;
 
         &.ng-invalid.ng-touched {
@@ -46,11 +39,8 @@
         }
       }
 
-      // Специфични стилове за select полетата
       select {
-        // Добавяме padding за по-добър изглед на опциите
         padding-right: 30px;
-        // Премахваме стандартната стрелка и добавяме custom
         appearance: none;
         background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23009d34%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
         background-repeat: no-repeat;
@@ -58,10 +48,8 @@
         background-size: 12px;
       }
 
-      // Специфични стилове за file input
       input[type="file"] {
         padding: 6px;
-        // Премахваме стандартния изглед на file input
         &::-webkit-file-upload-button {
           visibility: hidden;
           width: 0;
@@ -86,9 +74,7 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      // Добавяме margin отдолу за бутона
       margin-bottom: 20px;
-      // Фиксираме височината на бутона
       height: 45px;
 
       &:disabled {

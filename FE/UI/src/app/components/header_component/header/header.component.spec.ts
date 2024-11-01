@@ -8,7 +8,6 @@ import { BehaviorSubject } from "rxjs";
 import { provideRouter } from "@angular/router";
 import { Router, NavigationEnd } from "@angular/router";
 
-// Мока за CartService
 class MockCartService {
   private itemsSubject = new BehaviorSubject<{ product: any; quantity: number }[]>([]);
   items$ = this.itemsSubject.asObservable();
@@ -53,7 +52,6 @@ class MockCartService {
   }
 }
 
-// Мока за SearchService
 class MockSearchService {
   private searchTermSubject = new BehaviorSubject<string>("");
   searchTerm$ = this.searchTermSubject.asObservable();
@@ -77,7 +75,6 @@ class MockSearchService {
   }
 }
 
-// Мока за Router
 class MockRouter {
   private eventsSubject = new BehaviorSubject<any>(null);
   events = this.eventsSubject.asObservable();

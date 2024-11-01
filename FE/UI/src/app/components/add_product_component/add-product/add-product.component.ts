@@ -35,7 +35,6 @@ export class AddProductComponent implements OnInit {
     });
   }
   onFileChange(event: any) {
-    // Обработваме избора на файл
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.addProductForm.patchValue({

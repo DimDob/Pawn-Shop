@@ -14,7 +14,6 @@ export class MyProductsComponent implements OnInit {
   constructor(private seedDataService: SeedDataService, private router: Router) {}
 
   ngOnInit(): void {
-    // Получаваме продуктите (тук можете да получите продуктите на текущия потребител)
     this.products = this.seedDataService.products;
   }
 

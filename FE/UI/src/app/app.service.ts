@@ -67,18 +67,18 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.error("Пълна грешка:", error);
+    console.error("Full error:", error);
 
-    let errorMessage = "Възникна грешка при заявката";
+    let errorMessage = "An error occurred during the request";
 
     if (error.status === 0) {
-      errorMessage = "Няма връзка със сървъра. Моя, проверете дали back-end сървърът работи.";
+      errorMessage = "No connection to the server. Please check if the back-end server is working.";
     } else if (error.status === 403) {
-      errorMessage = "Грешни credentials или CORS проблем";
+      errorMessage = "Wrong credentials or CORS problem";
     } else if (error.error instanceof ErrorEvent) {
-      errorMessage = `Клиентска грешка: ${error.error.message}`;
+        errorMessage = `Client error: ${error.error.message}`;
     } else {
-      errorMessage = `Сървърна грешка: ${error.status}. Съобщение: ${error.message}`;
+      errorMessage = `Server error: ${error.status}. Message: ${error.message}`;
     }
 
     return throwError(() => new Error(errorMessage));
