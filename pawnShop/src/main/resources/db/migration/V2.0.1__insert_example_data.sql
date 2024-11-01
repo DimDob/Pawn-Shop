@@ -81,3 +81,12 @@ VALUES ('a6b73db0-67d1-4c68-8489-3f91b40a9642', CURRENT_TIMESTAMP + INTERVAL '30
         (SELECT id FROM payments_types WHERE name = 'One-Time')),
        ('f3d24e43-9287-4b8c-95b3-c94c9c3e7204', CURRENT_TIMESTAMP + INTERVAL '14 days', CURRENT_TIMESTAMP,
         (SELECT id FROM payments_types WHERE name = 'Trial'));
+
+-- Insert product types
+INSERT INTO products_types (id, name)
+VALUES 
+  (uuid_generate_v4(), 'Electronics'),
+  (uuid_generate_v4(), 'Clothing'),
+  (uuid_generate_v4(), 'Jewelry'),
+  (uuid_generate_v4(), 'Art'),
+  (uuid_generate_v4(), 'Other');

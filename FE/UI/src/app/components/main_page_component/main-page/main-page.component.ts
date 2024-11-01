@@ -117,8 +117,17 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
 
     let filtered = this.products.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) || product.model?.toLowerCase().includes(this.searchTerm) || product.category.toLowerCase().includes(this.searchTerm);
-      const matchesCategory = this.selectedCategory ? product.category === this.selectedCategory : true;
+      console.log("Filtering product:", product);
+      console.log("Selected category:", this.selectedCategory);
+      console.log("Product category:", product.category);
+
+      const matchesSearch = product.name.toLowerCase().includes(this.searchTerm) ||
+                           product.model?.toLowerCase().includes(this.searchTerm) ||
+                           product.category?.toLowerCase().includes(this.searchTerm);
+
+      const matchesCategory = !this.selectedCategory ||
+                            product.category?.toLowerCase() === this.selectedCategory.toLowerCase();
+
       return matchesSearch && matchesCategory;
     });
 

@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, map } from "rxjs";
 import { Products } from "../../components/main_page_component/main-page/Interfaces/Products";
 import { environment } from "../../../environments/environment";
+import { Category } from "../../components/main_page_component/main-page/enums/Category";
 
 @Injectable({
   providedIn: "root"
@@ -20,10 +21,11 @@ export class ProductService {
       map(products => {
         console.log("ProductService: Received raw data:", products);
         return products.map(product => {
-          console.log("Processing product price:", product.price);
+          console.log("Processing product:", product);
           return {
             ...product,
-            price: parseFloat(product.price?.toString() || "0")
+            price: parseFloat(product.price?.toString() || "0"),
+            category: product.category?.toUpperCase() as Category
           };
         });
       })
