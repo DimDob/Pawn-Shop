@@ -21,7 +21,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "new"
     },
     {
       id: "b2c3d4e5-f6a7-8b9c-0d1e-f2a3b4c5d6e7",
@@ -36,7 +37,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91",
       quantityInStock: 2,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "new"
     },
     {
       id: "c3d4e5f6-a7b8-9c0d-1e2f-a3b4c5d6e7f8",
@@ -51,7 +53,8 @@ export class SeedDataService {
       price: 300,
       ownerId: "d59e65b2-2c60-4529-a6e3-2c697d9144fa",
       quantityInStock: 3,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "d4e5f6a7-b8c9-0d1e-2f3a-b4c5d6e7f8a9",
@@ -66,7 +69,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "dfc4953b-75f4-44a6-b25e-5b64aaaf2b96",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "e5f6a7b8-c9d0-1e2f-3a4b-c5d6e7f8a9b0",
@@ -81,7 +85,8 @@ export class SeedDataService {
       price: 500,
       ownerId: "f9ac65ef-e508-4e26-a36b-5c6849f9a5f1",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "new"
     },
     {
       id: "f6a7b8c9-d0e1-2f3a-4b5c-d6e7f8a9b0c1",
@@ -96,7 +101,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
       quantityInStock: 2,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "a7b8c9d0-e1f2-3a4b-5c6d-e7f8a9b0c1d2",
@@ -111,7 +117,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91",
       quantityInStock: 2,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "b8c9d0e1-f2a3-4b5c-6d7e-f8a9b0c1d2e3",
@@ -126,7 +133,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "d59e65b2-2c60-4529-a6e3-2c697d9144fa",
       quantityInStock: 2,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "c9d0e1f2-a3b4-5c6d-7e8f-a9b0c1d2e3f4",
@@ -141,7 +149,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "dfc4953b-75f4-44a6-b25e-5b64aaaf2b96",
       quantityInStock: 3,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "d0e1f2a3-b4c5-6d7e-8f9a-b0c1d2e3f4a5",
@@ -156,7 +165,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "f9ac65ef-e508-4e26-a36b-5c6849f9a5f1",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "new"
     },
     {
       id: "e1f2a3b4-c5d6-7e8f-9a0b-c1d2e3f4a5b6",
@@ -171,7 +181,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
       quantityInStock: 4,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "f2a3b4c5-d6e7-8f9a-0b1c-d2e3f4a5b6c7",
@@ -186,7 +197,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91",
       quantityInStock: 2,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "a3b4c5d6-e7f8-9a0b-1c2d-e3f4a5b6c7d8",
@@ -201,7 +213,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "d59e65b2-2c60-4529-a6e3-2c697d9144fa",
       quantityInStock: 3,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "b4c5d6e7-f8a9-0b1c-2d3e-f4a5b6c7d8e9",
@@ -216,7 +229,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "dfc4953b-75f4-44a6-b25e-5b64aaaf2b96",
       quantityInStock: 2,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "c5d6e7f8-a9b0-1c2d-3e4f-a5b6c7d8e9f0",
@@ -231,7 +245,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "f9ac65ef-e508-4e26-a36b-5c6849f9a5f1",
       quantityInStock: 3,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "d6e7f8a9-b0c1-2d3e-4f5a-b6c7d8e9f0a1",
@@ -246,7 +261,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "e7f8a9b0-c1d2-3e4f-5a6b-c7d8e9f0a1b2",
@@ -261,7 +277,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "f8a9b0c1-d2e3-4f5a-6b7c-d8e9f0a1b2c3",
@@ -276,7 +293,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "d59e65b2-2c60-4529-a6e3-2c697d9144fa",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "a9b0c1d2-e3f4-5a6b-7c8d-e9f0a1b2c3d4",
@@ -291,7 +309,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "b0c1d2e3-f4a5-6b7c-8d9e-f0a1b2c3d4e5",
@@ -306,7 +325,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "c1d2e3f4-a5b6-7c8d-9e0f-a1b2c3d4e5f6",
@@ -321,7 +341,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "d59e65b2-2c60-4529-a6e3-2c697d9144fa",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "d2e3f4a5-b6c7-8d9e-0f1a-b2c3d4e5f6a7",
@@ -336,7 +357,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "dfc4953b-75f4-44a6-b25e-5b64aaaf2b96",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "e3f4a5b6-c7d8-9e0f-1a2b-c3d4e5f6a7b8",
@@ -351,7 +373,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "f4a5b6c7-d8e9-0f1a-2b3c-d4e5f6a7b8c9",
@@ -366,7 +389,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "d59e65b2-2c60-4529-a6e3-2c697d9144fa",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "like new"
     },
     {
       id: "a5b6c7d8-e9f0-1a2b-3c4d-e5f6a7b8c9d0",
@@ -381,7 +405,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "dfc4953b-75f4-44a6-b25e-5b64aaaf2b96",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "used"
     },
     {
       id: "b6c7d8e9-f0a1-2b3c-4d5e-f6a7b8c9d0e1",
@@ -396,7 +421,8 @@ export class SeedDataService {
       price: 100,
       ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
       quantityInStock: 1,
-      isRunOutOfStock: false
+      isRunOutOfStock: false,
+      condition: "like new"
     }
   ];
 }
