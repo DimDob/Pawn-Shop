@@ -44,13 +44,13 @@
           <h2>{{ product?.name }} {{ product?.name }}</h2>
           <div class="price">{{ product?.price | currency }}</div>
           <div class="details">
-            <div class="size" *ngIf="product?.size">
-              <h3>Size:</h3>
-              <span>{{ product?.size }}</span>
+            <div class="manufacturer" *ngIf="product?.manufacturer">
+              <h3>Manufacturer:</h3>
+              <span>{{ product?.manufacturer }} </span>
             </div>
-            <div class="color" *ngIf="product?.color">
-              <h3>Color:</h3>
-              <span>{{ product?.color }}</span>
+            <div class="model" *ngIf="product?.model">
+              <h3>Model:</h3>
+              <span>{{ product?.model }}</span>
             </div>
           </div>
         </div>
