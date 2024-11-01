@@ -6,7 +6,6 @@ import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,25 +15,25 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
+
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto loginRequestDto){
-        Result<LoginResponseDto> result = authService.login(loginRequestDto);
-        if(!result.isSuccess()){
+    public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto loginRequestDto) {
+        Result<LoginResponseDto> result = this.authService.login(loginRequestDto);
+        if (!result.isSuccess()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
         return ResponseEntity.ok(result.getValue());
     }
+
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Validated @RequestBody RegisterRequestDto registerRequestDto){
-        Result<Boolean> result = authService.register(registerRequestDto);
-        if(!result.isSuccess()){
+    public ResponseEntity<?> register(@Validated @RequestBody RegisterRequestDto registerRequestDto) {
+        Result<Boolean> result = this.authService.register(registerRequestDto);
+        if (!result.isSuccess()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
         return ResponseEntity.ok("You are registered!!!");
     }
-
 
 }

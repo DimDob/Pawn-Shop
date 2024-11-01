@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class Result<T> {
+
     private final T value;
     private final CustomError error;
     private final boolean isSuccess;
