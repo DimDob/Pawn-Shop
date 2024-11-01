@@ -19,6 +19,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "users")
 public class AppUser implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -26,13 +27,16 @@ public class AppUser implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(name = "first_name")
     private String firstName;
 
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(nullable = false)
     private String password;
 
+    @Basic
     private Boolean enable;
 
     @Enumerated(EnumType.STRING)
@@ -43,6 +47,7 @@ public class AppUser implements UserDetails {
     @JoinColumn(name = "pawnshop_id")
     private PawnShop pawnShop;
 
+    @Column(name = "id_admin")
     private Boolean isAdmin;
 
     public AppUser() {

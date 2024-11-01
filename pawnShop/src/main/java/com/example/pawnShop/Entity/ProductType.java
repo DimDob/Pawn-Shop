@@ -42,9 +42,7 @@ public class ProductType {
     private String name;
 
     @OneToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
-    public ProductType(UUID uuid, String productTypeName) {
-
-    }
 }

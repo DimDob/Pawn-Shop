@@ -15,6 +15,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "addresses")
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -30,4 +31,5 @@ public class Address {
     @OneToOne(mappedBy = "address")
     @JoinColumn(name = "pawnshop_id", referencedColumnName = "id")
     private PawnShop pawnShop;
+
 }

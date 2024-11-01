@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @Table(name = "payments")
 public class Payment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -28,8 +29,10 @@ public class Payment {
     @ManyToMany(mappedBy = "payments")
     private List<PawnShop> pawnShopList;
 
+    @Column(name = "subscription_start_date")
     private LocalDateTime subscriptionStartDate;
 
+    @Column(name = "subscription_end_date")
     private LocalDateTime subscriptionEndDate;
 
 }

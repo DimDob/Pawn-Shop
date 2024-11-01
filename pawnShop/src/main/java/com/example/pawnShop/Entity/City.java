@@ -16,10 +16,12 @@ import java.util.UUID;
 @Builder
 @Table(name = "cities")
 public class City {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Basic
     private String name;
 
     @OneToMany(mappedBy = "city")

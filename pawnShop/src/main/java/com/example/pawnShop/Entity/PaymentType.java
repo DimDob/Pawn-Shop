@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "payments_types")
 public class PaymentType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -23,7 +24,7 @@ public class PaymentType {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "subscription_price", nullable = false)
     private BigDecimal subscriptionPrice;
 
     @OneToMany(mappedBy = "paymentType")

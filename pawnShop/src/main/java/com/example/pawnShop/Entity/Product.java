@@ -35,6 +35,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Basic
     private String name;
 
     @Column(name = "market_price")
@@ -50,6 +51,7 @@ public class Product {
     private String pictureUrl;
 
     @OneToOne
-    ProductType productType;
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
 
 }
