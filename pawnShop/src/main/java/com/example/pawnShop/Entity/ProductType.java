@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,28 +26,23 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "products_types")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "products_types")
 public class ProductType {
 
     private final int PRODUCT_TYPE_NAME_MAX_LENGTH = 32;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
-    // private UUID id; // original solution
-    private long id; // temporary solution // remove later
+    private UUID id;
 
     @Column(unique = true, nullable = false, length = PRODUCT_TYPE_NAME_MAX_LENGTH)
     private String name;
 
-    @OneToOne
-    private Product product;
+    @OneToMany(mappedBy = "productType")
+    private List<Product> products;
 
-    public ProductType(UUID uuid, String productTypeName) {
-
-    }
 }

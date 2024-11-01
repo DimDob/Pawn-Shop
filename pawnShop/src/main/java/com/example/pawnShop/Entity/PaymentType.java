@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "payments_types")
 public class PaymentType {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

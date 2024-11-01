@@ -1,12 +1,12 @@
-CREATE TABLE users
+create table users
 (
-    enable      boolean,
-    is_admin    boolean,
     id          uuid         not null,
-    pawnshop_id uuid,
-    email       varchar(255) not null unique,
+    email       varchar(255) not null,
+    enable      boolean,
     first_name  varchar(255),
+    is_admin    boolean,
     last_name   varchar(255),
     password    varchar(255) not null,
+    pawnshop_id uuid,
     primary key (id)
 )

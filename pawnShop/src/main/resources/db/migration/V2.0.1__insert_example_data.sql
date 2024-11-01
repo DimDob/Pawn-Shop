@@ -1,53 +1,92 @@
+-- Inserting data into the cities table
 INSERT INTO cities (id, name)
-VALUES ('0a5fb26f-e1fd-421f-a7c7-1ab88fb43d49', 'София'),
-       ('dd3df2e4-64e4-470e-bc24-37912b4b94f2', 'Пловдив');
+VALUES ('c1d257e3-6b84-4f4c-bad4-50b3a57c6d26', 'New York'),
+       ('f66eeb78-6f58-4c8c-b1a0-4f7bb3376e41', 'Los Angeles'),
+       ('0b49e092-2f35-44b7-8663-70e2efb41ae9', 'Chicago'),
+       ('d2e8e973-d67f-4f6f-bf73-963bf96bb43a', 'Houston'),
+       ('bca0e5b1-5be3-4c61-b505-3bcb0be00659', 'Phoenix');
 
+-- Inserting data into the addresses table
 INSERT INTO addresses (id, name, number, city_id)
-VALUES ('8626bd1b-a64f-4a6b-91bb-07eb5d6c57f2', 'Стара планина', '32В', '0a5fb26f-e1fd-421f-a7c7-1ab88fb43d49'),
-       ('771bdb9d-da7e-4696-ba45-1a14cff494a9', 'Втора', '2', 'dd3df2e4-64e4-470e-bc24-37912b4b94f2');
+VALUES ('c0e501b3-3704-489f-8899-7f971876dc68', 'Main St', '123', (SELECT id FROM cities WHERE name = 'New York')),
+       ('dd7cd201-1462-4967-8b4e-b38f92868dcb', 'Hollywood Blvd', '456',
+        (SELECT id FROM cities WHERE name = 'Los Angeles')),
+       ('3b047bb2-9a45-4d68-8d91-59b2cbd7cd63', 'Lake Shore Dr', '789', (SELECT id FROM cities WHERE name = 'Chicago')),
+       ('3e4cc7a3-21b3-423c-b6d1-376b547ca1f1', 'Westheimer Rd', '101', (SELECT id FROM cities WHERE name = 'Houston')),
+       ('38b4f1eb-1b34-4cf3-9038-490a5b86f84a', 'Central Ave', '202', (SELECT id FROM cities WHERE name = 'Phoenix'));
 
-INSERT INTO users (id, email, first_name, last_name, password, enable, is_admin)
-VALUES ('2bd8729c-997d-4adb-a19e-9392bc42c7d8', 'superAdmin@admin.com', 'Super', 'Admin',
-        '$2y$10$MGIx.mskYPba3CziloLypeuMro9u748Zq163woMPCydst3yg7.ro.', true, true),
-       ('f3028111-6be5-4930-86ca-d4c62418f149', 'firstAdmin@admin.com', 'First', 'Admin',
-        '$2y$10$ihAffnjGBBgWDM9wYa6dVeBZjntVZzF3Of8FZb4Lpn9dYfK2yGKGm', true, true),
-       ('795d12bd-6f24-4167-930e-8632ce112f3d', 'secondAdmin@admin.com', 'Second', 'Admin',
-        '$2y$10$ihAffnjGBBgWDM9wYa6dVeBZjntVZzF3Of8FZb4Lpn9dYfK2yGKGm', true, true),
-       ('464e2747-a872-41fa-aafd-6cc4957a7002', 'worker@admin.com', 'Worker the First', 'Worker',
-        '$2y$10$ihAffnjGBBgWDM9wYa6dVeBZjntVZzF3Of8FZb4Lpn9dYfK2yGKGm', true, false);
+-- Inserting data into the users table
+INSERT INTO users (id, email, enable, first_name, is_admin, last_name, password, pawnshop_id)
+VALUES ('f9ac65ef-e508-4e26-a36b-5c6849f9a5f1', 'admin1@example.com', true, 'Alice', true, 'Smith', 'password1', NULL),
+       ('746d68ff-1002-4c71-82e0-177a648ef988', 'user1@example.com', true, 'Bob', false, 'Johnson', 'password2', NULL),
+       ('8d4b1779-dc8e-44a8-8b8f-5b1bc1a96b91', 'user2@example.com', true, 'Charlie', false, 'Williams', 'password3',
+        NULL),
+       ('d59e65b2-2c60-4529-a6e3-2c697d9144fa', 'admin2@example.com', true, 'Dana', true, 'Jones', 'password4', NULL),
+       ('dfc4953b-75f4-44a6-b25e-5b64aaaf2b96', 'user3@example.com', true, 'Eve', false, 'Brown', 'password5', NULL);
 
+-- Inserting data into the products_types table
+INSERT INTO products_types (id, product_type_name_max_length, name)
+VALUES ('97c7587b-e79b-44c4-a9d8-08d8e7367e5b', 50, 'Electronics'),
+       ('1bc24125-cf02-491b-99d5-c4af7c7e16a2', 50, 'Jewelry'),
+       ('01f383d2-54e2-4318-81a3-f9c41d728623', 50, 'Tools'),
+       ('5d04d3fc-bcf0-4038-bef2-4e60729a5479', 50, 'Musical Instruments'),
+       ('de8f6bb7-8918-4633-8e56-558ed6d08df6', 50, 'Bikes');
+
+-- Inserting data into the payments_types table
 INSERT INTO payments_types (id, name, subscription_price)
-VALUES ('bd9ae96b-87d6-4e4d-8716-545502126ef8', 'Месечен абонамент', 150.00),
-       ('ff3a63a5-8438-4437-badf-932a2ca9aeb5', 'Тримесечен абонамент', 420.00),
-       ('771bdb9d-da7e-4696-ba45-1a14cff494a9', 'Шестмесечен абонамент', 800.00),
-       ('15b8a6e8-4206-4592-a4a8-a2dba2f29f68', 'Годишен абонамент', 1400.00);
+VALUES ('d97b6519-3c4b-405f-a31a-0a6a9257b417', 'Monthly', 19.99),
+       ('433eb542-9f89-4e4e-84c7-4985f215d7da', 'Yearly', 199.99),
+       ('3786d59f-12d5-471e-8c96-e5b5b4d00b45', 'Weekly', 5.99),
+       ('70e59c98-9c29-43d5-afe8-b95c5f658438', 'One-Time', 9.99),
+       ('d98d8bb8-f63f-489e-b5cc-36fdcdd54c93', 'Trial', 0.00);
 
-INSERT INTO payments (id, payment_type_id, subscription_start_date, subscription_end_date)
-VALUES ('55f19c4e-9200-461a-bc53-b65b638d0668', 'bd9ae96b-87d6-4e4d-8716-545502126ef8', '2024-06-01 00:00:00',
-        '2024-07-01 00:00:00'),
-       ('2107dad7-0fed-4389-8f04-27b1e7f62564', 'bd9ae96b-87d6-4e4d-8716-545502126ef8', '2024-05-01 00:00:00',
-        '2024-06-01 00:00:00');
+-- Inserting data into the pawn_shops table
+INSERT INTO pawn_shops (id, uic, is_active, is_vies_registered, modifier_date, name, registration_date, address_id, admin_id)
+VALUES ('1ae72b08-2905-413c-80c4-df4aa1db4884', 'UIC12345', true, true, CURRENT_DATE, 'Pawn Shop NY', CURRENT_DATE,
+        (SELECT id FROM addresses WHERE name = 'Main St'),
+        (SELECT id FROM users WHERE email = 'admin1@example.com')),
+       ('fe4fa7ae-582e-4e88-87f4-bc5b6e030f1d', 'UIC12346', true, false, CURRENT_DATE, 'Pawn Shop LA', CURRENT_DATE,
+        (SELECT id FROM addresses WHERE name = 'Hollywood Blvd'),
+        (SELECT id FROM users WHERE email = 'admin2@example.com')),
+       ('68c0c1ea-5e3f-43f7-8789-6ff44967f1e0', 'UIC12347', true, true, CURRENT_DATE, 'Pawn Shop Chicago', CURRENT_DATE,
+        (SELECT id FROM addresses WHERE name = 'Lake Shore Dr'),
+        (SELECT id FROM users WHERE email = 'admin1@example.com')),
+       ('f91a4e41-5d68-4ac5-85bc-1896f11873a1', 'UIC12348', true, false, CURRENT_DATE, 'Pawn Shop Houston',CURRENT_DATE,
+        (SELECT id FROM addresses WHERE name = 'Westheimer Rd'),
+        (SELECT id FROM users WHERE email = 'admin2@example.com')),
+       ('7ed1443f-5881-4488-8709-4e9fc042ae8b', 'UIC12349', true, true, CURRENT_DATE, 'Pawn Shop Phoenix', CURRENT_DATE,
+        (SELECT id FROM addresses WHERE name = 'Central Ave'),
+        (SELECT id FROM users WHERE email = 'admin1@example.com'));
 
-INSERT INTO pawn_shops (id, name, uic, is_vies_registered, address_id, admin_id, registration_date, is_active)
-VALUES ('6283c5d4-a525-4e90-987a-94d87a3620f8', 'Залози ЕООД', '123456789', true,
-        '8626bd1b-a64f-4a6b-91bb-07eb5d6c57f2', 'f3028111-6be5-4930-86ca-d4c62418f149', '2024-05-01', true),
-       ('424aeb2b-4490-43e6-a60f-a912599f4069', 'Къща заложна ЕООД', '987654321', true,
-        '771bdb9d-da7e-4696-ba45-1a14cff494a9', '795d12bd-6f24-4167-930e-8632ce112f3d', '2024-05-01', true);
+-- Inserting data into the products table
+INSERT INTO products (id, color, is_run_out_of_stock, manufacturer, model, name, pawn_percentage, picture, price,
+                      quantity_in_stock, second_hand_price, sex, size, owner_id, product_type)
+VALUES (uuid_generate_v4(), 'Black', false, 'Sony', 'WH-1000XM4', 'Noise Cancelling Headphones', 50.00, NULL, 349.99,
+        10, 175.00, 'Unisex', NULL, (SELECT id FROM users WHERE email = 'user1@example.com'),
+        (SELECT id FROM products_types WHERE name = 'Electronics')),
+       (uuid_generate_v4(), 'Gold', false, 'Tiffany', 'Tiffany Setting', 'Diamond Ring', 60.00, NULL, 1200.00, 5,
+        800.00, 'Female', NULL, (SELECT id FROM users WHERE email = 'user2@example.com'),
+        (SELECT id FROM products_types WHERE name = 'Jewelry')),
+       (uuid_generate_v4(), 'Red', false, 'Makita', 'XFD131', 'Cordless Drill', 40.00, NULL, 149.99, 15, 100.00,
+        'Unisex', NULL, (SELECT id FROM users WHERE email = 'user3@example.com'),
+        (SELECT id FROM products_types WHERE name = 'Tools')),
+       (uuid_generate_v4(), 'Brown', false, 'Yamaha', 'FG800', 'Acoustic Guitar', 70.00, NULL, 199.99, 8, 120.00,
+        'Unisex', NULL, (SELECT id FROM users WHERE email = 'admin1@example.com'),
+        (SELECT id FROM products_types WHERE name = 'Musical Instruments')),
+       (uuid_generate_v4(), 'Blue', false, 'Trek', 'Marlin 5', 'Mountain Bike', 80.00, NULL, 499.99, 12, 350.00,
+        'Unisex', NULL, (SELECT id FROM users WHERE email = 'admin2@example.com'),
+        (SELECT id FROM products_types WHERE name = 'Bikes'));
 
-INSERT INTO products_types (id, name, product_type_name_max_length, product_id)
-VALUES ('2a6ae85c-aeee-4452-a58b-ce54d801daef', 'Телефон', 7, NULL),
-       ('7698cfb6-697d-409b-a7e4-dc21fa621647', 'Таблет', 6, NULL),
-       ('7d853cb2-d59a-46ca-905a-09948ac3fc51', 'Телевизор', 9, NULL),
-       ('a3e82346-3395-4b9c-842d-14973a83fa99', 'Аудио', 5, NULL),
-       ('e8f6c58c-bb2d-455c-aa1c-6b9f3941c034', 'Електроника', 11, NULL),
-       ('b5c2d8b9-7b88-4e9f-9729-83f3f9551680', 'Лаптоп', 6, NULL),
-       ('92e84a89-d806-4b86-bf69-f0e07eeef872', 'Компютър', 8, NULL),
-       ('7abc38a4-1ac3-4334-ac17-bdafec696987', 'Компютърна периферия', 20, NULL),
-       ('8a4ed01c-3101-47d8-ac88-de18febf3737', 'Домакински електроуред', 19, NULL),
-       ('801b09f8-bf92-494e-941e-7c9fe54ef25a', 'Малък електроуред', 16, NULL),
-       ('c4b52ba5-462a-48fb-b9e5-d38a53c0c1ab', 'Уред за здраве и красота', 23, NULL),
-       ('55a9017d-bcb4-4e3d-88b1-62970ae6fc4b', 'Фото и видео', 11, NULL),
-       ('0fe76761-f043-468e-b14f-70ffbec3b6a9', 'Автомобилен аксесоар', 16, NULL),
-       ('99bef4ec-767b-4833-a6f5-ce387b7499f1', 'Злато', 5, NULL),
-       ('cc182299-4aa8-4d12-98e9-5a670b757e80', 'Сребро', 6, NULL),
-       ('21683274-b521-44d4-b396-47077e348377', 'Бижу', 4, NULL);
+-- Inserting data into the payments table
+INSERT INTO payments (id, subscription_end_date, subscription_start_date, payment_type_id)
+VALUES ('a6b73db0-67d1-4c68-8489-3f91b40a9642', CURRENT_TIMESTAMP + INTERVAL '30 days', CURRENT_TIMESTAMP,
+        (SELECT id FROM payments_types WHERE name = 'Monthly')),
+       ('5bffae6c-7fd0-4533-b28d-b9aa2ff10e77', CURRENT_TIMESTAMP + INTERVAL '365 days', CURRENT_TIMESTAMP,
+        (SELECT id FROM payments_types WHERE name = 'Yearly')),
+       ('9b65fdc1-ea98-4624-b37f-01295d86978e', CURRENT_TIMESTAMP + INTERVAL '7 days', CURRENT_TIMESTAMP,
+        (SELECT id FROM payments_types WHERE name = 'Weekly')),
+       ('ff9edccc-0815-49fc-b8f8-4f6de6843cb2', CURRENT_TIMESTAMP + INTERVAL '30 days', CURRENT_TIMESTAMP,
+        (SELECT id FROM payments_types WHERE name = 'One-Time')),
+       ('f3d24e43-9287-4b8c-95b3-c94c9c3e7204', CURRENT_TIMESTAMP + INTERVAL '14 days', CURRENT_TIMESTAMP,
+        (SELECT id FROM payments_types WHERE name = 'Trial'));
+
