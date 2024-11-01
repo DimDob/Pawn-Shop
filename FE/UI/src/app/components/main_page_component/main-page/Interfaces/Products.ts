@@ -16,4 +16,6 @@ export interface Products {
   quantityInStock?: number;
   isRunOutOfStock?: boolean;
   ownerId?: string;
+  pawnPercentage?: number;
+  secondHandPrice?: number;
 }

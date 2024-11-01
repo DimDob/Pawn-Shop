@@ -54,19 +54,19 @@ VALUES ('1ae72b08-2905-413c-80c4-df4aa1db4884', 'UIC12345', true, true, CURRENT_
 INSERT INTO products (id, color, is_run_out_of_stock, manufacturer, model, name, pawn_percentage, picture, price,
                       quantity_in_stock, second_hand_price, sex, size, owner_id, category, condition)
 VALUES (uuid_generate_v4(), 'Black', false, 'Sony', 'WH-1000XM4', 'Noise Cancelling Headphones', 50.00, 'https://cdn.ozone.bg/media/catalog/product/cache/1/image/a4e40ebdc3e371adff845072e1c73f37/b/e/265075c7e34c91b18c1766c0bc95cf0c/bezzhichni-slushalki-sony---wh-1000xm4--anc--cherni-30.jpg', 349.99,
-        10, 175.00, 'Unisex', NULL, (SELECT id FROM users WHERE email = 'user1@example.com'),
+        10, 175.00, 'unisex', NULL, (SELECT id FROM users WHERE email = 'user1@example.com'),
         'ELECTRONICS', 'new'),
        (uuid_generate_v4(), 'Gold', false, 'Tiffany', 'Tiffany Setting', 'Diamond Ring', 60.00, 'https://thediamondoak.com/cdn/shop/collections/tiffany_1.10_PS-8.jpg?v=1635470014', 1200.00, 5,
-        800.00, 'Female', NULL, (SELECT id FROM users WHERE email = 'user2@example.com'),
+        800.00, 'female', NULL, (SELECT id FROM users WHERE email = 'user2@example.com'),
         'CLOTHING', 'like new'),
        (uuid_generate_v4(), 'Red', false, 'Makita', 'XFD131', 'Cordless Drill', 40.00, 'https://cdn.makitatools.com/apps/cms/img360/XFD131/images/img01.jpg', 149.99, 15, 100.00,
-        'Unisex', NULL, (SELECT id FROM users WHERE email = 'user3@example.com'),
+        'unisex', NULL, (SELECT id FROM users WHERE email = 'user3@example.com'),
         'JEWELRY', 'used'),
        (uuid_generate_v4(), 'Brown', false, 'Yamaha', 'FG800', 'Acoustic Guitar', 70.00, 'https://cdn.mos.cms.futurecdn.net/9LjTbX3VL2n5zUpMvSELMn.jpg', 199.99, 8, 120.00,
-        'Unisex', NULL, (SELECT id FROM users WHERE email = 'admin1@example.com'),
+        'unisex', NULL, (SELECT id FROM users WHERE email = 'admin1@example.com'),
         'ART', 'new'),
        (uuid_generate_v4(), 'Blue', false, 'Trek', 'Marlin 5', 'Mountain Bike', 80.00, 'https://bikezone.bg/uploads/planinski-velosiped-trek-marlin-5-27.5-lithium-grey-1_37601_49191649791983.webp', 499.99, 12, 350.00,
-        'Unisex', NULL, (SELECT id FROM users WHERE email = 'admin2@example.com'),
+        'unisex', NULL, (SELECT id FROM users WHERE email = 'admin2@example.com'),
         'OTHER', 'like new');
 
 -- Inserting data into the payments table
