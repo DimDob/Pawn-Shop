@@ -6,6 +6,9 @@ import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
 import com.example.pawnShop.Dto.Result;
 
 public interface AuthService {
-    public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto);
-    public Result<Boolean> register(RegisterRequestDto registerRequestDto);
+
+    Result<LoginResponseDto> login(LoginRequestDto loginRequestDto);
+
+    Result<Boolean> register(RegisterRequestDto registerRequestDto);
+
 }

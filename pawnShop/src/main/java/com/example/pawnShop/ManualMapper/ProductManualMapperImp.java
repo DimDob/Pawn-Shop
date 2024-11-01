@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductManualMapperImp implements ProductManualMapper {
+
     @Override
     public ProductTypeDto mapToProductTypeDto(ProductType productType) {
             return ProductTypeDto

@@ -9,10 +9,8 @@ import com.example.pawnShop.Repository.ProductTypeRepository;
 import com.example.pawnShop.Service.Contract.ProductTypeService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -23,34 +21,30 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class ProductTypeServiceImp implements ProductTypeService {
 
-    @Autowired
-    private final ProductTypeRepository repository;
-    @Autowired
-    private final ProductManualMapper mapper;
-    @Autowired
-    private final ProductFactory factory;
+    private final ProductTypeRepository productTypeRepository;
+    private final ProductManualMapper productManualMapper;
+    private final ProductFactory productFactory;
 
     @Override
     public Result<ProductTypeDto> getProductTypeById(UUID id) {
-
         try {
-            ProductType productType = repository.findById(id).orElseThrow();
-
-            return Result.success(mapper.mapToProductTypeDto(productType));
-        }
-        catch(Exception e) {
-           return Result.error("Product type not found.");
+            ProductType productType = this.productTypeRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("We couldn't find product type with id: " + id)
+            );
+            return Result.success(this.productManualMapper.mapToProductTypeDto(productType));
+        } catch (Exception e) {
+            return Result.error("Product type not found.");
         }
     }
 
     @Override
     public Result<List<ProductTypeDto>> getAllProductsTypes() {
-        try{
-            return Result.success(repository.findAll().stream().map(mapper::mapToProductTypeDto).toList());
-        } catch (Exception e){
-            return  Result.error("There is no product types.");
+        try {
+            return Result.success(this.productTypeRepository.findAll()
+                    .stream().map(this.productManualMapper::mapToProductTypeDto).toList());
+        } catch (Exception e) {
+            return Result.error("There is no product types.");
         }
-
     }
 
     @Override
@@ -62,12 +56,10 @@ public class ProductTypeServiceImp implements ProductTypeService {
             if (!isWordApproved(name)) {
                 return Result.error("The name must be in Cyrillic.");
             }
-            ProductType newProduct = factory.createProductType(name);
-
-            repository.save(newProduct);
-
-            return Result.success(mapper.mapToProductTypeDto(newProduct));
-        } catch (Exception e){
+            ProductType newProductType = this.productFactory.createProductType(name);
+            this.productTypeRepository.save(newProductType);
+            return Result.success(this.productManualMapper.mapToProductTypeDto(newProductType));
+        } catch (Exception e) {
             return Result.error("Cannot add this product type.");
         }
     }
@@ -75,22 +67,22 @@ public class ProductTypeServiceImp implements ProductTypeService {
     @Override
     public Result<ProductTypeDto> updateProductType(UUID id, ProductTypeDto productTypeDto) {
         try {
+            ProductType productType = this.productTypeRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("We couldn't find product type with id: " + id)
+            );
+            if (!productTypeDto.getId().equals(id)) {
+                return Result.error("Product type id do not match.");
+            }
             if (!isWordApproved(productTypeDto.getName())) {
                 return Result.error("The name must be in Cyrillic.");
             }
             if (productTypeDto.getName() == null) {
                 return Result.error("The name is empty.");
             }
-            if(!productTypeDto.getId().equals(id)){
-                return Result.error("Product type id do not match.");
-            }
-            ProductType productType = repository.findById(id).orElseThrow();
-
             productType.setName(productTypeDto.getName());
-            repository.save(productType);
-
+            this.productTypeRepository.saveAndFlush(productType);
             return Result.success(productTypeDto);
-        } catch (Exception e){
+        } catch (Exception e) {
             return Result.error("Cannot update this product type.");
         }
     }
@@ -98,22 +90,22 @@ public class ProductTypeServiceImp implements ProductTypeService {
     @Override
     public Result<ProductTypeDto> deleteProductType(UUID id) {
         try {
-            ProductType productType = repository.findById(id).orElseThrow();
-            ProductTypeDto deletedProductType = mapper.mapToProductTypeDto(productType);
-            repository.delete(productType);
-
+            ProductType productType = this.productTypeRepository.findById(id).orElseThrow(
+                    () -> new IllegalArgumentException("We couldn't find product type with id: " + id)
+            );
+            ProductTypeDto deletedProductType = this.productManualMapper.mapToProductTypeDto(productType);
+            this.productTypeRepository.delete(productType);
             return Result.success(deletedProductType);
-        } catch (Exception e){
+        } catch (Exception e) {
             return Result.error("Product type do not exist.");
         }
     }
 
     //Check word for cyrillic and approved symbols
-    private boolean isWordApproved(String word){
+    private boolean isWordApproved(String word) {
         String regex = "^[а-я() .,-/]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(word.toLowerCase());
-
         return matcher.matches();
     }
 }

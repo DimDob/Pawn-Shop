@@ -10,7 +10,6 @@ import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
 import com.example.pawnShop.Service.Contract.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,15 +24,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthServiceImp implements AuthService {
 
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final PasswordEncoder passwordEncoder;
-    @Autowired
     private final AuthFactory authFactory;
-    @Autowired
     private final AuthenticationManager authenticationManager;
-    @Autowired
     private final JwtService jwtService;
 
     @Override
@@ -42,21 +36,19 @@ public class AuthServiceImp implements AuthService {
             if (loginRequestDto == null) {
                 return Result.error("The fields are empty.");
             }
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
-
+            Authentication authentication = this.authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequestDto.getEmail(),
+                            loginRequestDto.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             AppUser user = (AppUser) authentication.getPrincipal();
-
             return Result.success(LoginResponseDto.builder()
                     .username(user.getEmail())
-                    .token(jwtService.generateJwtToken(user))
+                    .token(this.jwtService.generateJwtToken(user))
                     .isAdmin(user.getIsAdmin())
                     .build());
-
-        } catch (AuthenticationException e){
-
-            return  Result.error("Incorrect email or password.");
+        } catch (AuthenticationException e) {
+            return Result.error("Incorrect email or password.");
         }
     }
 
@@ -69,20 +61,15 @@ public class AuthServiceImp implements AuthService {
             if (!registerRequestDto.getPassword().equals(registerRequestDto.getConfirmPassword())) {
                 return Result.error("Password and confirmed password do not match.");
             }
-            Optional<AppUser> user = userRepository.findByEmail(registerRequestDto.getEmail());
-
+            Optional<AppUser> user = this.userRepository.findByEmail(registerRequestDto.getEmail());
             if (!user.isEmpty()) {
                 return Result.error("There is a user with this email.");
             }
-            String encodedPassword = passwordEncoder.encode(registerRequestDto.getPassword());
-            AppUser newUser = authFactory.createUser(registerRequestDto, encodedPassword);
-
-            userRepository.save(newUser);
-
+            String encodedPassword = this.passwordEncoder.encode(registerRequestDto.getPassword());
+            AppUser newUser = this.authFactory.createUser(registerRequestDto, encodedPassword);
+            this.userRepository.saveAndFlush(newUser);
             return Result.success(true);
-
-        } catch(Exception e){
-
+        } catch (Exception e) {
             return Result.error("You can not register this user.");
         }
     }

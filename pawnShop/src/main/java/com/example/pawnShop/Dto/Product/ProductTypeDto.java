@@ -2,13 +2,15 @@ package com.example.pawnShop.Dto.Product;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class ProductTypeDto {
 
-    private Long id;
+    private UUID id;
 
     private String name;
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductFactoryImp implements ProductFactory {
+
     @Override
     public ProductType createProductType(String name) {
         return ProductType
@@ -13,4 +14,5 @@ public class ProductFactoryImp implements ProductFactory {
                 .name(name)
                 .build();
     }
+
 }
