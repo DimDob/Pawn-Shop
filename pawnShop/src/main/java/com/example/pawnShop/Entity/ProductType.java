@@ -33,13 +33,11 @@ import java.util.UUID;
 @Table(name = "products_types")
 public class ProductType {
 
-    private final int PRODUCT_TYPE_NAME_MAX_LENGTH = 32;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(unique = true, nullable = false, length = PRODUCT_TYPE_NAME_MAX_LENGTH)
+    @Column(unique = true, nullable = false, length = 32)
     private String name;
 
     @OneToMany(mappedBy = "productType")

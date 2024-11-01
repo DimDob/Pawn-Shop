@@ -16,5 +16,6 @@ create table products
     size                integer,
     owner_id            uuid         not null,
     category            varchar(255),
+    product_type_id     uuid,
     primary key (id)
 )

@@ -57,9 +57,9 @@ alter table if exists products
             references users;
 
 alter table if exists products
-    add constraint FKtq95i5na6qgaxwwjms1l0uvs6
-        foreign key (product_type)
-            references products_types;
+    add constraint FK_products_product_type
+        foreign key (product_type_id)
+            references products_types (id);
 
 alter table if exists users
     add constraint FK6xud8h78q7b0yn3t87wpxvdi4

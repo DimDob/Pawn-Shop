@@ -81,4 +81,8 @@ public class Product {
     @Column(name = "second_hand_price")
     private BigDecimal secondHandPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
+
 }
