@@ -26,6 +26,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatOptionModule } from "@angular/material/core";
 import { MatMenuModule } from "@angular/material/menu";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 import { HeaderComponent } from "./components/header_component/header/header.component";
 import { AboutUsComponent } from "./components/about_us_component/about-us/about-us.component";
@@ -44,11 +45,12 @@ import { MyProductsComponent } from "./components/my_products_component/my-produ
 import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
 import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
 import { FavoritesComponent } from "./components/favorites_component/favorites/favorites.component";
+import { NotificationService } from "./shared/services/notification.service";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule],
-  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule],
+  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

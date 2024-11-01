@@ -6,6 +6,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { ActivatedRoute, Router } from "@angular/router";
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
+import { NotificationService } from "../../../shared/services/notification.service";
 
 @Component({
   selector: "app-edit-product",
@@ -20,7 +21,7 @@ export class EditProductComponent implements OnInit {
 
   productId: string | null = null;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private seedDataService: SeedDataService, private router: Router) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private seedDataService: SeedDataService, private router: Router, private notificationService: NotificationService) {
     this.editProductForm = this.fb.group({
       picture: [null],
       color: ["", Validators.required],
@@ -42,46 +43,52 @@ export class EditProductComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    console.log("EditProductComponent: Initialization");
     this.route.paramMap.subscribe(params => {
-      const idParam = params.get("id");
-      if (idParam) {
-        this.productId = idParam;
-        this.loadProductData();
-      } else {
-        console.error("No product ID provided.");
-        this.router.navigate(["/not-found"]);
+      const id = params.get("id");
+      if (id) {
+        this.productId = id;
+        this.loadProductData(id);
       }
     });
   }
 
-  loadProductData() {
-    if (this.productId !== null) {
-      const product = this.seedDataService.products.find(p => p.id === this.productId);
-      if (product) {
-        this.editProductForm.patchValue(product);
-      } else {
-        console.error("Product not found");
-        this.router.navigate(["/not-found"]);
-      }
+  loadProductData(id: string) {
+    const product = this.seedDataService.products.find(p => p.id === id);
+    if (product) {
+      console.log("EditProductComponent: Retrieving product data", product);
+      this.editProductForm.patchValue(product);
+    } else {
+      console.error("EditProductComponent: Product not found");
+      this.notificationService.showError("Product not found");
+      this.router.navigate(["/not-found"]);
     }
   }
 
   submitForm() {
     if (this.editProductForm.invalid) {
+      console.log("EditProductComponent: Form is invalid");
       return;
     }
-    const updatedProduct: Products = {
-      id: this.productId!,
-      ...this.editProductForm.value
-    };
 
-    const index = this.seedDataService.products.findIndex(p => p.id === this.productId);
-    if (index !== -1) {
-      this.seedDataService.products[index] = updatedProduct;
-    } else {
-      console.error("Product not found in the list.");
+    try {
+      if (this.productId) {
+        const formData = this.editProductForm.value;
+        const index = this.seedDataService.products.findIndex(p => p.id === this.productId);
+
+        if (index !== -1) {
+          this.seedDataService.products[index] = {
+            ...this.seedDataService.products[index],
+            ...formData
+          };
+          console.log("EditProductComponent: Product updated successfully");
+          this.notificationService.showSuccess("Product updated successfully");
+          this.router.navigate(["/pawn-shop/main-page"]);
+        }
+      }
+    } catch (error) {
+      console.error("EditProductComponent: Error updating product", error);
+      this.notificationService.showError("An error occurred while updating the product");
     }
-
-    this.router.navigate(["/pawn-shop/main-page"]);
   }
 }

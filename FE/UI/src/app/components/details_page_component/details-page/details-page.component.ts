@@ -6,6 +6,7 @@ import { SeedDataService } from "../../main_page_component/main-page/seedData/se
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { AuthService } from "../../../app.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
+import { NotificationService } from "../../../shared/services/notification.service";
 @Component({
   selector: "app-details-page",
   templateUrl: "./details-page.component.html",
@@ -17,8 +18,8 @@ export class DetailsPageComponent implements OnInit {
   isOwner = false;
   showConfirmModal = false;
   isFavorite = false;
-  constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService, private router: Router, private authService: AuthService, private favoritesService: FavoritesService) {
-    console.log("DetailsPageComponent: Инициализиране");
+  constructor(private route: ActivatedRoute, private seedDataService: SeedDataService, private cartService: CartService, private router: Router, private authService: AuthService, private favoritesService: FavoritesService, private notificationService: NotificationService) {
+    console.log("DetailsPageComponent: Initialization");
   }
 
   ngOnInit(): void {
@@ -67,9 +68,16 @@ export class DetailsPageComponent implements OnInit {
 
   deleteProduct() {
     if (this.product) {
-      this.seedDataService.products = this.seedDataService.products.filter(p => p.id !== this.product?.id);
-      this.showConfirmModal = false;
-      this.router.navigate(["/pawn-shop/main-page"]);
+      try {
+        this.seedDataService.products = this.seedDataService.products.filter(p => p.id !== this.product?.id);
+        this.showConfirmModal = false;
+        console.log("DetailsPageComponent: Product deleted successfully");
+        this.notificationService.showSuccess("Product deleted successfully");
+        this.router.navigate(["/pawn-shop/main-page"]);
+      } catch (error) {
+        console.error("DetailsPageComponent: Error deleting product", error);
+        this.notificationService.showError("An error occurred while deleting the product.");
+      }
     }
   }
 
