@@ -58,17 +58,14 @@ export class AuthComponent {
       return;
     }
 
-    console.log("Опит за вход с:", credentials);
-
     this.authService.handleUserLoging(credentials, `${this.host}/${loginEndpoint}`).subscribe({
       next: response => {
-        console.log("Успешна автентикация:", response);
         this.router.navigate(["/pawn-shop/main-page"]);
       },
       error: error => {
-        console.error("Грешка при вход:", error.message);
+        alert("Error logging in: " + error.message);
         if (this.loginComponent) {
-          this.loginComponent.loginError = "Грешен имейл или парола";
+          this.loginComponent.loginError = "Wrong email or password";
         }
       }
     });
