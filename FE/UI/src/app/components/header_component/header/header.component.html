@@ -1,13 +1,14 @@
 <!-- UI\src\app\components\header_component\header\header.component.html -->
 <mat-toolbar color="primary">
   <div class="header-content">
-    <a (click)="resetAndNavigateHome()" style="cursor: pointer;">
+    <a (click)="onResetAndNavigateHome()" style="cursor: pointer">
       <img src="../../../../favicon.ico" alt="Icon" class="header-icon" />
     </a>
+
     <div class="search-bar">
       <mat-form-field appearance="outline" class="search-field">
         <mat-label>Search</mat-label>
-        <input matInput placeholder="Search products" [(ngModel)]="searchTerm" (input)="onSearch()" />
+        <input matInput placeholder="Search products" [ngModel]="searchTerm()" (ngModelChange)="searchTerm.set($event); onSearch()" />
       </mat-form-field>
     </div>
 
@@ -16,7 +17,9 @@
         <mat-label>Category</mat-label>
         <mat-select (selectionChange)="onCategoryChange($event.value)" #categorySelect [panelClass]="'custom-select-panel'" disableOptionCentering>
           <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category">{{ category }}</mat-option>
+          @for (category of categories(); track category) {
+          <mat-option [value]="category">{{ category }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>
@@ -26,34 +29,38 @@
     <div class="toolbar-options">
       <button mat-button [routerLink]="['/about-us']">About Us</button>
 
-      <!-- Добавяне на mat-menu към бутона Products -->
       <button mat-button [matMenuTriggerFor]="productsMenu">Products</button>
       <mat-menu #productsMenu="matMenu">
         <button mat-menu-item [routerLink]="['/add-product']">Add Product</button>
         <button mat-menu-item [routerLink]="['/my-products']">My Products</button>
       </mat-menu>
 
-      <!-- Заменяме стария My Account бутон с нов с падащо меню -->
       <button mat-button [matMenuTriggerFor]="accountMenu">My Account</button>
       <mat-menu #accountMenu="matMenu">
         <button mat-menu-item [routerLink]="['/my-account']">
           <mat-icon>person</mat-icon>
           <span>My Account</span>
         </button>
-        <button mat-menu-item (click)="logout()">
+        <button mat-menu-item (click)="onLogout()">
           <mat-icon>exit_to_app</mat-icon>
           <span>Logout</span>
         </button>
       </mat-menu>
 
       <button mat-button [routerLink]="['/contacts']">Contacts</button>
+
       <button mat-icon-button [routerLink]="['/cart']">
-        <mat-icon [style.color]="isCartPage ? 'purple' : 'white'">shopping_cart</mat-icon>
-        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+        <mat-icon [style.color]="isCartPage() ? 'purple' : 'white'">shopping_cart</mat-icon>
+        @if (cartItemCount() > 0) {
+        <span class="cart-count">{{ cartItemCount() }}</span>
+        }
       </button>
+
       <button mat-icon-button [routerLink]="['/favorites']">
-        <mat-icon [style.color]="isFavoritesPage ? 'purple' : 'white'">favorite</mat-icon>
-        <span *ngIf="favoritesCount > 0" class="favorites-count">{{ favoritesCount }}</span>
+        <mat-icon [style.color]="isFavoritesPage() ? 'purple' : 'white'">favorite</mat-icon>
+        @if (favoritesCount() > 0) {
+        <span class="favorites-count">{{ favoritesCount() }}</span>
+        }
       </button>
     </div>
   </div>

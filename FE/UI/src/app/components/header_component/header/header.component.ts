@@ -1,5 +1,5 @@
 // UI\src\app\components\header_component\header\header.component.ts
-import { Component, ViewEncapsulation } from "@angular/core";
+import { Component, ViewEncapsulation, input, output, signal } from "@angular/core";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
@@ -7,6 +7,8 @@ import { SearchService } from "../../../shared/services/search.service";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { AuthService } from "../../../app.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
+import { computed } from "@angular/core";
+
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -14,52 +16,67 @@ import { FavoritesService } from "../../favorites_component/favorites/favorites.
   encapsulation: ViewEncapsulation.None
 })
 export class HeaderComponent {
-  public categories = Object.values(Category);
-  public searchTerm = "";
+  // Constants
+  private readonly INITIAL_COUNT = 0;
+  private readonly INITIAL_SEARCH_TERM = "";
 
-  public cartItemCount = 0;
-  isCartPage = false;
+  // Inputs and Outputs
+  categories = input<Category[]>();
+  categoryChanged = output<string>();
 
-  public favoritesCount = 0;
-  isFavoritesPage = false;
+  // Signals
+  searchTerm = signal(this.INITIAL_SEARCH_TERM);
+  cartItemCount = signal(this.INITIAL_COUNT);
+  favoritesCount = signal(this.INITIAL_COUNT);
+
+  // Computed values
+  isCartPage = signal(false);
+  isFavoritesPage = signal(false);
 
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService, private favoritesService: FavoritesService) {
+    this.initializeSubscriptions();
+    this.initializeRouteListener();
+  }
+
+  private initializeSubscriptions(): void {
+    // Cart items subscription
     this.cartService.items$.subscribe(items => {
-      this.cartItemCount = items.reduce((count, item) => count + item.quantity, 0);
+      this.cartItemCount.set(items.reduce((count, item) => count + item.quantity, this.INITIAL_COUNT));
     });
 
+    // Favorites subscription
     this.favoritesService.favorites$.subscribe(favorites => {
-      console.log("HeaderComponent: Updating favorites count");
-      this.favoritesCount = favorites.length;
-    });
-
-    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(event => {
-      this.isCartPage = event.urlAfterRedirects === "/cart";
-      this.isFavoritesPage = event.urlAfterRedirects === "/favorites";
+      this.favoritesCount.set(favorites.length);
     });
   }
 
-  onCategoryChange(category: string) {
+  private initializeRouteListener(): void {
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(event => {
+      this.isCartPage.set(event.urlAfterRedirects === "/cart");
+      this.isFavoritesPage.set(event.urlAfterRedirects === "/favorites");
+    });
+  }
+
+  onCategoryChange(category: string): void {
+    this.categoryChanged.emit(category);
     this.searchService.setSelectedCategory(category);
   }
 
-  onSearch() {
-    this.searchService.setSearchTerm(this.searchTerm);
+  onSearch(): void {
+    this.searchService.setSearchTerm(this.searchTerm());
   }
 
-  logout() {
+  onLogout(): void {
     this.authService.logout();
     this.router.navigate(["/auth/login"]);
   }
 
-  resetAndNavigateHome() {
-    console.log("Reset and navigate to home");
-    this.searchTerm = "";
-    this.searchService.setSearchTerm("");
+  onResetAndNavigateHome(): void {
+    this.searchTerm.set(this.INITIAL_SEARCH_TERM);
+    this.searchService.setSearchTerm(this.INITIAL_SEARCH_TERM);
     this.searchService.setSelectedCategory("");
     this.searchService.setSortOption("");
-    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
-      this.router.navigate(["/pawn-shop/main-page"]);
-    });
+
+    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => this.router.navigate(["/pawn-shop/main-page"]));
   }
 }
