@@ -19,6 +19,7 @@ import { EditProductComponent } from "./components/edit_product_component/edit-p
 import { RegisterComponent } from "./components/auth_component/register/register.component";
 import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
 import { FavoritesComponent } from "./components/favorites_component/favorites/favorites.component";
+import { ServerErrorComponent } from "./components/server-error_component/server-error/server-error.component";
 
 const routes: Routes = [
   {
@@ -93,6 +94,7 @@ const routes: Routes = [
     component: FavoritesComponent,
     canActivate: [authGuard]
   },
+  { path: "server-error", component: ServerErrorComponent },
   { path: "**", component: NotFoundComponent }
 ];
 

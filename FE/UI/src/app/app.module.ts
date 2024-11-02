@@ -47,11 +47,13 @@ import { EditProductComponent } from "./components/edit_product_component/edit-p
 import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
 import { FavoritesComponent } from "./components/favorites_component/favorites/favorites.component";
 import { NotificationService } from "./shared/services/notification.service";
+import { ServerErrorComponent } from "./components/server-error_component/server-error/server-error.component";
+import { ErrorHandlerService } from "./shared/services/error-handler.service";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule],
-  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, NotificationService, ProductService],
+  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, NotificationService, ProductService, ErrorHandlerService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

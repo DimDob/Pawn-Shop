@@ -6,6 +6,8 @@ import { Observable, of, throwError, EMPTY } from "rxjs";
 import { User } from "./components/auth_component/login/login_interfaces.ts/User";
 import { AuthResponse } from "./components/auth_component/login/login_interfaces.ts/AuthResponse";
 import { tap, catchError, finalize } from "rxjs/operators";
+import { Router } from "@angular/router";
+import { ErrorHandlerService } from "./shared/services/error-handler.service";
 
 @Injectable({
   providedIn: "root"
@@ -15,11 +17,15 @@ export class AuthService {
   private isAuthenticating = signal<boolean>(false);
   public isAuthenticated = computed(() => !!this.getToken());
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private errorHandler: ErrorHandlerService
+  ) {}
 
   public handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
     if (this.isAuthenticating()) {
-      alert("Login already in progress");
+      alert("Login process is already in progress");
       return EMPTY;
     }
 
@@ -31,10 +37,7 @@ export class AuthService {
           localStorage.setItem(this.tokenKey, response.token);
         }
       }),
-      catchError(error => {
-        alert("Login failed. Please try again.");
-        return throwError(() => error);
-      }),
+      catchError(error => this.errorHandler.handleError(error)),
       finalize(() => {
         this.isAuthenticating.set(false);
       })
@@ -59,23 +62,6 @@ export class AuthService {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     });
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    let errorMessage = "An error occurred during the request";
-
-    if (error.status === 0) {
-      errorMessage = "No connection to the server. Please check if the back-end server is working.";
-    } else if (error.status === 403) {
-      errorMessage = "Wrong credentials or CORS problem";
-    } else if (error.error instanceof ErrorEvent) {
-      errorMessage = `Client error: ${error.error.message}`;
-    } else {
-      errorMessage = `Server error: ${error.status}. Message: ${error.message}`;
-    }
-
-    alert(errorMessage);
-    return throwError(() => new Error(errorMessage));
   }
 
   public handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {

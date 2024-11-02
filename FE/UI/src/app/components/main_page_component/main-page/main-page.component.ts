@@ -11,6 +11,8 @@ import { Category } from "./enums/Category";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginator } from "@angular/material/paginator";
 import { ProductService } from "../../../shared/services/product.service";
+import { ErrorHandlerService } from "../../../shared/services/error-handler.service";
+import { catchError } from "rxjs";
 
 @Component({
   selector: "app-main-page",
@@ -37,10 +39,18 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private productService: ProductService, private router: Router, private cartService: CartService, private searchService: SearchService) {}
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private cartService: CartService,
+    private searchService: SearchService,
+    private errorHandler: ErrorHandlerService
+  ) {
+    console.log("MainPageComponent initialized");
+  }
 
   ngOnInit(): void {
-    console.log("Инициализиране на компонента");
+    console.log("Initializing main page");
 
     const searchSub = this.searchService.searchTerm$.subscribe(term => {
       this.searchTerm = term.toLowerCase();
@@ -66,25 +76,28 @@ export class MainPageComponent implements OnInit, OnDestroy {
     });
     this.subscriptions.add(sortSub);
 
-    this.productService.getAllProducts().subscribe({
+    this.productService.getAllProducts().pipe(
+      catchError(error => {
+        alert("Failed to load products");
+        return this.errorHandler.handleError(error);
+      })
+    ).subscribe({
       next: (products) => {
-        console.log("Получени продукти от API:", products);
         if (products && products.length > 0) {
-          console.log("Пример за цена на първия продукт:", products[0].price);
           this.products = products;
           this.filteredProducts = products;
           this.applyFilters();
         }
       },
       error: (error) => {
-        console.error("Грешка при зареждане на продукти:", error);
+        alert("Error occurred while processing products");
       }
     });
 
     this.pageSize = Number(localStorage.getItem("preferredPageSize")) || 25;
     this.pageIndex = Number(localStorage.getItem("currentPageIndex")) || 0;
 
-    console.log("Заредени стойности от localStorage:", {
+    console.log("Loaded values from localStorage:", {
       pageSize: this.pageSize,
       pageIndex: this.pageIndex
     });
@@ -95,7 +108,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    console.log("Синхронизиране на paginator");
+    console.log("Synchronizing paginator");
     if (this.paginator) {
       this.paginator.pageIndex = this.pageIndex;
       this.paginator.pageSize = this.pageSize;
@@ -153,7 +166,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
     const maxValidPageIndex = Math.ceil(this.totalProducts / this.pageSize) - 1;
     if (this.pageIndex > maxValidPageIndex) {
-      console.log("Коригиране на индекса на страницата поради филтриране");
+      console.log("Correction of the page index due to filtering");
       this.pageIndex = maxValidPageIndex >= 0 ? maxValidPageIndex : 0;
       localStorage.setItem("currentPageIndex", this.pageIndex.toString());
 
@@ -172,7 +185,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(event: PageEvent) {
-    console.log("Промяна на страница и размер", event);
+    console.log("Change of page and size", event);
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
 
@@ -183,7 +196,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   toggleView() {
-    console.log("Превключване на изглед");
+    console.log("Switching view");
     this.isGridView = !this.isGridView;
   }
 }
