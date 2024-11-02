@@ -3,7 +3,7 @@
   <div class="icon">
     <fa-icon [icon]="faBoxOpen" style="color: #009d34"></fa-icon>
   </div>
-  <h2>{{ isEditMode ? "Edit Product" : "Add New Product" }}</h2>
+  <h2>@if (isEditMode) { Edit Product } @else { Add New Product }</h2>
 
   <form [formGroup]="addProductForm" (ngSubmit)="submitForm()">
     <div>
@@ -25,9 +25,9 @@
       <label>Category</label>
       <select formControlName="category">
         <option value="">Select Category</option>
-        <option *ngFor="let category of categories" [value]="category">
-          {{ category }}
-        </option>
+        @for (category of categories; track category) {
+        <option [value]="category">{{ category }}</option>
+        }
       </select>
     </div>
 
@@ -64,5 +64,7 @@
     <button type="submit" [disabled]="addProductForm.invalid">Add Product</button>
   </form>
 
+  @if (errorMessage) {
   <p class="error-message">{{ errorMessage }}</p>
+  }
 </div>
