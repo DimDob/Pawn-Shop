@@ -12,9 +12,7 @@ export class NotificationService {
     verticalPosition: "top"
   };
 
-  constructor(private snackBar: MatSnackBar) {
-    alert("Notification service initialized successfully");
-  }
+  constructor(private snackBar: MatSnackBar) {}
 
   public showSuccess(message: string): void {
     this.snackBar.open(message, "Close", {

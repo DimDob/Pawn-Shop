@@ -124,7 +124,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   protected applyFilters(): void {
     if (!this.products()) {
-      alert("No products available to filter");
+      console.warn("No products available to filter");
       return;
     }
 

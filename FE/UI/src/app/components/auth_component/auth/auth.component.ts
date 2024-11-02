@@ -63,7 +63,7 @@ export class AuthComponent {
         this.router.navigate(["/pawn-shop/main-page"]);
       },
       error: error => {
-        alert("Error logging in: " + error.message);
+        console.error("Login error:", error);
         if (this.loginComponent) {
           this.loginComponent.loginError = "Wrong email or password";
         }

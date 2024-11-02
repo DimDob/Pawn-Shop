@@ -21,7 +21,7 @@ export class CartService {
       const parsed = JSON.parse(jsonString);
       return Array.isArray(parsed) && parsed.every(item => item?.product?.id && typeof item.quantity === "number" && item.quantity >= 0);
     } catch {
-      alert("Invalid cart data format detected");
+      console.error("Invalid cart data format detected");
       return false;
     }
   }
@@ -79,7 +79,7 @@ export class CartService {
 
   public updateQuantity(productId: string, quantity: number): void {
     if (quantity < 0) {
-      alert("Quantity cannot be negative");
+      console.warn("Quantity cannot be negative");
       return;
     }
 

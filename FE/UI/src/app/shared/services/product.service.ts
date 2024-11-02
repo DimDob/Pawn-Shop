@@ -12,9 +12,7 @@ import { Category } from "../../components/main_page_component/main-page/enums/C
 export class ProductService {
   private host = `${environment.host}/data/expose/products`;
 
-  constructor(private http: HttpClient) {
-    alert("Product service initialized successfully");
-  }
+  constructor(private http: HttpClient) {}
 
   public getAllProducts(): Observable<Products[]> {
     return this.http.get<Products[]>(this.host).pipe(
@@ -27,13 +25,13 @@ export class ProductService {
               category: product.category?.toUpperCase() as Category
             };
           } catch (error) {
-            alert(`Error processing product ${product.id}: ${error}`);
+            console.error(`Error processing product ${product.id}:`, error);
             throw error;
           }
         });
       }),
       catchError((error: HttpErrorResponse) => {
-        alert(`Error fetching products: ${error.message}`);
+        console.error("Error fetching products:", error);
         return throwError(() => error);
       })
     );

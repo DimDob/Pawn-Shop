@@ -25,7 +25,6 @@ export class AuthService {
 
   public handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
     if (this.isAuthenticating()) {
-      alert("Login process is already in progress");
       return EMPTY;
     }
 
