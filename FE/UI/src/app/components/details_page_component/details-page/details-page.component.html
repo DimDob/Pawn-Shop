@@ -1,38 +1,45 @@
 <!-- UI\src\app\components\details_page_component\details-page\details-page.component.html -->
-<div class="details-container" *ngIf="product">
+@if (product()){
+<div class="details-container">
   <div class="image-container">
-    <img [src]="product.picture" alt="{{ product.manufacturer }} {{ product.model }}" />
-    <button mat-icon-button (click)="toggleFavorite()" class="favorite-button">
-      <mat-icon [style.color]="isFavorite ? '#ff4081' : '#009d34'">favorite</mat-icon>
+    <img [src]="product()!.picture" alt="{{ product()!.manufacturer }} {{ product()!.model }}" />
+    <button mat-icon-button (click)="onToggleFavorite()" class="favorite-button">
+      <mat-icon [style.color]="isFavorite() ? '#ff4081' : '#009d34'"> favorite </mat-icon>
     </button>
-    <!-- Use color #666 or #009d34 -->
   </div>
-  <h2>{{ product.name }}</h2>
 
-  <p *ngIf="product.size !== undefined">Size: {{ product.size }}</p>
-  <p *ngIf="product.color">Color: {{ product.color }}</p>
-  <p *ngIf="product.sex">Sex: {{ product.sex }}</p>
+  <h2>{{ product()!.name }}</h2>
 
-  <p>Category: {{ product.category }}</p>
-  <p>Price: ${{ product.price }}</p>
+  @if (product()!.size !== undefined) {
+  <p>Size: {{ product()!.size }}</p>
+  } @if (product()!.color) {
+  <p>Color: {{ product()!.color }}</p>
+  } @if (product()!.sex) {
+  <p>Sex: {{ product()!.sex }}</p>
+  }
 
-  <div class="quantity" *ngIf="!isOwner">
+  <p>Category: {{ product()!.category }}</p>
+  <p>Price: ${{ product()!.price }}</p>
+
+  @if (!isOwner()) {
+  <div class="quantity">
     <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" [(ngModel)]="quantity" min="1" />
+    <input type="number" id="quantity" [ngModel]="quantity()" (ngModelChange)="quantity.set($event)" min="1" />
   </div>
-
-  <button (click)="addToCart()" *ngIf="!isOwner">Add to Cart</button>
-
-  <div class="button-container" *ngIf="isOwner">
-    <button class="edit-button" (click)="editProduct()">Edit</button>
-    <button class="delete-button" (click)="confirmDelete()">Delete</button>
+  <button (click)="onAddToCart()">Add to Cart</button>
+  } @if (isOwner()) {
+  <div class="button-container">
+    <button class="edit-button" (click)="onEditProduct()">Edit</button>
+    <button class="delete-button" (click)="onConfirmDelete()">Delete</button>
   </div>
-
-  <div class="modal" *ngIf="showConfirmModal">
+  } @if (showConfirmModal()) {
+  <div class="modal">
     <div class="modal-content">
       <p>Are you sure?</p>
-      <button (click)="deleteProduct()">Delete</button>
-      <button (click)="cancelDelete()">Cancel</button>
+      <button (click)="onDeleteProduct()">Delete</button>
+      <button (click)="onCancelDelete()">Cancel</button>
     </div>
   </div>
+  }
 </div>
+}
