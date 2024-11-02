@@ -5,6 +5,7 @@
   </div>
   <h2>Edit Product</h2>
 
+  @if (currentProduct(); as product) {
   <form [formGroup]="editProductForm" (ngSubmit)="submitForm()">
     <div>
       <label>Product Name</label>
@@ -25,15 +26,15 @@
       <label>Category</label>
       <select formControlName="category">
         <option value="">Select Category</option>
-        <option *ngFor="let category of categories" [value]="category">
-          {{ category }}
-        </option>
+        @for (category of categories; track category) {
+        <option [value]="category">{{ category }}</option>
+        }
       </select>
     </div>
 
     <div>
       <label>Price (€)</label>
-      <input formControlName="price" type="number" min="0" step="0.01" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 46" />
+      <input formControlName="price" type="number" min="0" step="0.01" (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)" />
     </div>
 
     <div>
@@ -43,7 +44,7 @@
 
     <div>
       <label>Size (EU) (optional)</label>
-      <input formControlName="size" type="number" min="0" step="0.5" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 46" />
+      <input formControlName="size" type="number" min="0" step="0.5" (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)" />
     </div>
 
     <div>
@@ -61,13 +62,11 @@
       <input type="file" (change)="onFileChange($event)" />
     </div>
 
-    <!-- <div>
-      <label>ID</label>
-      <input formControlName="id" type="text" [value]="productId" readonly />
-    </div> -->
-
-    <button type="submit" [disabled]="editProductForm.invalid">Save Changes</button>
+    <button type="submit" [disabled]="!isFormValid()">Save Changes</button>
   </form>
-
-  <p class="error-message">{{ errorMessage }}</p>
+  } @else {
+  <p>Loading product...</p>
+  } @if (errorMessage(); as error) {
+  <p class="error-message">{{ error }}</p>
+  }
 </div>

@@ -1,5 +1,5 @@
 // UI\src\app\components\edit_product_component\edit-product\edit-product.component.ts
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, signal, computed, effect, inject, Signal } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -14,14 +14,26 @@ import { NotificationService } from "../../../shared/services/notification.servi
   styleUrls: ["./edit-product.component.scss"]
 })
 export class EditProductComponent implements OnInit {
-  editProductForm: FormGroup;
-  categories = Object.values(Category);
-  errorMessage = "";
+  // Public properties
+  public editProductForm: FormGroup;
+  public categories = Object.values(Category);
+  public errorMessage = signal<string>("");
   public faEdit = faEdit;
+  public productId = signal<string>("");
+  public currentProduct = signal<Products | null>(null);
 
-  productId: string | null = null;
+  // Private properties
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private seedDataService = inject(SeedDataService);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private seedDataService: SeedDataService, private router: Router, private notificationService: NotificationService) {
+  // Computed values
+  public isFormValid = computed(() => this.editProductForm?.valid ?? false);
+
+  constructor() {
+    // Initialize form
     this.editProductForm = this.fb.group({
       picture: [null],
       color: ["", Validators.required],
@@ -33,61 +45,80 @@ export class EditProductComponent implements OnInit {
       category: ["", Validators.required],
       price: ["", [Validators.required, Validators.min(0)]]
     });
+
+    // Setup effect for form changes
+    effect(() => {
+      if (this.currentProduct()) {
+        this.updateFormWithProduct(this.currentProduct()!);
+      }
+    });
   }
-  onFileChange(event: any) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.editProductForm.patchValue({
-        picture: file
-      });
-    }
+
+  // Lifecycle hooks
+  public ngOnInit(): void {
+    this.setupRouteSubscription();
   }
-  ngOnInit(): void {
-    console.log("EditProductComponent: Initialization");
+
+  // Private methods
+  private setupRouteSubscription(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get("id");
       if (id) {
-        this.productId = id;
+        this.productId.set(id);
         this.loadProductData(id);
       }
     });
   }
 
-  loadProductData(id: string) {
+  private updateFormWithProduct(product: Products): void {
+    this.editProductForm.patchValue(product);
+  }
+
+  // Public methods
+  public onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files?.length) {
+      const file = target.files[0];
+      this.editProductForm.patchValue({
+        picture: file
+      });
+    }
+  }
+
+  public loadProductData(id: string): void {
     const product = this.seedDataService.products.find(p => p.id === id);
     if (product) {
-      console.log("EditProductComponent: Retrieving product data", product);
-      this.editProductForm.patchValue(product);
+      this.currentProduct.set(product);
     } else {
-      console.error("EditProductComponent: Product not found");
+      this.errorMessage.set("Product not found");
       this.notificationService.showError("Product not found");
       this.router.navigate(["/not-found"]);
     }
   }
 
-  submitForm() {
+  public submitForm(): void {
     if (this.editProductForm.invalid) {
-      console.log("EditProductComponent: Form is invalid");
+      this.errorMessage.set("Please fill all required fields");
       return;
     }
 
     try {
-      if (this.productId) {
+      const currentId = this.productId();
+      if (currentId) {
         const formData = this.editProductForm.value;
-        const index = this.seedDataService.products.findIndex(p => p.id === this.productId);
+        const index = this.seedDataService.products.findIndex(p => p.id === currentId);
 
         if (index !== -1) {
           this.seedDataService.products[index] = {
             ...this.seedDataService.products[index],
             ...formData
           };
-          console.log("EditProductComponent: Product updated successfully");
           this.notificationService.showSuccess("Product updated successfully");
           this.router.navigate(["/pawn-shop/main-page"]);
         }
       }
     } catch (error) {
-      console.error("EditProductComponent: Error updating product", error);
+      this.errorMessage.set("An error occurred while updating the product");
       this.notificationService.showError("An error occurred while updating the product");
     }
   }
