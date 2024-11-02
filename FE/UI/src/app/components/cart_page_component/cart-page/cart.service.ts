@@ -1,76 +1,111 @@
 // UI\src\app\services\cart.service.ts
 
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, catchError, of } from "rxjs";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
+import { StorageKeys } from "../../../enums/StorageKeys";
 
 @Injectable({
   providedIn: "root"
 })
 export class CartService {
   private itemsSubject = new BehaviorSubject<{ product: Products; quantity: number }[]>([]);
-  items$ = this.itemsSubject.asObservable();
-  private readonly STORAGE_KEY = "cart";
+  public items$ = this.itemsSubject.asObservable();
 
   constructor() {
-    console.log("CartService: Initialized");
     this.loadFromLocalStorage();
   }
 
-  private loadFromLocalStorage() {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-    if (stored) {
-      console.log("CartService: Loading from localStorage");
-      this.itemsSubject.next(JSON.parse(stored));
+  private validateJSON(jsonString: string): boolean {
+    try {
+      const parsed = JSON.parse(jsonString);
+      return Array.isArray(parsed) && parsed.every(item => item?.product?.id && typeof item.quantity === "number" && item.quantity >= 0);
+    } catch {
+      alert("Invalid cart data format detected");
+      return false;
     }
   }
 
-  private saveToLocalStorage(items: { product: Products; quantity: number }[]) {
-    console.log("CartService: Saving to localStorage");
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+  private loadFromLocalStorage(): void {
+    try {
+      const stored = localStorage.getItem(StorageKeys.CART);
+      if (stored && this.validateJSON(stored)) {
+        this.itemsSubject.next(JSON.parse(stored));
+      }
+    } catch (error) {
+      alert("Error loading cart data");
+      console.error("Error loading cart:", error);
+    }
   }
 
-  public addToCart(product: Products, quantity: number = 1) {
+  private saveToLocalStorage(items: { product: Products; quantity: number }[]): void {
+    try {
+      const jsonString = JSON.stringify(items);
+      if (this.validateJSON(jsonString)) {
+        localStorage.setItem(StorageKeys.CART, jsonString);
+      }
+    } catch (error) {
+      alert("Error saving cart data");
+      console.error("Error saving cart:", error);
+    }
+  }
+
+  public addToCart(product: Products, quantity: number = 1): void {
+    if (quantity <= 0) {
+      alert("Quantity must be greater than 0");
+      return;
+    }
+
     const items = this.itemsSubject.getValue();
-    const existingItem = items.find(item => item.product.id === product.id);
-    if (existingItem) {
-      existingItem.quantity += quantity;
+    const existingItemIndex = items.findIndex(item => (item?.product?.id ? item.product.id === product.id : null));
+
+    if (existingItemIndex > -1) {
+      const newItems = [...items];
+      newItems[existingItemIndex] = {
+        ...items[existingItemIndex],
+        quantity: items[existingItemIndex].quantity + quantity
+      };
+      this.itemsSubject.next(newItems);
     } else {
-      items.push({ product, quantity });
+      this.itemsSubject.next([...items, { product, quantity }]);
     }
-    this.itemsSubject.next(items);
-    this.saveToLocalStorage(items);
+
+    this.saveToLocalStorage(this.itemsSubject.getValue());
   }
 
-  public removeFromCart(productId: string) {
-    let items = this.itemsSubject.getValue();
-    items = items.filter(item => item.product.id !== productId);
-    this.itemsSubject.next(items);
-    this.saveToLocalStorage(items);
+  public removeFromCart(productId: string): void {
+    const newItems = this.itemsSubject.getValue().filter(item => (item?.product?.id ? item.product.id !== productId : null));
+    this.itemsSubject.next(newItems);
+    this.saveToLocalStorage(newItems);
   }
 
-  public updateQuantity(productId: string, quantity: number) {
+  public updateQuantity(productId: string, quantity: number): void {
+    if (quantity < 0) {
+      alert("Quantity cannot be negative");
+      return;
+    }
+
     const items = this.itemsSubject.getValue();
-    const item = items.find(item => item.product.id === productId);
-    if (item) {
-      item.quantity = quantity;
-      if (item.quantity <= 0) {
+    const itemIndex = items.findIndex(item => (item?.product?.id ? item.product.id === productId : null));
+
+    if (itemIndex > -1) {
+      if (quantity === 0) {
         this.removeFromCart(productId);
       } else {
-        this.itemsSubject.next(items);
-        this.saveToLocalStorage(items);
+        const newItems = [...items];
+        newItems[itemIndex] = { ...items[itemIndex], quantity };
+        this.itemsSubject.next(newItems);
+        this.saveToLocalStorage(newItems);
       }
     }
   }
 
-  public clearCart() {
-    console.log("CartService: Clearing cart");
+  public clearCart(): void {
     this.itemsSubject.next([]);
-    localStorage.removeItem(this.STORAGE_KEY);
+    localStorage.removeItem(StorageKeys.CART);
   }
 
   public getTotalCost(): number {
-    const items = this.itemsSubject.getValue();
-    return items.reduce((total, item) => total + (item.product.price || 0) * item.quantity, 0);
+    return this.itemsSubject.getValue().reduce((total, item) => total + (item?.product?.price || 0) * (item?.quantity || 0), 0);
   }
 }
