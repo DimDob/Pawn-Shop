@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+// UI\src\app\components\my-products\my-products.component.ts
+import { Component, OnInit, signal } from "@angular/core";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { Router } from "@angular/router";
@@ -9,15 +10,19 @@ import { Router } from "@angular/router";
   styleUrls: ["./my-products.component.scss"]
 })
 export class MyProductsComponent implements OnInit {
-  products: Products[] = [];
+  protected products = signal<Products[]>([]);
 
   constructor(private seedDataService: SeedDataService, private router: Router) {}
 
   ngOnInit(): void {
-    this.products = this.seedDataService.products;
+    try {
+      this.products.set(this.seedDataService.products);
+    } catch (error) {
+      alert("Failed to load products. Please try again later.");
+    }
   }
 
-  goToDetails(id: string) {
+  protected goToDetails(id: string): void {
     this.router.navigate(["/product", id]);
   }
 }
