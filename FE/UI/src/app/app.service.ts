@@ -1,64 +1,59 @@
 // UI\src\app\app.service.ts
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { PrismData } from "./components/auth_component/login/login_interfaces.ts/prismData";
-import { Injectable } from "@angular/core";
-import { Observable, of, throwError, EMPTY, finalize } from "rxjs";
+import { Injectable, signal, computed } from "@angular/core";
+import { Observable, of, throwError, EMPTY } from "rxjs";
 import { User } from "./components/auth_component/login/login_interfaces.ts/User";
 import { AuthResponse } from "./components/auth_component/login/login_interfaces.ts/AuthResponse";
-import { tap, catchError } from "rxjs/operators";
+import { tap, catchError, finalize } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  private tokenKey = "auth_token";
-  private isAuthenticating = false;
+  private readonly tokenKey = "auth_token";
+  private isAuthenticating = signal<boolean>(false);
+  public isAuthenticated = computed(() => !!this.getToken());
 
   constructor(private http: HttpClient) {}
 
-  handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
-    if (this.isAuthenticating) {
-      console.log("AuthService: Login already in progress");
+  public handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
+    if (this.isAuthenticating()) {
+      alert("Login already in progress");
       return EMPTY;
     }
 
-    this.isAuthenticating = true;
-    console.log("AuthService: Starting login process");
+    this.isAuthenticating.set(true);
 
     return this.http.post<AuthResponse>(endpoint, credentials).pipe(
       tap(response => {
-        console.log("AuthService: Login successful");
         if (response?.token) {
           localStorage.setItem(this.tokenKey, response.token);
         }
       }),
       catchError(error => {
-        console.error("AuthService: Login error", error);
+        alert("Login failed. Please try again.");
         return throwError(() => error);
       }),
       finalize(() => {
-        console.log("AuthService: Login process completed");
-        this.isAuthenticating = false;
+        this.isAuthenticating.set(false);
       })
     );
   }
 
-  isLoggedIn(): boolean {
-    const token = localStorage.getItem(this.tokenKey);
-    console.log("AuthService: Checking login status:", !!token);
-    return !!token;
+  public isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 
-  logout(): void {
-    console.log("AuthService: Logging out");
+  public logout(): void {
     localStorage.removeItem(this.tokenKey);
   }
 
-  getToken(): string | null {
+  public getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  getAuthHeaders(): HttpHeaders {
+  public getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
       "Content-Type": "application/json",
@@ -67,8 +62,6 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    console.error("Full error:", error);
-
     let errorMessage = "An error occurred during the request";
 
     if (error.status === 0) {
@@ -76,36 +69,35 @@ export class AuthService {
     } else if (error.status === 403) {
       errorMessage = "Wrong credentials or CORS problem";
     } else if (error.error instanceof ErrorEvent) {
-        errorMessage = `Client error: ${error.error.message}`;
+      errorMessage = `Client error: ${error.error.message}`;
     } else {
       errorMessage = `Server error: ${error.status}. Message: ${error.message}`;
     }
 
+    alert(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 
-  handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
+  public handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
     return this.http.post<PrismData>(endpoint, {
       ...userCredentials
     });
   }
 
-  handlerChangePassword(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
+  public handlerChangePassword(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
     return this.http.post<PrismData>(endpoint, {
       ...userCredentials
     });
   }
 
-  verifyPassword(currentPassword: string): Observable<boolean> {
+  public verifyPassword(currentPassword: string): Observable<boolean> {
     return of(currentPassword === "correct_password");
   }
 
-  getCurrentUser(): User {
-    console.log("AuthService: Getting current user");
+  public getCurrentUser(): User {
     const token = this.getToken();
 
     if (!token) {
-      console.log("AuthService: No token found");
       return {
         id: "",
         loginUsername: "",
@@ -116,19 +108,15 @@ export class AuthService {
 
     try {
       const tokenPayload = JSON.parse(atob(token.split(".")[1]));
-      console.log("AuthService: Token payload:", tokenPayload);
 
-      const user = {
+      return {
         id: tokenPayload.userId || "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
         loginUsername: tokenPayload.username || tokenPayload.email,
         isAdmin: tokenPayload.isAdmin || false,
         isEmployee: tokenPayload.isEmployee || false
       };
-
-      console.log("AuthService: Returning user:", user);
-      return user;
     } catch (error) {
-      console.error("AuthService: Error decoding token:", error);
+      alert("Error decoding user token");
       return {
         id: "",
         loginUsername: "",
