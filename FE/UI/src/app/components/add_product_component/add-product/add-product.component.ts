@@ -77,7 +77,6 @@ export class AddProductComponent implements OnInit {
         const index = this.seedDataService.products.findIndex(p => p.id === this.productId);
         if (index !== -1) {
           this.seedDataService.products[index] = { id: this.productId, ...formData };
-          console.log("AddProductComponent: Product updated successfully");
           this.notificationService.showSuccess("Product updated successfully.");
         }
       } else {
@@ -89,7 +88,6 @@ export class AddProductComponent implements OnInit {
           ...formData,
           category: formData.category as Category
         });
-        console.log("AddProductComponent: Product added successfully");
         this.notificationService.showSuccess("Product added successfully.");
       }
 

@@ -199,7 +199,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.isGridView.update(value => !value);
   }
   protected setSelectedCategory(value: string) {
-    console.log("Setting category:", value);
     this.selectedCategory.set(value);
     this.applyFilters();
   }

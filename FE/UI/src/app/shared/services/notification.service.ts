@@ -1,3 +1,4 @@
+// UI\src\app\services\notification.service.ts
 import { Injectable } from "@angular/core";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 
@@ -12,27 +13,24 @@ export class NotificationService {
   };
 
   constructor(private snackBar: MatSnackBar) {
-    console.log("NotificationService: Initialization");
+    alert("Notification service initialized successfully");
   }
 
-  showSuccess(message: string) {
-    console.log("NotificationService: Displaying success message", message);
+  public showSuccess(message: string): void {
     this.snackBar.open(message, "Close", {
       ...this.config,
       panelClass: ["success-snackbar"]
     });
   }
 
-  showError(message: string) {
-    console.log("NotificationService: Displaying error message", message);
+  public showError(message: string): void {
     this.snackBar.open(message, "Close", {
       ...this.config,
       panelClass: ["error-snackbar"]
     });
   }
 
-  showInfo(message: string) {
-    console.log("NotificationService: Displaying information message", message);
+  public showInfo(message: string): void {
     this.snackBar.open(message, "Close", {
       ...this.config,
       panelClass: ["info-snackbar"]
