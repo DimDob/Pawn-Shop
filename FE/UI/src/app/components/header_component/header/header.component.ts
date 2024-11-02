@@ -1,5 +1,5 @@
 // UI\src\app\components\header_component\header\header.component.ts
-import { Component, ViewEncapsulation, input, output, signal } from "@angular/core";
+import { Component, ViewEncapsulation, input, output, signal, SimpleChanges, OnChanges } from "@angular/core";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Router, NavigationEnd } from "@angular/router";
 import { filter } from "rxjs/operators";
@@ -15,7 +15,7 @@ import { computed } from "@angular/core";
   styleUrls: ["./header.component.scss"],
   encapsulation: ViewEncapsulation.None
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnChanges {
   // Constants
   private readonly INITIAL_COUNT = 0;
   private readonly INITIAL_SEARCH_TERM = "";
@@ -28,6 +28,7 @@ export class HeaderComponent {
   searchTerm = signal(this.INITIAL_SEARCH_TERM);
   cartItemCount = signal(this.INITIAL_COUNT);
   favoritesCount = signal(this.INITIAL_COUNT);
+  currentCategory = signal<string>("");
 
   // Computed values
   isCartPage = signal(false);
@@ -36,6 +37,17 @@ export class HeaderComponent {
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService, private favoritesService: FavoritesService) {
     this.initializeSubscriptions();
     this.initializeRouteListener();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["currentCategory"]) {
+      const category = this.currentCategory();
+      if (category !== undefined) {
+        this.categoryChanged.emit(category);
+        this.searchService.setSelectedCategory(category);
+        alert(`Category changed to: ${category || "All"}`);
+      }
+    }
   }
 
   private initializeSubscriptions(): void {
@@ -58,8 +70,7 @@ export class HeaderComponent {
   }
 
   onCategoryChange(category: string): void {
-    this.categoryChanged.emit(category);
-    this.searchService.setSelectedCategory(category);
+    this.currentCategory.set(category);
   }
 
   onSearch(): void {
@@ -73,10 +84,13 @@ export class HeaderComponent {
 
   onResetAndNavigateHome(): void {
     this.searchTerm.set(this.INITIAL_SEARCH_TERM);
+    this.currentCategory.set("");
     this.searchService.setSearchTerm(this.INITIAL_SEARCH_TERM);
     this.searchService.setSelectedCategory("");
     this.searchService.setSortOption("");
 
-    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => this.router.navigate(["/pawn-shop/main-page"]));
+    this.router.navigateByUrl("/", { skipLocationChange: true }).then(() => {
+      this.router.navigate(["/pawn-shop/main-page"]);
+    });
   }
 }
