@@ -1,8 +1,9 @@
+<!-- UI\src\app\components\add_product_component\add-product\add-product.component.html -->
 <div class="add-product-container">
   <div class="icon">
     <fa-icon [icon]="faBoxOpen" style="color: #009d34"></fa-icon>
   </div>
-  <h2>{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h2>
+  <h2>{{ isEditMode ? "Edit Product" : "Add New Product" }}</h2>
 
   <form [formGroup]="addProductForm" (ngSubmit)="submitForm()">
     <div>
