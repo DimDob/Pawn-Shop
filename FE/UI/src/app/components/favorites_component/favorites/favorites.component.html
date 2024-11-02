@@ -1,27 +1,26 @@
 <div class="favorites-container">
-  <div *ngIf="favoriteProducts.length > 0; else noFavorites">
-    <div class="favorite-item" *ngFor="let product of favoriteProducts" (click)="goToDetails(product.id)">
-      <div class="product-image">
-        <img [src]="product.picture" [alt]="product.name" />
-      </div>
-      <div class="product-details">
-        <h2>{{ product.manufacturer }} {{ product.model }}</h2>
-        <p>Price: ${{ product.price }}</p>
-        <p>Category: {{ product.category }}</p>
-      </div>
-      <div class="action-buttons">
-        <button mat-button (click)="addToCart(product); $event.stopPropagation()">
-          <mat-icon>shopping_cart</mat-icon>
-          <span>Add to Cart</span>
-        </button>
-        <button mat-button (click)="removeFromFavorites(product.id); $event.stopPropagation()">
-          <mat-icon>delete</mat-icon>
-          <span>Delete</span>
-        </button>
-      </div>
+  @if (favoriteProducts.length > 0) { @for (product of favoriteProducts; track product.id) {
+  <div class="favorite-item" (click)="goToDetails(product.id)">
+    <div class="product-image">
+      <img [src]="product.picture" [alt]="product.name" />
+    </div>
+    <div class="product-details">
+      <h2>{{ product.manufacturer }} {{ product.model }}</h2>
+      <p>Price: ${{ product.price }}</p>
+      <p>Category: {{ product.category }}</p>
+    </div>
+    <div class="action-buttons">
+      <button mat-button (click)="addToCart(product); $event.stopPropagation()">
+        <mat-icon>shopping_cart</mat-icon>
+        <span>Add to Cart</span>
+      </button>
+      <button mat-button (click)="removeFromFavorites(product.id); $event.stopPropagation()">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
     </div>
   </div>
-  <ng-template #noFavorites>
-    <p class="no-favorites">You have no favorite products.</p>
-  </ng-template>
+  } } @else {
+  <p class="no-favorites">You have no favorite products.</p>
+  }
 </div>
