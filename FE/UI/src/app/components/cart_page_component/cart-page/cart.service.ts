@@ -33,8 +33,7 @@ export class CartService {
         this.itemsSubject.next(JSON.parse(stored));
       }
     } catch (error) {
-      alert("Error loading cart data");
-      console.error("Error loading cart:", error);
+      alert("Error loading cart data: " + error);
     }
   }
 
@@ -45,12 +44,11 @@ export class CartService {
         localStorage.setItem(StorageKeys.CART, jsonString);
       }
     } catch (error) {
-      alert("Error saving cart data");
-      console.error("Error saving cart:", error);
+      alert("Error saving cart data: " + error);
     }
   }
 
-  public addToCart(product: Products, quantity: number = 1): void {
+  public addToCart(product: Products, quantity = 1): void {
     if (quantity <= 0) {
       alert("Quantity must be greater than 0");
       return;
