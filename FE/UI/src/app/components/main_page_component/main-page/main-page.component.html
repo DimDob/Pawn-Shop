@@ -4,7 +4,7 @@
     <div class="filter-controls">
       <mat-form-field appearance="fill">
         <mat-label>Sort</mat-label>
-        <mat-select [(value)]="selectedSortOption" (selectionChange)="applyFilters()">
+        <mat-select [value]="selectedSortOption()" (valueChange)="selectedSortOption.set($event); applyFilters()">
           <mat-option value="">No Sorting</mat-option>
           <mat-option value="priceAsc">Price (Low to High)</mat-option>
           <mat-option value="priceDesc">Price (High to Low)</mat-option>
@@ -15,27 +15,30 @@
 
       <mat-form-field appearance="fill">
         <mat-label>Category</mat-label>
-        <mat-select [(value)]="selectedCategory" (selectionChange)="applyFilters()">
+        <mat-select [value]="selectedCategory()" (valueChange)="setSelectedCategory($event)">
           <mat-option value="">All</mat-option>
-          <mat-option *ngFor="let category of categories" [value]="category">
+          @for(category of categories; track category) {
+          <mat-option [value]="category">
             {{ category }}
           </mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </div>
 
     <div class="view-toggle">
-      <button mat-button (click)="toggleView()" [class.active]="isGridView">
+      <button mat-button (click)="toggleView()" [class.active]="isGridView()">
         <span>Grid</span>
       </button>
-      <button mat-button (click)="toggleView()" [class.active]="!isGridView">
+      <button mat-button (click)="toggleView()" [class.active]="!isGridView()">
         <span>List</span>
       </button>
     </div>
   </div>
 
-  <div class="container" [class.list-view]="!isGridView">
-    <div class="card" *ngFor="let product of paginatedProducts" (click)="goToDetails(product.id)">
+  <div class="container" [class.list-view]="!isGridView()">
+    @for(product of paginatedProducts(); track product.id) {
+    <div class="card" (click)="goToDetails(product.id)">
       <div class="imgBx">
         <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
       </div>
@@ -44,14 +47,17 @@
           <h2>{{ product?.name }} {{ product?.name }}</h2>
           <div class="price">{{ product?.price | currency }}</div>
           <div class="details">
-            <div class="manufacturer" *ngIf="product?.manufacturer">
+            @if(product?.manufacturer) {
+            <div class="manufacturer">
               <h3>Manufacturer:</h3>
-              <span>{{ product?.manufacturer }} </span>
+              <span>{{ product?.manufacturer }}</span>
             </div>
-            <div class="model" *ngIf="product?.model">
+            } @if(product?.model) {
+            <div class="model">
               <h3>Model:</h3>
               <span>{{ product?.model }}</span>
             </div>
+            }
           </div>
         </div>
         <div class="action-area">
@@ -59,7 +65,8 @@
         </div>
       </div>
     </div>
+    }
   </div>
 
-  <mat-paginator [length]="totalProducts" [pageSize]="pageSize" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
+  <mat-paginator [length]="totalProducts()" [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
 </div>
