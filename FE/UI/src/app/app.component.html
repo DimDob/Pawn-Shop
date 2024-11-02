@@ -1,9 +1,13 @@
 <!-- UI\src\app\app.component.html -->
 
 <div class="app-container">
-  <app-header *ngIf="authService.isLoggedIn()"></app-header>
+  @if (authService.isLoggedIn()) {
+  <app-header></app-header>
+  }
   <div class="content">
     <router-outlet></router-outlet>
   </div>
-  <app-footer *ngIf="authService.isLoggedIn()"></app-footer>
+  @if (authService.isLoggedIn()) {
+  <app-footer></app-footer>
+  }
 </div>
