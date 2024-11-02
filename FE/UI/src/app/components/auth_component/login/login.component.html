@@ -1,12 +1,14 @@
 <!-- UI\src\app\components\auth_component\login\login.component.html -->
-<ng-container *ngIf="isEverythingInitialized" #navButtons>
-  <ul class="nav">
-    <li (click)="showLoginOnClick()">Login</li>
-    @if (isForgotPassword) {
-    <li (click)="showForgotPasswordOnClick()">Forgot password</li>
-    }
-  </ul>
-</ng-container>
+@if (isEverythingInitialized) {
+  <div #navButtons>
+    <ul class="nav">
+      <li (click)="showLoginOnClick()">Login</li>
+      @if (isForgotPassword) {
+        <li (click)="showForgotPasswordOnClick()">Forgot password</li>
+      }
+    </ul>
+  </div>
+}
 
 <div class="wrapper" id="'loginComponent">
   <div class="rec-prism">
@@ -26,17 +28,15 @@
         </form>
 
         <!-- Show different content based on whether the user is an admin -->
-        <ng-container *ngIf="user.isAdmin !== undefined">
-          <ng-container *ngIf="user.isAdmin; else notAdmin">
+        @if (user.isAdmin !== undefined) {
+          @if (user.isAdmin) {
             <div>The user with the provided email has administrator rights!</div>
-          </ng-container>
-
-          <ng-template #notAdmin>
+          } @else {
             <div>
               <p>The provided user does not have administrator rights. Please contact your administrator.</p>
             </div>
-          </ng-template>
-        </ng-container>
+          }
+        }
       </div>
     </div>
 
@@ -59,9 +59,11 @@
             <input type="submit" value="Submit" />
           </div>
 
-          <div *ngIf="loginError" class="error-message">
-            {{ loginError }}
-          </div>
+          @if (loginError) {
+            <div class="error-message">
+              {{ loginError }}
+            </div>
+          }
 
           <span class="psw" (click)="showForgotPasswordOnClick()">Forgot Password?</span>
         </form>
