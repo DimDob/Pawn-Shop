@@ -4,136 +4,124 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { HeaderComponent } from "./header.component";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { SearchService } from "../../../shared/services/search.service";
-import { BehaviorSubject } from "rxjs";
-import { provideRouter } from "@angular/router";
 import { Router, NavigationEnd } from "@angular/router";
-
-class MockCartService {
-  private itemsSubject = new BehaviorSubject<{ product: any; quantity: number }[]>([]);
-  items$ = this.itemsSubject.asObservable();
-
-  addToCart(product: any, quantity: number = 1) {
-    const items = this.itemsSubject.getValue();
-    const existingItem = items.find(item => item.product.id === product.id);
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      items.push({ product, quantity });
-    }
-    this.itemsSubject.next(items);
-  }
-
-  removeFromCart(productId: number) {
-    let items = this.itemsSubject.getValue();
-    items = items.filter(item => item.product.id !== productId);
-    this.itemsSubject.next(items);
-  }
-
-  updateQuantity(productId: number, quantity: number) {
-    const items = this.itemsSubject.getValue();
-    const item = items.find(item => item.product.id === productId);
-    if (item) {
-      item.quantity = quantity;
-      if (item.quantity <= 0) {
-        this.removeFromCart(productId);
-      } else {
-        this.itemsSubject.next(items);
-      }
-    }
-  }
-
-  clearCart() {
-    this.itemsSubject.next([]);
-  }
-
-  getTotalCost(): number {
-    const items = this.itemsSubject.getValue();
-    return items.reduce((total, item) => total + item.product.price * item.quantity, 0);
-  }
-}
-
-class MockSearchService {
-  private searchTermSubject = new BehaviorSubject<string>("");
-  searchTerm$ = this.searchTermSubject.asObservable();
-
-  private selectedCategorySubject = new BehaviorSubject<string>("");
-  selectedCategory$ = this.selectedCategorySubject.asObservable();
-
-  private sortOptionSubject = new BehaviorSubject<string>("");
-  sortOption$ = this.sortOptionSubject.asObservable();
-
-  setSearchTerm(term: string) {
-    this.searchTermSubject.next(term);
-  }
-
-  setSelectedCategory(category: string) {
-    this.selectedCategorySubject.next(category);
-  }
-
-  setSortOption(option: string) {
-    this.sortOptionSubject.next(option);
-  }
-}
-
-class MockRouter {
-  private eventsSubject = new BehaviorSubject<any>(null);
-  events = this.eventsSubject.asObservable();
-
-  navigate(url: string) {
-    this.eventsSubject.next(new NavigationEnd(1, url, url));
-  }
-}
+import { AuthService } from "../../../app.service";
+import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
+import { BehaviorSubject, of } from "rxjs";
+import { provideRouter } from "@angular/router";
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatInputModule } from "@angular/material/input";
+import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatIconModule } from "@angular/material/icon";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe("HeaderComponent", () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let mockCartService: MockCartService;
-  let mockSearchService: MockSearchService;
-  let mockRouter: MockRouter;
+  let cartService: jasmine.SpyObj<CartService>;
+  let searchService: jasmine.SpyObj<SearchService>;
+  let router: jasmine.SpyObj<Router>;
+  let authService: jasmine.SpyObj<AuthService>;
+  let favoritesService: jasmine.SpyObj<FavoritesService>;
+
+  const mockItems$ = new BehaviorSubject<any[]>([]);
+  const mockFavorites$ = new BehaviorSubject<any[]>([]);
+  const mockEvents$ = new BehaviorSubject<any>(new NavigationEnd(1, "/", "/"));
 
   beforeEach(async () => {
-    mockCartService = new MockCartService();
-    mockSearchService = new MockSearchService();
-    mockRouter = new MockRouter();
+    cartService = jasmine.createSpyObj("CartService", ["addToCart", "removeFromCart"], {
+      items$: mockItems$.asObservable()
+    });
+
+    searchService = jasmine.createSpyObj("SearchService", ["setSearchTerm", "setSelectedCategory", "setSortOption"]);
+
+    router = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"], {
+      events: mockEvents$.asObservable()
+    });
+
+    authService = jasmine.createSpyObj("AuthService", ["logout"]);
+
+    favoritesService = jasmine.createSpyObj("FavoritesService", [], {
+      favorites$: mockFavorites$.asObservable()
+    });
 
     await TestBed.configureTestingModule({
+      imports: [MatToolbarModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatMenuModule, MatIconModule, NoopAnimationsModule],
       declarations: [HeaderComponent],
-      providers: [{ provide: CartService, useValue: mockCartService }, { provide: SearchService, useValue: mockSearchService }, { provide: Router, useValue: mockRouter }, provideRouter([])]
+      providers: [{ provide: CartService, useValue: cartService }, { provide: SearchService, useValue: searchService }, { provide: Router, useValue: router }, { provide: AuthService, useValue: authService }, { provide: FavoritesService, useValue: favoritesService }, provideRouter([])]
     }).compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it("must create HeaderComponent", () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 
-  it("must update cartItemCount when cart changes", () => {
-    mockCartService.addToCart({ id: 1, price: 100 }, 2);
+  it("should update cart count when items change", () => {
+    const mockItems = [{ product: { id: 1 }, quantity: 2 }];
+    mockItems$.next(mockItems);
     fixture.detectChanges();
-    expect(component.cartItemCount).toBe(2);
+
+    expect(component.cartItemCount()).toBe(2);
   });
 
-  it("must determine if the current page is the cart page", () => {
-    mockRouter.navigate("/cart");
+  it("should update favorites count when favorites change", () => {
+    const mockFavoriteItems = [{ id: 1 }, { id: 2 }];
+    mockFavorites$.next(mockFavoriteItems);
     fixture.detectChanges();
-    expect(component.isCartPage).toBeTrue();
+
+    expect(component.favoritesCount()).toBe(2);
   });
 
-  it("must call setSelectedCategory when the category changes", () => {
-    const spy = spyOn(mockSearchService, "setSelectedCategory");
-    component.onCategoryChange("Electronics");
-    expect(spy).toHaveBeenCalledWith("Electronics");
+  it("should handle category change", () => {
+    const category = "Electronics";
+    component.onCategoryChange(category);
+
+    expect(searchService.setSelectedCategory).toHaveBeenCalledWith(category);
+    expect(component.currentCategory()).toBe(category);
   });
 
-  it("must call setSearchTerm when searching", () => {
-    const spy = spyOn(mockSearchService, "setSearchTerm");
-    component.searchTerm = "Laptop";
+  it("should handle search", () => {
+    const searchTerm = "test";
+    component.searchTerm.set(searchTerm);
     component.onSearch();
-    expect(spy).toHaveBeenCalledWith("Laptop");
+
+    expect(searchService.setSearchTerm).toHaveBeenCalledWith(searchTerm);
+  });
+
+  it("should handle logout", () => {
+    component.onLogout();
+
+    expect(authService.logout).toHaveBeenCalled();
+    expect(router.navigate).toHaveBeenCalledWith(["/auth/login"]);
+  });
+
+  it("should reset and navigate home", async () => {
+    await component.onResetAndNavigateHome();
+
+    expect(component.searchTerm()).toBe("");
+    expect(component.currentCategory()).toBe("");
+    expect(searchService.setSearchTerm).toHaveBeenCalledWith("");
+    expect(searchService.setSelectedCategory).toHaveBeenCalledWith("");
+    expect(searchService.setSortOption).toHaveBeenCalledWith("");
+    expect(router.navigateByUrl).toHaveBeenCalled();
+  });
+
+  it("should update page status on navigation", () => {
+    mockEvents$.next(new NavigationEnd(1, "/cart", "/cart"));
+    fixture.detectChanges();
+
+    expect(component.isCartPage()).toBeTrue();
+
+    mockEvents$.next(new NavigationEnd(1, "/favorites", "/favorites"));
+    fixture.detectChanges();
+
+    expect(component.isFavoritesPage()).toBeTrue();
   });
 });
