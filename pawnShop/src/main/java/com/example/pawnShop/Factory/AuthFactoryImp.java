@@ -1,11 +1,13 @@
 package com.example.pawnShop.Factory;
 
-import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
+import com.example.pawnShop.Dto.Auth.LoginResponseDTO;
+import com.example.pawnShop.Dto.Auth.RegisterRequestDTO;
 import com.example.pawnShop.Dto.Auth.RegisterResponseDTO;
 import com.example.pawnShop.Entity.AppUser;
 import com.example.pawnShop.Entity.Role;
 import com.example.pawnShop.Factory.Contract.AuthFactory;
 import com.example.pawnShop.Repository.UserRepository;
+import com.example.pawnShop.Service.Contract.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -20,9 +22,10 @@ public class AuthFactoryImp implements AuthFactory {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @Override
-    public AppUser createUser(RegisterRequestDto registerRequestDto) {
+    public AppUser createUser(RegisterRequestDTO registerRequestDto) {
         return AppUser.builder()
                 .email(registerRequestDto.getEmail())
                 .password(this.passwordEncoder.encode(registerRequestDto.getPassword()))
@@ -42,6 +45,14 @@ public class AuthFactoryImp implements AuthFactory {
                 .enabled(appUser.getEnabled())
                 .verificationCode(appUser.getVerificationCode())
                 .verificationCodeExpiresAt(appUser.getVerificationCodeExpiresAt())
+                .build();
+    }
+
+    @Override
+    public LoginResponseDTO createLoginResponse(AppUser appUser) {
+        return LoginResponseDTO.builder()
+                .token(this.jwtService.generateJwtToken(appUser))
+                .expiresInMinutes(30)
                 .build();
     }
 

@@ -5,8 +5,8 @@ import com.example.pawnShop.Dto.Result;
 
 public interface AuthService {
 
-    Result<LoginResponseDto> login(LoginRequestDto loginRequestDto);
+    Result<LoginResponseDTO> login(LoginRequestDТО loginRequestDТО);
 
-    Result<RegisterResponseDTO> register(RegisterRequestDto registerRequestDto);
+    Result<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO);
 
 }

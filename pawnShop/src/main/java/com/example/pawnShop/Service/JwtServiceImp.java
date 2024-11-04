@@ -31,12 +31,12 @@ public class JwtServiceImp implements JwtService {
     }
 
     @Override
-    public String extractSubject(String token){
+    public String extractSubject(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     @Override
-    public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = extractClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -47,12 +47,12 @@ public class JwtServiceImp implements JwtService {
         return expireDate.after(Date.from(Instant.now()));
     }
 
-    private SecretKey generateKey(){
+    private SecretKey generateKey() {
         byte[] decodedKey = Base64.getDecoder().decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(decodedKey);
     }
 
-    private Claims extractClaims(String token){
+    private Claims extractClaims(String token) {
         return Jwts.parser()
                 .verifyWith(generateKey())
                 .build()

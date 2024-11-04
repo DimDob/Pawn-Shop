@@ -7,56 +7,54 @@ import com.example.pawnShop.Factory.Contract.AuthFactory;
 import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
 import com.example.pawnShop.Service.Contract.EmailService;
-import com.example.pawnShop.Service.Contract.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImp implements AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final AuthFactory authFactory;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
     private final EmailService emailService;
 
     @Override
-    public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto) {
-        try {
-            if (loginRequestDto == null) {
-                return Result.error("The fields are empty.");
-            }
-            Authentication authentication = this.authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequestDto.getEmail(),
-                            loginRequestDto.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            AppUser user = (AppUser) authentication.getPrincipal();
-            return Result.success(LoginResponseDto.builder()
-                    .username(user.getEmail())
-                    .token(this.jwtService.generateJwtToken(user))
-                    .isAdmin(user.getIsAdmin())
-                    .build());
-        } catch (AuthenticationException e) {
-            return Result.error("Incorrect email or password.");
+    public Result<LoginResponseDTO> login(LoginRequestDТО loginRequestDТО) {
+        Optional<AppUser> optionalAppUser = this.userRepository.findByEmail(loginRequestDТО.getEmail());
+        if (optionalAppUser.isEmpty()) {
+            return Result.error("User not found!");
         }
+        AppUser user = optionalAppUser.get();
+        if (!user.isEnabled()) {
+            return Result.error("Account is not verified. Please, check your email!");
+        }
+        if (!this.passwordEncoder.matches(loginRequestDТО.getPassword(), user.getPassword())) {
+            return Result.error("Wrong username or password!");
+        }
+        this.authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequestDТО.getEmail(),
+                        loginRequestDТО.getPassword()
+                ));
+        return Result.success(this.authFactory.createLoginResponse(user));
     }
 
     @Override
-    public Result<RegisterResponseDTO> register(RegisterRequestDto registerRequestDto) {
-        if (!registerRequestDto.getPassword().equals(registerRequestDto.getConfirmPassword())) {
+    public Result<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO) {
+        if (!registerRequestDTO.getPassword().equals(registerRequestDTO.getConfirmPassword())) {
             return Result.error("Passwords do not match!");
         }
-        if (this.userRepository.findByEmail(registerRequestDto.getEmail()).isPresent()) {
+        if (this.userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
             return Result.error("The email is already in use!");
         }
-        AppUser newUser = this.authFactory.createUser(registerRequestDto);
+        AppUser newUser = this.authFactory.createUser(registerRequestDTO);
         sendVerificationEmail(newUser);
         this.userRepository.saveAndFlush(newUser);
         return Result.success(this.authFactory.createRegisterResponse(newUser));

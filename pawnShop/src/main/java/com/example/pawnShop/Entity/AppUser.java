@@ -1,6 +1,7 @@
 package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -48,7 +49,7 @@ public class AppUser implements UserDetails {
     private LocalDateTime verificationCodeExpiresAt;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @ManyToOne

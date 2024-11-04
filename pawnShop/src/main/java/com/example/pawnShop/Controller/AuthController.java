@@ -1,8 +1,8 @@
 package com.example.pawnShop.Controller;
 
-import com.example.pawnShop.Dto.Auth.LoginRequestDto;
-import com.example.pawnShop.Dto.Auth.LoginResponseDto;
-import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
+import com.example.pawnShop.Dto.Auth.LoginRequestDТО;
+import com.example.pawnShop.Dto.Auth.LoginResponseDTO;
+import com.example.pawnShop.Dto.Auth.RegisterRequestDTO;
 import com.example.pawnShop.Dto.Auth.RegisterResponseDTO;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.AuthService;
@@ -19,14 +19,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto loginRequestDto) {
-        Result<LoginResponseDto> result = this.authService.login(loginRequestDto);
+    public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDТО loginRequestDТО) {
+        Result<LoginResponseDTO> result = this.authService.login(loginRequestDТО);
         return result.isSuccess() ? ResponseEntity.ok().body(result.getValue()) : ResponseEntity.badRequest().body(result.getError());
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Validated @RequestBody RegisterRequestDto registerRequestDto) {
-        Result<RegisterResponseDTO> result = this.authService.register(registerRequestDto);
+    public ResponseEntity<?> register(@Validated @RequestBody RegisterRequestDTO registerRequestDTO) {
+        Result<RegisterResponseDTO> result = this.authService.register(registerRequestDTO);
         return result.isSuccess() ? ResponseEntity.ok().body(result.getValue()) : ResponseEntity.badRequest().body(result.getError());
     }
 

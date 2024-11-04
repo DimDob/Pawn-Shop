@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LoginResponseDto {
-
-    private String username;
+public class LoginResponseDTO {
 
     private String token;
 
-    private Boolean isAdmin;
+    private Integer expiresInMinutes;
 
 }
