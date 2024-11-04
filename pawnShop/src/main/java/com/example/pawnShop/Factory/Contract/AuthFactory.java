@@ -3,6 +3,7 @@ package com.example.pawnShop.Factory.Contract;
 import com.example.pawnShop.Dto.Auth.LoginResponseDTO;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDTO;
 import com.example.pawnShop.Dto.Auth.RegisterResponseDTO;
+import com.example.pawnShop.Dto.Auth.VerificationResponseDTO;
 import com.example.pawnShop.Entity.AppUser;
 
 public interface AuthFactory {
@@ -12,5 +13,7 @@ public interface AuthFactory {
     RegisterResponseDTO createRegisterResponse(AppUser appUser);
 
     LoginResponseDTO createLoginResponse(AppUser appUser);
+
+    VerificationResponseDTO createVerificationResponse(AppUser appUser);
 
 }

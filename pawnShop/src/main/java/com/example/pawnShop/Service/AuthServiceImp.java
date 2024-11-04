@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -58,6 +59,30 @@ public class AuthServiceImp implements AuthService {
         sendVerificationEmail(newUser);
         this.userRepository.saveAndFlush(newUser);
         return Result.success(this.authFactory.createRegisterResponse(newUser));
+    }
+
+    @Override
+    public Result<VerificationResponseDTO> verify(VerificationRequestDTO verificationRequestDTO) {
+        Optional<AppUser> optionalUser = this.userRepository.findByEmail(verificationRequestDTO.getEmail());
+        if (optionalUser.isEmpty()) {
+            return Result.error("User not found!");
+        }
+        AppUser user = optionalUser.get();
+        LocalDateTime verificationCodeExpiresAt = user.getVerificationCodeExpiresAt();
+        if (verificationCodeExpiresAt == null) {
+            return Result.error("Verification code is null! You might have already verified your account!");
+        }
+        if (verificationCodeExpiresAt.isBefore(LocalDateTime.now())) {
+            return Result.error("Verification code has expired!");
+        }
+        if (!user.getVerificationCode().equals(verificationRequestDTO.getVerificationCode())) {
+            return Result.error("Incorrect verification code provided!");
+        }
+        user.setEnabled(true);
+        user.setVerificationCode(null);
+        user.setVerificationCodeExpiresAt(null);
+        this.userRepository.saveAndFlush(user);
+        return Result.success(this.authFactory.createVerificationResponse(user));
     }
 
     private void sendVerificationEmail(AppUser newUser) {

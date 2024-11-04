@@ -9,4 +9,6 @@ public interface AuthService {
 
     Result<RegisterResponseDTO> register(RegisterRequestDTO registerRequestDTO);
 
+    Result<VerificationResponseDTO> verify(VerificationRequestDTO verificationRequestDTO);
+
 }

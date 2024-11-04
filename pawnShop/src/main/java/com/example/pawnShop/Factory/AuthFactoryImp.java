@@ -3,6 +3,7 @@ package com.example.pawnShop.Factory;
 import com.example.pawnShop.Dto.Auth.LoginResponseDTO;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDTO;
 import com.example.pawnShop.Dto.Auth.RegisterResponseDTO;
+import com.example.pawnShop.Dto.Auth.VerificationResponseDTO;
 import com.example.pawnShop.Entity.AppUser;
 import com.example.pawnShop.Entity.Role;
 import com.example.pawnShop.Factory.Contract.AuthFactory;
@@ -53,6 +54,16 @@ public class AuthFactoryImp implements AuthFactory {
         return LoginResponseDTO.builder()
                 .token(this.jwtService.generateJwtToken(appUser))
                 .expiresInMinutes(30)
+                .build();
+    }
+
+    @Override
+    public VerificationResponseDTO createVerificationResponse(AppUser appUser) {
+        return VerificationResponseDTO.builder()
+                .email(appUser.getEmail())
+                .enabled(appUser.getEnabled())
+                .verificationCode(appUser.getVerificationCode())
+                .verificationCodeExpiresAt(appUser.getVerificationCodeExpiresAt())
                 .build();
     }
 
