@@ -4,20 +4,22 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Table(name = "users")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Table(name = "users")
 public class AppUser implements UserDetails {
 
     @Id
@@ -37,7 +39,13 @@ public class AppUser implements UserDetails {
     private String password;
 
     @Basic
-    private Boolean enable;
+    private Boolean enabled;
+
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Column(name = "verification_expiration_date")
+    private LocalDateTime verificationCodeExpiresAt;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class)
@@ -50,23 +58,19 @@ public class AppUser implements UserDetails {
     @Column(name = "id_admin")
     private Boolean isAdmin;
 
-    public AppUser() {
-        enable = true;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return mapRoleToGrantedAuthority();
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
+        return this.roles.stream().map(role -> new SimpleGrantedAuthority(role.toString())).toList();
     }
 
     @Override
     public String getUsername() {
-        return firstName + " " + lastName;
+        return this.firstName + " " + this.lastName;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
     }
 
     @Override
@@ -84,19 +88,4 @@ public class AppUser implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enable;
-    }
-
-    private List<? extends GrantedAuthority> mapRoleToGrantedAuthority() {
-
-        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Role s : roles) {
-            SimpleGrantedAuthority newAuthority = new SimpleGrantedAuthority(s.toString());
-            grantedAuthorities.add(newAuthority);
-        }
-
-        return grantedAuthorities;
-    }
 }

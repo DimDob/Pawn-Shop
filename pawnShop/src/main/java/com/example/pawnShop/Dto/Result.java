@@ -14,6 +14,7 @@ public class Result<T> {
         this.error = CustomError.none();
         this.isSuccess = true;
     }
+
     private Result(String error){
         this.value = null;
         this.error = CustomError.error(error);

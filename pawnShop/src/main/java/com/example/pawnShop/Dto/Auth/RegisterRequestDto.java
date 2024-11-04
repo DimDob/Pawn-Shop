@@ -2,6 +2,7 @@ package com.example.pawnShop.Dto.Auth;
 
 import com.example.pawnShop.Validation.PasswordValidator.ValidPassword;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +19,10 @@ public class RegisterRequestDto {
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
 
+    @NotBlank
     private String firstName;
 
+    @NotBlank
     private String lastName;
 
     @NotNull
