@@ -27,10 +27,11 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(registry ->{
+                .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/home/index", "/auth/**", "/data/expose/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
-                    registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN","ADMIN");
+                    registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
+                    registry.requestMatchers("/product/**").hasAnyRole("SUPER_ADMIN", "ADMIN", "USER");
                     registry.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
