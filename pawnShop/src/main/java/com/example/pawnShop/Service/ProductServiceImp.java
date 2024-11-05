@@ -104,4 +104,16 @@ public class ProductServiceImp implements ProductService {
             return Result.error("Failed to retrieve product: " + e.getMessage());
         }
     }
+
+    @Override
+    public Result<Void> deleteProductById(UUID id) {
+        try {
+            Product product = productRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            productRepository.delete(product);
+            return Result.success(null);
+        } catch (Exception e) {
+            return Result.error("Failed to delete product: " + e.getMessage());
+        }
+    }
 }
