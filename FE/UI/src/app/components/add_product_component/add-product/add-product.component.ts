@@ -93,9 +93,15 @@ export class AddProductComponent implements OnInit {
     const formValue = this.addProductForm.value;
     console.log("AddProductComponent: Form values:", formValue);
 
+    // Convert form values to FormData, handling the base64 image
     Object.keys(formValue).forEach(key => {
       if (formValue[key] !== null && formValue[key] !== undefined) {
-        formData.append(key, formValue[key].toString());
+        if (key === "picture") {
+          // Image is already in base64 format
+          formData.append(key, formValue[key]);
+        } else {
+          formData.append(key, formValue[key].toString());
+        }
       }
     });
 
@@ -114,11 +120,21 @@ export class AddProductComponent implements OnInit {
 
   onFileChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    if (target.files?.length) {
+    if (target.files && target.files.length > 0) {
       const file = target.files[0];
-      this.addProductForm.patchValue({
-        picture: file
-      });
+      console.log("AddProductComponent: Selected file:", file.name);
+
+      // Convert file to base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        console.log("AddProductComponent: Converted image to base64");
+
+        this.addProductForm.patchValue({
+          picture: base64String
+        });
+      };
+      reader.readAsDataURL(file);
     }
   }
 }

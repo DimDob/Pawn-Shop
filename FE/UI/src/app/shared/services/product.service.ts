@@ -47,7 +47,7 @@ export class ProductService {
           price: Number(productData.get("price")),
           pawnPercentage: 0.5,
           secondHandPrice: Number(productData.get("price")) * 0.8,
-          picture: productData.get("picture") as string || "base64encodedimagestringorURL",
+          picture: productData.get("picture") as string,
           category: category,
           condition: "New",
           color: productData.get("color") as string,
@@ -58,7 +58,7 @@ export class ProductService {
           productTypeId: productType.id
         };
 
-        console.log("ProductService: Sending JSON data:", jsonData);
+        console.log("ProductService: Sending JSON data with image");
 
         return this.http.post<Products>(`${this.baseUrl}/product-add`, jsonData, {
           headers: this.authService.getAuthHeaders()
