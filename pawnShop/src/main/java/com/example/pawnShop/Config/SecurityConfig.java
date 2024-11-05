@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Config\SecurityConfig.java
 package com.example.pawnShop.Config;
 
 import lombok.RequiredArgsConstructor;

@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Entity\PawnShop.java
 package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;

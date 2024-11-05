@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Dto\Auth\LoginRequestDto.java
 package com.example.pawnShop.Dto.Auth;
 
 import jakarta.validation.constraints.Email;

@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Dto\Auth\RegisterRequestDto.java
 package com.example.pawnShop.Dto.Auth;
 
 import com.example.pawnShop.Validation.PasswordValidator.ValidPassword;

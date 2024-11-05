@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\ManualMapper\Contract\ProductManualMapper.java
 package com.example.pawnShop.ManualMapper.Contract;
 
 import com.example.pawnShop.Dto.Product.ProductTypeDto;
