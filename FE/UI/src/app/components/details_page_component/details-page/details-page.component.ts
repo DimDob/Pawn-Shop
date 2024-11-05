@@ -1,72 +1,85 @@
 // UI\src\app\components\details_page_component\details-page\details-page.component.ts
-import { Component, signal, computed, inject } from "@angular/core";
+import { Component, signal, computed, inject, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
-import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { AuthService } from "../../../app.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { NotificationService } from "../../../shared/services/notification.service";
+import { ProductService } from "../../../shared/services/product.service";
 
 @Component({
   selector: "app-details-page",
   templateUrl: "./details-page.component.html",
   styleUrls: ["./details-page.component.scss"]
 })
-export class DetailsPageComponent {
-  // Dependencies
+export class DetailsPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
-  private seedDataService = inject(SeedDataService);
+  private productService = inject(ProductService);
   private cartService = inject(CartService);
   private router = inject(Router);
   private authService = inject(AuthService);
   private favoritesService = inject(FavoritesService);
   private notificationService = inject(NotificationService);
 
-  // Signals
-  product = signal<Products | undefined>(undefined);
-  quantity = signal(1);
-  showConfirmModal = signal(false);
+  product = signal<Products | null>(null);
+  quantity = signal<number>(1);
+  showConfirmModal = signal<boolean>(false);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
 
-  // Computed values
+  productData = computed(() => this.product());
+
   isOwner = computed(() => {
     const currentUser = this.authService.getCurrentUser();
     return Boolean(currentUser.id && this.product()?.ownerId === currentUser.id);
   });
 
-  isFavorite = computed(() => (this.product() ? this.favoritesService.isProductFavorite(this.product()!.id) : false));
+  isFavorite = computed(() =>
+    this.product() ? this.favoritesService.isProductFavorite(this.product()!.id) : false
+  );
 
-  constructor() {
-    this.initializeProduct();
+  ngOnInit(): void {
+    this.loadProduct();
   }
 
-  private initializeProduct(): void {
-    const idParam = this.route.snapshot.paramMap.get("id");
-
-    if (!idParam) {
+  private loadProduct(): void {
+    const productId = this.route.snapshot.paramMap.get("id");
+    if (!productId) {
+      this.error.set("Product ID not found");
       this.router.navigate(["/not-found"]);
       return;
     }
 
-    const foundProduct = this.seedDataService.products.find(product => product.id === idParam);
-
-    if (!foundProduct) {
-      this.router.navigate(["/not-found"]);
-      return;
-    }
-
-    this.product.set(foundProduct);
+    this.loading.set(true);
+    this.productService.getProductById(productId).subscribe({
+      next: (product) => {
+        console.log("DetailsPageComponent: Product loaded:", product);
+        this.product.set(product);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        console.error("DetailsPageComponent: Error loading product:", error);
+        this.error.set("Error loading product");
+        this.loading.set(false);
+        this.notificationService.showError("Error loading product details");
+        this.router.navigate(["/not-found"]);
+      }
+    });
   }
 
   onAddToCart(): void {
-    if (this.product()) {
-      this.cartService.addToCart(this.product()!, this.quantity());
+    const currentProduct = this.product();
+    if (currentProduct) {
+      this.cartService.addToCart(currentProduct, this.quantity());
+      this.notificationService.showSuccess("Product added to cart");
     }
   }
 
   onEditProduct(): void {
-    if (this.product()) {
-      this.router.navigate(["/edit-product", this.product()!.id]);
+    const currentProduct = this.product();
+    if (currentProduct) {
+      this.router.navigate(["/pawn-shop/edit-product", currentProduct.id]);
     }
   }
 
@@ -75,17 +88,21 @@ export class DetailsPageComponent {
   }
 
   onDeleteProduct(): void {
-    if (!this.product()) return;
+    const currentProduct = this.product();
+    if (!currentProduct) return;
 
-    try {
-      this.seedDataService.products = this.seedDataService.products.filter(p => p.id !== this.product()?.id);
-
-      this.showConfirmModal.set(false);
-      this.notificationService.showSuccess("Product deleted successfully");
-      this.router.navigate(["/pawn-shop/main-page"]);
-    } catch (error) {
-      this.notificationService.showError("An error occurred while deleting the product.");
-    }
+    this.productService.deleteProduct(currentProduct.id).subscribe({
+      next: () => {
+        console.log("DetailsPageComponent: Product deleted successfully");
+        this.showConfirmModal.set(false);
+        this.notificationService.showSuccess("Product deleted successfully");
+        this.router.navigate(["/pawn-shop/main-page"]);
+      },
+      error: (error) => {
+        console.error("DetailsPageComponent: Error deleting product:", error);
+        this.notificationService.showError("Error deleting product");
+      }
+    });
   }
 
   onCancelDelete(): void {
@@ -93,12 +110,15 @@ export class DetailsPageComponent {
   }
 
   onToggleFavorite(): void {
-    if (!this.product()) return;
+    const currentProduct = this.product();
+    if (!currentProduct) return;
 
     if (this.isFavorite()) {
-      this.favoritesService.removeFromFavorites(this.product()!.id);
+      this.favoritesService.removeFromFavorites(currentProduct.id);
+      this.notificationService.showSuccess("Removed from favorites");
     } else {
-      this.favoritesService.addToFavorites(this.product()!);
+      this.favoritesService.addToFavorites(currentProduct);
+      this.notificationService.showSuccess("Added to favorites");
     }
   }
 }

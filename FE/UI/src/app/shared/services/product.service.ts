@@ -6,7 +6,7 @@ import { Products } from "../../components/main_page_component/main-page/Interfa
 import { ProductType } from "../interfaces/product-type.interface";
 import { environment } from "../../../environments/environment";
 import { AuthService } from "../../app.service";
-import { catchError, switchMap } from "rxjs/operators";
+import { catchError, switchMap, tap } from "rxjs/operators";
 
 interface ProductTypeResponse {
   id: string;
@@ -52,7 +52,7 @@ export class ProductService {
           condition: "New",
           color: productData.get("color") as string,
           size: Number(productData.get("size")),
-          sex: productData.get("sex") as string || "Unisex",
+          sex: (productData.get("sex") as string) || "Unisex",
           quantityInStock: 10,
           isRunOutOfStock: false,
           productTypeId: productType.id
@@ -153,5 +153,21 @@ export class ProductService {
           return throwError(() => error);
         })
       );
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    console.log("ProductService: Deleting product:", id);
+
+    return this.http.delete<void>(`${this.baseUrl}/product-delete/${id}`, {
+      headers: this.authService.getAuthHeaders()
+    }).pipe(
+      tap(() => {
+        console.log("ProductService: Product deleted successfully");
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("ProductService: Error deleting product:", error);
+        return throwError(() => error);
+      })
+    );
   }
 }

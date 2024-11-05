@@ -1,45 +1,79 @@
 <!-- UI\src\app\components\details_page_component\details-page\details-page.component.html -->
-@if (product()){
-<div class="details-container">
-  <div class="image-container">
-    <img [src]="product()!.picture" alt="{{ product()!.manufacturer }} {{ product()!.model }}" />
-    <button mat-icon-button (click)="onToggleFavorite()" class="favorite-button">
-      <mat-icon [style.color]="isFavorite() ? '#ff4081' : '#009d34'"> favorite </mat-icon>
-    </button>
-  </div>
+@if (loading()) {
+  <div class="loading">Loading product details...</div>
+} @else if (error()) {
+  <div class="error">{{ error() }}</div>
+} @else {
+  @if (productData(); as product) {
+    <div class="details-container">
+      <div class="image-container">
+        <img [src]="product.picture"
+             [alt]="product.manufacturer + ' ' + product.model"
+             onerror="this.src='assets/images/placeholder.jpg'" />
+        <button mat-icon-button (click)="onToggleFavorite()" class="favorite-button">
+          <mat-icon [style.color]="isFavorite() ? '#ff4081' : '#009d34'">
+            favorite
+          </mat-icon>
+        </button>
+      </div>
 
-  <h2>{{ product()!.name }}</h2>
+      <div class="product-info">
+        <h2>{{ product.name }}</h2>
+        <p class="manufacturer">{{ product.manufacturer }} - {{ product.model }}</p>
 
-  @if (product()!.size !== undefined) {
-  <p>Size: {{ product()!.size }}</p>
-  } @if (product()!.color) {
-  <p>Color: {{ product()!.color }}</p>
-  } @if (product()!.sex) {
-  <p>Sex: {{ product()!.sex }}</p>
-  }
+        @if (product.size) {
+          <p>Size: {{ product.size }}</p>
+        }
+        @if (product.color) {
+          <p>Color: {{ product.color }}</p>
+        }
+        @if (product.sex) {
+          <p>Sex: {{ product.sex }}</p>
+        }
 
-  <p>Category: {{ product()!.category }}</p>
-  <p>Price: ${{ product()!.price }}</p>
+        <p>Category: {{ product.category }}</p>
+        <p class="price">Price: €{{ product.price }}</p>
+        <p class="second-hand-price">Second Hand Price: €{{ product.secondHandPrice }}</p>
+        <p>Condition: {{ product.condition }}</p>
+        <p>Stock: {{ product.quantityInStock }}</p>
 
-  @if (!isOwner()) {
-  <div class="quantity">
-    <label for="quantity">Quantity:</label>
-    <input type="number" id="quantity" [ngModel]="quantity()" (ngModelChange)="quantity.set($event)" min="1" />
-  </div>
-  <button (click)="onAddToCart()">Add to Cart</button>
-  } @if (isOwner()) {
-  <div class="button-container">
-    <button class="edit-button" (click)="onEditProduct()">Edit</button>
-    <button class="delete-button" (click)="onConfirmDelete()">Delete</button>
-  </div>
-  } @if (showConfirmModal()) {
-  <div class="modal">
-    <div class="modal-content">
-      <p>Are you sure?</p>
-      <button (click)="onDeleteProduct()">Delete</button>
-      <button (click)="onCancelDelete()">Cancel</button>
+        @if (!isOwner()) {
+          <div class="quantity">
+            <label for="quantity">Quantity:</label>
+            <input type="number"
+                   id="quantity"
+                   [ngModel]="quantity()"
+                   (ngModelChange)="quantity.set($event)"
+                   min="1"
+                   [max]="product.quantityInStock || 0" />
+          </div>
+          <button class="add-to-cart"
+                  (click)="onAddToCart()"
+                  [disabled]="product.isRunOutOfStock">
+            Add to Cart
+          </button>
+        }
+
+        @if (isOwner()) {
+          <div class="button-container">
+            <button class="edit-button" (click)="onEditProduct()">Edit</button>
+            <button class="delete-button" (click)="onConfirmDelete()">Delete</button>
+          </div>
+        }
+      </div>
     </div>
-  </div>
+
+    @if (showConfirmModal()) {
+      <div class="modal">
+        <div class="modal-content">
+          <h3>Confirm Delete</h3>
+          <p>Are you sure you want to delete this product?</p>
+          <div class="modal-buttons">
+            <button class="delete-confirm" (click)="onDeleteProduct()">Delete</button>
+            <button class="cancel" (click)="onCancelDelete()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    }
   }
-</div>
 }
