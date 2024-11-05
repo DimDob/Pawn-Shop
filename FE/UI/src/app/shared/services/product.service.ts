@@ -71,21 +71,49 @@ export class ProductService {
     );
   }
 
-  updateProduct(id: string, productData: FormData): Observable<Products> {
-    console.log("ProductService: Updating product data");
-    const headers = this.authService.getAuthHeaders();
-    headers.delete("Content-Type");
+  updateProduct(id: string, productData: any): Observable<Products> {
+    console.log("ProductService: Updating product:", id);
 
-    return this.http
-      .put<Products>(`${this.baseUrl}/product-update/${id}`, productData, {
-        headers: headers
+    return this.getProductTypes().pipe(
+      switchMap(productTypes => {
+        const category = productData.category;
+        const productType = productTypes.find(pt => pt.name === category);
+
+        if (!productType) {
+          console.error("ProductService: No matching product type found for category:", category);
+          return throwError(() => new Error("Invalid product category"));
+        }
+
+        const jsonData = {
+          id: id,
+          name: productData.name,
+          manufacturer: productData.manufacturer,
+          model: productData.model,
+          price: Number(productData.price),
+          pawnPercentage: 0.5,
+          secondHandPrice: Number(productData.price) * 0.8,
+          picture: productData.picture || "base64encodedimagestringorURL",
+          category: category,
+          condition: "New",
+          color: productData.color,
+          size: Number(productData.size),
+          sex: productData.sex || "Unisex",
+          quantityInStock: 5,
+          isRunOutOfStock: false,
+          productTypeId: productType.id
+        };
+
+        console.log("ProductService: Sending update data:", jsonData);
+
+        return this.http.put<Products>(`${this.baseUrl}/product-edit`, jsonData, {
+          headers: this.authService.getAuthHeaders()
+        });
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("ProductService: Error updating product:", error);
+        return throwError(() => error);
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error("ProductService: Error updating product:", error);
-          return throwError(() => error);
-        })
-      );
+    );
   }
 
   getProductById(id: string): Observable<Products> {
