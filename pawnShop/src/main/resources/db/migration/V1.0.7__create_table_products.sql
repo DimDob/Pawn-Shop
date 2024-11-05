@@ -8,7 +8,6 @@ create table products
     model               varchar(255),
     name                varchar(255) not null,
     pawn_percentage     numeric(38, 2),
-    picture             TEXT,
     price               numeric(38, 2),
     quantity_in_stock   integer,
     second_hand_price   numeric(38, 2),
@@ -17,5 +16,6 @@ create table products
     owner_id            uuid         not null,
     category            varchar(255),
     product_type_id     uuid,
+    picture             TEXT,
     primary key (id)
 )
