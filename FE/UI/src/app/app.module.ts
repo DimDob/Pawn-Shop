@@ -3,29 +3,30 @@
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { CommonModule } from "@angular/common";
+import { MatSelectModule } from "@angular/material/select";
+import { MatOptionModule } from "@angular/material/core";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { RouterModule } from "@angular/router";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
 import { LoginComponent } from "./components/auth_component/login/login.component";
 import { RegisterComponent } from "./components/auth_component/register/register.component";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { AuthService } from "./app.service";
 import { MainPageComponent } from "./components/main_page_component/main-page/main-page.component";
 import { AuthComponent } from "./components/auth_component/auth/auth.component";
 import { ChangePasswordComponent } from "./components/auth_component/change-password/change-password.component";
 import { MatchPasswordsDirective } from "./components/auth_component/directives/password-match.directive";
 import { ChangePasswordService } from "./components/auth_component/change-password/change-password.service";
-import { SeedDataService } from "./components/main_page_component/main-page/seedData/seed-data.service";
 import { ProductService } from "./shared/services/product.service";
 
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatOptionModule } from "@angular/material/core";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 
@@ -40,7 +41,6 @@ import { SearchService } from "./shared/services/search.service";
 import { MyAccountComponent } from "./components/my_account_component/my-account/my-account.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatPaginatorModule } from "@angular/material/paginator";
 import { AddProductComponent } from "./components/add_product_component/add-product/add-product.component";
 import { MyProductsComponent } from "./components/my_products_component/my-products/my-products.component";
 import { EditProductComponent } from "./components/edit_product_component/edit-product/edit-product.component";
@@ -49,11 +49,30 @@ import { FavoritesComponent } from "./components/favorites_component/favorites/f
 import { NotificationService } from "./shared/services/notification.service";
 import { ServerErrorComponent } from "./components/server-error_component/server-error/server-error.component";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
-
+import { AuthInterceptor } from "./shared/interceptors/auth-interceptor.service";
+import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
+import { faUser, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { MatFormFieldModule } from "@angular/material/form-field";
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule],
-  providers: [AuthService, ChangePasswordService, SeedDataService, SearchService, NotificationService, ProductService, ErrorHandlerService],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule, CommonModule, RouterModule],
+  providers: [
+    AuthService,
+    ChangePasswordService,
+    SearchService,
+    NotificationService,
+    ProductService,
+    ErrorHandlerService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faUser, faBoxOpen);
+  }
+}

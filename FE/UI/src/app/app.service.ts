@@ -14,14 +14,61 @@ import { ErrorHandlerService } from "./shared/services/error-handler.service";
 })
 export class AuthService {
   private readonly tokenKey = "auth_token";
-  private isAuthenticating = signal<boolean>(false);
-  public isAuthenticated = computed(() => !!this.getToken());
+  private isAuthenticating = signal(false);
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private errorHandler: ErrorHandlerService
   ) {}
+
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    console.log("AuthService: Creating headers with token");
+    return new HttpHeaders({
+      "Authorization": `Bearer ${token || ""}`,
+      "Content-Type": "application/json"
+    });
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      const expirationDate = new Date(tokenData.exp * 1000);
+      const isExpired = expirationDate < new Date();
+
+      if (isExpired) {
+        console.log("AuthService: Token is expired");
+        this.clearToken();
+      }
+
+      return isExpired;
+    } catch {
+      this.clearToken();
+      return true;
+    }
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  private clearToken(): void {
+    localStorage.removeItem(this.tokenKey);
+  }
+
+  logout(): void {
+    this.clearToken();
+    this.router.navigate(["/auth/login"]);
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return token !== null && !this.isTokenExpired();
+  }
 
   public handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
     if (this.isAuthenticating()) {
@@ -33,6 +80,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(endpoint, credentials).pipe(
       tap(response => {
         if (response?.token) {
+          console.log("AuthService: Saving new token");
           localStorage.setItem(this.tokenKey, response.token);
         }
       }),
@@ -41,26 +89,6 @@ export class AuthService {
         this.isAuthenticating.set(false);
       })
     );
-  }
-
-  public isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
-
-  public logout(): void {
-    localStorage.removeItem(this.tokenKey);
-  }
-
-  public getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  public getAuthHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    });
   }
 
   public handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
