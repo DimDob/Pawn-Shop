@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { NotificationService } from "../../../shared/services/notification.service";
 import { ProductService } from "../../../shared/services/product.service";
 import { AuthService } from "../../../app.service";
@@ -19,13 +19,23 @@ export class AddProductComponent implements OnInit {
   categories = Object.values(Category);
   errorMessage = "";
   public faBoxOpen = faBoxOpen;
-
-  isEditMode = false;
-  productId: string | null = null;
-
   productTypes: ProductType[] = [];
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private notificationService: NotificationService, private productService: ProductService, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private notificationService: NotificationService,
+    private productService: ProductService,
+    private authService: AuthService
+  ) {
+    this.initForm();
+  }
+
+  ngOnInit() {
+    this.loadProductTypes();
+  }
+
+  private initForm() {
     this.addProductForm = this.fb.group({
       picture: [null],
       color: ["", Validators.required],
@@ -38,61 +48,37 @@ export class AddProductComponent implements OnInit {
       price: ["", [Validators.required, Validators.min(0)]],
       productTypeId: ["", Validators.required]
     });
-  }
-  onFileChange(event: any) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
 
-      reader.onload = () => {
-        this.addProductForm.patchValue({
-          picture: reader.result as string
-        });
-      };
-
-      reader.readAsDataURL(file);
-    }
+    // Subscribe to category changes
+    this.addProductForm.get("category")?.valueChanges.subscribe(category => {
+      this.updateProductTypeId(category);
+    });
   }
-  ngOnInit(): void {
+
+  private loadProductTypes() {
     this.productService.getProductTypes().subscribe({
-      next: types => {
+      next: (types) => {
+        console.log("AddProductComponent: Loaded product types:", types);
         this.productTypes = types;
-        if (types.length > 0) {
-          this.addProductForm.patchValue({
-            productTypeId: types[0].id
-          });
+
+        // If form has category value, update productTypeId
+        const category = this.addProductForm.get("category")?.value;
+        if (category) {
+          this.updateProductTypeId(category);
         }
       },
-      error: error => {
-        console.error("Error loading product types:", error);
+      error: (error) => {
+        console.error("AddProductComponent: Error loading product types:", error);
         this.notificationService.showError("Error loading product types");
       }
     });
-
-    this.route.paramMap.subscribe(params => {
-      const idParam = params.get("id");
-      if (idParam) {
-        this.isEditMode = true;
-        this.productId = idParam;
-        this.loadProductData();
-      }
-    });
   }
 
-  loadProductData() {
-    console.log("AddProductComponent: Loading product data for ID:", this.productId);
-    if (this.productId) {
-      this.productService.getProductById(this.productId).subscribe({
-        next: product => {
-          console.log("AddProductComponent: Product data loaded successfully");
-          this.addProductForm.patchValue(product);
-        },
-        error: error => {
-          console.error("AddProductComponent: Error loading product", error);
-          this.notificationService.showError("Error loading product");
-          this.router.navigate(["/not-found"]);
-        }
-      });
+  private updateProductTypeId(category: string) {
+    const matchingType = this.productTypes.find(type => type.name === category);
+    if (matchingType) {
+      console.log("AddProductComponent: Setting productTypeId to:", matchingType.id);
+      this.addProductForm.patchValue({ productTypeId: matchingType.id }, { emitEvent: false });
     }
   }
 
@@ -103,27 +89,15 @@ export class AddProductComponent implements OnInit {
       return;
     }
 
-    if (!this.authService.isLoggedIn()) {
-      console.error("AddProductComponent: User not authenticated");
-      this.notificationService.showError("Please login to add products");
-      this.router.navigate(["/auth/login"]);
-      return;
-    }
-
     const formData = new FormData();
     const formValue = this.addProductForm.value;
-
-    // Log form values before sending
     console.log("AddProductComponent: Form values:", formValue);
 
-    // Append all form values to FormData
     Object.keys(formValue).forEach(key => {
       if (formValue[key] !== null && formValue[key] !== undefined) {
         formData.append(key, formValue[key].toString());
       }
     });
-
-    console.log("AddProductComponent: Processing form data");
 
     this.productService.addProduct(formData).subscribe({
       next: (response) => {
@@ -136,5 +110,15 @@ export class AddProductComponent implements OnInit {
         this.notificationService.showError("Error adding product: " + error.message);
       }
     });
+  }
+
+  onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files?.length) {
+      const file = target.files[0];
+      this.addProductForm.patchValue({
+        picture: file
+      });
+    }
   }
 }

@@ -22,50 +22,53 @@ export class ProductService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getProductTypes(): Observable<ProductTypeResponse[]> {
+  getProductTypes(): Observable<ProductType[]> {
     console.log("ProductService: Fetching product types");
-    return this.http.get<ProductTypeResponse[]>(`${this.baseUrl}/data/expose/product-types`);
+    return this.http.get<ProductType[]>(`${this.baseUrl}/data/expose/product-types`);
   }
 
   addProduct(productData: FormData): Observable<Products> {
     console.log("ProductService: Sending product data to backend");
 
-    if (!this.authService.getToken()) {
-      console.error("ProductService: No valid token found");
-      return throwError(() => new Error("No valid token"));
-    }
+    return this.getProductTypes().pipe(
+      switchMap(productTypes => {
+        const category = productData.get("category") as string;
+        const productType = productTypes.find(pt => pt.name === category);
 
-    const jsonData = {
-      name: productData.get("name") as string,
-      manufacturer: productData.get("manufacturer") as string,
-      model: productData.get("model") as string,
-      price: Number(productData.get("price")),
-      pawnPercentage: 0.5,
-      secondHandPrice: Number(productData.get("price")) * 0.8,
-      picture: productData.get("picture") as string || "base64encodedimagestringorURL",
-      category: productData.get("category") as string,
-      condition: "New",
-      color: productData.get("color") as string,
-      size: Number(productData.get("size")),
-      sex: productData.get("sex") as string || "Unisex",
-      quantityInStock: 10,
-      isRunOutOfStock: false,
-      productTypeId: "b54b1080-4f76-4cb4-ab68-aea44616122f" // Default Electronics ID
-    };
+        if (!productType) {
+          console.error("ProductService: No matching product type found for category:", category);
+          return throwError(() => new Error("Invalid product category"));
+        }
 
-    return this.http
-      .post<Products>(`${this.baseUrl}/product-add`, jsonData, {
-        headers: this.authService.getAuthHeaders()
+        const jsonData = {
+          name: productData.get("name") as string,
+          manufacturer: productData.get("manufacturer") as string,
+          model: productData.get("model") as string,
+          price: Number(productData.get("price")),
+          pawnPercentage: 0.5,
+          secondHandPrice: Number(productData.get("price")) * 0.8,
+          picture: productData.get("picture") as string || "base64encodedimagestringorURL",
+          category: category,
+          condition: "New",
+          color: productData.get("color") as string,
+          size: Number(productData.get("size")),
+          sex: productData.get("sex") as string || "Unisex",
+          quantityInStock: 10,
+          isRunOutOfStock: false,
+          productTypeId: productType.id
+        };
+
+        console.log("ProductService: Sending JSON data:", jsonData);
+
+        return this.http.post<Products>(`${this.baseUrl}/product-add`, jsonData, {
+          headers: this.authService.getAuthHeaders()
+        });
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("ProductService: Error adding product:", error);
+        return throwError(() => error);
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error("ProductService: Error adding product:", error);
-          if (error.status === 403) {
-            this.authService.logout();
-          }
-          return throwError(() => error);
-        })
-      );
+    );
   }
 
   updateProduct(id: string, productData: FormData): Observable<Products> {
