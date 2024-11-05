@@ -10,13 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
-    @PostMapping
+    @PostMapping("/product-add")
     public ResponseEntity<?> createProduct(@RequestBody ProductDto productDto) {
         Result<ProductDto> result = productService.createProduct(productDto);
         if (!result.isSuccess()) {
@@ -24,6 +24,4 @@ public class ProductController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(result.getValue());
     }
-
-    // Additional endpoints (e.g., getProduct, updateProduct) can be added here.
 }

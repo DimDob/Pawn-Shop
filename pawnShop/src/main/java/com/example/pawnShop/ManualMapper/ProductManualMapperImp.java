@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductManualMapperImp implements ProductManualMapper {
 
-    // Existing methods for ProductType mappings
+    // Methods for ProductType mappings
     @Override
     public ProductTypeDto mapToProductTypeDto(ProductType productType) {
         return ProductTypeDto.builder()
@@ -28,7 +28,7 @@ public class ProductManualMapperImp implements ProductManualMapper {
                 .build();
     }
 
-    // New methods for Product mappings
+    // Methods for Product mappings
     @Override
     public ProductDto mapToProductDto(Product product) {
         return ProductDto.builder()

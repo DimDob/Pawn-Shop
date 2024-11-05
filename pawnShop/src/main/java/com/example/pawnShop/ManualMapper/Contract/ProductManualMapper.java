@@ -7,11 +7,11 @@ import com.example.pawnShop.Entity.Product;
 import com.example.pawnShop.Entity.ProductType;
 
 public interface ProductManualMapper {
-    // Existing methods for ProductType mappings
+    // Methods for ProductType mappings
     ProductTypeDto mapToProductTypeDto(ProductType productType);
     ProductType mapToProductType(ProductTypeDto productTypeDto);
 
-    // New methods for Product mappings
+    // Methods for Product mappings
     ProductDto mapToProductDto(Product product);
     Product mapToProduct(ProductDto productDto);
 }

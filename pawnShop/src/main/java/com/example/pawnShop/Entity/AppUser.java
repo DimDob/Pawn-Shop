@@ -14,6 +14,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Enumerated;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -41,7 +45,7 @@ public class AppUser implements UserDetails {
     private Boolean enable;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @ManyToOne
