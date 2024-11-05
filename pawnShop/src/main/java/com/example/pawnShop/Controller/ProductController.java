@@ -24,4 +24,13 @@ public class ProductController {
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(result.getValue());
     }
+
+    @PostMapping("/product-edit")
+    public ResponseEntity<?> editProduct(@RequestBody ProductDto productDto) {
+        Result<ProductDto> result = productService.editProduct(productDto);
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+        }
+        return ResponseEntity.ok(result.getValue());
+    }
 }

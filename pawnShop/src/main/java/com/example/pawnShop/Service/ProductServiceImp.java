@@ -52,4 +52,44 @@ public class ProductServiceImp implements ProductService {
             return Result.error("Failed to create product: " + e.getMessage());
         }
     }
+
+    @Override
+    public Result<ProductDto> editProduct(ProductDto productDto) {
+        try {
+            // Retrieve the product by ID
+            Product existingProduct = productRepository.findById(productDto.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+            // Retrieve the product type
+            ProductType productType = productTypeRepository.findById(productDto.getProductTypeId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid product type ID"));
+
+            // Update product fields
+            existingProduct.setName(productDto.getName());
+            existingProduct.setManufacturer(productDto.getManufacturer());
+            existingProduct.setModel(productDto.getModel());
+            existingProduct.setPrice(productDto.getPrice());
+            existingProduct.setPawnPercentage(productDto.getPawnPercentage());
+            existingProduct.setSecondHandPrice(productDto.getSecondHandPrice());
+            existingProduct.setPicture(productDto.getPicture());
+            existingProduct.setCategory(productDto.getCategory());
+            existingProduct.setCondition(productDto.getCondition());
+            existingProduct.setColor(productDto.getColor());
+            existingProduct.setSize(productDto.getSize());
+            existingProduct.setSex(productDto.getSex());
+            existingProduct.setQuantityInStock(productDto.getQuantityInStock());
+            existingProduct.setIsRunOutOfStock(productDto.getIsRunOutOfStock());
+            existingProduct.setProductType(productType);
+
+            // Save the updated product
+            productRepository.save(existingProduct);
+
+            // Map entity to DTO
+            ProductDto updatedProductDto = productManualMapper.mapToProductDto(existingProduct);
+
+            return Result.success(updatedProductDto);
+        } catch (Exception e) {
+            return Result.error("Failed to update product: " + e.getMessage());
+        }
+    }
 }
