@@ -1,1 +1,13 @@
-<router-outlet></router-outlet>
+<!-- UI\src\app\app.component.html -->
+
+<div class="app-container">
+  @if (authService.isLoggedIn()) {
+  <app-header></app-header>
+  }
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+  @if (authService.isLoggedIn()) {
+  <app-footer></app-footer>
+  }
+</div>

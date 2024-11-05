@@ -16,14 +16,34 @@ public class ProductExportDTO {
 
     private String name;
 
-    private BigDecimal marketPrice;
+    private String manufacturer;
+
+    private String model;
+
+    private BigDecimal price;
 
     private BigDecimal pawnPercentage;
 
     private BigDecimal secondHandPrice;
 
-    private String pictureUrl;
+    private String picture;
 
-    private String productTypeName;
+    private String category;
+
+    private String condition;
+
+    private String color;
+
+    private Integer size;
+
+    private String sex;
+
+    private Integer quantityInStock;
+
+    private Boolean isRunOutOfStock;
+
+    public String getPrice() {
+        return price != null ? price.toString() : "0";
+    }
 
 }

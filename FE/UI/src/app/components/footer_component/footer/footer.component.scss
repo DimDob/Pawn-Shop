@@ -1,0 +1,115 @@
+// UI\src\app\components\footer_component\footer\footer.component.scss
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #009d34;
+  color: white;
+  width: 100%;
+}
+
+.footer-visible {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.footer-section {
+  display: flex;
+  gap: 200px;
+  align-items: flex-start;
+}
+
+/* Styles for contact information */
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  margin-top: 0px;
+}
+
+.footer-links li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Styles for combined links */
+.combined-links,
+.categories-links,
+.visit-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
+}
+
+.visit-links p,
+.categories-links p,
+.combined-links p {
+  font-weight: bold;
+}
+
+/* Styles for social networks */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.social-links a {
+  margin-right: 15px;
+  color: white;
+}
+
+.social-links p {
+  margin-bottom: 10px;
+}
+
+.social-icon {
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+}
+
+.router-link-custom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.router-link-custom p {
+  margin: 0;
+  display: inline;
+}
+
+.router-link-custom fa-icon {
+  margin-right: 10px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}

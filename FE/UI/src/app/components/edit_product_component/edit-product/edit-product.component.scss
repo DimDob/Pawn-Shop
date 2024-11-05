@@ -1,0 +1,118 @@
+// UI\src\app\components\edit_product_component\edit-product\edit-product.component.scss
+
+.edit-product-container {
+  color: #009d34;
+  margin-top: 70px;
+  padding-bottom: 30px;
+
+  .icon {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 50px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #009d34;
+    margin-bottom: 30px;
+  }
+
+  form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    div {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #009d34;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #009d34;
+        border-radius: 4px;
+        box-sizing: border-box;
+        height: 40px;
+        color: #009d34;
+
+        &.ng-invalid.ng-touched {
+          border-color: #ff4081;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #007d24;
+          box-shadow: 0 0 0 2px rgba(0, 157, 52, 0.1);
+        }
+      }
+
+      select {
+        padding-right: 30px;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23009d34%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px;
+      }
+
+      input[type="file"] {
+        padding: 6px;
+
+        &::-webkit-file-upload-button {
+          visibility: hidden;
+          width: 0;
+        }
+
+        &::before {
+          content: "Choose File";
+          display: inline-block;
+          background: #009d34;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 3px;
+          cursor: pointer;
+        }
+      }
+
+      input[readonly] {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #009d34;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      height: 45px;
+      font-size: 16px;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #007d24;
+      }
+
+      &:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .error-message {
+    color: #ff4081;
+    text-align: center;
+    margin-top: 10px;
+  }
+}

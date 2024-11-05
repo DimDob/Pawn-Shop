@@ -1,0 +1,86 @@
+// UI\src\app\components\cart_page_component\cart-page\cart-page.component.scss
+// center this class empty-cart-message
+.empty-cart-message {
+  text-align: start;
+  margin-top: 20px;
+  color: #009d34;
+  font-size: 20px;
+  margin-left: 20px;
+}
+.cart-container {
+  padding: 20px;
+}
+
+.cart-item {
+  display: flex;
+  margin-bottom: 20px;
+  color: #009d34;
+}
+
+.cart-item img {
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.item-details {
+  flex: 1;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  // gap: 0px;
+  margin: 6px 0;
+
+  button {
+    width: 30px;
+    height: 30px;
+    background: #009d34;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      background: darken(#009d34, 5%);
+    }
+  }
+
+  span {
+    min-width: 30px;
+    text-align: center;
+  }
+}
+
+.total-cost {
+  text-align: right;
+}
+
+.total-cost button {
+  padding: 10px 20px;
+}
+
+.empty-cart-message {
+  color: #009d34;
+}
+
+button {
+  background: #009d34;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+
+  &:hover {
+    background: darken(#009d34, 5%);
+  }
+}
+
+.item-details > button:nth-child(4) {
+  width: 95px;
+}
+.total-cost > button:nth-child(2) {
+  width: 115px;
+}

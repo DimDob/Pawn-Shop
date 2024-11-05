@@ -1,10 +1,11 @@
+// UI\src\app\components\auth_component\login\login_interfaces.ts\prismData.ts
 /**
  * The interface transfers user data from the UI
  */
 export interface PrismData {
   prismTransform?: string;
   administratorEmail?: string;
-  loginUsername: string ;
+  loginUsername: string;
   loginPassword: string;
   forgotPasswordEmail?: boolean;
   signupEmail?: string;
@@ -14,7 +15,9 @@ export interface PrismData {
   contactEmail?: string;
   contactMessage?: string;
   showingThankYou?: string;
-  forgotPassword?: boolean
+  forgotPassword?: boolean;
   changedPassword?: string;
   changedPassword2?: string;
+  email?: string;
+  password?: string;
 }

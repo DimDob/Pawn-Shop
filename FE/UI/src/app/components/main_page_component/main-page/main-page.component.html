@@ -1,24 +1,72 @@
-<div class="container">
-    <div class="card" *ngFor="let shoe of shoes">
-      <div class="imgBx">
-        <img [src]="shoe.picture" alt="{{ shoe.manufacturer }} {{ shoe.model }}">
-      </div>
-  
-      <div class="contentBx">
-        <h2>{{ shoe.manufacturer }} {{ shoe.model }}</h2>
-  
-        <div class="size">
-          <h3>Size :</h3>
-          <span>{{ shoe.size }}</span>
-        </div>
-  
-        <div class="color">
-          <h3>Color :</h3>
-          <span>{{ shoe.color }}</span>
-        </div>
-        
-        <a (click)="requestPurchase()">Buy Now</a>
-      </div>
+<!-- UI\src\app\components\main_page_component\main-page\main-page.component.html -->
+<div class="main-page-container">
+  <div class="controls">
+    <div class="filter-controls">
+      <mat-form-field appearance="fill">
+        <mat-label>Sort</mat-label>
+        <mat-select [value]="selectedSortOption()" (valueChange)="selectedSortOption.set($event); applyFilters()">
+          <mat-option value="">No Sorting</mat-option>
+          <mat-option value="priceAsc">Price (Low to High)</mat-option>
+          <mat-option value="priceDesc">Price (High to Low)</mat-option>
+          <mat-option value="nameAsc">Name (A-Z)</mat-option>
+          <mat-option value="nameDesc">Name (Z-A)</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Category</mat-label>
+        <mat-select [value]="selectedCategory()" (valueChange)="setSelectedCategory($event)">
+          <mat-option value="">All</mat-option>
+          @for(category of categories; track category) {
+          <mat-option [value]="category">
+            {{ category }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="view-toggle">
+      <button mat-button (click)="toggleView()" [class.active]="isGridView()">
+        <span>Grid</span>
+      </button>
+      <button mat-button (click)="toggleView()" [class.active]="!isGridView()">
+        <span>List</span>
+      </button>
     </div>
   </div>
-  
+
+  <div class="container" [class.list-view]="!isGridView()">
+    @for(product of paginatedProducts(); track product.id) {
+    <div class="card" (click)="goToDetails(product.id)">
+      <div class="imgBx">
+        <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
+      </div>
+      <div class="contentBx">
+        <div class="product-info">
+          <h2>{{ product?.name }} {{ product?.name }}</h2>
+          <div class="price">{{ product?.price | currency }}</div>
+          <div class="details">
+            @if(product?.manufacturer) {
+            <div class="manufacturer">
+              <h3>Manufacturer:</h3>
+              <span>{{ product?.manufacturer }}</span>
+            </div>
+            } @if(product?.model) {
+            <div class="model">
+              <h3>Model:</h3>
+              <span>{{ product?.model }}</span>
+            </div>
+            }
+          </div>
+        </div>
+        <div class="action-area">
+          <a class="buy-now" (click)="requestPurchase(product); $event.stopPropagation()">Buy Now</a>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  <mat-paginator [length]="totalProducts()" [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
+</div>

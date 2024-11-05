@@ -1,0 +1,11 @@
+// UI\src\app\app.component.scss
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}

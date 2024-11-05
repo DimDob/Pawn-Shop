@@ -42,6 +42,7 @@ import java.util.UUID;
 @Builder
 @Table(name = "pawn_shops")
 public class PawnShop {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -49,17 +50,28 @@ public class PawnShop {
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
-    private String UIC;
-
+    @Column(name = "is_vies_registered")
     private Boolean isViesRegistered;
 
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @Column(nullable = false)
-    private UUID adminId;
+    @ManyToOne
+    @JoinColumn(name = "admin_id", nullable = false)
+    private AppUser admin;
+
+    @Column(name = "registration_date")
+    private LocalDate registrationDate;
+
+    @Column(name = "modifier_date")
+    private LocalDate modifierDate;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @Column(unique = true, nullable = false)
+    private String UIC;
 
     @OneToMany(mappedBy = "pawnShop")
     private List<AppUser> employees;
@@ -70,9 +82,4 @@ public class PawnShop {
             inverseJoinColumns = @JoinColumn(name = "payment_id", referencedColumnName = "id"))
     private List<Payment> payments;
 
-    private LocalDate registrationDate;
-
-    private LocalDate modifierDate;
-
-    private Boolean isActive;
 }

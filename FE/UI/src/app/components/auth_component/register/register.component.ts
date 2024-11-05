@@ -1,22 +1,33 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PrismData } from '../login/login_interfaces.ts/prismData';
-import prismDetailsTemplate from '../login/templates/prismDetails.template';
-import { NgForm } from '@angular/forms';
+// UI\src\app\components\auth_component\register\register.component.ts
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { PrismData } from "../login/login_interfaces.ts/prismData";
+import { NgForm } from "@angular/forms";
+import { signal } from "@angular/core";
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: "app-register",
+  templateUrl: "./register.component.html",
+  styleUrls: ["./register.component.scss"]
 })
 export class RegisterComponent {
-  @Input() prismDetails: PrismData;
-  @Output() userRegister: EventEmitter<PrismData> = new EventEmitter<PrismData>();
+  @Input() public prismDetails!: PrismData;
+  @Output() private userRegister = new EventEmitter<PrismData>();
 
-  createAccount(createAccountForm: NgForm) {
-    if (createAccountForm.invalid) {
+  private isSubmitting = signal(false);
+
+  public createAccount(createAccountForm: NgForm): void {
+    if (createAccountForm.invalid || this.isSubmitting()) {
+      alert("Please fix the form errors before submitting");
       return;
     }
-    
-    this.userRegister.emit(this.prismDetails);
+
+    try {
+      this.isSubmitting.set(true);
+      this.userRegister.emit(this.prismDetails);
+    } catch (error) {
+      alert("An error occurred while creating your account: " + error);
+    } finally {
+      this.isSubmitting.set(false);
+    }
   }
 }

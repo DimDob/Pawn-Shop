@@ -1,4 +1,4 @@
-CREATE TABLE cities
+create table cities
 (
     id   uuid not null,
     name varchar(255),

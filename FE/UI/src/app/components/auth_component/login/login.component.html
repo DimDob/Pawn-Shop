@@ -1,136 +1,129 @@
-<ng-container *ngIf="isEverythingInitialized" #navButtons>
+<!-- UI\src\app\components\auth_component\login\login.component.html -->
+@if (isEverythingInitialized) {
+  <div #navButtons>
     <ul class="nav">
-      <li (click)="showLogin()">Login</li>
-      <li *ngIf="isForgotPassword" (click)="showForgotPassword()">Forgot password</li>
-      <li (click)="showCreateEmployeeAccount()">Create employee account</li>
-      <li *ngIf="user?.isAdmin" (click)="showSignup()">Create account</li>
+      <li (click)="showLoginOnClick()">Login</li>
+      @if (isForgotPassword) {
+        <li (click)="showForgotPasswordOnClick()">Forgot password</li>
+      }
     </ul>
-  </ng-container>
-
+  </div>
+}
 
 <div class="wrapper" id="'loginComponent">
-    <div class="rec-prism">
+  <div class="rec-prism">
+    <div class="face face-top">
+      <div class="content">
+        <h2>Create employee account</h2>
+        <small>Enter your email so we could check whether you have administrator rights!</small>
 
-        <div class="face face-top">
-            <div class="content">
-                <h2>Create employee account</h2>
-                <small>Enter your email so we could check whether you have administrator rights!</small>
+        <form #adminForm="ngForm" (ngSubmit)="checkIfUserIsAdmin(adminForm)">
+          <div class="field-wrapper">
+            <input type="text" name="email" placeholder="Email" [(ngModel)]="prismDetails.administratorEmail" required />
+            <label>E-mail</label>
+          </div>
+          <div class="field-wrapper">
+            <input (click)="onUserCheck()" type="submit" value="Submit" />
+          </div>
+        </form>
 
-                <form #adminForm="ngForm" (ngSubmit)="checkIfUserIsAdmin(adminForm)">
-                    <div class="field-wrapper">
-                        <input type="text" name="email" placeholder="Email"
-                            [(ngModel)]="prismDetails.administratorEmail" required />
-                        <label>E-mail</label>
-                    </div>
-                    <div class="field-wrapper">
-                        <input (click)="onUserCheck()" type="submit" value="Submit" />
-                    </div>
-                </form>
-
-                <!-- Show different content based on whether the user is an admin -->
-                <ng-container *ngIf="user.isAdmin !== undefined">
-                    <ng-container *ngIf="user.isAdmin; else notAdmin">
-                        <div>
-                            The user with the provided email has administrator rights!
-                        </div>
-                    </ng-container>
-
-                    <ng-template #notAdmin>
-                        <div>
-                            <p>The provided user does not have administrator rights. Please contact your administrator.
-                            </p>
-                        </div>
-                    </ng-template>
-                </ng-container>
+        <!-- Show different content based on whether the user is an admin -->
+        @if (user.isAdmin !== undefined) {
+          @if (user.isAdmin) {
+            <div>The user with the provided email has administrator rights!</div>
+          } @else {
+            <div>
+              <p>The provided user does not have administrator rights. Please contact your administrator.</p>
             </div>
-        </div>
-
-        <div class="face face-front">
-            <div class="content">
-                <h2>Login</h2>
-
-                <!-- Here is the username input of the prism -->
-                <form #logingForm="ngForm" (submit)="showThankYou(); (false)">
-                    <div class="field-wrapper">
-                        <input [(ngModel)]="prismDetails.loginUsername" type="text" name="username"
-                            placeholder="username" required />
-                        <label>username</label>
-                    </div>
-
-                    <!-- Here is the password input of the prism -->
-                    <div class="field-wrapper">
-                        <input [(ngModel)]="prismDetails.loginPassword" type="password" name="password"
-                            placeholder="password" autocomplete="new-password" required />
-
-                        <label>password</label>
-                    </div>
-
-                    <!-- Here is the submit button -->
-                    <div class="field-wrapper">
-                        <input (click)="userLoging(logingForm); clearUserDetails()" type="submit" value="Submit" />
-                    </div>
-                    <span class="psw" (click)="showForgotPassword()">Forgot Password?</span>
-                </form>
-            </div>
-        </div>
-
-        <div class="face face-back">
-            <div class="content">
-                <h2>Forgot your password?</h2>
-                <small>Enter your email so we can send you a reset link for your
-                    password</small>
-
-                <form (submit)="showThankYou(); (false)">
-                    <div class="field-wrapper">
-                        <input type="text" [(ngModel)]=" prismDetails.forgotPasswordEmail " name="Email"
-                            placeholder="Email" />
-                        <label>E-mail Address</label>
-                    </div>
-                    <div class="field-wrapper">
-                        <input type="submit" value="Submit" (click)="clearUserDetails()" />
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="face face-right">
-            <div class="content">
-                <h2>Create an account for an employee</h2>
-                <!-- Register component template -->
-                <app-register [prismDetails]="prismDetails" (userRegister)="handleUserRegister($event)" />
-
-                <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
-            </div>
-        </div>
-
-        <div class="face face-left">
-            <div class="content">
-                <h2>Contact us</h2>
-                <form (submit)="showThankYou(); (false)">
-                    <div class="field-wrapper">
-                        <input type="text" name="name" placeholder="name" [(ngModel)]="prismDetails.contactName" />
-                        <label>Name</label>
-                    </div>
-                    <div class="field-wrapper">
-                        <input type="text" name="email" placeholder="email" [(ngModel)]="prismDetails.contactEmail" />
-                        <label>E-mail</label>
-                    </div>
-                    <div class="field-wrapper">
-                        <textarea placeholder="your message"></textarea>
-                        <label>Your message</label>
-                    </div>
-                    <div class="field-wrapper">
-                        <input type="submit" value="Submit" [(ngModel)]="prismDetails.contactMessage"
-                            (click)="clearUserDetails()" />
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div class="face face-bottom">
-            <div class="content">
-                <div class="thank-you-msg">Thank you!</div>
-            </div>
-        </div>
+          }
+        }
+      </div>
     </div>
+
+    <div class="face face-front">
+      <div class="content">
+        <h2>Login</h2>
+
+        <form #logingForm="ngForm" (ngSubmit)="userLogingOnClick(logingForm)">
+          <div class="field-wrapper">
+            <input [(ngModel)]="prismDetails.loginUsername" type="text" name="username" placeholder="username" required />
+            <label>username</label>
+          </div>
+
+          <div class="field-wrapper">
+            <input [(ngModel)]="prismDetails.loginPassword" type="password" name="password" placeholder="password" autocomplete="new-password" required />
+            <label>password</label>
+          </div>
+
+          <div class="field-wrapper">
+            <input type="submit" value="Submit" />
+          </div>
+
+          @if (loginError) {
+            <div class="error-message">
+              {{ loginError }}
+            </div>
+          }
+
+          <span class="psw" (click)="showForgotPasswordOnClick()">Forgot Password?</span>
+        </form>
+      </div>
+    </div>
+
+    <div class="face face-back">
+      <div class="content">
+        <h2>Forgot your password?</h2>
+        <small>Enter your email so we can send you a reset link for your password</small>
+
+        <form (submit)="showThankYou(); (false)">
+          <div class="field-wrapper">
+            <input type="text" [(ngModel)]="prismDetails.forgotPasswordEmail" name="Email" placeholder="Email" />
+            <label>E-mail Address</label>
+          </div>
+          <div class="field-wrapper">
+            <input type="submit" value="Submit" (click)="clearUserDetails()" />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="face face-right">
+      <div class="content">
+        <h2>Create an account for an employee</h2>
+        <!-- Register component template -->
+        <app-register [prismDetails]="prismDetails" (userRegister)="handleUserRegister($event)" />
+
+        <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
+      </div>
+    </div>
+
+    <div class="face face-left">
+      <div class="content">
+        <h2>Contact us</h2>
+        <form (submit)="showThankYou(); (false)">
+          <div class="field-wrapper">
+            <input type="text" name="name" placeholder="name" [(ngModel)]="prismDetails.contactName" />
+            <label>Name</label>
+          </div>
+          <div class="field-wrapper">
+            <input type="text" name="email" placeholder="email" [(ngModel)]="prismDetails.contactEmail" />
+            <label>E-mail</label>
+          </div>
+          <div class="field-wrapper">
+            <textarea placeholder="your message"></textarea>
+            <label>Your message</label>
+          </div>
+          <div class="field-wrapper">
+            <input type="submit" value="Submit" [(ngModel)]="prismDetails.contactMessage" (click)="clearUserDetails()" />
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="face face-bottom">
+      <div class="content">
+        <div class="thank-you-msg">Thank you!</div>
+      </div>
+    </div>
+  </div>
 </div>

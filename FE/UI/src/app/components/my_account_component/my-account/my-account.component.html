@@ -1,0 +1,28 @@
+<!-- UI\src\app\components\my_account_component\my-account\my-account.component.html -->
+<div class="my-account">
+  <div class="icon">
+    <fa-icon [icon]="faUser" style="color: #009d34"></fa-icon>
+  </div>
+  <h2>My Account</h2>
+  <form [formGroup]="myAccountForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Username</label>
+      <input formControlName="username" type="text" />
+    </div>
+    <div>
+      <label>Email</label>
+      <input formControlName="email" type="email" />
+    </div>
+    <div>
+      <label>Shop Address</label>
+      <input formControlName="shopAddress" type="text" />
+    </div>
+    <div>
+      <label>Current Password</label>
+      <input formControlName="currentPassword" type="password" />
+    </div>
+    <button type="submit">Update</button>
+  </form>
+  <p class="error-message">{{ errorMessage }}</p>
+  <a (click)="onChangePassword()" style="color: #009d34">Change password</a>
+</div>

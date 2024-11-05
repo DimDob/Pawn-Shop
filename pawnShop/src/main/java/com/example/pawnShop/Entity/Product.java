@@ -11,10 +11,10 @@ import java.util.UUID;
 /**
  * Represents a product in the pawn shop.
  * This class is a JPA entity mapped to the 'product' table in the database.
- *
+ * <p>
  * This class uses Lombok annotations to generate boilerplate code such as
  * getters, setters, and constructors.
- *
+ * <p>
  * The {@code Product} class has the following properties:
  * - id: A unique identifier for each product (auto-generated).
  * - name: The name of the product.
@@ -35,10 +35,45 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(name = "picture", columnDefinition = "TEXT")
+    private String picture;
+
+    @Basic
+    private String condition;
+
+    @Basic
+    private String color;
+
+    @Basic
+    private Integer size;
+
+    @Basic
+    private String sex;
+
+    @Column(nullable = false)
+    private String manufacturer;
+
+    @Basic
+    private String model;
+
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "market_price")
-    private BigDecimal marketPrice;
+    @Column(name = "category")
+    private String category;
+
+    @Basic
+    private BigDecimal price;
+
+    @Column(name = "quantity_in_stock")
+    private Integer quantityInStock;
+
+    @Column(name = "is_run_out_of_stock")
+    private Boolean isRunOutOfStock;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false)
+    private AppUser owner;
 
     @Column(name = "pawn_percentage")
     private BigDecimal pawnPercentage;
@@ -46,10 +81,8 @@ public class Product {
     @Column(name = "second_hand_price")
     private BigDecimal secondHandPrice;
 
-    @Column(name = "picture_url", columnDefinition = "TEXT")
-    private String pictureUrl;
-
-    @OneToOne
-    ProductType productType;
+    @ManyToOne
+    @JoinColumn(name = "product_type_id")
+    private ProductType productType;
 
 }

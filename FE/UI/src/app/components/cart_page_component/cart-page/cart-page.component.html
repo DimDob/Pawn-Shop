@@ -1,0 +1,28 @@
+<!-- UI\src\app\components\cart_page_component\cart-page\cart-page.component.html -->
+
+@if (cartItems().length > 0) {
+<div class="cart-container">
+  @for (item of cartItems(); track item.product.id) {
+  <div class="cart-item">
+    <img [src]="item.product.picture" [alt]="item.product.manufacturer + ' ' + item.product.model" />
+    <div class="item-details">
+      <h2>{{ item.product.manufacturer }} {{ item.product.model }}</h2>
+      <p>Price: ${{ item.product.price }}</p>
+      <div class="quantity-controls">
+        <button (click)="decreaseQuantity(item.product.id)">-</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increaseQuantity(item.product.id)">+</button>
+      </div>
+      <button (click)="removeItem(item.product.id)">Remove</button>
+    </div>
+  </div>
+  }
+
+  <div class="total-cost">
+    <h3>Total Cost: ${{ totalCost() }}</h3>
+    <button (click)="purchase()">Purchase</button>
+  </div>
+</div>
+} @else {
+<p class="empty-cart-message">Your cart is empty.</p>
+}

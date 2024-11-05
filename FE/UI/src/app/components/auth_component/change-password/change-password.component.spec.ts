@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// UI\src\app\components\auth_component\change-password\change-password.component.spec.ts
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ChangePasswordComponent } from './change-password.component';
+import { ChangePasswordComponent } from "./change-password.component";
 
-describe('ChangePasswordComponent', () => {
+describe("ChangePasswordComponent", () => {
   let component: ChangePasswordComponent;
   let fixture: ComponentFixture<ChangePasswordComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ChangePasswordComponent]
-    })
-    .compileComponents();
-    
+    }).compileComponents();
+
     fixture = TestBed.createComponent(ChangePasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

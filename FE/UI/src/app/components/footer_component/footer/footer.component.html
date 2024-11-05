@@ -1,0 +1,79 @@
+<!-- UI\src\app\components\footer_component\footer\footer.component.html -->
+<footer [ngClass]="footerClasses">
+  <div class="container">
+    <section class="footer-section">
+      <div class="information-section">
+        <ul class="footer-links">
+          <p class="section-title">Information</p>
+          <li>
+            <a class="router-link-custom">
+              <fa-icon [icon]="faPhone" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>Call +359 123 456 789</p>
+            </a>
+          </li>
+          <li>
+            <a class="router-link-custom">
+              <fa-icon [icon]="faEnvelope" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>support&#64;PawnShop.com</p>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/about-us" class="router-link-custom">
+              <fa-icon [icon]="faInfoCircle" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>About Us</p>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/contacts" class="router-link-custom">
+              <fa-icon [icon]="faMapMarkerAlt" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+              <p>Contacts</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="combined-links">
+        <p class="section-title">Sort</p>
+        <a (click)="sortByOnClick('priceAsc')" class="hover-underline">Price (Low to High)</a>
+        <a (click)="sortByOnClick('priceDesc')" class="hover-underline">Price (High to Low)</a>
+        <a (click)="sortByOnClick('nameAsc')" class="hover-underline">Name (A-Z)</a>
+        <a (click)="sortByOnClick('nameDesc')" class="hover-underline">Name (Z-A)</a>
+      </div>
+
+      <!-- Links for categories -->
+      <div class="categories-links">
+        <p class="section-title">Categories</p>
+        <a (click)="filterByCategoryOnClick('')" class="hover-underline">All</a>
+        <a (click)="filterByCategoryOnClick('Electronics')" class="hover-underline">Electronics</a>
+        <a (click)="filterByCategoryOnClick('Clothing')" class="hover-underline">Clothing</a>
+        <a (click)="filterByCategoryOnClick('Jewelry')" class="hover-underline">Jewelry</a>
+        <a (click)="filterByCategoryOnClick('Art')" class="hover-underline">Art</a>
+        <a (click)="filterByCategoryOnClick('Other')" class="hover-underline">Other</a>
+      </div>
+
+      <!-- Links for visiting -->
+      <div class="visit-links">
+        <p class="section-title">Visit</p>
+        <a routerLink="/my-account" class="hover-underline">My Account</a>
+        <a routerLink="/cart" class="hover-underline">My Cart</a>
+        <a routerLink="/logout" class="hover-underline">Logout</a>
+      </div>
+
+      <!-- Social networks -->
+      <div class="social-links">
+        <p class="section-title">Stay in Touch</p>
+        <div class="social-icons">
+          <a href="https://www.instagram.com" class="social-icon">
+            <fa-icon [icon]="faInstagram" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+          </a>
+          <a href="https://www.facebook.com" class="social-icon">
+            <fa-icon [icon]="faFacebook" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+          </a>
+          <a href="https://www.linkedin.com" class="social-icon">
+            <fa-icon [icon]="faLinkedin" [ngClass]="iconColors" aria-hidden="true"></fa-icon>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+</footer>
