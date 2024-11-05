@@ -14,7 +14,7 @@ import com.example.pawnShop.Service.Contract.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
@@ -90,6 +90,18 @@ public class ProductServiceImp implements ProductService {
             return Result.success(updatedProductDto);
         } catch (Exception e) {
             return Result.error("Failed to update product: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Result<ProductDto> getProductById(UUID id) {
+        try {
+            Product product = productRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            ProductDto productDto = productManualMapper.mapToProductDto(product);
+            return Result.success(productDto);
+        } catch (Exception e) {
+            return Result.error("Failed to retrieve product: " + e.getMessage());
         }
     }
 }
