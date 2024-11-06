@@ -25,6 +25,8 @@ public class JwtServiceImp implements JwtService {
     public String generateJwtToken(AppUser user) {
         return Jwts.builder()
                 .subject(user.getEmail())
+                .claim("userId", user.getId().toString())
+                .claim("isAdmin", user.getIsAdmin())
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(VALIDITY_TIME)))
                 .signWith(generateKey())
@@ -34,6 +36,8 @@ public class JwtServiceImp implements JwtService {
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getEmail())
+                .claim("userId", user.getId().toString())
+                .claim("isAdmin", user.getIsAdmin())
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(VALIDITY_TIME)))
                 .signWith(generateKey())

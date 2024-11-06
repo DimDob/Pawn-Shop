@@ -98,6 +98,15 @@ public class ProductServiceImp implements ProductService {
         try {
             Product product = productRepository.findById(id)
                     .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+            
+            // Log owner details for debugging
+            if (product.getOwner() != null) {
+                System.out.println("Product owner ID: " + product.getOwner().getId());
+                System.out.println("Product owner email: " + product.getOwner().getEmail());
+            } else {
+                System.out.println("Product has no owner");
+            }
+            
             ProductDto productDto = productManualMapper.mapToProductDto(product);
             return Result.success(productDto);
         } catch (Exception e) {

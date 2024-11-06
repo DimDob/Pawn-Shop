@@ -32,12 +32,19 @@ export class DetailsPageComponent implements OnInit {
 
   isOwner = computed(() => {
     const currentUser = this.authService.getCurrentUser();
-    return Boolean(currentUser.id && this.product()?.ownerId === currentUser.id);
+    const product = this.product();
+
+    console.log("DetailsPageComponent: Checking ownership");
+    console.log("Current user:", currentUser);
+    console.log("Product owner ID:", product?.ownerId);
+
+    const isOwner = Boolean(currentUser?.id && product?.ownerId === currentUser.id);
+    console.log("Is owner:", isOwner);
+
+    return isOwner;
   });
 
-  isFavorite = computed(() =>
-    this.product() ? this.favoritesService.isProductFavorite(this.product()!.id) : false
-  );
+  isFavorite = computed(() => (this.product() ? this.favoritesService.isProductFavorite(this.product()!.id) : false));
 
   ngOnInit(): void {
     this.loadProduct();
@@ -53,12 +60,13 @@ export class DetailsPageComponent implements OnInit {
 
     this.loading.set(true);
     this.productService.getProductById(productId).subscribe({
-      next: (product) => {
+      next: product => {
         console.log("DetailsPageComponent: Product loaded:", product);
+        console.log("DetailsPageComponent: Product owner ID:", product.ownerId);
         this.product.set(product);
         this.loading.set(false);
       },
-      error: (error) => {
+      error: error => {
         console.error("DetailsPageComponent: Error loading product:", error);
         this.error.set("Error loading product");
         this.loading.set(false);
@@ -98,7 +106,7 @@ export class DetailsPageComponent implements OnInit {
         this.notificationService.showSuccess("Product deleted successfully");
         this.router.navigate(["/pawn-shop/main-page"]);
       },
-      error: (error) => {
+      error: error => {
         console.error("DetailsPageComponent: Error deleting product:", error);
         this.notificationService.showError("Error deleting product");
       }

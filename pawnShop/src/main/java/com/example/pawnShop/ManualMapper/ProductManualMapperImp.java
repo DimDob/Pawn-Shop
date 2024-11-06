@@ -31,24 +31,27 @@ public class ProductManualMapperImp implements ProductManualMapper {
     // Methods for Product mappings
     @Override
     public ProductDto mapToProductDto(Product product) {
-        return ProductDto.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .manufacturer(product.getManufacturer())
-                .model(product.getModel())
-                .price(product.getPrice())
-                .pawnPercentage(product.getPawnPercentage())
-                .secondHandPrice(product.getSecondHandPrice())
-                .picture(product.getPicture())
-                .category(product.getCategory())
-                .condition(product.getCondition())
-                .color(product.getColor())
-                .size(product.getSize())
-                .sex(product.getSex())
-                .quantityInStock(product.getQuantityInStock())
-                .isRunOutOfStock(product.getIsRunOutOfStock())
-                .productTypeId(product.getProductType() != null ? product.getProductType().getId() : null)
-                .build();
+        ProductDto dto = new ProductDto();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setManufacturer(product.getManufacturer());
+        dto.setModel(product.getModel());
+        dto.setPrice(product.getPrice());
+        dto.setPawnPercentage(product.getPawnPercentage());
+        dto.setSecondHandPrice(product.getSecondHandPrice());
+        dto.setPicture(product.getPicture());
+        dto.setCategory(product.getCategory());
+        dto.setCondition(product.getCondition());
+        dto.setColor(product.getColor());
+        dto.setSize(product.getSize());
+        dto.setSex(product.getSex());
+        dto.setQuantityInStock(product.getQuantityInStock());
+        dto.setIsRunOutOfStock(product.getIsRunOutOfStock());
+        dto.setProductTypeId(product.getProductType() != null ? product.getProductType().getId() : null);
+        if (product.getOwner() != null) {
+            dto.setOwnerId(product.getOwner().getId());
+        }
+        return dto;
     }
 
     @Override

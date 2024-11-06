@@ -27,4 +27,13 @@ public class ProductDto {
     private Integer quantityInStock;
     private Boolean isRunOutOfStock;
     private UUID productTypeId;
+    private UUID ownerId;
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(UUID ownerId) {
+        this.ownerId = ownerId;
+    }
 }

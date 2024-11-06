@@ -15,18 +15,15 @@ import { ErrorHandlerService } from "./shared/services/error-handler.service";
 export class AuthService {
   private readonly tokenKey = "auth_token";
   private isAuthenticating = signal(false);
+  private currentUserData = signal<User | null>(null);
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private errorHandler: ErrorHandlerService
-  ) {}
+  constructor(private http: HttpClient, private router: Router, private errorHandler: ErrorHandlerService) {}
 
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     console.log("AuthService: Creating headers with token");
     return new HttpHeaders({
-      "Authorization": `Bearer ${token || ""}`,
+      Authorization: `Bearer ${token || ""}`,
       "Content-Type": "application/json"
     });
   }
@@ -107,35 +104,26 @@ export class AuthService {
     return of(currentPassword === "correct_password");
   }
 
-  public getCurrentUser(): User {
+  public getCurrentUser(): User | null {
     const token = this.getToken();
-
-    if (!token) {
-      return {
-        id: "",
-        loginUsername: "",
-        isAdmin: false,
-        isEmployee: false
-      };
-    }
+    if (!token) return null;
 
     try {
-      const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      console.log("AuthService: Token data:", tokenData);
 
-      return {
-        id: tokenPayload.userId || "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
-        loginUsername: tokenPayload.username || tokenPayload.email,
-        isAdmin: tokenPayload.isAdmin || false,
-        isEmployee: tokenPayload.isEmployee || false
-      };
-    } catch (error) {
-      alert("Error decoding user token");
-      return {
-        id: "",
-        loginUsername: "",
-        isAdmin: false,
+      const user: User = {
+        id: tokenData.userId, // Взимаме от claim-а
+        loginUsername: tokenData.sub, // email от subject
+        isAdmin: tokenData.isAdmin, // Взимаме от claim-а
         isEmployee: false
       };
+
+      console.log("AuthService: Current user:", user);
+      return user;
+    } catch (error) {
+      console.error("AuthService: Error parsing user data from token:", error);
+      return null;
     }
   }
 }
