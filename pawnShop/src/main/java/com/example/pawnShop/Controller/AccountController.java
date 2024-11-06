@@ -1,6 +1,7 @@
 // AccountController.java
 package com.example.pawnShop.Controller;
 
+import com.example.pawnShop.Dto.Auth.ChangePasswordRequestDto;
 import com.example.pawnShop.Dto.Auth.UpdateMyAccountRequestDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.AccountService;
@@ -32,5 +33,22 @@ public class AccountController {
             return ResponseEntity.badRequest().body(result.getError());
         }
         return ResponseEntity.ok("Account updated successfully.");
+    }
+
+    /**
+     * Ендпойнт за смяна на парола на потребителя.
+     */
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Validated @RequestBody ChangePasswordRequestDto request) {
+        System.out.println("Received password change request");
+        Result<Boolean> result = accountService.changePassword(request);
+        
+        if (!result.isSuccess()) {
+            System.out.println("Password change failed: " + result.getError());
+            return ResponseEntity.badRequest().body(result.getError());
+        }
+        
+        System.out.println("Password changed successfully");
+        return ResponseEntity.ok("Password changed successfully");
     }
 }

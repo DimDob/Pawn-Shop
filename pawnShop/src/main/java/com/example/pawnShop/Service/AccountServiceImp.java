@@ -1,5 +1,6 @@
 package com.example.pawnShop.Service;
 
+import com.example.pawnShop.Dto.Auth.ChangePasswordRequestDto;
 import com.example.pawnShop.Dto.Auth.UpdateMyAccountRequestDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Entity.AppUser;
@@ -105,6 +106,40 @@ public class AccountServiceImp implements AccountService {
             
         } catch (Exception e) {
             return Result.error("Error updating account: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Result<Boolean> changePassword(ChangePasswordRequestDto request) {
+        try {
+            // Получаваме текущия потребител
+            AppUser currentUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            
+            // Проверяваме текущата парола
+            if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
+                return Result.error("Current password is incorrect");
+            }
+            
+            // Проверяваме дали новата парола и потвърждението съвпадат
+            if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
+                return Result.error("New password and confirmation do not match");
+            }
+            
+            // Проверяваме дали новата парола е различна от старата
+            if (passwordEncoder.matches(request.getNewPassword(), currentUser.getPassword())) {
+                return Result.error("New password must be different from current password");
+            }
+            
+            // Хеширане и запазване на новата парола
+            currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+            userRepository.save(currentUser);
+            
+            System.out.println("Password changed successfully for user: " + currentUser.getEmail());
+            return Result.success(true);
+            
+        } catch (Exception e) {
+            System.out.println("Error changing password: " + e.getMessage());
+            return Result.error("Error changing password: " + e.getMessage());
         }
     }
 }
