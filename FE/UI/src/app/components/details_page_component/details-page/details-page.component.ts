@@ -131,8 +131,13 @@ export class DetailsPageComponent implements OnInit {
           this.notificationService.showSuccess("Removed from favorites");
         },
         error: (error) => {
-          console.error("DetailsPageComponent: Error removing from favorites", error);
-          this.notificationService.showError("Failed to remove from favorites");
+          if (error.status === 200) {
+            console.log("DetailsPageComponent: Product removed successfully (with parsing error)");
+            this.notificationService.showSuccess("Removed from favorites");
+          } else {
+            console.error("DetailsPageComponent: Error removing from favorites", error);
+            this.notificationService.showError("Failed to remove from favorites");
+          }
         }
       });
     } else {
@@ -142,8 +147,13 @@ export class DetailsPageComponent implements OnInit {
           this.notificationService.showSuccess("Added to favorites");
         },
         error: (error) => {
-          console.error("DetailsPageComponent: Error adding to favorites", error);
-          this.notificationService.showError("Failed to add to favorites");
+          if (error.status === 200) {
+            console.log("DetailsPageComponent: Product added successfully (with parsing error)");
+            this.notificationService.showSuccess("Added to favorites");
+          } else {
+            console.error("DetailsPageComponent: Error adding to favorites", error);
+            this.notificationService.showError("Failed to add to favorites");
+          }
         }
       });
     }

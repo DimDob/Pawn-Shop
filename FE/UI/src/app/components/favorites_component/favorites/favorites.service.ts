@@ -48,10 +48,19 @@ export class FavoritesService {
 
   addToFavorites(productId: string): Observable<any> {
     console.log("FavoritesService: Adding product to favorites", productId);
-    return this.http.post(`${environment.host}/favorites/${productId}`, {}).pipe(
-      tap(() => {
-        console.log("FavoritesService: Product added successfully");
+    return this.http.post(`${environment.host}/favorites/${productId}`, {}, { responseType: "text" }).pipe(
+      tap((response) => {
+        console.log("FavoritesService: Product added successfully", response);
         this.loadFavorites();
+      }),
+      catchError(error => {
+        if (error.status === 200) {
+          console.log("FavoritesService: Product added successfully (with empty response)");
+          this.loadFavorites();
+          return of(null);
+        }
+        console.error("FavoritesService: Error adding product", error);
+        throw error;
       })
     );
   }
