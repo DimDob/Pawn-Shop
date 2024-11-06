@@ -96,10 +96,10 @@ export class DetailsPageComponent implements OnInit {
   }
 
   onDeleteProduct(): void {
-    const currentProduct = this.product();
-    if (!currentProduct) return;
+    const productId = this.product()?.id;
+    if (!productId) return;
 
-    this.productService.deleteProduct(currentProduct.id).subscribe({
+    this.productService.deleteProduct(productId).subscribe({
       next: () => {
         console.log("DetailsPageComponent: Product deleted successfully");
         this.showConfirmModal.set(false);
@@ -109,6 +109,7 @@ export class DetailsPageComponent implements OnInit {
       error: error => {
         console.error("DetailsPageComponent: Error deleting product:", error);
         this.notificationService.showError("Error deleting product");
+        this.showConfirmModal.set(false);
       }
     });
   }

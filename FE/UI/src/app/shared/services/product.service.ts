@@ -155,16 +155,17 @@ export class ProductService {
       );
   }
 
-  deleteProduct(id: string): Observable<void> {
-    console.log("ProductService: Deleting product:", id);
+  deleteProduct(productId: string): Observable<string> {
+    console.log("ProductService: Deleting product:", productId);
 
-    return this.http.delete<void>(`${this.baseUrl}/product-delete/${id}`, {
-      headers: this.authService.getAuthHeaders()
+    return this.http.delete(`${this.baseUrl}/product-delete/${productId}`, {
+      headers: this.authService.getAuthHeaders(),
+      responseType: 'text'
     }).pipe(
-      tap(() => {
-        console.log("ProductService: Product deleted successfully");
+      tap(response => {
+        console.log("ProductService: Delete successful:", response);
       }),
-      catchError((error: HttpErrorResponse) => {
+      catchError(error => {
         console.error("ProductService: Error deleting product:", error);
         return throwError(() => error);
       })
