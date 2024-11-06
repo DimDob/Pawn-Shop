@@ -1,18 +1,20 @@
 // UI/src/app/components/favorites_component/favorites/favorites.component.ts
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { FavoritesService } from "./favorites.service";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { NotificationService } from "../../../shared/services/notification.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-favorites",
   templateUrl: "./favorites.component.html",
   styleUrls: ["./favorites.component.scss"]
 })
-export class FavoritesComponent implements OnInit {
+export class FavoritesComponent implements OnInit, OnDestroy {
   favoriteProducts: Products[] = [];
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private favoritesService: FavoritesService,
@@ -23,10 +25,29 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit() {
     console.log("FavoritesComponent: Initializing");
-    this.favoritesService.favorites$.subscribe(products => {
-      console.log("FavoritesComponent: Received favorites update", products);
-      this.favoriteProducts = products;
-    });
+    this.subscription.add(
+      this.favoritesService.favorites$.subscribe({
+        next: (products) => {
+          console.log("FavoritesComponent: Received products:", products);
+          if (products && Array.isArray(products)) {
+            console.log("FavoritesComponent: Setting products, count:", products.length);
+            this.favoriteProducts = products;
+          } else {
+            console.error("FavoritesComponent: Invalid products data:", products);
+            this.favoriteProducts = [];
+          }
+        },
+        error: (error) => {
+          console.error("FavoritesComponent: Error in subscription:", error);
+          this.favoriteProducts = [];
+          this.notificationService.showError("Failed to load favorite products");
+        }
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   removeFromFavorites(productId: string) {
@@ -37,8 +58,13 @@ export class FavoritesComponent implements OnInit {
         this.notificationService.showSuccess("Product removed from favorites");
       },
       error: (error) => {
-        console.error("FavoritesComponent: Error removing product", error);
-        this.notificationService.showError("Failed to remove product from favorites");
+        if (error.status === 200) {
+          console.log("FavoritesComponent: Product removed successfully (with parsing error)");
+          this.notificationService.showSuccess("Product removed from favorites");
+        } else {
+          console.error("FavoritesComponent: Error removing product", error);
+          this.notificationService.showError("Failed to remove product from favorites");
+        }
       }
     });
   }

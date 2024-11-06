@@ -1,33 +1,31 @@
 <!-- UI/src/app/components/favorites_component/favorites/favorites.component.html -->
 <div class="favorites-container">
-  @if (favoriteProducts.length === 0) {
-    <div class="no-favorites">
-      <p>No favorite products yet</p>
-    </div>
-  } @else {
-    @for (product of favoriteProducts; track product.id) {
-      <div class="favorite-item" (click)="goToDetails(product.id)">
-        <div class="product-image">
-          <img [src]="product.picture" [alt]="product.name" />
-        </div>
-        <div class="product-details">
-          <h2>{{ product.name }}</h2>
-          <p>Manufacturer: {{ product.manufacturer }}</p>
-          <p>Model: {{ product.model }}</p>
-          <p>Price: €{{ product.price }}</p>
-          <p>Condition: {{ product.condition }}</p>
-        </div>
-        <div class="action-buttons" (click)="$event.stopPropagation()">
-          <button class="cart-button" (click)="addToCart(product)">
-            <mat-icon>shopping_cart</mat-icon>
-            <span>Add to Cart</span>
-          </button>
-          <button class="delete-button" (click)="removeFromFavorites(product.id)">
-            <mat-icon>delete</mat-icon>
-            <span>Remove</span>
-          </button>
-        </div>
+  <div *ngIf="favoriteProducts.length === 0" class="no-favorites">
+    <p>No favorite products yet</p>
+  </div>
+
+  <ng-container *ngIf="favoriteProducts.length > 0">
+    <div *ngFor="let product of favoriteProducts" class="favorite-item" (click)="goToDetails(product.id)">
+      <div class="product-image">
+        <img [src]="product.picture" [alt]="product.name" />
       </div>
-    }
-  }
+      <div class="product-details">
+        <h2>{{ product.name }}</h2>
+        <p>Manufacturer: {{ product.manufacturer }}</p>
+        <p>Model: {{ product.model }}</p>
+        <p>Price: €{{ product.price }}</p>
+        <p>Condition: {{ product.condition }}</p>
+      </div>
+      <div class="action-buttons" (click)="$event.stopPropagation()">
+        <button class="cart-button" (click)="addToCart(product)">
+          <mat-icon>shopping_cart</mat-icon>
+          <span>Add to Cart</span>
+        </button>
+        <button class="delete-button" (click)="removeFromFavorites(product.id)">
+          <mat-icon>delete</mat-icon>
+          <span>Remove</span>
+        </button>
+      </div>
+    </div>
+  </ng-container>
 </div>
