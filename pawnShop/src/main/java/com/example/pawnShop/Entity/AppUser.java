@@ -9,14 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Enumerated;
+import java.util.*;
 
 @Entity
 @Data
@@ -55,6 +48,15 @@ public class AppUser implements UserDetails {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
+    @ManyToMany
+    @JoinTable(
+        name = "user_favorites",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> favoriteProducts = new HashSet<>();
+
+    // Keep only one default constructor
     public AppUser() {
         enable = true;
     }
@@ -69,9 +71,10 @@ public class AppUser implements UserDetails {
         return password;
     }
 
+    // Changed getUsername to return email for authentication
     @Override
     public String getUsername() {
-        return firstName + " " + lastName;
+        return email;
     }
 
     @Override
@@ -95,13 +98,11 @@ public class AppUser implements UserDetails {
     }
 
     private List<? extends GrantedAuthority> mapRoleToGrantedAuthority() {
-
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Role s : roles) {
             SimpleGrantedAuthority newAuthority = new SimpleGrantedAuthority(s.toString());
             grantedAuthorities.add(newAuthority);
         }
-
         return grantedAuthorities;
     }
 }
