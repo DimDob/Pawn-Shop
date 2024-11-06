@@ -18,4 +18,6 @@ export interface Products {
   ownerId?: string;
   pawnPercentage?: number;
   secondHandPrice?: number;
+  productTypeId: string;
+  createdAt: string;
 }

@@ -172,4 +172,9 @@ export class ProductService {
       })
     );
   }
+
+  getMyProducts(): Observable<Products[]> {
+    console.log("ProductService: Fetching my products");
+    return this.http.get<Products[]>(`${environment.host}/my-products`);
+  }
 }
