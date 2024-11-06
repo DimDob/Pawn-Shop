@@ -4,6 +4,7 @@ package com.example.pawnShop.Dto.Product;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -28,6 +29,7 @@ public class ProductDto {
     private Boolean isRunOutOfStock;
     private UUID productTypeId;
     private UUID ownerId;
+    private LocalDateTime createdAt;
 
     public UUID getOwnerId() {
         return ownerId;

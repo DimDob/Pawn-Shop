@@ -28,7 +28,6 @@ public class ProductManualMapperImp implements ProductManualMapper {
                 .build();
     }
 
-    // Methods for Product mappings
     @Override
     public ProductDto mapToProductDto(Product product) {
         ProductDto dto = new ProductDto();
@@ -51,6 +50,8 @@ public class ProductManualMapperImp implements ProductManualMapper {
         if (product.getOwner() != null) {
             dto.setOwnerId(product.getOwner().getId());
         }
+        // Include createdAt
+        dto.setCreatedAt(product.getCreatedAt());
         return dto;
     }
 

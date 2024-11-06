@@ -17,5 +17,6 @@ create table products
     category            varchar(255),
     product_type_id     uuid,
     picture             TEXT,
+    created_at         TIMESTAMP    DEFAULT CURRENT_TIMESTAMP NOT NULL,
     primary key (id)
 )

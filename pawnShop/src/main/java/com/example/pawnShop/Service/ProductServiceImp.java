@@ -17,8 +17,12 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.List;
+import org.springframework.data.domain.Sort;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImp implements ProductService {
 
     private final ProductRepository productRepository;
@@ -146,6 +150,39 @@ public class ProductServiceImp implements ProductService {
             return Result.success(productDtos);
         } catch (Exception e) {
             return Result.error("Failed to retrieve products: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<ProductDto> getAllProducts(String sortBy, String category) {
+        Sort sort;
+        
+        // Променяме логиката за сортиране
+        if ("priceLowToHigh".equalsIgnoreCase(sortBy)) {
+            sort = Sort.by(Sort.Direction.ASC, "price");
+        } else if ("priceHighToLow".equalsIgnoreCase(sortBy)) {
+            sort = Sort.by(Sort.Direction.DESC, "price");
+        } else if ("newest".equalsIgnoreCase(sortBy)) {
+            sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        } else {
+            // Default sorting
+            sort = Sort.by(Sort.Direction.DESC, "createdAt");
+        }
+
+        List<Product> products;
+        try {
+            if (category != null && !category.equalsIgnoreCase("All")) {
+                products = productRepository.findByCategoryIgnoreCase(category, sort);
+            } else {
+                products = productRepository.findAll(sort);
+            }
+
+            return products.stream()
+                    .map(productManualMapper::mapToProductDto)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            log.error("Error fetching products: ", e);
+            throw new RuntimeException("Error fetching products: " + e.getMessage());
         }
     }
 }

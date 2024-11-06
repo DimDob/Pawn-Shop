@@ -66,4 +66,19 @@ public class ProductController {
         }
         return ResponseEntity.ok(result.getValue());
     }
+
+    @GetMapping("/products")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<?> getAllProducts(
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String category
+    ) {
+        try {
+            List<ProductDto> products = productService.getAllProducts(sortBy, category);
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                               .body("Error fetching products: " + e.getMessage());
+        }
+    }
 }

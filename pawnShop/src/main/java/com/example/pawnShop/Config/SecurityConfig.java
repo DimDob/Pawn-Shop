@@ -31,8 +31,12 @@ public class SecurityConfig {
                     registry.requestMatchers("/home/index", "/auth/**", "/data/expose/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
                     registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
-                    // registry.requestMatchers("/product-add").hasAnyRole("SUPER_ADMIN", "ADMIN", "USER");
+                     // registry.requestMatchers("/product-add").hasAnyRole("SUPER_ADMIN", "ADMIN", "USER");
                     // registry.requestMatchers("/favorites/**").authenticated();
+                    // registry.requestMatchers("/product-add/**").authenticated();
+                    // registry.requestMatchers("/product-edit/**").authenticated();
+                    // registry.requestMatchers("/product-delete/**").authenticated();
+                    // registry.requestMatchers("/my-products/**").authenticated();
                     registry.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
