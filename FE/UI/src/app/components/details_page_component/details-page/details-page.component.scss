@@ -24,9 +24,19 @@
       right: 10px;
       background: rgba(255, 255, 255, 0.9);
       border-radius: 50%;
+      transition: all 0.3s ease;
 
       &:hover {
         transform: scale(1.1);
+        background: rgba(255, 255, 255, 1);
+      }
+
+      &.is-favorite {
+        animation: pulse 0.3s ease;
+      }
+
+      mat-icon {
+        transition: all 0.3s ease;
       }
     }
   }
@@ -111,4 +121,16 @@
 }
 #quantity {
   color: #009d34;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
 }

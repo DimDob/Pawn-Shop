@@ -123,16 +123,19 @@ export class DetailsPageComponent implements OnInit {
     if (!currentProduct) return;
 
     console.log("DetailsPageComponent: Toggling favorite status");
+    console.log("Current favorite status:", this.isFavorite());
 
     if (this.isFavorite()) {
       this.favoritesService.removeFromFavorites(currentProduct.id).subscribe({
         next: () => {
           console.log("DetailsPageComponent: Product removed from favorites");
+          this.product.set({ ...currentProduct });
           this.notificationService.showSuccess("Removed from favorites");
         },
         error: (error) => {
           if (error.status === 200) {
             console.log("DetailsPageComponent: Product removed successfully (with parsing error)");
+            this.product.set({ ...currentProduct });
             this.notificationService.showSuccess("Removed from favorites");
           } else {
             console.error("DetailsPageComponent: Error removing from favorites", error);
@@ -144,11 +147,13 @@ export class DetailsPageComponent implements OnInit {
       this.favoritesService.addToFavorites(currentProduct.id).subscribe({
         next: () => {
           console.log("DetailsPageComponent: Product added to favorites");
+          this.product.set({ ...currentProduct });
           this.notificationService.showSuccess("Added to favorites");
         },
         error: (error) => {
           if (error.status === 200) {
             console.log("DetailsPageComponent: Product added successfully (with parsing error)");
+            this.product.set({ ...currentProduct });
             this.notificationService.showSuccess("Added to favorites");
           } else {
             console.error("DetailsPageComponent: Error adding to favorites", error);

@@ -10,9 +10,12 @@
         <img [src]="product.picture"
              [alt]="product.manufacturer + ' ' + product.model"
              onerror="this.src='assets/images/placeholder.jpg'" />
-        <button mat-icon-button (click)="onToggleFavorite()" class="favorite-button">
+        <button mat-icon-button
+                (click)="onToggleFavorite()"
+                class="favorite-button"
+                [class.is-favorite]="isFavorite()">
           <mat-icon [style.color]="isFavorite() ? '#ff4081' : '#009d34'">
-            favorite
+            {{ isFavorite() ? 'favorite' : 'favorite_border' }}
           </mat-icon>
         </button>
       </div>
