@@ -27,6 +27,9 @@ public class Address {
     @Basic
     private String number;
 
+    @Basic
+    private String street; 
+
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;

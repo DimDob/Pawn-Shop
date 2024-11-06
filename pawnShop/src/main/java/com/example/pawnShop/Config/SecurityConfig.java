@@ -37,6 +37,7 @@ public class SecurityConfig {
                     // registry.requestMatchers("/product-edit/**").authenticated();
                     // registry.requestMatchers("/product-delete/**").authenticated();
                     // registry.requestMatchers("/my-products/**").authenticated();
+                    // registry.requestMatchers("/my-account/**").authenticated(); // Добавихме този ред
                     registry.anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
