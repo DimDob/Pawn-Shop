@@ -14,13 +14,14 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
-
+import org.springframework.security.authentication.AuthenticationProvider;
 @EnableWebSecurity
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -28,18 +29,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/home/index", "/auth/**", "/data/expose/**").permitAll();
+                    registry.requestMatchers("/home/index", "/auth/**", "/data/expose/**", "/products/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
                     registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
-                     // registry.requestMatchers("/product-add").hasAnyRole("SUPER_ADMIN", "ADMIN", "USER");
-                    // registry.requestMatchers("/favorites/**").authenticated();
-                    // registry.requestMatchers("/product-add/**").authenticated();
-                    // registry.requestMatchers("/product-edit/**").authenticated();
-                    // registry.requestMatchers("/product-delete/**").authenticated();
-                    // registry.requestMatchers("/my-products/**").authenticated();
-                    // registry.requestMatchers("/my-account/**").authenticated(); // Добавихме този ред
+                    registry.requestMatchers("/my-account/**").authenticated();
+                    registry.requestMatchers("/product-add/**").authenticated();
+                    registry.requestMatchers("/product-edit/**").authenticated();
+                    registry.requestMatchers("/product-delete/**").authenticated();
+                    registry.requestMatchers("/my-products/**").authenticated();
                     registry.anyRequest().authenticated();
                 })
+                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

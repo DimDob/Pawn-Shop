@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,9 +39,9 @@ import java.util.UUID;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "pawn_shops")
 public class PawnShop {
 
@@ -51,16 +52,14 @@ public class PawnShop {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String uic;
+
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @Column(name = "is_vies_registered")
     private Boolean isViesRegistered;
-
-    @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
-
-    @ManyToOne
-    @JoinColumn(name = "admin_id", nullable = false)
-    private AppUser admin;
 
     @Column(name = "registration_date")
     private LocalDate registrationDate;
@@ -68,19 +67,15 @@ public class PawnShop {
     @Column(name = "modifier_date")
     private LocalDate modifierDate;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    @Column(unique = true, nullable = false)
-    private String UIC;
+    @OneToOne
+    @JoinColumn(name = "admin_id")
+    private AppUser admin;
 
-    @OneToMany(mappedBy = "pawnShop")
-    private List<AppUser> employees;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "payments_pawnshops",
-            joinColumns = @JoinColumn(name = "pawnshop_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "payment_id", referencedColumnName = "id"))
-    private List<Payment> payments;
+    @ManyToMany(mappedBy = "pawnShopList")
+    private List<Payment> payments = new ArrayList<>();
 
 }

@@ -3,6 +3,8 @@ package com.example.pawnShop.Service;
 import com.example.pawnShop.Dto.Auth.UpdateMyAccountRequestDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Entity.AppUser;
+import com.example.pawnShop.Entity.Address;
+import com.example.pawnShop.Entity.PawnShop;
 import com.example.pawnShop.Repository.AddressRepository;
 import com.example.pawnShop.Repository.PawnShopRepository;
 import com.example.pawnShop.Repository.UserRepository;
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.util.UUID;
 /**
  * Имплементация на AccountService.
  */
@@ -33,40 +37,74 @@ public class AccountServiceImp implements AccountService {
 
     @Override
     public Result<Boolean> updateMyAccount(UpdateMyAccountRequestDto request) {
-        // Получаваме текущия потребител от SecurityContext
-        AppUser currentUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            // Получаваме текущия потребител от SecurityContext
+            AppUser currentUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        // Проверяваме текущата парола
-        if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
-            return Result.error("Incorrect current password.");
-        }
-
-        // Актуализираме потребителското име, ако е предоставено
-        if (request.getNewUsername() != null && !request.getNewUsername().isEmpty()) {
-            currentUser.setFirstName(request.getNewUsername());
-        }
-
-        // Актуализираме имейла, ако е предоставен и не е зает
-        if (request.getNewEmail() != null && !request.getNewEmail().isEmpty()) {
-            if (userRepository.findByEmail(request.getNewEmail()).isPresent()) {
-                return Result.error("Email already in use.");
+            // Проверяваме текущата парола
+            if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
+                return Result.error("Incorrect current password.");
             }
-            currentUser.setEmail(request.getNewEmail());
-        }
 
-        // Актуализираме адреса на магазина, ако е предоставен
-        if (request.getNewShopAddress() != null && !request.getNewShopAddress().isEmpty()) {
-            if (currentUser.getPawnShop() != null && currentUser.getPawnShop().getAddress() != null) {
-                currentUser.getPawnShop().getAddress().setStreet(request.getNewShopAddress());
-                // Запазваме адреса
-                addressRepository.save(currentUser.getPawnShop().getAddress());
-            } else {
-                return Result.error("User does not have an associated PawnShop or Address.");
+            // Актуализираме потребителското име, ако е предоставено
+            if (request.getNewUsername() != null && !request.getNewUsername().isEmpty()) {
+                currentUser.setFirstName(request.getNewUsername());
             }
-        }
 
-        // Запазваме промените в потребителя
-        userRepository.save(currentUser);
-        return Result.success(true);
+            // Актуализираме имейла, ако е предоставен и не е зает
+            if (request.getNewEmail() != null && !request.getNewEmail().isEmpty()) {
+                if (!currentUser.getEmail().equals(request.getNewEmail()) && 
+                    userRepository.findByEmail(request.getNewEmail()).isPresent()) {
+                    return Result.error("Email already in use.");
+                }
+                currentUser.setEmail(request.getNewEmail());
+            }
+
+            // Актуализираме адреса на магазина
+            if (request.getNewShopAddress() != null && !request.getNewShopAddress().isEmpty()) {
+                PawnShop pawnShop = currentUser.getPawnShop();
+                
+                if (pawnShop == null) {
+                    // Създаваме нов PawnShop ако няма
+                    Address address = Address.builder()
+                            .street(request.getNewShopAddress())
+                            .build();
+                    address = addressRepository.save(address);
+
+                    pawnShop = PawnShop.builder()
+                            .name("Shop of " + currentUser.getFirstName())
+                            .address(address)
+                            .admin(currentUser)
+                            .isActive(true)
+                            .registrationDate(LocalDate.now())
+                            .modifierDate(LocalDate.now())
+                            .uic(UUID.randomUUID().toString()) // Генерираме уникален UIC
+                            .build();
+                    
+                    pawnShop = pawnShopRepository.save(pawnShop);
+                    currentUser.setPawnShop(pawnShop);
+                } else {
+                    // Актуализираме съществуващия адрес
+                    Address address = pawnShop.getAddress();
+                    if (address == null) {
+                        address = Address.builder()
+                                .street(request.getNewShopAddress())
+                                .build();
+                    } else {
+                        address.setStreet(request.getNewShopAddress());
+                    }
+                    addressRepository.save(address);
+                    pawnShop.setAddress(address);
+                    pawnShopRepository.save(pawnShop);
+                }
+            }
+
+            // Запазваме промените в потребителя
+            userRepository.save(currentUser);
+            return Result.success(true);
+            
+        } catch (Exception e) {
+            return Result.error("Error updating account: " + e.getMessage());
+        }
     }
 }
