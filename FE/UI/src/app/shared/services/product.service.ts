@@ -92,7 +92,7 @@ export class ProductService {
           price: Number(productData.price),
           pawnPercentage: 0.5,
           secondHandPrice: Number(productData.price) * 0.8,
-          picture: productData.picture || "base64encodedimagestringorURL",
+          picture: productData.picture || null,
           category: category,
           condition: "New",
           color: productData.color,
@@ -100,7 +100,8 @@ export class ProductService {
           sex: productData.sex || "Unisex",
           quantityInStock: 5,
           isRunOutOfStock: false,
-          productTypeId: productType.id
+          productTypeId: productType.id,
+          ownerId: productData.ownerId
         };
 
         console.log("ProductService: Sending update data:", jsonData);

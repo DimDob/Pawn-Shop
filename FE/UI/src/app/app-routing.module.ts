@@ -49,6 +49,11 @@ const routes: Routes = [
         path: "main-page",
         component: MainPageComponent,
         canActivate: [authGuard]
+      },
+      {
+        path: "edit-product/:id",
+        component: EditProductComponent,
+        canActivate: [authGuard]
       }
     ]
   },
@@ -72,11 +77,6 @@ const routes: Routes = [
   {
     path: "my-products",
     component: MyProductsComponent,
-    canActivate: [authGuard]
-  },
-  {
-    path: "edit-product/:id",
-    component: EditProductComponent,
     canActivate: [authGuard]
   },
   {
