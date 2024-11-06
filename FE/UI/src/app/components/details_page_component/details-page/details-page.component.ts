@@ -122,12 +122,30 @@ export class DetailsPageComponent implements OnInit {
     const currentProduct = this.product();
     if (!currentProduct) return;
 
+    console.log("DetailsPageComponent: Toggling favorite status");
+
     if (this.isFavorite()) {
-      this.favoritesService.removeFromFavorites(currentProduct.id);
-      this.notificationService.showSuccess("Removed from favorites");
+      this.favoritesService.removeFromFavorites(currentProduct.id).subscribe({
+        next: () => {
+          console.log("DetailsPageComponent: Product removed from favorites");
+          this.notificationService.showSuccess("Removed from favorites");
+        },
+        error: (error) => {
+          console.error("DetailsPageComponent: Error removing from favorites", error);
+          this.notificationService.showError("Failed to remove from favorites");
+        }
+      });
     } else {
-      this.favoritesService.addToFavorites(currentProduct);
-      this.notificationService.showSuccess("Added to favorites");
+      this.favoritesService.addToFavorites(currentProduct.id).subscribe({
+        next: () => {
+          console.log("DetailsPageComponent: Product added to favorites");
+          this.notificationService.showSuccess("Added to favorites");
+        },
+        error: (error) => {
+          console.error("DetailsPageComponent: Error adding to favorites", error);
+          this.notificationService.showError("Failed to add to favorites");
+        }
+      });
     }
   }
 }

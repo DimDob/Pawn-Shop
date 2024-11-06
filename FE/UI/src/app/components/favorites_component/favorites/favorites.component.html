@@ -1,26 +1,29 @@
+<!-- UI/src/app/components/favorites_component/favorites/favorites.component.html -->
 <div class="favorites-container">
-  @if (favoriteProducts.length > 0) { @for (product of favoriteProducts; track product.id) {
-  <div class="favorite-item" (click)="goToDetails(product.id)">
-    <div class="product-image">
-      <img [src]="product.picture" [alt]="product.name" />
+  @if (favoriteProducts.length === 0) {
+    <div class="no-favorites">
+      <p>No favorite products yet</p>
     </div>
-    <div class="product-details">
-      <h2>{{ product.manufacturer }} {{ product.model }}</h2>
-      <p>Price: ${{ product.price }}</p>
-      <p>Category: {{ product.category }}</p>
+  } @else {
+    <div class="products-grid">
+      @for (product of favoriteProducts; track product.id) {
+        <div class="product-card">
+          <div class="image-container">
+            <img [src]="product.picture" [alt]="product.name" />
+            <button class="remove-favorite" (click)="removeFromFavorites(product.id)">
+              <mat-icon>favorite</mat-icon>
+            </button>
+          </div>
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="price">€{{ product.price }}</p>
+            <div class="actions">
+              <button (click)="addToCart(product)">Add to Cart</button>
+              <button (click)="goToDetails(product.id)">View Details</button>
+            </div>
+          </div>
+        </div>
+      }
     </div>
-    <div class="action-buttons">
-      <button mat-button (click)="addToCart(product); $event.stopPropagation()">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Add to Cart</span>
-      </button>
-      <button mat-button (click)="removeFromFavorites(product.id); $event.stopPropagation()">
-        <mat-icon>delete</mat-icon>
-        <span>Delete</span>
-      </button>
-    </div>
-  </div>
-  } } @else {
-  <p class="no-favorites">You have no favorite products.</p>
   }
 </div>

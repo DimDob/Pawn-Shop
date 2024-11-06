@@ -8,7 +8,8 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 import java.util.*;
 
 @Entity
@@ -48,12 +49,14 @@ public class AppUser implements UserDetails {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "user_favorites",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Product> favoriteProducts = new HashSet<>();
 
     // Keep only one default constructor

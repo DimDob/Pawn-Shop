@@ -1,6 +1,9 @@
+// UI/src/app/components/favorites_component/favorites/favorites.service.ts
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable, tap } from "rxjs";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
+import { environment } from "../../../../environments/environment";
 
 @Injectable({
   providedIn: "root"
@@ -8,37 +11,40 @@ import { Products } from "../../main_page_component/main-page/Interfaces/Product
 export class FavoritesService {
   private favoritesSubject = new BehaviorSubject<Products[]>([]);
   favorites$ = this.favoritesSubject.asObservable();
-  private readonly STORAGE_KEY = "favorites";
 
-  constructor() {
-    this.loadFromLocalStorage();
+  constructor(private http: HttpClient) {
+    console.log("FavoritesService: Initializing");
+    this.loadFavorites();
   }
 
-  private loadFromLocalStorage() {
-    const stored = localStorage.getItem(this.STORAGE_KEY);
-    if (stored) {
-      this.favoritesSubject.next(JSON.parse(stored));
-    }
+  private loadFavorites() {
+    console.log("FavoritesService: Loading favorites from server");
+    this.http.get<Products[]>(`${environment.host}/favorites`).subscribe({
+      next: (products) => {
+        console.log("FavoritesService: Raw response from server:", products);
+        if (Array.isArray(products)) {
+          console.log("FavoritesService: Favorites loaded successfully. Count:", products.length);
+          this.favoritesSubject.next(products);
+        } else {
+          console.error("FavoritesService: Server response is not an array:", products);
+          this.favoritesSubject.next([]);
+        }
+      },
+      error: (error) => {
+        console.error("FavoritesService: Error loading favorites", error);
+        this.favoritesSubject.next([]);
+      }
+    });
   }
 
-  private saveToLocalStorage(favorites: Products[]) {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(favorites));
+  addToFavorites(productId: string): Observable<any> {
+    console.log("FavoritesService: Adding product to favorites", productId);
+    return this.http.post(`${environment.host}/favorites/${productId}`, {}).pipe(tap(() => this.loadFavorites()));
   }
 
-  addToFavorites(product: Products) {
-    const currentFavorites = this.favoritesSubject.getValue();
-    if (!currentFavorites.find(p => p.id === product.id)) {
-      const newFavorites = [...currentFavorites, product];
-      this.favoritesSubject.next(newFavorites);
-      this.saveToLocalStorage(newFavorites);
-    }
-  }
-
-  removeFromFavorites(productId: string) {
-    const currentFavorites = this.favoritesSubject.getValue();
-    const newFavorites = currentFavorites.filter(p => p.id !== productId);
-    this.favoritesSubject.next(newFavorites);
-    this.saveToLocalStorage(newFavorites);
+  removeFromFavorites(productId: string): Observable<any> {
+    console.log("FavoritesService: Removing product from favorites", productId);
+    return this.http.delete(`${environment.host}/favorites/${productId}`).pipe(tap(() => this.loadFavorites()));
   }
 
   isProductFavorite(productId: string): boolean {
