@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
@@ -123,6 +125,27 @@ public class ProductServiceImp implements ProductService {
             return Result.success(null);
         } catch (Exception e) {
             return Result.error("Failed to delete product: " + e.getMessage());
+        }
+    }
+     @Override
+    public Result<List<ProductDto>> getProductsByCurrentUser() {
+        try {
+            // Get current authenticated user
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            AppUser currentUser = userRepository.findByEmail(username)
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+            // Get products by owner ID
+            List<Product> products = productRepository.findByOwner_Id(currentUser.getId());
+
+            // Map products to ProductDto
+            List<ProductDto> productDtos = products.stream()
+                    .map(productManualMapper::mapToProductDto)
+                    .collect(Collectors.toList());
+
+            return Result.success(productDtos);
+        } catch (Exception e) {
+            return Result.error("Failed to retrieve products: " + e.getMessage());
         }
     }
 }

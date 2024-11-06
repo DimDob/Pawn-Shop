@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import java.util.UUID;
-
+import java.util.List;
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
@@ -56,5 +56,14 @@ public class ProductController {
         return ResponseEntity.ok()
             .contentType(MediaType.TEXT_PLAIN)
             .body("Product deleted successfully");
+    }
+
+    @GetMapping("/my-products")
+    public ResponseEntity<?> getMyProducts() {
+        Result<List<ProductDto>> result = productService.getProductsByCurrentUser();
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+        }
+        return ResponseEntity.ok(result.getValue());
     }
 }
