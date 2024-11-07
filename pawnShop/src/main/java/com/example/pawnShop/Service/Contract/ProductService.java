@@ -11,5 +11,5 @@ public interface ProductService {
     Result<ProductDto> getProductById(UUID id);
     Result<Void> deleteProductById(UUID id);
     Result<List<ProductDto>> getProductsByCurrentUser();
-    List<ProductDto> getAllProducts(String sortBy, String category);
+    List<ProductDto> getAllProducts(String sortBy, String category, String searchTerm);
 }

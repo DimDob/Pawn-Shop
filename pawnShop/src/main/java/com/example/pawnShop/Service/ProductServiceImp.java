@@ -154,29 +154,47 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts(String sortBy, String category) {
+    public List<ProductDto> getAllProducts(String sortBy, String category, String searchTerm) {
         Sort sort;
         
-        // Променяме логиката за сортиране
-        if ("priceLowToHigh".equalsIgnoreCase(sortBy)) {
-            sort = Sort.by(Sort.Direction.ASC, "price");
-        } else if ("priceHighToLow".equalsIgnoreCase(sortBy)) {
-            sort = Sort.by(Sort.Direction.DESC, "price");
-        } else if ("newest".equalsIgnoreCase(sortBy)) {
+        // Default sort if sortBy is null or empty
+        if (sortBy == null || sortBy.isEmpty()) {
             sort = Sort.by(Sort.Direction.DESC, "createdAt");
         } else {
-            // Default sorting
-            sort = Sort.by(Sort.Direction.DESC, "createdAt");
+            switch(sortBy) {
+                case "priceLowToHigh":
+                    sort = Sort.by(Sort.Direction.ASC, "price");
+                    break;
+                case "priceHighToLow":
+                    sort = Sort.by(Sort.Direction.DESC, "price");
+                    break;
+                case "newest":
+                    sort = Sort.by(Sort.Direction.DESC, "createdAt");
+                    break;
+                default:
+                    sort = Sort.by(Sort.Direction.DESC, "createdAt");
+            }
         }
 
-        List<Product> products;
         try {
-            if (category != null && !category.equalsIgnoreCase("All")) {
+            List<Product> products;
+            
+            if (searchTerm != null && !searchTerm.isEmpty()) {
+                // Search in name, manufacturer, and model
+                if (category != null && !category.isEmpty() && !category.equalsIgnoreCase("All")) {
+                    products = productRepository.findByNameContainingIgnoreCaseOrManufacturerContainingIgnoreCaseOrModelContainingIgnoreCaseAndCategory(
+                        searchTerm, searchTerm, searchTerm, category, sort);
+                } else {
+                    products = productRepository.findByNameContainingIgnoreCaseOrManufacturerContainingIgnoreCaseOrModelContainingIgnoreCase(
+                        searchTerm, searchTerm, searchTerm, sort);
+                }
+            } else if (category != null && !category.isEmpty() && !category.equalsIgnoreCase("All")) {
                 products = productRepository.findByCategoryIgnoreCase(category, sort);
             } else {
                 products = productRepository.findAll(sort);
             }
 
+            log.info("Found {} products", products.size());
             return products.stream()
                     .map(productManualMapper::mapToProductDto)
                     .collect(Collectors.toList());

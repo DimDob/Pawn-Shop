@@ -70,7 +70,10 @@ export class HeaderComponent implements OnChanges {
   }
 
   onCategoryChange(category: string): void {
+    console.log("Category changed to:", category);
     this.currentCategory.set(category);
+    this.categoryChanged.emit(category);
+    this.searchService.setSelectedCategory(category);
   }
 
   onSearch(): void {

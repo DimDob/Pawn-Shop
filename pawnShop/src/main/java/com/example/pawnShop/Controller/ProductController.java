@@ -5,6 +5,8 @@ import com.example.pawnShop.Dto.Product.ProductDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,8 @@ import java.util.List;
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class ProductController {
+
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
 
     private final ProductService productService;
 
@@ -71,12 +75,16 @@ public class ProductController {
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<?> getAllProducts(
             @RequestParam(required = false) String sortBy,
-            @RequestParam(required = false) String category
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String searchTerm
     ) {
+        log.info("Fetching products with sortBy: {}, category: {}, searchTerm: {}", sortBy, category, searchTerm);
         try {
-            List<ProductDto> products = productService.getAllProducts(sortBy, category);
+            List<ProductDto> products = productService.getAllProducts(sortBy, category, searchTerm);
+            log.info("Successfully fetched {} products", products.size());
             return ResponseEntity.ok(products);
         } catch (Exception e) {
+            log.error("Error fetching products: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                .body("Error fetching products: " + e.getMessage());
         }

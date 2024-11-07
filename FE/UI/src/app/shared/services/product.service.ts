@@ -1,6 +1,6 @@
 // UI\src\app\services\product.service.ts
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { Products } from "../../components/main_page_component/main-page/Interfaces/Products";
 import { ProductType } from "../interfaces/product-type.interface";
@@ -133,27 +133,32 @@ export class ProductService {
       );
   }
 
-  getAllProducts(): Observable<Products[]> {
-    console.log("ProductService: Fetching all products");
+  getAllProducts(sortBy?: string, category?: string, searchTerm?: string): Observable<Products[]> {
+    console.log("ProductService: Fetching products with filters:", { sortBy, category, searchTerm });
 
-    if (!this.authService.getToken()) {
-      console.error("ProductService: No valid token found");
-      return throwError(() => new Error("No valid token"));
+    let params = new HttpParams();
+
+    // Only add parameters if they have values
+    if (sortBy && sortBy.trim() !== '') {
+      params = params.set('sortBy', sortBy);
+    }
+    if (category && category.trim() !== '') {
+      params = params.set('category', category);
+    }
+    if (searchTerm && searchTerm.trim() !== '') {
+      params = params.set('searchTerm', searchTerm);
     }
 
-    return this.http
-      .get<Products[]>(`${this.baseUrl}/data/expose/products`, {
-        headers: this.authService.getAuthHeaders()
+    return this.http.get<Products[]>(`${this.baseUrl}/products`, {
+      headers: this.authService.getAuthHeaders(),
+      params: params
+    }).pipe(
+      tap(products => console.log("ProductService: Received products:", products)),
+      catchError(error => {
+        console.error("ProductService: Error fetching products:", error);
+        return throwError(() => error);
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          console.error("ProductService: Error fetching all products:", error);
-          if (error.status === 403) {
-            this.authService.logout();
-          }
-          return throwError(() => error);
-        })
-      );
+    );
   }
 
   deleteProduct(productId: string): Observable<string> {
