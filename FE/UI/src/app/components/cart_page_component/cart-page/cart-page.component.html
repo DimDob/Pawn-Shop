@@ -7,11 +7,11 @@
 
   <h1>Shopping Cart</h1>
 
-  @if (cartItems().length > 0) {
+  @if (cartItems.length > 0) {
   <div class="cart-container">
     <!-- Лява колона с продукти -->
     <div class="cart-items">
-      @for (item of cartItems(); track item.product.id) {
+      @for (item of cartItems; track item.product.id) {
       <div class="cart-item">
         <div class="item-image">
           <img [src]="item.product.picture" [alt]="item.product.manufacturer + ' ' + item.product.model" />
@@ -46,23 +46,27 @@
 
     <!-- Дясна колона с обобщение -->
     <div class="cart-summary">
-      <h3>Order Summary</h3>
-      <div class="summary-item">
-        <span>Total Items:</span>
-        <span>{{ cartItems().length }}</span>
-      </div>
-      <div class="summary-item total">
-        <span>Total Cost:</span>
+      <div class="total">
+        <span>Total:</span>
         <span>${{ totalCost() }}</span>
       </div>
-      <button (click)="purchase()" class="purchase-btn"><fa-icon [icon]="faCheck"></fa-icon> Complete Purchase</button>
+
+      <button
+        class="checkout-btn"
+        (click)="purchase()"
+        [disabled]="isProcessing">
+        <fa-icon [icon]="faCreditCard"></fa-icon>
+        {{ isProcessing ? "Processing..." : "Complete Purchase" }}
+      </button>
     </div>
   </div>
   } @else {
   <div class="empty-cart">
     <fa-icon [icon]="faCartPlus"></fa-icon>
     <p>Your cart is empty</p>
-    <button routerLink="/pawn-shop/main-page" class="shop-btn"><fa-icon [icon]="faShop"></fa-icon> Continue Shopping</button>
+    <button routerLink="/pawn-shop/main-page" class="shop-btn">
+      <fa-icon [icon]="faShop"></fa-icon> Continue Shopping
+    </button>
   </div>
   }
 </div>

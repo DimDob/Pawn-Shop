@@ -1,5 +1,4 @@
-// UI\src\app\services\cart.service.ts
-
+// UI\src\app\components\cart_page_component\cart-page\cart.service.ts
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, catchError, of } from "rxjs";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";

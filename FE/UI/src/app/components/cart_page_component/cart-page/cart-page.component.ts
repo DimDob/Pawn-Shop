@@ -2,12 +2,17 @@
 
 import { Component, OnInit } from "@angular/core";
 import { CartService } from "./cart.service";
+import { NotificationService } from "../../../shared/services/notification.service";
+import { PaymentService } from "../../../shared/services/payment.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
-import { Router } from "@angular/router";
-import { signal, computed } from "@angular/core";
-import { NotificationService } from "../../../shared/services/notification.service";
-import { faShoppingCart, faPlus, faMinus, faTrash, faCheck, faCartPlus, faShop, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { BehaviorSubject } from "rxjs";
+import { faShoppingCart, faTrash, faCartPlus, faShop, faCreditCard, faHeart, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
+
+interface CartItem {
+  product: Products;
+  quantity: number;
+}
 
 @Component({
   selector: "app-cart-page",
@@ -15,83 +20,92 @@ import { faShoppingCart, faPlus, faMinus, faTrash, faCheck, faCartPlus, faShop, 
   styleUrls: ["./cart-page.component.scss"]
 })
 export class CartPageComponent implements OnInit {
-  cartItems = signal<{ product: Products; quantity: number }[]>([]);
-  totalCost = computed(() => this.cartItems().reduce((total, item) => total + item.product.price * item.quantity, 0));
-
+  cartItems: CartItem[] = [];
   // Font Awesome icons
   faShoppingCart = faShoppingCart;
-  faPlus = faPlus;
-  faMinus = faMinus;
   faTrash = faTrash;
-  faCheck = faCheck;
   faCartPlus = faCartPlus;
   faShop = faShop;
+  faCreditCard = faCreditCard;
   faHeart = faHeart;
+  faPlus = faPlus;
+  faMinus = faMinus;
 
-  constructor(private cartService: CartService, public favoritesService: FavoritesService, private notificationService: NotificationService, private router: Router) {}
+  isProcessing = false;
 
-  ngOnInit(): void {
-    console.log("CartPageComponent: Initializing");
+  constructor(private cartService: CartService, private paymentService: PaymentService, private notificationService: NotificationService, public favoritesService: FavoritesService) {
+    console.log("CartPageComponent: Initialized");
+  }
+
+  ngOnInit() {
     this.cartService.items$.subscribe(items => {
-      console.log("CartPageComponent: Updating cart items");
-      this.cartItems.set(items);
+      console.log("CartPageComponent: Cart items updated", items);
+      this.cartItems = items;
     });
   }
 
-  increaseQuantity(productId: string): void {
-    console.log("CartPageComponent: Increasing quantity for product", productId);
-    const currentQuantity = this.getQuantity(productId);
-    this.cartService.updateQuantity(productId, currentQuantity + 1);
-  }
-
-  decreaseQuantity(productId: string): void {
-    console.log("CartPageComponent: Decreasing quantity for product", productId);
-    const currentQuantity = this.getQuantity(productId);
-    if (currentQuantity > 1) {
-      this.cartService.updateQuantity(productId, currentQuantity - 1);
-    }
+  totalCost(): number {
+    return this.cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
   }
 
   removeItem(productId: string): void {
-    console.log("CartPageComponent: Removing product", productId);
+    console.log("CartPageComponent: Removing item from cart:", productId);
     this.cartService.removeFromCart(productId);
+    this.notificationService.showSuccess("Item removed from cart");
   }
 
-  getQuantity(productId: string): number {
-    const item = this.cartItems().find(item => item.product.id === productId);
-    return item ? item.quantity : 0;
+  increaseQuantity(productId: string): void {
+    console.log("CartPageComponent: Increasing quantity for:", productId);
+    const item = this.cartItems.find(i => i.product.id.toString() === productId);
+    if (item) {
+      this.cartService.updateQuantity(productId, item.quantity + 1);
+    }
   }
 
-  purchase(): void {
-    console.log("CartPageComponent: Processing purchase");
-    this.cartService.clearCart();
-    this.router.navigate(["/success"]);
+  decreaseQuantity(productId: string): void {
+    console.log("CartPageComponent: Decreasing quantity for:", productId);
+    const item = this.cartItems.find(i => i.product.id.toString() === productId);
+    if (item && item.quantity > 1) {
+      this.cartService.updateQuantity(productId, item.quantity - 1);
+    }
   }
 
   addToFavorites(product: Products): void {
     console.log("CartPageComponent: Adding to favorites:", product);
+    this.favoritesService.addToFavorites(product.id.toString());
+  }
 
-    // Първо проверяваме дали продуктът вече е в любими
-    if (this.favoritesService.isProductFavorite(product.id)) {
-      console.log("CartPageComponent: Product already in favorites");
-      this.notificationService.showInfo("Product is already in favorites");
+  async purchase(): Promise<void> {
+    console.log("CartPageComponent: Starting purchase process");
+
+    if (this.isProcessing) {
       return;
     }
 
-    this.favoritesService.addToFavorites(product.id).subscribe({
-      next: () => {
-        console.log("CartPageComponent: Product added to favorites successfully");
-        this.notificationService.showSuccess("Product added to favorites");
-      },
-      error: error => {
-        console.error("CartPageComponent: Error adding to favorites:", error);
-        if (error.status === 200) {
-          // Ако получим 200, но продуктът вече е в любими
-          this.notificationService.showInfo("Product is already in favorites");
-        } else {
-          this.notificationService.showError("Failed to add product to favorites");
-        }
+    this.isProcessing = true;
+
+    try {
+      const amount = this.totalCost();
+
+      if (amount <= 0) {
+        throw new Error("Invalid cart amount");
       }
-    });
+
+      this.notificationService.showInfo("Processing payment...");
+
+      const response = await this.paymentService.createCheckoutSession(amount).toPromise();
+
+      if (!response?.sessionId) {
+        throw new Error("No session ID received");
+      }
+
+      console.log("CartPageComponent: Got session ID, redirecting to Stripe");
+      await this.paymentService.redirectToCheckout(response.sessionId);
+    } catch (error: any) {
+      console.error("CartPageComponent: Payment error:", error);
+      this.notificationService.showError(error.message || "Payment failed. Please try again.");
+    } finally {
+      this.isProcessing = false;
+    }
   }
 }
