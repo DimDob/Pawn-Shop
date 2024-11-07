@@ -32,8 +32,13 @@
                   </button>
                 </div>
                 <div class="action-buttons">
-                  <button (click)="addToFavorites(item.product)" class="favorite-btn">
-                    <fa-icon [icon]="faHeart"></fa-icon> Add to Favorites
+                  <button
+                    (click)="addToFavorites(item.product)"
+                    class="favorite-btn"
+                    [class.active]="favoritesService.isProductFavorite(item.product.id)"
+                  >
+                    <fa-icon [icon]="faHeart"></fa-icon>
+                    {{ favoritesService.isProductFavorite(item.product.id) ? 'In Favorites' : 'Add to Favorites' }}
                   </button>
                   <button (click)="removeItem(item.product.id)" class="remove-btn">
                     <fa-icon [icon]="faTrash"></fa-icon> Remove

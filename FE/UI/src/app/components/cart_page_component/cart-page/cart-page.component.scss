@@ -172,6 +172,12 @@
             &.active {
               background: #009d34;
               color: white;
+              cursor: default;
+
+              &:hover {
+                transform: none;
+                opacity: 0.9;
+              }
             }
           }
 

@@ -50,7 +50,6 @@ public class FavoriteServiceImp implements FavoriteService {
     @Override
     public Result<Void> addProductToFavorites(UUID productId) {
         try {
-            // Get current authenticated user with favorite products
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
             AppUser currentUser = userRepository.findWithFavoritesByEmail(email)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -58,8 +57,11 @@ public class FavoriteServiceImp implements FavoriteService {
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-            currentUser.getFavoriteProducts().add(product);
+            if (currentUser.getFavoriteProducts().contains(product)) {
+                return Result.success(null);
+            }
 
+            currentUser.getFavoriteProducts().add(product);
             userRepository.save(currentUser);
 
             return Result.success(null);

@@ -7,16 +7,7 @@ import { Products } from "../../main_page_component/main-page/Interfaces/Product
 import { Router } from "@angular/router";
 import { signal, computed } from "@angular/core";
 import { NotificationService } from "../../../shared/services/notification.service";
-import {
-  faShoppingCart,
-  faPlus,
-  faMinus,
-  faTrash,
-  faCheck,
-  faCartPlus,
-  faShop,
-  faHeart
-} from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faPlus, faMinus, faTrash, faCheck, faCartPlus, faShop, faHeart } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-cart-page",
@@ -25,11 +16,7 @@ import {
 })
 export class CartPageComponent implements OnInit {
   cartItems = signal<{ product: Products; quantity: number }[]>([]);
-  totalCost = computed(() =>
-    this.cartItems().reduce((total, item) =>
-      total + item.product.price * item.quantity, 0
-    )
-  );
+  totalCost = computed(() => this.cartItems().reduce((total, item) => total + item.product.price * item.quantity, 0));
 
   // Font Awesome icons
   faShoppingCart = faShoppingCart;
@@ -41,12 +28,7 @@ export class CartPageComponent implements OnInit {
   faShop = faShop;
   faHeart = faHeart;
 
-  constructor(
-    private cartService: CartService,
-    private favoritesService: FavoritesService,
-    private notificationService: NotificationService,
-    private router: Router
-  ) {}
+  constructor(private cartService: CartService, public favoritesService: FavoritesService, private notificationService: NotificationService, private router: Router) {}
 
   ngOnInit(): void {
     console.log("CartPageComponent: Initializing");
@@ -88,14 +70,27 @@ export class CartPageComponent implements OnInit {
 
   addToFavorites(product: Products): void {
     console.log("CartPageComponent: Adding to favorites:", product);
+
+    // Първо проверяваме дали продуктът вече е в любими
+    if (this.favoritesService.isProductFavorite(product.id)) {
+      console.log("CartPageComponent: Product already in favorites");
+      this.notificationService.showInfo("Product is already in favorites");
+      return;
+    }
+
     this.favoritesService.addToFavorites(product.id).subscribe({
       next: () => {
         console.log("CartPageComponent: Product added to favorites successfully");
         this.notificationService.showSuccess("Product added to favorites");
       },
-      error: (error) => {
+      error: error => {
         console.error("CartPageComponent: Error adding to favorites:", error);
-        this.notificationService.showError("Failed to add product to favorites");
+        if (error.status === 200) {
+          // Ако получим 200, но продуктът вече е в любими
+          this.notificationService.showInfo("Product is already in favorites");
+        } else {
+          this.notificationService.showError("Failed to add product to favorites");
+        }
       }
     });
   }
