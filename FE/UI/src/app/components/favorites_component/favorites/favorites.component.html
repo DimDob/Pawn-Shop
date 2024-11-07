@@ -11,29 +11,27 @@
     <div class="favorites-list">
       @for (product of favoriteProducts; track product.id) {
       <div class="favorite-item">
-        <div class="item-image">
-          <img [src]="product.picture" [alt]="product.name" />
+        <div class="item-content" (click)="goToDetails(product.id)">
+          <div class="item-image">
+            <img [src]="product.picture" [alt]="product.name" />
+          </div>
+          <div class="item-details">
+            <div class="product-info">
+              <h2>{{ product.manufacturer }} {{ product.model }}</h2>
+              <p class="price">Price: ${{ product.price }}</p>
+              <p class="condition">Condition: {{ product.condition }}</p>
+            </div>
+          </div>
         </div>
-        <div class="item-details">
-          <div class="product-info">
-            <h2>{{ product.manufacturer }} {{ product.model }}</h2>
-            <p class="price">Price: ${{ product.price }}</p>
-            <p class="condition">Condition: {{ product.condition }}</p>
-          </div>
-          <div class="action-buttons">
-            <button class="add-to-cart-btn" (click)="addToCart(product)">
-              <fa-icon [icon]="faCartPlus"></fa-icon>
-              Add to Cart
-            </button>
-            <button class="remove-btn" (click)="removeFromFavorites(product.id)">
-              <fa-icon [icon]="faTrash"></fa-icon>
-              Remove
-            </button>
-            <button class="details-btn" (click)="goToDetails(product.id)">
-              <fa-icon [icon]="faInfoCircle"></fa-icon>
-              View Details
-            </button>
-          </div>
+        <div class="action-buttons">
+          <button class="add-to-cart-btn" (click)="addToCart(product)">
+            <fa-icon [icon]="faCartPlus"></fa-icon>
+            Add to Cart
+          </button>
+          <button class="remove-btn" (click)="removeFromFavorites(product.id)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Remove
+          </button>
         </div>
       </div>
       }

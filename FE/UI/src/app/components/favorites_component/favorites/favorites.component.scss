@@ -48,6 +48,18 @@
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     }
 
+    .item-content {
+      display: flex;
+      flex: 1;
+      cursor: pointer;
+
+      &:hover {
+        h2 {
+          color: darken(#009d34, 10%);
+        }
+      }
+    }
+
     .item-image {
       width: 200px;
       min-width: 200px;
@@ -72,7 +84,8 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      padding-right: 25px;
 
       .product-info {
         h2 {
@@ -80,6 +93,7 @@
           font-size: 1.4em;
           margin-bottom: 15px;
           font-weight: 600;
+          transition: color 0.3s ease;
         }
 
         .price {
@@ -94,52 +108,49 @@
           font-size: 1.1em;
         }
       }
+    }
 
-      .action-buttons {
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+      min-width: 160px;
+
+      button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
         display: flex;
-        gap: 15px;
-        margin-top: 20px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
 
-        button {
-          padding: 12px 20px;
-          border: none;
-          border-radius: 8px;
+        fa-icon {
           font-size: 1.1em;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          gap: 8px;
+        }
 
-          fa-icon {
-            font-size: 1.1em;
+        &.add-to-cart-btn {
+          background: #009d34;
+          color: white;
+
+          &:hover {
+            background: darken(#009d34, 10%);
+            transform: translateY(-2px);
           }
+        }
 
-          &.add-to-cart-btn {
-            background: #009d34;
-            color: white;
+        &.remove-btn {
+          background: #ffebee;
+          color: #f44336;
 
-            &:hover {
-              background: darken(#009d34, 10%);
-            }
-          }
-
-          &.remove-btn {
-            background: #ffebee;
-            color: #f44336;
-
-            &:hover {
-              background: #ffcdd2;
-            }
-          }
-
-          &.details-btn {
-            background: #e3f2fd;
-            color: #1976d2;
-
-            &:hover {
-              background: #bbdefb;
-            }
+          &:hover {
+            background: #ffcdd2;
+            transform: translateY(-2px);
           }
         }
       }
@@ -247,14 +258,28 @@
     .favorite-item {
       flex-direction: column;
 
+      .item-content {
+        flex-direction: column;
+        margin-bottom: 20px;
+      }
+
       .item-image {
         width: 100%;
         margin-right: 0;
         margin-bottom: 20px;
       }
 
+      .item-details {
+        padding-right: 0;
+      }
+
       .action-buttons {
-        flex-direction: column;
+        flex-direction: row;
+        width: 100%;
+
+        button {
+          flex: 1;
+        }
       }
     }
   }
