@@ -8,71 +8,61 @@
   <h1>Shopping Cart</h1>
 
   @if (cartItems().length > 0) {
-    <div class="cart-container">
-      <!-- Лява колона с продукти -->
-      <div class="cart-items">
-        @for (item of cartItems(); track item.product.id) {
-          <div class="cart-item">
-            <div class="item-image">
-              <img [src]="item.product.picture" [alt]="item.product.manufacturer + ' ' + item.product.model" />
+  <div class="cart-container">
+    <!-- Лява колона с продукти -->
+    <div class="cart-items">
+      @for (item of cartItems(); track item.product.id) {
+      <div class="cart-item">
+        <div class="item-image">
+          <img [src]="item.product.picture" [alt]="item.product.manufacturer + ' ' + item.product.model" />
+        </div>
+        <div class="item-details">
+          <div>
+            <h2>{{ item.product.manufacturer }} {{ item.product.model }}</h2>
+            <p class="price">Price: ${{ item.product.price }}</p>
+          </div>
+          <div class="controls-wrapper">
+            <div class="quantity-controls">
+              <button (click)="decreaseQuantity(item.product.id)" class="quantity-btn">
+                <fa-icon [icon]="faMinus"></fa-icon>
+              </button>
+              <span class="quantity">{{ item.quantity }}</span>
+              <button (click)="increaseQuantity(item.product.id)" class="quantity-btn">
+                <fa-icon [icon]="faPlus"></fa-icon>
+              </button>
             </div>
-            <div class="item-details">
-              <div>
-                <h2>{{ item.product.manufacturer }} {{ item.product.model }}</h2>
-                <p class="price">Price: ${{ item.product.price }}</p>
-              </div>
-              <div class="controls-wrapper">
-                <div class="quantity-controls">
-                  <button (click)="decreaseQuantity(item.product.id)" class="quantity-btn">
-                    <fa-icon [icon]="faMinus"></fa-icon>
-                  </button>
-                  <span class="quantity">{{ item.quantity }}</span>
-                  <button (click)="increaseQuantity(item.product.id)" class="quantity-btn">
-                    <fa-icon [icon]="faPlus"></fa-icon>
-                  </button>
-                </div>
-                <div class="action-buttons">
-                  <button
-                    (click)="addToFavorites(item.product)"
-                    class="favorite-btn"
-                    [class.active]="favoritesService.isProductFavorite(item.product.id)"
-                  >
-                    <fa-icon [icon]="faHeart"></fa-icon>
-                    {{ favoritesService.isProductFavorite(item.product.id) ? 'In Favorites' : 'Add to Favorites' }}
-                  </button>
-                  <button (click)="removeItem(item.product.id)" class="remove-btn">
-                    <fa-icon [icon]="faTrash"></fa-icon> Remove
-                  </button>
-                </div>
-              </div>
+            <div class="action-buttons">
+              <button (click)="addToFavorites(item.product)" class="favorite-btn" [class.active]="favoritesService.isProductFavorite(item.product.id)">
+                <fa-icon [icon]="faHeart"></fa-icon>
+                {{ favoritesService.isProductFavorite(item.product.id) ? "In Favorites" : "Add to Favorites" }}
+              </button>
+              <button (click)="removeItem(item.product.id)" class="remove-btn"><fa-icon [icon]="faTrash"></fa-icon> Remove</button>
             </div>
           </div>
-        }
+        </div>
       </div>
+      }
+    </div>
 
-      <!-- Дясна колона с обобщение -->
-      <div class="cart-summary">
-        <h3>Order Summary</h3>
-        <div class="summary-item">
-          <span>Total Items:</span>
-          <span>{{ cartItems().length }}</span>
-        </div>
-        <div class="summary-item total">
-          <span>Total Cost:</span>
-          <span>${{ totalCost() }}</span>
-        </div>
-        <button (click)="purchase()" class="purchase-btn">
-          <fa-icon [icon]="faCheck"></fa-icon> Complete Purchase
-        </button>
+    <!-- Дясна колона с обобщение -->
+    <div class="cart-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-item">
+        <span>Total Items:</span>
+        <span>{{ cartItems().length }}</span>
       </div>
+      <div class="summary-item total">
+        <span>Total Cost:</span>
+        <span>${{ totalCost() }}</span>
+      </div>
+      <button (click)="purchase()" class="purchase-btn"><fa-icon [icon]="faCheck"></fa-icon> Complete Purchase</button>
     </div>
+  </div>
   } @else {
-    <div class="empty-cart">
-      <fa-icon [icon]="faCartPlus"></fa-icon>
-      <p>Your cart is empty</p>
-      <button routerLink="/products" class="shop-btn">
-        <fa-icon [icon]="faShop"></fa-icon> Continue Shopping
-      </button>
-    </div>
+  <div class="empty-cart">
+    <fa-icon [icon]="faCartPlus"></fa-icon>
+    <p>Your cart is empty</p>
+    <button routerLink="/pawn-shop/main-page" class="shop-btn"><fa-icon [icon]="faShop"></fa-icon> Continue Shopping</button>
+  </div>
   }
 </div>
