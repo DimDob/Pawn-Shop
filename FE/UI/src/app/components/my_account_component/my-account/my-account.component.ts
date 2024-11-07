@@ -58,11 +58,13 @@ export class MyAccountComponent implements OnInit {
       currentPassword: formValues.currentPassword
     };
 
-    if (formValues.username) updateData.newUsername = formValues.username;
-    if (formValues.email && formValues.email !== this.currentUser?.loginUsername) {
-      updateData.newEmail = formValues.email;
-    }
-    if (formValues.shopAddress) updateData.newShopAddress = formValues.shopAddress;
+    const isEmailChanged = formValues.email && formValues.email !== this.currentUser?.loginUsername;
+    const isUsernameChanged = !!formValues.username;
+    const isShopAddressChanged = !!formValues.shopAddress;
+
+    if (isEmailChanged) updateData.newEmail = formValues.email;
+    if (isUsernameChanged) updateData.newUsername = formValues.username;
+    if (isShopAddressChanged) updateData.newShopAddress = formValues.shopAddress;
 
     if (Object.keys(updateData).length === 1) {
       console.log("MyAccountComponent: No changes to update");
@@ -74,25 +76,33 @@ export class MyAccountComponent implements OnInit {
     this.authService.updateUserAccount(updateData).subscribe({
       next: (response) => {
         console.log("MyAccountComponent: Update successful", response);
-        this.notificationService.showSuccess("Account updated successfully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+        this.handleSuccessfulUpdate(isEmailChanged);
       },
       error: (error) => {
         console.error("MyAccountComponent: Update failed", error);
         if (error.status === 200) {
           console.log("MyAccountComponent: Update successful (with parsing error)");
-          this.notificationService.showSuccess("Account updated successfully");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          this.handleSuccessfulUpdate(isEmailChanged);
         } else {
           this.errorMessage = error.error?.message || "Failed to update account";
           this.notificationService.showError(this.errorMessage);
         }
       }
     });
+  }
+
+  private handleSuccessfulUpdate(isEmailChanged: boolean): void {
+    if (isEmailChanged) {
+      this.notificationService.showSuccess("Successfully updated credentials. Please login with new credentials");
+      setTimeout(() => {
+        this.authService.logout();
+      }, 2000);
+    } else {
+      this.notificationService.showSuccess("Successfully updated credentials");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+    }
   }
 
   onChangePassword() {
