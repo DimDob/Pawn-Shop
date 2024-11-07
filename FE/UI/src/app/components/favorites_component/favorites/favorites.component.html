@@ -5,32 +5,65 @@
   </div>
   <h1>My Favorites</h1>
 
-  <div *ngIf="favoriteProducts.length === 0" class="no-favorites">
-    <p>No favorite products yet</p>
-  </div>
-
-  <ng-container *ngIf="favoriteProducts.length > 0">
-    <div *ngFor="let product of favoriteProducts" class="favorite-item" (click)="goToDetails(product.id)">
-      <div class="product-image">
-        <img [src]="product.picture" [alt]="product.name" />
+  @if (favoriteProducts.length > 0) {
+  <div class="favorites-layout">
+    <!-- Лява колона с любими продукти -->
+    <div class="favorites-list">
+      @for (product of favoriteProducts; track product.id) {
+      <div class="favorite-item">
+        <div class="item-image">
+          <img [src]="product.picture" [alt]="product.name" />
+        </div>
+        <div class="item-details">
+          <div class="product-info">
+            <h2>{{ product.manufacturer }} {{ product.model }}</h2>
+            <p class="price">Price: ${{ product.price }}</p>
+            <p class="condition">Condition: {{ product.condition }}</p>
+          </div>
+          <div class="action-buttons">
+            <button class="add-to-cart-btn" (click)="addToCart(product)">
+              <fa-icon [icon]="faCartPlus"></fa-icon>
+              Add to Cart
+            </button>
+            <button class="remove-btn" (click)="removeFromFavorites(product.id)">
+              <fa-icon [icon]="faTrash"></fa-icon>
+              Remove
+            </button>
+            <button class="details-btn" (click)="goToDetails(product.id)">
+              <fa-icon [icon]="faInfoCircle"></fa-icon>
+              View Details
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="product-details">
-        <h2>{{ product.name }}</h2>
-        <p>Manufacturer: {{ product.manufacturer }}</p>
-        <p>Model: {{ product.model }}</p>
-        <p>Price: €{{ product.price }}</p>
-        <p>Condition: {{ product.condition }}</p>
-      </div>
-      <div class="action-buttons" (click)="$event.stopPropagation()">
-        <button class="cart-button" (click)="addToCart(product)">
-          <mat-icon>shopping_cart</mat-icon>
-          <span>Add to Cart</span>
-        </button>
-        <button class="delete-button" (click)="removeFromFavorites(product.id)">
-          <mat-icon>delete</mat-icon>
-          <span>Remove</span>
-        </button>
-      </div>
+      }
     </div>
-  </ng-container>
+
+    <!-- Дясна колона със статистика -->
+    <div class="favorites-summary">
+      <h3>Favorites Summary</h3>
+      <div class="summary-item">
+        <span>Total Items:</span>
+        <span>{{ favoriteProducts.length }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Total Value:</span>
+        <span>${{ getTotalValue() }}</span>
+      </div>
+      <button class="view-all-btn" routerLink="/pawn-shop/main-page">
+        <fa-icon [icon]="faShop"></fa-icon>
+        Browse More Products
+      </button>
+    </div>
+  </div>
+  } @else {
+  <div class="empty-favorites">
+    <fa-icon [icon]="faHeartBroken"></fa-icon>
+    <p>No favorite products yet</p>
+    <button routerLink="/products" class="browse-btn">
+      <fa-icon [icon]="faShop"></fa-icon>
+      Browse Products
+    </button>
+  </div>
+  }
 </div>
