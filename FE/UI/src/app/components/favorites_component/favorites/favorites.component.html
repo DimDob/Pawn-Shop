@@ -1,5 +1,10 @@
 <!-- UI/src/app/components/favorites_component/favorites/favorites.component.html -->
 <div class="favorites-container">
+  <div class="icon">
+    <fa-icon [icon]="faHeart"></fa-icon>
+  </div>
+  <h1>My Favorites</h1>
+
   <div *ngIf="favoriteProducts.length === 0" class="no-favorites">
     <p>No favorite products yet</p>
   </div>

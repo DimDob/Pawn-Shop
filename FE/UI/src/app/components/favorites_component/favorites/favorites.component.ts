@@ -6,6 +6,7 @@ import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { NotificationService } from "../../../shared/services/notification.service";
 import { Subscription } from "rxjs";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-favorites",
@@ -15,6 +16,7 @@ import { Subscription } from "rxjs";
 export class FavoritesComponent implements OnInit, OnDestroy {
   favoriteProducts: Products[] = [];
   private subscription: Subscription = new Subscription();
+  faHeart = faHeart;
 
   constructor(
     private favoritesService: FavoritesService,
