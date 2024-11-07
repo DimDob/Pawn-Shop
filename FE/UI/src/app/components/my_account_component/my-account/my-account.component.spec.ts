@@ -147,7 +147,7 @@ describe("MyAccountComponent", () => {
   // Test for navigation to password change page
   it("should navigate to change password page on onChangePassword", () => {
     component.onChangePassword();
-    expect(mockRouter.navigate).toHaveBeenCalledWith(["auth/change-password/123"]);
+    expect(mockRouter.navigate).toHaveBeenCalledWith(["/my-account/change-password"]);
   });
 
   // Test for FontAwesome icon availability

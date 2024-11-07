@@ -106,10 +106,7 @@ export class MyAccountComponent implements OnInit {
   }
 
   onChangePassword() {
-    if (this.currentUser?.id) {
-      this.router.navigate([`/auth/change-password/${this.currentUser.id}`]);
-    } else {
-      this.notificationService.showError("Unable to change password. User ID not found.");
-    }
+    console.log("MyAccountComponent: Navigating to change password");
+    this.router.navigate(["/my-account/change-password"]);
   }
 }

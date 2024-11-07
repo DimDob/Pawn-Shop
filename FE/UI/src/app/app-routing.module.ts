@@ -86,8 +86,18 @@ const routes: Routes = [
   },
   {
     path: "my-account",
-    component: MyAccountComponent,
-    canActivate: [authGuard]
+    children: [
+      {
+        path: "",
+        component: MyAccountComponent,
+        canActivate: [authGuard]
+      },
+      {
+        path: "change-password",
+        component: ChangePasswordComponent,
+        canActivate: [authGuard]
+      }
+    ]
   },
   {
     path: "favorites",

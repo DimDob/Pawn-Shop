@@ -1,4 +1,4 @@
-// UI\src\app\services\notification.service.ts
+// UI\src\app\shared\services\notification.service.ts
 import { Injectable } from "@angular/core";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material/snack-bar";
 
