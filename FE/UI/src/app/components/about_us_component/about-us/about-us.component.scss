@@ -1,12 +1,109 @@
 // UI\src\app\components\about_us_component\about-us\about-us.component.scss
 .about-us-container {
+  max-width: 1200px;
+  margin: 70px auto 0;
   padding: 20px;
   color: #009d34;
-  h1 {
-    font-size: 2em;
-    margin-bottom: 15px;
+  text-align: center;
+
+  .icon {
+    margin-bottom: 30px;
+
+    fa-icon {
+      font-size: 60px;
+      color: #009d34;
+    }
   }
-  p {
-    font-size: 1.2em;
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #009d34;
+    font-weight: 600;
+  }
+
+  .content-section {
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 20px;
+    background-color: rgba(0, 157, 52, 0.05);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      color: #009d34;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.6;
+      color: #333;
+    }
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 50px 0;
+    padding: 20px;
+
+    .feature-item {
+      padding: 30px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      fa-icon {
+        font-size: 40px;
+        color: #009d34;
+        margin-bottom: 20px;
+      }
+
+      h3 {
+        color: #009d34;
+        font-size: 1.4em;
+        margin-bottom: 15px;
+      }
+
+      p {
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: 2em;
+    }
+
+    .content-section {
+      padding: 15px;
+
+      h2 {
+        font-size: 1.5em;
+      }
+
+      p {
+        font-size: 1.1em;
+      }
+    }
   }
 }

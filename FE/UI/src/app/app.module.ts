@@ -51,7 +51,7 @@ import { ServerErrorComponent } from "./components/server-error_component/server
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { AuthInterceptor } from "./shared/interceptors/auth-interceptor.service";
 import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
-import { faUser, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBoxOpen, faLock, faStore, faHandshake, faGem, faTag } from "@fortawesome/free-solid-svg-icons";
 import { MatFormFieldModule } from "@angular/material/form-field";
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent],
@@ -73,6 +73,14 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(faUser, faBoxOpen);
+    library.addIcons(
+      faUser,
+      faBoxOpen,
+      faLock,
+      faStore,
+      faHandshake,
+      faGem,
+      faTag
+    );
   }
 }
