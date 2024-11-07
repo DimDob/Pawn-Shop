@@ -57,7 +57,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.modelmapper/modelmapper
 	implementation 'org.modelmapper:modelmapper:3.2.1'
 	implementation 'org.flywaydb:flyway-core'
-	implementation 'com.stripe:stripe-java:24.20.0'
+	implementation 'com.stripe:stripe-java:24.21.0'
 	implementation 'com.google.code.gson:gson:2.10.1'
 }
 
