@@ -8,6 +8,13 @@ import { AuthResponse } from "./components/auth_component/login/login_interfaces
 import { tap, catchError, finalize } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
+import { environment } from "../environments/environment";
+interface AccountUpdateData {
+  currentPassword: string;
+  newUsername?: string;
+  newEmail?: string;
+  newShopAddress?: string;
+}
 
 @Injectable({
   providedIn: "root"
@@ -125,5 +132,25 @@ export class AuthService {
       console.error("AuthService: Error parsing user data from token:", error);
       return null;
     }
+  }
+
+  updateUserAccount(data: AccountUpdateData): Observable<any> {
+    console.log("AuthService: Updating user account", data);
+    return this.http.put(`${environment.host}/my-account/update`, data, {
+      headers: this.getAuthHeaders(),
+      responseType: "text"
+    }).pipe(
+      tap(response => {
+        console.log("AuthService: Account updated successfully", response);
+      }),
+      catchError(error => {
+        if (error.status === 200) {
+          console.log("AuthService: Account updated successfully (with empty response)");
+          return of("Success");
+        }
+        console.error("AuthService: Error updating account", error);
+        return throwError(() => error);
+      })
+    );
   }
 }
