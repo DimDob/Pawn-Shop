@@ -21,7 +21,7 @@ export class HeaderComponent implements OnChanges {
   private readonly INITIAL_SEARCH_TERM = "";
 
   // Inputs and Outputs
-  categories = input<Category[]>();
+  // categories = input<Category[]>();
   categoryChanged = output<string>();
 
   // Signals
@@ -33,6 +33,9 @@ export class HeaderComponent implements OnChanges {
   // Computed values
   isCartPage = signal(false);
   isFavoritesPage = signal(false);
+
+  // Add this property to store categories
+  categories = signal<string[]>([Category.ELECTRONICS, Category.CLOTHING, Category.JEWELRY, Category.ART, Category.OTHER]);
 
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService, private favoritesService: FavoritesService) {
     this.initializeSubscriptions();
@@ -72,8 +75,11 @@ export class HeaderComponent implements OnChanges {
   onCategoryChange(category: string): void {
     console.log("Category changed to:", category);
     this.currentCategory.set(category);
-    this.categoryChanged.emit(category);
     this.searchService.setSelectedCategory(category);
+    this.router.navigate(["/pawn-shop/main-page"], {
+      queryParams: { category: category || null },
+      queryParamsHandling: "merge"
+    });
   }
 
   onSearch(): void {

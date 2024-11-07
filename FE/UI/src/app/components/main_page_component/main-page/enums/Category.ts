@@ -6,3 +6,8 @@ export enum Category {
   ART = "Art",
   OTHER = "Other"
 }
+
+// Add helper function to get all categories
+export function getAllCategories(): string[] {
+  return Object.values(Category);
+}
