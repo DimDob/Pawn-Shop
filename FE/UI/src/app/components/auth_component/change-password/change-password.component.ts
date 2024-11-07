@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ChangePasswordService } from "./change-password.service";
 import { Router } from "@angular/router";
 import { NotificationService } from "../../../shared/services/notification.service";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-change-password",
@@ -12,6 +13,7 @@ import { NotificationService } from "../../../shared/services/notification.servi
 })
 export class ChangePasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
+  faLock = faLock;
 
   constructor(private fb: FormBuilder, private changePasswordService: ChangePasswordService, private router: Router, private notificationService: NotificationService) {
     this.resetPasswordForm = this.fb.group(
@@ -72,5 +74,10 @@ export class ChangePasswordComponent implements OnInit {
         }
       }
     });
+  }
+
+  onCancel(): void {
+    console.log("ChangePasswordComponent: Navigating back to my account");
+    this.router.navigate(["/my-account"]);
   }
 }
