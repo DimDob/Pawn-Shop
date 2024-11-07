@@ -38,6 +38,7 @@ public class SecurityConfig {
                     // registry.requestMatchers("/product-delete/**").authenticated();
                     // registry.requestMatchers("/my-products/**").authenticated();
                     registry.requestMatchers("/favorites/**").authenticated();
+                    registry.requestMatchers("/api/payment/**").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .authenticationProvider(authenticationProvider)
