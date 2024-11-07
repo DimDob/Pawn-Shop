@@ -2,9 +2,11 @@
 
 import { Component, OnInit } from "@angular/core";
 import { CartService } from "./cart.service";
+import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { Router } from "@angular/router";
 import { signal, computed } from "@angular/core";
+import { NotificationService } from "../../../shared/services/notification.service";
 import {
   faShoppingCart,
   faPlus,
@@ -12,7 +14,8 @@ import {
   faTrash,
   faCheck,
   faCartPlus,
-  faShop
+  faShop,
+  faHeart
 } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
@@ -36,9 +39,12 @@ export class CartPageComponent implements OnInit {
   faCheck = faCheck;
   faCartPlus = faCartPlus;
   faShop = faShop;
+  faHeart = faHeart;
 
   constructor(
     private cartService: CartService,
+    private favoritesService: FavoritesService,
+    private notificationService: NotificationService,
     private router: Router
   ) {}
 
@@ -78,5 +84,19 @@ export class CartPageComponent implements OnInit {
     console.log("CartPageComponent: Processing purchase");
     this.cartService.clearCart();
     this.router.navigate(["/success"]);
+  }
+
+  addToFavorites(product: Products): void {
+    console.log("CartPageComponent: Adding to favorites:", product);
+    this.favoritesService.addToFavorites(product.id).subscribe({
+      next: () => {
+        console.log("CartPageComponent: Product added to favorites successfully");
+        this.notificationService.showSuccess("Product added to favorites");
+      },
+      error: (error) => {
+        console.error("CartPageComponent: Error adding to favorites:", error);
+        this.notificationService.showError("Failed to add product to favorites");
+      }
+    });
   }
 }

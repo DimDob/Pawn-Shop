@@ -94,67 +94,101 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: auto;
+        margin-top: 20px;
+
+        .quantity-controls {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 20px;
+          background: #f8f9fa;
+          padding: 10px;
+          border-radius: 8px;
+          width: fit-content;
+
+          .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            background: #009d34;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+              background: darken(#009d34, 10%);
+              transform: scale(1.05);
+            }
+          }
+
+          .quantity {
+            font-size: 1.2em;
+            min-width: 40px;
+            text-align: center;
+            font-weight: 500;
+            color: #333;
+          }
+        }
+
+        .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+          min-width: 160px;
+
+          button {
+            width: 100%;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            fa-icon {
+              font-size: 1.1em;
+            }
+          }
+
+          .favorite-btn {
+            background: #fff0f4;
+            color: #009d34;
+            border: 2px solid #009d34;
+            font-weight: 500;
+
+            &:hover {
+              background: #009d34;
+              color: white;
+              transform: translateY(-2px);
+            }
+
+            &.active {
+              background: #009d34;
+              color: white;
+            }
+          }
+
+          .remove-btn {
+            background: #f8f9fa;
+            color: #dc3545;
+            border: 2px solid #dc3545;
+            font-weight: 500;
+
+            &:hover {
+              background: #dc3545;
+              color: white;
+              transform: translateY(-2px);
+            }
+          }
+        }
       }
-    }
-  }
-
-  .quantity-controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-    background: #f8f9fa;
-    padding: 10px;
-    border-radius: 8px;
-    width: fit-content;
-
-    .quantity-btn {
-      width: 35px;
-      height: 35px;
-      border-radius: 8px;
-      background: #009d34;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:hover {
-        background: darken(#009d34, 10%);
-        transform: scale(1.05);
-      }
-    }
-
-    .quantity {
-      font-size: 1.2em;
-      min-width: 40px;
-      text-align: center;
-      font-weight: 500;
-      color: #333;
-    }
-  }
-
-  .remove-btn {
-    background: #f8f9fa;
-    color: #dc3545;
-    border: 2px solid #dc3545;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 500;
-
-    fa-icon {
-      margin-right: 8px;
-    }
-
-    &:hover {
-      background: #dc3545;
-      color: white;
-      transform: scale(1.05);
     }
   }
 
@@ -282,10 +316,15 @@
 
       .controls-wrapper {
         flex-direction: column;
-        gap: 15px;
+        align-items: stretch;
+        gap: 20px;
 
         .quantity-controls {
-          margin: 0 auto;
+          justify-content: center;
+        }
+
+        .action-buttons {
+          width: 100%;
         }
       }
     }
