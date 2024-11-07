@@ -9,30 +9,38 @@
 
   @if (cartItems().length > 0) {
     <div class="cart-container">
-      @for (item of cartItems(); track item.product.id) {
-        <div class="cart-item">
-          <div class="item-image">
-            <img [src]="item.product.picture" [alt]="item.product.manufacturer + ' ' + item.product.model" />
-          </div>
-          <div class="item-details">
-            <h2>{{ item.product.manufacturer }} {{ item.product.model }}</h2>
-            <p class="price">Price: ${{ item.product.price }}</p>
-            <div class="quantity-controls">
-              <button (click)="decreaseQuantity(item.product.id)" class="quantity-btn">
-                <fa-icon [icon]="faMinus"></fa-icon>
-              </button>
-              <span class="quantity">{{ item.quantity }}</span>
-              <button (click)="increaseQuantity(item.product.id)" class="quantity-btn">
-                <fa-icon [icon]="faPlus"></fa-icon>
-              </button>
+      <!-- Лява колона с продукти -->
+      <div class="cart-items">
+        @for (item of cartItems(); track item.product.id) {
+          <div class="cart-item">
+            <div class="item-image">
+              <img [src]="item.product.picture" [alt]="item.product.manufacturer + ' ' + item.product.model" />
             </div>
-            <button (click)="removeItem(item.product.id)" class="remove-btn">
-              <fa-icon [icon]="faTrash"></fa-icon> Remove
-            </button>
+            <div class="item-details">
+              <div>
+                <h2>{{ item.product.manufacturer }} {{ item.product.model }}</h2>
+                <p class="price">Price: ${{ item.product.price }}</p>
+              </div>
+              <div class="controls-wrapper">
+                <div class="quantity-controls">
+                  <button (click)="decreaseQuantity(item.product.id)" class="quantity-btn">
+                    <fa-icon [icon]="faMinus"></fa-icon>
+                  </button>
+                  <span class="quantity">{{ item.quantity }}</span>
+                  <button (click)="increaseQuantity(item.product.id)" class="quantity-btn">
+                    <fa-icon [icon]="faPlus"></fa-icon>
+                  </button>
+                </div>
+                <button (click)="removeItem(item.product.id)" class="remove-btn">
+                  <fa-icon [icon]="faTrash"></fa-icon> Remove
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      }
+        }
+      </div>
 
+      <!-- Дясна колона с обобщение -->
       <div class="cart-summary">
         <h3>Order Summary</h3>
         <div class="summary-item">
