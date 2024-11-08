@@ -72,7 +72,29 @@ export class CartPageComponent implements OnInit {
 
   addToFavorites(product: Products): void {
     console.log("CartPageComponent: Adding to favorites:", product);
-    this.favoritesService.addToFavorites(product.id.toString());
+
+    // Първо проверяваме дали продуктът вече е в любими
+    if (this.favoritesService.isProductFavorite(product.id)) {
+      console.log("CartPageComponent: Product already in favorites");
+      this.notificationService.showInfo("Product is already in favorites");
+      return;
+    }
+
+    this.favoritesService.addToFavorites(product.id).subscribe({
+      next: (response) => {
+        console.log("CartPageComponent: Product added to favorites successfully", response);
+        this.notificationService.showSuccess("Product added to favorites");
+      },
+      error: (error) => {
+        console.error("CartPageComponent: Error adding to favorites:", error);
+        if (error.status === 200) {
+          // Ако получим 200, но като грешка
+          this.notificationService.showSuccess("Product added to favorites");
+        } else {
+          this.notificationService.showError("Failed to add product to favorites");
+        }
+      }
+    });
   }
 
   async purchase(): Promise<void> {
