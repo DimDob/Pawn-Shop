@@ -337,7 +337,7 @@
   }
 
   .checkout-btn {
-    background-color: #4CAF50;
+    background-color: #4caf50;
     color: white;
     padding: 12px 24px;
     border: none;
@@ -378,5 +378,9 @@
       font-size: 18px;
       font-weight: bold;
     }
+  }
+  div.summary-item:nth-child(3) {
+    padding: 0px !important;
+    margin: 0px !important;
   }
 }
