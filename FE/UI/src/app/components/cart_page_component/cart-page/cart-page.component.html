@@ -46,15 +46,16 @@
 
     <!-- Дясна колона с обобщение -->
     <div class="cart-summary">
-      <div class="total">
-        <span>Total:</span>
+      <h3>Order Summary</h3>
+      <div class="summary-item">
+        <span>Total Items:</span>
+        <span>{{ cartItems.length }}</span>
+      </div>
+      <div class="summary-item total">
+        <span>Total Cost:</span>
         <span>${{ totalCost() }}</span>
       </div>
-
-      <button
-        class="checkout-btn"
-        (click)="purchase()"
-        [disabled]="isProcessing">
+      <button (click)="purchase()" class="purchase-btn" [disabled]="isProcessing">
         <fa-icon [icon]="faCreditCard"></fa-icon>
         {{ isProcessing ? "Processing..." : "Complete Purchase" }}
       </button>
@@ -64,9 +65,7 @@
   <div class="empty-cart">
     <fa-icon [icon]="faCartPlus"></fa-icon>
     <p>Your cart is empty</p>
-    <button routerLink="/pawn-shop/main-page" class="shop-btn">
-      <fa-icon [icon]="faShop"></fa-icon> Continue Shopping
-    </button>
+    <button routerLink="/pawn-shop/main-page" class="shop-btn"><fa-icon [icon]="faShop"></fa-icon> Continue Shopping</button>
   </div>
   }
 </div>
