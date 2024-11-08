@@ -8,6 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.stripe.model.Event;
+import com.stripe.model.EventDataObjectDeserializer;
+import com.stripe.model.StripeObject;
+import com.stripe.net.Webhook;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +28,9 @@ public class PaymentController {
 
     @Value("${frontend.url:http://localhost:4200}")
     private String frontendUrl;
+
+    @Value("${stripe.webhook.secret}")
+    private String endpointSecret;
 
     @PostMapping("/create-checkout-session")
     public ResponseEntity<Map<String, String>> createCheckoutSession(@RequestBody CheckoutSessionDto checkoutDto) {
@@ -63,6 +70,42 @@ public class PaymentController {
         } catch (StripeException e) {
             log.error("Error creating checkout session", e);
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/webhook")
+    public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
+        log.info("Received Stripe webhook");
+        
+        try {
+            Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
+            
+            // Handle the event
+            switch (event.getType()) {
+                case "checkout.session.completed":
+                    log.info("Payment successful!");
+                    EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
+                    StripeObject stripeObject = null;
+                    if (dataObjectDeserializer.getObject().isPresent()) {
+                        stripeObject = dataObjectDeserializer.getObject().get();
+                    }
+                    Session session = (Session) stripeObject;
+                    String customerEmail = session.getCustomerEmail();
+                    log.info("Customer email: {}", customerEmail);
+                    break;
+                    
+                case "checkout.session.expired":
+                    log.warn("Checkout session expired");
+                    break;
+                    
+                default:
+                    log.info("Unhandled event type: {}", event.getType());
+            }
+
+            return ResponseEntity.ok().body("Webhook processed successfully");
+        } catch (Exception e) {
+            log.error("Error processing webhook", e);
+            return ResponseEntity.badRequest().body("Webhook error: " + e.getMessage());
         }
     }
 } 

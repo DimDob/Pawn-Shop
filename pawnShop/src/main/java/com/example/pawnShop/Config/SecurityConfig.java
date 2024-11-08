@@ -38,7 +38,8 @@ public class SecurityConfig {
                     // registry.requestMatchers("/product-delete/**").authenticated();
                     // registry.requestMatchers("/my-products/**").authenticated();
                     registry.requestMatchers("/favorites/**").authenticated();
-                    // registry.requestMatchers("/api/payment/**").authenticated();
+                    registry.requestMatchers("/api/payment/webhook").permitAll();
+                    registry.requestMatchers("/api/payment/**").authenticated();
                     registry.anyRequest().authenticated();
                 })
                 .authenticationProvider(authenticationProvider)
