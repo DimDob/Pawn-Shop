@@ -6,17 +6,17 @@ import com.example.pawnShop.Dto.Auth.UpdateMyAccountRequestDto;
 import com.example.pawnShop.Dto.Result;
 
 /**
- * Интерфейс за AccountService.
+ * Interface for AccountService.
  */
 public interface AccountService {
 
     /**
-     * Метод за актуализиране на профила на текущия потребител.
+     * Method for updating the current user's profile.
      */
     Result<Boolean> updateMyAccount(UpdateMyAccountRequestDto request);
 
     /**
-     * Метод за смяна на парола на текущия потребител.
+     * Method for changing the current user's password.
      */
     Result<Boolean> changePassword(ChangePasswordRequestDto request);
 

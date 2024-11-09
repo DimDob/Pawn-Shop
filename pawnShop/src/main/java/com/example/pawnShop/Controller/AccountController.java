@@ -12,19 +12,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Контролер за операции с потребителски акаунт.
+ * Controller for operations with user account.
  */
 @RestController
 @RequestMapping("/my-account")
 @RequiredArgsConstructor
 public class AccountController {
 
-    // Инжектираме AccountService
+    // Inject AccountService
     @Autowired
     private final AccountService accountService;
 
     /**
-     * Ендпойнт за актуализиране на профила на потребителя.
+     * Endpoint for updating the user's profile.
      */
     @PutMapping("/update")
     public ResponseEntity<?> updateMyAccount(@Validated @RequestBody UpdateMyAccountRequestDto request) {
@@ -36,7 +36,7 @@ public class AccountController {
     }
 
     /**
-     * Ендпойнт за смяна на парола на потребителя.
+     * Endpoint for changing the user's password.
      */
     @PutMapping("/change-password")
     public ResponseEntity<?> changePassword(@Validated @RequestBody ChangePasswordRequestDto request) {
