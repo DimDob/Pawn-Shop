@@ -65,8 +65,34 @@ export class AuthService {
   }
 
   logout(): void {
-    this.clearToken();
-    this.router.navigate(["/auth/login"]);
+    console.log("AuthService: Logging out user");
+    const currentToken = this.getToken();
+
+    if (currentToken) {
+      this.http
+        .post(`${environment.host}/auth/logout`, {
+          refreshToken: currentToken
+        })
+        .pipe(
+          finalize(() => {
+            this.clearAuthData();
+            this.router.navigate(["/auth/login"]);
+          })
+        )
+        .subscribe({
+          next: () => console.log("AuthService: Logout successful"),
+          error: error => console.error("AuthService: Logout error", error)
+        });
+    } else {
+      this.clearAuthData();
+      this.router.navigate(["/auth/login"]);
+    }
+  }
+
+  private clearAuthData(): void {
+    console.log("AuthService: Clearing auth data");
+    localStorage.removeItem(this.tokenKey);
+    this.currentUserData.set(null);
   }
 
   isLoggedIn(): boolean {
@@ -136,21 +162,49 @@ export class AuthService {
 
   updateUserAccount(data: AccountUpdateData): Observable<any> {
     console.log("AuthService: Updating user account", data);
-    return this.http.put(`${environment.host}/my-account/update`, data, {
-      headers: this.getAuthHeaders(),
-      responseType: "text"
-    }).pipe(
-      tap(response => {
-        console.log("AuthService: Account updated successfully", response);
-      }),
-      catchError(error => {
-        if (error.status === 200) {
-          console.log("AuthService: Account updated successfully (with empty response)");
-          return of("Success");
-        }
-        console.error("AuthService: Error updating account", error);
-        return throwError(() => error);
+    return this.http
+      .put(`${environment.host}/my-account/update`, data, {
+        headers: this.getAuthHeaders(),
+        responseType: "text"
       })
-    );
+      .pipe(
+        tap(response => {
+          console.log("AuthService: Account updated successfully", response);
+        }),
+        catchError(error => {
+          if (error.status === 200) {
+            console.log("AuthService: Account updated successfully (with empty response)");
+            return of("Success");
+          }
+          console.error("AuthService: Error updating account", error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  refreshToken(): Observable<AuthResponse> {
+    console.log("AuthService: Attempting to refresh token");
+    const currentToken = this.getToken();
+
+    if (!currentToken) {
+      console.log("AuthService: No token to refresh");
+      return throwError(() => new Error("No token available"));
+    }
+
+    return this.http
+      .post<AuthResponse>(`${environment.host}/auth/refresh-token`, {
+        refreshToken: currentToken
+      })
+      .pipe(
+        tap(response => {
+          console.log("AuthService: Token refreshed successfully");
+          localStorage.setItem(this.tokenKey, response.token);
+        }),
+        catchError(error => {
+          console.error("AuthService: Token refresh failed", error);
+          this.logout();
+          return throwError(() => error);
+        })
+      );
   }
 }
