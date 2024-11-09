@@ -39,20 +39,20 @@ public class AccountServiceImp implements AccountService {
     @Override
     public Result<Boolean> updateMyAccount(UpdateMyAccountRequestDto request) {
         try {
-            // Получаваме текущия потребител от SecurityContext
+            // We get the current user from the SecurityContext
             AppUser currentUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-            // Проверяваме текущата парола
+            // We check the current password
             if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
                 return Result.error("Incorrect current password.");
             }
 
-            // Актуализираме потребителското име, ако е предоставено
+            // We update the username if it is provided
             if (request.getNewUsername() != null && !request.getNewUsername().isEmpty()) {
                 currentUser.setFirstName(request.getNewUsername());
             }
 
-            // Актуализираме имейла, ако е предоставен и не е зает
+            // We update the email if it is provided and not already in use
             if (request.getNewEmail() != null && !request.getNewEmail().isEmpty()) {
                 if (!currentUser.getEmail().equals(request.getNewEmail()) && 
                     userRepository.findByEmail(request.getNewEmail()).isPresent()) {
@@ -61,12 +61,12 @@ public class AccountServiceImp implements AccountService {
                 currentUser.setEmail(request.getNewEmail());
             }
 
-            // Актуализираме адреса на магазина
+            // We update the shop address if it is provided
             if (request.getNewShopAddress() != null && !request.getNewShopAddress().isEmpty()) {
                 PawnShop pawnShop = currentUser.getPawnShop();
                 
                 if (pawnShop == null) {
-                    // Създаваме нов PawnShop ако няма
+                    // We create a new PawnShop if there is none
                     Address address = Address.builder()
                             .street(request.getNewShopAddress())
                             .build();
@@ -79,13 +79,13 @@ public class AccountServiceImp implements AccountService {
                             .isActive(true)
                             .registrationDate(LocalDate.now())
                             .modifierDate(LocalDate.now())
-                            .uic(UUID.randomUUID().toString()) // Генерираме уникален UIC
+                            .uic(UUID.randomUUID().toString()) 
                             .build();
                     
                     pawnShop = pawnShopRepository.save(pawnShop);
                     currentUser.setPawnShop(pawnShop);
                 } else {
-                    // Актуализираме съществуващия адрес
+                    // We update the existing address
                     Address address = pawnShop.getAddress();
                     if (address == null) {
                         address = Address.builder()
@@ -100,7 +100,7 @@ public class AccountServiceImp implements AccountService {
                 }
             }
 
-            // Запазваме промените в потребителя
+            // We save the changes to the user
             userRepository.save(currentUser);
             return Result.success(true);
             
@@ -112,25 +112,25 @@ public class AccountServiceImp implements AccountService {
     @Override
     public Result<Boolean> changePassword(ChangePasswordRequestDto request) {
         try {
-            // Получаваме текущия потребител
+            // We get the current user
             AppUser currentUser = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             
-            // Проверяваме текущата парола
+            // We check the current password
             if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
                 return Result.error("Current password is incorrect");
             }
             
-            // Проверяваме дали новата парола и потвърждението съвпадат
+            // We check if the new password and confirmation match
             if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
                 return Result.error("New password and confirmation do not match");
             }
             
-            // Проверяваме дали новата парола е различна от старата
+            // We check if the new password is different from the current one
             if (passwordEncoder.matches(request.getNewPassword(), currentUser.getPassword())) {
                 return Result.error("New password must be different from current password");
             }
             
-            // Хеширане и запазване на новата парола
+            // We hash and save the new password
             currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
             userRepository.save(currentUser);
             

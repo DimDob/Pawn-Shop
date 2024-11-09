@@ -37,7 +37,7 @@ describe("MainPageComponent", () => {
     cartService = TestBed.inject(CartService);
     searchService = TestBed.inject(SearchService);
 
-    // Мокаем данни за продукти
+    // Mocking product data
     seedDataService.products = [
       { id: "1", name: "Product1", category: Category.ELECTRONICS, model: "Model1", price: 100, picture: "", color: "", size: 0, sex: "male", manufacturer: "" },
       { id: "2", name: "Product2", category: Category.CLOTHING, model: "Model2", price: 200, picture: "", color: "", size: 0, sex: "female", manufacturer: "" }

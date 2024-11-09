@@ -9,7 +9,7 @@
 
   @if (cartItems.length > 0) {
   <div class="cart-container">
-    <!-- Лява колона с продукти -->
+    <!-- Left column with products -->
     <div class="cart-items">
       @for (item of cartItems; track item.product.id) {
       <div class="cart-item">
@@ -44,7 +44,7 @@
       }
     </div>
 
-    <!-- Дясна колона с обобщение -->
+    <!-- Right column with summary -->
     <div class="cart-summary">
       <h3>Order Summary</h3>
       <div class="summary-item">

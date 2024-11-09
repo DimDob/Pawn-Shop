@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO за заявка за актуализиране на профила на потребителя.
+ * DTO for the request to update the user's profile.
  */
 @Data
 @NoArgsConstructor
@@ -18,13 +18,13 @@ import lombok.NoArgsConstructor;
 public class UpdateMyAccountRequestDto {
 
     @NotNull
-    private String currentPassword; // Текуща парола за потвърждение
+    private String currentPassword; 
 
-    private String newUsername; // Ново потребителско име
+    private String newUsername;
 
     @Email
-    private String newEmail; // Нов имейл
+    private String newEmail;
 
-    private String newShopAddress; // Нов адрес на магазина
+    private String newShopAddress; 
 
 }

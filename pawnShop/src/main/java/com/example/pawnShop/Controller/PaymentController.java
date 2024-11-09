@@ -39,7 +39,7 @@ public class PaymentController {
             
             Map<String, Object> params = new HashMap<>();
             
-            // Настройка на продукта
+            // Product setup
             Map<String, Object> priceData = new HashMap<>();
             priceData.put("currency", checkoutDto.getCurrency());
             priceData.put("unit_amount", checkoutDto.getAmount());
@@ -48,7 +48,7 @@ public class PaymentController {
             productData.put("name", "PawnShop Purchase");
             priceData.put("product_data", productData);
 
-            // Настройка на line items
+            // Line items setup
             Map<String, Object> lineItem = new HashMap<>();
             lineItem.put("price_data", priceData);
             lineItem.put("quantity", 1);
@@ -58,7 +58,7 @@ public class PaymentController {
             params.put("success_url", frontendUrl + "/success");
             params.put("cancel_url", frontendUrl + "/cart");
 
-            // Създаване на сесията
+            // Creating the session
             Session session = Session.create(params);
             
             Map<String, String> response = new HashMap<>();
