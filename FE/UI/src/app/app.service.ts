@@ -120,9 +120,9 @@ export class AuthService {
       console.log("AuthService: Token data:", tokenData);
 
       const user: User = {
-        id: tokenData.userId, // Взимаме от claim-а
+        id: tokenData.userId, // Token-a
         loginUsername: tokenData.sub, // email от subject
-        isAdmin: tokenData.isAdmin, // Взимаме от claim-а
+        isAdmin: tokenData.isAdmin, // Token-a
         isEmployee: false
       };
 
