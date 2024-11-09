@@ -4,6 +4,7 @@ package com.example.pawnShop.Controller;
 import com.example.pawnShop.Dto.Auth.LoginRequestDto;
 import com.example.pawnShop.Dto.Auth.LoginResponseDto;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
+import com.example.pawnShop.Dto.Auth.RefreshTokenRequestDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class AuthController {
     @Autowired
@@ -37,5 +38,25 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
         return ResponseEntity.ok("You are registered!!!");
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDto request) {
+        Result<LoginResponseDto> result = authService.refreshToken(request.getRefreshToken());
+        
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result.getValue());
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody RefreshTokenRequestDto request) {
+        Result<Boolean> result = authService.logout(request.getRefreshToken());
+        
+        if (result.isSuccess()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
     }
 }

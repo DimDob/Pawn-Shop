@@ -29,14 +29,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/home/index", "/auth/**", "/data/expose/**", "/products/**").permitAll();
+                    registry.requestMatchers("/api/auth/**", "/auth/**", "/home/index", "/data/expose/**", "/products/**").permitAll();
                     registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
                     registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
-                    // registry.requestMatchers("/my-account/**", "/change-password").authenticated();
-                    // registry.requestMatchers("/product-add/**").authenticated();
-                    // registry.requestMatchers("/product-edit/**").authenticated();
-                    // registry.requestMatchers("/product-delete/**").authenticated();
-                    // registry.requestMatchers("/my-products/**").authenticated();
                     registry.requestMatchers("/favorites/**").authenticated();
                     registry.requestMatchers("/api/payment/webhook").permitAll();
                     registry.requestMatchers("/api/payment/**").authenticated();

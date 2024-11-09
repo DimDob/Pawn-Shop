@@ -87,4 +87,44 @@ public class AuthServiceImp implements AuthService {
             return Result.error("You can not register this user.");
         }
     }
+
+    @Override
+    public Result<LoginResponseDto> refreshToken(String refreshToken) {
+        try {
+            if (!jwtService.isTokenValid(refreshToken)) {
+                return Result.error("Invalid refresh token");
+            }
+
+            String userEmail = jwtService.extractSubject(refreshToken);
+            Optional<AppUser> userOptional = userRepository.findByEmail(userEmail);
+
+            if (userOptional.isEmpty()) {
+                return Result.error("User not found");
+            }
+
+            AppUser user = userOptional.get();
+            String newToken = jwtService.generateJwtToken(user);
+
+            return Result.success(LoginResponseDto.builder()
+                    .username(user.getEmail())
+                    .token(newToken)
+                    .isAdmin(user.getIsAdmin())
+                    .build());
+        } catch (Exception e) {
+            return Result.error("Failed to refresh token");
+        }
+    }
+
+    @Override
+    public Result<Boolean> logout(String refreshToken) {
+        try {
+            if (!jwtService.isTokenValid(refreshToken)) {
+                return Result.error("Invalid token");
+            }
+            // Тук можете да добавите допълнителна логика за blacklisting на токена
+            return Result.success(true);
+        } catch (Exception e) {
+            return Result.error("Failed to logout");
+        }
+    }
 }
