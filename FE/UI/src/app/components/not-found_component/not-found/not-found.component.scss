@@ -3,54 +3,89 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #f6f8fb 0%, #dbe4f0 100%);
   padding: 20px;
 
   .content {
     text-align: center;
     background: white;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 60px 40px;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     width: 100%;
+    transform: translateY(-5%);
   }
 
-  .error-code {
-    font-size: 120px;
-    font-weight: bold;
-    color: #e74c3c;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  .error-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+
+    .error-code {
+      font-size: 120px;
+      font-weight: 700;
+      background: linear-gradient(45deg, #2196F3, #3F51B5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .compass-icon {
+      font-size: 80px;
+      color: #3F51B5;
+      margin: 0 10px;
+      animation: spin 4s linear infinite;
+    }
   }
 
   h1 {
     font-size: 32px;
-    color: #2c3e50;
-    margin-bottom: 15px;
+    color: #1a237e;
+    margin-bottom: 20px;
+    font-weight: 600;
   }
 
   p {
     font-size: 18px;
-    color: #7f8c8d;
-    margin-bottom: 30px;
+    color: #546e7a;
+    margin-bottom: 40px;
     line-height: 1.6;
-  }
-
-  .illustration {
-    margin: 40px 0;
-
-    .search-icon {
-      font-size: 80px;
-      color: #3498db;
-      animation: float 3s ease-in-out infinite;
-    }
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+
     button {
-      padding: 12px 30px;
+      padding: 12px 24px;
       font-size: 16px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+
+      &.back-button {
+        background: transparent;
+        border: 2px solid #3F51B5;
+
+        &:hover {
+          background: rgba(63, 81, 181, 0.1);
+        }
+      }
+
+      &.home-button {
+        background: #3F51B5;
+
+        &:hover {
+          background: #283593;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(63, 81, 181, 0.4);
+        }
+      }
 
       fa-icon {
         margin-right: 8px;
@@ -59,22 +94,29 @@
   }
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0px);
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  50% {
-    transform: translateY(-20px);
-  }
-  100% {
-    transform: translateY(0px);
+  to {
+    transform: rotate(360deg);
   }
 }
 
 @media (max-width: 480px) {
   .not-found-container {
-    .error-code {
-      font-size: 80px;
+    .content {
+      padding: 40px 20px;
+    }
+
+    .error-wrapper {
+      .error-code {
+        font-size: 80px;
+      }
+
+      .compass-icon {
+        font-size: 60px;
+      }
     }
 
     h1 {
@@ -85,4 +127,4 @@
       font-size: 16px;
     }
   }
-} 
+}

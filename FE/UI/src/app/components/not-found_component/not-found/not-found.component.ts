@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
-import { faHome, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCompass, faHome, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-not-found",
@@ -9,8 +9,9 @@ import { faHome, faSearch } from "@fortawesome/free-solid-svg-icons";
   styleUrls: ["./not-found.component.scss"]
 })
 export class NotFoundComponent {
+  faCompass = faCompass;
   faHome = faHome;
-  faSearch = faSearch;
+  faArrowLeft = faArrowLeft;
 
   constructor(
     private router: Router,
@@ -23,5 +24,9 @@ export class NotFoundComponent {
     } else {
       this.router.navigate(["/auth/login"]);
     }
+  }
+
+  goBack() {
+    window.history.back();
   }
 }
