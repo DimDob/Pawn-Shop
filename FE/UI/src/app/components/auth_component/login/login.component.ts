@@ -4,7 +4,7 @@ import { PrismData } from "./login_interfaces.ts/prismData";
 import prismDetailsTemplate from "./templates/prismDetails.template";
 import { User } from "./login_interfaces.ts/User";
 import userTemplate from "./templates/user.template";
-import { NgForm } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { AuthService } from "../../../app.service";
 import { environment } from "../../../../environments/environment";
 import { Router } from "@angular/router";
@@ -33,11 +33,9 @@ export class LoginComponent {
 
   public loginError: string | null = null;
 
-  constructor(
-    private elementRef: ElementRef,
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  public rememberMe: boolean = false;
+
+  constructor(private elementRef: ElementRef, private authService: AuthService, private router: Router) {}
 
   ngAfterViewInit() {
     this.isEverythingInitialized = true;
@@ -64,10 +62,11 @@ export class LoginComponent {
 
     const credentials = {
       email: this.prismDetails.loginUsername,
-      password: this.prismDetails.loginPassword
+      password: this.prismDetails.loginPassword,
+      rememberMe: this.rememberMe
     };
 
-    this.userCredentials.emit(this.prismDetails);
+    this.userCredentials.emit({ ...this.prismDetails });
   }
 
   handleUserRegister(prismDetails: PrismData) {

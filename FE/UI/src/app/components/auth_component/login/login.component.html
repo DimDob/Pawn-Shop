@@ -1,13 +1,13 @@
 <!-- UI\src\app\components\auth_component\login\login.component.html -->
 @if (isEverythingInitialized) {
-  <div #navButtons>
-    <ul class="nav">
-      <li (click)="showLoginOnClick()">Login</li>
-      @if (isForgotPassword) {
-        <li (click)="showForgotPasswordOnClick()">Forgot password</li>
-      }
-    </ul>
-  </div>
+<div #navButtons>
+  <ul class="nav">
+    <li (click)="showLoginOnClick()">Login</li>
+    @if (isForgotPassword) {
+    <li (click)="showForgotPasswordOnClick()">Forgot password</li>
+    }
+  </ul>
+</div>
 }
 
 <div class="wrapper" id="'loginComponent">
@@ -28,15 +28,13 @@
         </form>
 
         <!-- Show different content based on whether the user is an admin -->
-        @if (user.isAdmin !== undefined) {
-          @if (user.isAdmin) {
-            <div>The user with the provided email has administrator rights!</div>
-          } @else {
-            <div>
-              <p>The provided user does not have administrator rights. Please contact your administrator.</p>
-            </div>
-          }
-        }
+        @if (user.isAdmin !== undefined) { @if (user.isAdmin) {
+        <div>The user with the provided email has administrator rights!</div>
+        } @else {
+        <div>
+          <p>The provided user does not have administrator rights. Please contact your administrator.</p>
+        </div>
+        } }
       </div>
     </div>
 
@@ -56,13 +54,20 @@
           </div>
 
           <div class="field-wrapper">
+            <div class="remember-me">
+              <input type="checkbox" id="rememberMe" [(ngModel)]="rememberMe" name="rememberMe" />
+              <label for="rememberMe">Remember me</label>
+            </div>
+          </div>
+
+          <div class="field-wrapper">
             <input type="submit" value="Submit" />
           </div>
 
           @if (loginError) {
-            <div class="error-message">
-              {{ loginError }}
-            </div>
+          <div class="error-message">
+            {{ loginError }}
+          </div>
           }
 
           <span class="psw" (click)="showForgotPasswordOnClick()">Forgot Password?</span>
@@ -91,8 +96,7 @@
       <div class="content">
         <h2>Create an account for an employee</h2>
         <!-- Register component template -->
-        <app-register [prismDetails]="prismDetails" (userRegister)="handleUserRegister($event)" />
-
+        <!-- <app-register [prismDetails]="prismDetails" (userRegister)="handleUserRegister($event)" /> -->
         <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
       </div>
     </div>

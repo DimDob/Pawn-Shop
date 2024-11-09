@@ -247,3 +247,20 @@ small {
     margin-bottom: $spacing / 2;
   }
 }
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+  }
+
+  label {
+    color: #666;
+    font-size: 14px;
+  }
+}

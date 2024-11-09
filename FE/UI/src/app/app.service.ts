@@ -21,6 +21,7 @@ interface AccountUpdateData {
 })
 export class AuthService {
   private readonly tokenKey = "auth_token";
+  private readonly refreshTokenKey = "refresh_token";
   private isAuthenticating = signal(false);
   private currentUserData = signal<User | null>(null);
 
@@ -100,18 +101,24 @@ export class AuthService {
     return token !== null && !this.isTokenExpired();
   }
 
-  public handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
-    if (this.isAuthenticating()) {
-      return EMPTY;
-    }
+  private setTokens(response: AuthResponse): void {
+    console.log("AuthService: Setting tokens");
+    localStorage.setItem(this.tokenKey, response.token);
 
+    if (response.rememberMe) {
+      console.log("AuthService: Storing refresh token for remember me");
+      localStorage.setItem(this.refreshTokenKey, response.refreshToken);
+    }
+  }
+
+  public handleUserLoging(credentials: any, endpoint: string): Observable<AuthResponse> {
+    console.log("AuthService: Handling user login");
     this.isAuthenticating.set(true);
 
     return this.http.post<AuthResponse>(endpoint, credentials).pipe(
       tap(response => {
-        if (response?.token) {
-          console.log("AuthService: Saving new token");
-          localStorage.setItem(this.tokenKey, response.token);
+        if (response) {
+          this.setTokens(response);
         }
       }),
       catchError(error => this.errorHandler.handleError(error)),
@@ -184,27 +191,25 @@ export class AuthService {
 
   refreshToken(): Observable<AuthResponse> {
     console.log("AuthService: Attempting to refresh token");
-    const currentToken = this.getToken();
+    const refreshToken = localStorage.getItem(this.refreshTokenKey);
 
-    if (!currentToken) {
-      console.log("AuthService: No token to refresh");
-      return throwError(() => new Error("No token available"));
+    if (!refreshToken) {
+      console.log("AuthService: No refresh token available");
+      return throwError(() => new Error("No refresh token available"));
     }
 
-    return this.http
-      .post<AuthResponse>(`${environment.host}/auth/refresh-token`, {
-        refreshToken: currentToken
+    return this.http.post<AuthResponse>(`${environment.host}/api/auth/refresh-token`, {
+      refreshToken: refreshToken
+    }).pipe(
+      tap(response => {
+        console.log("AuthService: Token refreshed successfully");
+        this.setTokens(response);
+      }),
+      catchError(error => {
+        console.error("AuthService: Token refresh failed", error);
+        this.logout();
+        return throwError(() => error);
       })
-      .pipe(
-        tap(response => {
-          console.log("AuthService: Token refreshed successfully");
-          localStorage.setItem(this.tokenKey, response.token);
-        }),
-        catchError(error => {
-          console.error("AuthService: Token refresh failed", error);
-          this.logout();
-          return throwError(() => error);
-        })
-      );
+    );
   }
 }
