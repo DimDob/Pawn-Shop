@@ -73,18 +73,6 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 })
 export class AppModule {
   constructor(library: FaIconLibrary) {
-    library.addIcons(
-      faUser,
-      faBoxOpen,
-      faLock,
-      faStore,
-      faHandshake,
-      faGem,
-      faTag,
-      faEnvelope,
-      faPhone,
-      faLocationDot,
-      faHeart
-    );
+    library.addIcons(faUser, faBoxOpen, faLock, faStore, faHandshake, faGem, faTag, faEnvelope, faPhone, faLocationDot, faHeart, faUser, faBoxOpen, faLock, faStore, faHandshake);
   }
 }

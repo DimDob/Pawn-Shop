@@ -1,0 +1,88 @@
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+
+  .content {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .error-code {
+    font-size: 120px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-size: 32px;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 18px;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  .illustration {
+    margin: 40px 0;
+
+    .search-icon {
+      font-size: 80px;
+      color: #3498db;
+      animation: float 3s ease-in-out infinite;
+    }
+  }
+
+  .actions {
+    button {
+      padding: 12px 30px;
+      font-size: 16px;
+
+      fa-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-container {
+    .error-code {
+      font-size: 80px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+} 
