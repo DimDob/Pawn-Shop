@@ -44,7 +44,7 @@ export class RegisterComponent {
         next: () => {
           console.log("RegisterComponent: Registration successful");
           this.notificationService.showSuccess("Registration successful! Please check your email to verify your account.");
-          this.router.navigate(["/login"]);
+          this.router.navigate(["/auth/login"]);
         },
         error: error => {
           console.error("RegisterComponent: Registration error", error);
@@ -56,6 +56,6 @@ export class RegisterComponent {
   }
 
   navigateToLogin() {
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/auth/login"]);
   }
 }
