@@ -9,7 +9,7 @@ import com.example.pawnShop.Entity.AppUser;
 import com.example.pawnShop.Factory.Contract.AuthFactory;
 import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
-import com.example.pawnShop.Service.Contract.JwtService;
+import com.example.pawnShop.Service.Contract.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +19,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.pawnShop.Service.Contract.EmailService;
+import com.example.pawnShop.Service.Contract.JwtService;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,19 +59,18 @@ public class AuthServiceImp implements AuthService {
     @Override
     public Result<Boolean> confirmEmail(String token) {
         try {
-            Optional<AppUser> userOptional = userRepository.findByEmailConfirmationToken(token);
-            if (userOptional.isEmpty()) {
-                return Result.error("Invalid token");
-            }
+            AppUser user = userRepository.findByEmailConfirmationToken(token)
+                    .orElseThrow(() -> new RuntimeException("Invalid confirmation token"));
 
-            AppUser user = userOptional.get();
             user.setEmailConfirmed(true);
+            user.setEnable(true);
             user.setEmailConfirmationToken(null);
+            
             userRepository.save(user);
-
+            
             return Result.success(true);
         } catch (Exception e) {
-            return Result.error("Failed to confirm email");
+            return Result.error("Email confirmation failed: " + e.getMessage());
         }
     }
 

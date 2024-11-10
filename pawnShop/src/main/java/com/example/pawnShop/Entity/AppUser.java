@@ -35,8 +35,8 @@ public class AppUser implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Basic
-    private Boolean enable;
+    @Column(name = "enable")
+    private Boolean enable = false;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -59,10 +59,12 @@ public class AppUser implements UserDetails {
     @EqualsAndHashCode.Exclude
     private Set<Product> favoriteProducts = new HashSet<>();
 
-    private boolean emailConfirmed = false;
+    @Column(name = "email_confirmed")
+    private Boolean emailConfirmed = false;
     private String emailConfirmationToken;
 
-    private boolean emailVerified = false;
+    @Column(name = "email_verified")
+    private Boolean emailVerified = false;
     private String emailVerificationToken;
     private LocalDateTime emailVerificationTokenExpiry;
 
