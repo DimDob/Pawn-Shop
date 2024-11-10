@@ -21,8 +21,13 @@ import { NotFoundComponent } from "./components/not-found_component/not-found/no
 import { FavoritesComponent } from "./components/favorites_component/favorites/favorites.component";
 import { ServerErrorComponent } from "./components/server-error_component/server-error/server-error.component";
 import { LoginComponent } from "./components/auth_component/login/login.component";
+import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
 
 const routes: Routes = [
+  {
+    path: "auth/confirm-email",
+    component: ConfirmEmailComponent
+  },
   {
     path: "",
     redirectTo: "auth/login",
@@ -35,6 +40,7 @@ const routes: Routes = [
     children: [
       { path: "login", component: LoginComponent },
       { path: "register", component: RegisterComponent },
+      { path: "confirm-email", component: ConfirmEmailComponent },
       { path: "", redirectTo: "login", pathMatch: "full" }
     ]
   },

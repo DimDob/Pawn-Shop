@@ -53,8 +53,9 @@ import { AuthInterceptor } from "./shared/interceptors/auth-interceptor.service"
 import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
 import { faUser, faBoxOpen, faLock, faStore, faHandshake, faGem, faTag, faEnvelope, faPhone, faLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { MatFormFieldModule } from "@angular/material/form-field";
+import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent, ConfirmEmailComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule, CommonModule, RouterModule],
   providers: [
     AuthService,

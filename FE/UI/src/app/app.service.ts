@@ -222,4 +222,24 @@ export class AuthService {
         })
       );
   }
+
+  confirmEmail(token: string): Observable<any> {
+    console.log("AuthService: Confirming email with token", token);
+    return this.http.post(
+      `${environment.host}/api/auth/confirm-email?token=${token}`,
+      {},
+      { responseType: 'text' }
+    ).pipe(
+      tap(response => {
+        console.log("AuthService: Email confirmed successfully", response);
+      }),
+      catchError(error => {
+        console.error("AuthService: Email confirmation failed", error);
+        if (error.status === 200) {
+          return of(error.error.text);
+        }
+        return throwError(() => error);
+      })
+    );
+  }
 }
