@@ -29,7 +29,7 @@ export class ResetPasswordComponent implements OnInit {
     if (!this.token) {
       console.error("ResetPasswordComponent: No token found");
       this.notificationService.showError("Invalid reset link");
-      this.router.navigate(["/login"]);
+      this.router.navigate(["/auth/login"]);
     }
   }
 
@@ -42,7 +42,7 @@ export class ResetPasswordComponent implements OnInit {
         next: () => {
           console.log("ResetPasswordComponent: Password reset successfully");
           this.notificationService.showSuccess("Password has been reset successfully");
-          this.router.navigate(["/login"]);
+          this.router.navigate(["/auth/login"]);
         },
         error: error => {
           console.error("ResetPasswordComponent: Error resetting password", error);
@@ -53,6 +53,6 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   navigateToLogin() {
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/auth/login"]);
   }
 }

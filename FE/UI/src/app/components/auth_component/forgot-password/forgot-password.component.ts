@@ -29,7 +29,7 @@ export class ForgotPasswordComponent {
         next: () => {
           console.log("ForgotPasswordComponent: Reset email sent successfully");
           this.notificationService.showSuccess("Password reset instructions have been sent to your email");
-          this.router.navigate(["/login"]);
+          this.router.navigate(["/auth/login"]);
         },
         error: error => {
           console.error("ForgotPasswordComponent: Error sending reset email", error);
@@ -40,6 +40,6 @@ export class ForgotPasswordComponent {
   }
 
   navigateToLogin() {
-    this.router.navigate(["/login"]);
+    this.router.navigate(["/auth/login"]);
   }
 }
