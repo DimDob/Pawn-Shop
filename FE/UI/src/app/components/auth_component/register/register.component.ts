@@ -22,7 +22,7 @@ export class RegisterComponent {
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private notificationService: NotificationService) {
     this.registerForm = this.fb.group({
       email: ["", [Validators.required, Validators.email]],
-      password: ["", [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$")]],
+      password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$")]],
       confirmPassword: ["", [Validators.required]],
       firstName: ["", [Validators.required]],
       lastName: ["", [Validators.required]]
@@ -43,12 +43,12 @@ export class RegisterComponent {
       console.log("RegisterComponent: Sending registration data", registerData);
 
       this.authService.handlerUserRegister(registerData, `${environment.host}/api/auth/register`).subscribe({
-        next: (response) => {
+        next: response => {
           console.log("RegisterComponent: Registration successful", response);
           this.notificationService.showSuccess("Registration successful! Please check your email to verify your account.");
           this.router.navigate(["/auth/login"]);
         },
-        error: (error) => {
+        error: error => {
           console.error("RegisterComponent: Registration error", error);
           const errorMessage = error.error?.message || error.message || "Registration failed";
           this.registerError = errorMessage;
