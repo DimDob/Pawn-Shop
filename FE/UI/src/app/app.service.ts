@@ -242,4 +242,34 @@ export class AuthService {
       })
     );
   }
+
+  forgotPassword(email: string): Observable<any> {
+    console.log("AuthService: Requesting password reset for email", email);
+    return this.http.post(
+      `${environment.host}/api/auth/forgot-password`,
+      { email },
+      { responseType: "text" }
+    ).pipe(
+      tap(response => console.log("AuthService: Password reset email sent")),
+      catchError(error => {
+        console.error("AuthService: Error requesting password reset", error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    console.log("AuthService: Resetting password with token");
+    return this.http.post(
+      `${environment.host}/api/auth/reset-password`,
+      { token, newPassword },
+      { responseType: "text" }
+    ).pipe(
+      tap(response => console.log("AuthService: Password reset successful")),
+      catchError(error => {
+        console.error("AuthService: Error resetting password", error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

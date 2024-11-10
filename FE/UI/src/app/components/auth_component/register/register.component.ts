@@ -55,4 +55,8 @@ export class RegisterComponent {
   public navigateToLogin(): void {
     this.router.navigate(["/auth/login"]);
   }
+
+  public navigateToForgotPassword(): void {
+    this.router.navigate(["/auth/forgot-password"]);
+  }
 }

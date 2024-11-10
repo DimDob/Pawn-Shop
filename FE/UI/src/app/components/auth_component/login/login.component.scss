@@ -279,3 +279,19 @@ small {
     }
   }
 }
+
+.forgot-password-link {
+  text-align: right;
+  margin: 10px 0;
+
+  a {
+    color: $navy-blue;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9em;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}

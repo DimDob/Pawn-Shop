@@ -8,7 +8,8 @@ export const authGuard = (route: ActivatedRouteSnapshot, state: RouterStateSnaps
 
   const requestedUrl = state.url;
 
-  if (requestedUrl.includes("/auth/confirm-email")) {
+  if (requestedUrl.includes("/auth/confirm-email") ||
+      requestedUrl.includes("/auth/reset-password")) {
     return true;
   }
 

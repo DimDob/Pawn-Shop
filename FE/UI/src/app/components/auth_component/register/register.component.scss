@@ -147,3 +147,22 @@ p.error {
   text-align: center;
   margin-top: 10px;
 }
+
+.additional-links {
+  text-align: center;
+  margin-top: 20px;
+
+  .login-link, .forgot-password-link {
+    margin: 10px 0;
+
+    a {
+      color: $navy-blue;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        color: $green;
+      }
+    }
+  }
+}

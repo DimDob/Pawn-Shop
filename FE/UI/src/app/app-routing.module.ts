@@ -22,12 +22,10 @@ import { FavoritesComponent } from "./components/favorites_component/favorites/f
 import { ServerErrorComponent } from "./components/server-error_component/server-error/server-error.component";
 import { LoginComponent } from "./components/auth_component/login/login.component";
 import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
+import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";
+import { ResetPasswordComponent } from "./components/auth_component/reset-password/reset-password.component";
 
 const routes: Routes = [
-  {
-    path: "auth/confirm-email",
-    component: ConfirmEmailComponent
-  },
   {
     path: "",
     redirectTo: "auth/login",
@@ -36,12 +34,32 @@ const routes: Routes = [
   {
     path: "auth",
     component: AuthComponent,
-    canActivateChild: [authGuard],
     children: [
-      { path: "login", component: LoginComponent },
-      { path: "register", component: RegisterComponent },
-      { path: "confirm-email", component: ConfirmEmailComponent },
-      { path: "", redirectTo: "login", pathMatch: "full" }
+      {
+        path: "login",
+        component: LoginComponent
+      },
+      {
+        path: "register",
+        component: RegisterComponent
+      },
+      {
+        path: "forgot-password",
+        component: ForgotPasswordComponent
+      },
+      {
+        path: "reset-password",
+        component: ResetPasswordComponent
+      },
+      {
+        path: "confirm-email",
+        component: ConfirmEmailComponent
+      },
+      {
+        path: "",
+        redirectTo: "login",
+        pathMatch: "full"
+      }
     ]
   },
   {

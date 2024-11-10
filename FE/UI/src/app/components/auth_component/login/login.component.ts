@@ -156,4 +156,8 @@ export class LoginComponent {
       ...prismDetailsTemplate
     };
   }
+
+  navigateToForgotPassword(): void {
+    this.router.navigate(["/auth/forgot-password"]);
+  }
 }
