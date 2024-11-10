@@ -114,3 +114,36 @@ $green: #009d34;
 p.error {
   color: red;
 }
+
+.register-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+
+  h2 {
+    color: $green;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 20px;
+
+  a {
+    color: $navy-blue;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}
+
+.error-message {
+  color: $coral;
+  text-align: center;
+  margin-top: 10px;
+}

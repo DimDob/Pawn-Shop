@@ -47,8 +47,6 @@ export class AuthComponent {
   }
 
   handleUserLoging(userCredentials: PrismData) {
-    const loginEndpoint = "auth/login";
-
     const credentials = {
       email: userCredentials.loginUsername,
       password: userCredentials.loginPassword
@@ -58,14 +56,15 @@ export class AuthComponent {
       return;
     }
 
-    this.authService.handleUserLoging(credentials, `${this.host}/${loginEndpoint}`).subscribe({
+    this.authService.handleUserLoging(credentials, "").subscribe({
       next: response => {
+        console.log("Login successful");
         this.router.navigate(["/pawn-shop/main-page"]);
       },
       error: error => {
         console.error("Login error:", error);
         if (this.loginComponent) {
-          this.loginComponent.loginError = "Wrong email or password";
+          this.loginComponent.loginError = error.error?.message || "Wrong email or password";
         }
       }
     });

@@ -3,6 +3,7 @@
 <div #navButtons>
   <ul class="nav">
     <li (click)="showLoginOnClick()">Login</li>
+    <li (click)="showSignup()">Register</li>
     @if (isForgotPassword) {
     <li (click)="showForgotPasswordOnClick()">Forgot password</li>
     }
@@ -94,10 +95,7 @@
 
     <div class="face face-right">
       <div class="content">
-        <h2>Create an account for an employee</h2>
-        <!-- Register component template -->
-        <!-- <app-register [prismDetails]="prismDetails" (userRegister)="handleUserRegister($event)" /> -->
-        <span class="singin" (click)="showLogin()">Already an user? Sign in</span>
+        <app-register [prismDetails]="prismDetails"></app-register>
       </div>
     </div>
 
@@ -130,4 +128,9 @@
       </div>
     </div>
   </div>
+</div>
+
+<!-- Add after the login form -->
+<div class="register-link">
+  Don't have an account? <a (click)="showSignup()">Register here</a>
 </div>

@@ -56,14 +56,13 @@ export class LoginComponent {
     this.loginError = null;
 
     if (logingForm.invalid) {
-      this.loginError = "Моля, попълнете всички полета";
+      this.loginError = "Please fill in all fields";
       return;
     }
 
     const credentials = {
       email: this.prismDetails.loginUsername,
-      password: this.prismDetails.loginPassword,
-      rememberMe: this.rememberMe
+      password: this.prismDetails.loginPassword
     };
 
     this.userCredentials.emit({ ...this.prismDetails });
@@ -73,10 +72,25 @@ export class LoginComponent {
     this.prismDetails = prismDetails;
     const endpoint = environment.host + "/auth/register";
 
-    this.authService.handlerUserRegister(prismDetails, endpoint);
+    const registerData = {
+      email: prismDetails.signupEmail || "",
+      password: prismDetails.signupPassword || "",
+      confirmPassword: prismDetails.signupPassword2 || "",
+      firstName: prismDetails.firstName || "",
+      lastName: prismDetails.lastName || ""
+    };
 
-    this.clearUserDetails();
-    this.showThankYou();
+    this.authService.handlerUserRegister(registerData, endpoint).subscribe({
+      next: () => {
+        console.log("Registration successful");
+        this.clearUserDetails();
+        this.showThankYou();
+      },
+      error: (error) => {
+        console.error("Registration error:", error);
+        // Можете да добавите обработка на грешката тук
+      }
+    });
   }
 
   onUserCheck() {

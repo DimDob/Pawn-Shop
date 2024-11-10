@@ -1,34 +1,60 @@
 <!-- UI\src\app\components\auth_component\register\register.component.html -->
-<form #createAccountForm="ngForm" (ngSubmit)="createAccount(createAccountForm)">
-  <div class="field-wrapper">
-    <input type="email" name="email" placeholder="email" [(ngModel)]="prismDetails.signupEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" #emailInput="ngModel" required />
-    <label>E-mail</label>
-    @if (emailInput.touched && emailInput.invalid) { @if (emailInput.errors?.['required']) {
-    <p class="error">Email is required</p>
-    } @if (emailInput.errors?.['pattern']) {
-    <p class="error">Please enter a valid email address</p>
-    } }
-  </div>
+<div class="register-container">
+  <h2>Create Account</h2>
 
-  <div class="field-wrapper">
-    <input type="password" name="password" placeholder="password" [(ngModel)]="prismDetails.signupPassword" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" #passwordInput="ngModel" required />
-    <label>Password</label>
-    @if (passwordInput.touched && passwordInput.invalid) { @if (passwordInput.errors?.['required']) {
-    <p class="error">Password is required</p>
-    } @if (passwordInput.errors?.['pattern']) {
-    <p class="error">Password must be at least 8 characters long and contain both letters and numbers</p>
-    } }
-  </div>
+  <form #createAccountForm="ngForm" (ngSubmit)="createAccount(createAccountForm)">
+    <div class="field-wrapper">
+      <input type="email" name="email" placeholder="email" [(ngModel)]="prismDetails.signupEmail" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" #emailInput="ngModel" required />
+      <label>E-mail</label>
+      @if (emailInput.touched && emailInput.invalid) {
+      <p class="error">Please enter a valid email address</p>
+      }
+    </div>
 
-  <div class="field-wrapper">
-    <input type="password" name="reEnteredPassword" placeholder="Please re-enter the password" [(ngModel)]="prismDetails.signupPassword2" [appMatchPasswords]="prismDetails.signupPassword" #reEnteredPasswordInput="ngModel" autocomplete="new-password" required />
-    <label>Please re-enter the password</label>
-    @if (reEnteredPasswordInput.touched) { @if (reEnteredPasswordInput.errors?.['matchPasswords']) {
-    <p class="error">Passwords must match</p>
-    } }
-  </div>
+    <div class="field-wrapper">
+      <input type="text" name="firstName" placeholder="First Name" [(ngModel)]="prismDetails.firstName" required #firstNameInput="ngModel" />
+      <label>First Name</label>
+      @if (firstNameInput.touched && firstNameInput.invalid) {
+      <p class="error">First name is required</p>
+      }
+    </div>
 
-  <div class="field-wrapper">
-    <input type="submit" [value]="'Submit'" [disabled]="createAccountForm.invalid" />
+    <div class="field-wrapper">
+      <input type="text" name="lastName" placeholder="Last Name" [(ngModel)]="prismDetails.lastName" required #lastNameInput="ngModel" />
+      <label>Last Name</label>
+      @if (lastNameInput.touched && lastNameInput.invalid) {
+      <p class="error">Last name is required</p>
+      }
+    </div>
+
+    <div class="field-wrapper">
+      <input type="password" name="password" placeholder="password" [(ngModel)]="prismDetails.signupPassword" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" #passwordInput="ngModel" required />
+      <label>Password</label>
+      @if (passwordInput.touched && passwordInput.invalid) { @if (passwordInput.errors?.['required']) {
+      <p class="error">Password is required</p>
+      } @if (passwordInput.errors?.['pattern']) {
+      <p class="error">Password must be at least 8 characters long and contain letters, numbers, and special characters (&#64;$!%*?&)</p>
+      } }
+    </div>
+
+    <div class="field-wrapper">
+      <input type="password" name="reEnteredPassword" placeholder="Please re-enter the password" [(ngModel)]="prismDetails.signupPassword2" [appMatchPasswords]="prismDetails.signupPassword" #reEnteredPasswordInput="ngModel" autocomplete="new-password" required />
+      <label>Please re-enter the password</label>
+      @if (reEnteredPasswordInput.touched) { @if (reEnteredPasswordInput.errors?.['matchPasswords']) {
+      <p class="error">Passwords must match</p>
+      } }
+    </div>
+
+    <div class="field-wrapper">
+      <input type="submit" [value]="'Submit'" [disabled]="createAccountForm.invalid" />
+    </div>
+  </form>
+
+  @if (registerError) {
+  <div class="error-message">
+    {{ registerError }}
   </div>
-</form>
+  }
+
+  <div class="login-link">Already have an account? <a (click)="navigateToLogin()">Login here</a></div>
+</div>

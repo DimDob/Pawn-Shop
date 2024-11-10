@@ -264,3 +264,18 @@ small {
     font-size: 14px;
   }
 }
+
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+
+  a {
+    color: $navy-blue;
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:hover {
+      color: $green;
+    }
+  }
+}

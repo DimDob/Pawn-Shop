@@ -20,6 +20,7 @@ import { RegisterComponent } from "./components/auth_component/register/register
 import { NotFoundComponent } from "./components/not-found_component/not-found/not-found.component";
 import { FavoritesComponent } from "./components/favorites_component/favorites/favorites.component";
 import { ServerErrorComponent } from "./components/server-error_component/server-error/server-error.component";
+import { LoginComponent } from "./components/auth_component/login/login.component";
 
 const routes: Routes = [
   {
@@ -32,14 +33,9 @@ const routes: Routes = [
     component: AuthComponent,
     canActivateChild: [authGuard],
     children: [
-      { path: "", redirectTo: "login", pathMatch: "full" },
-      { path: "login", component: AuthComponent },
+      { path: "login", component: LoginComponent },
       { path: "register", component: RegisterComponent },
-      {
-        path: "change-password/:userId",
-        component: ChangePasswordComponent,
-        canActivate: [authGuard]
-      }
+      { path: "", redirectTo: "login", pathMatch: "full" }
     ]
   },
   {

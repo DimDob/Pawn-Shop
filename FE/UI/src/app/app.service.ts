@@ -9,6 +9,8 @@ import { tap, catchError, finalize } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { environment } from "../environments/environment";
+import { RegisterData } from "./components/auth_component/register/interfaces/RegisterData";
+
 interface AccountUpdateData {
   currentPassword: string;
   newUsername?: string;
@@ -22,8 +24,7 @@ interface AccountUpdateData {
 export class AuthService {
   private readonly tokenKey = "auth_token";
   private readonly refreshTokenKey = "refresh_token";
-  private isAuthenticating = signal(false);
-  private currentUserData = signal<User | null>(null);
+  private readonly host = environment.host;
 
   constructor(private http: HttpClient, private router: Router, private errorHandler: ErrorHandlerService) {}
 
@@ -93,7 +94,7 @@ export class AuthService {
   private clearAuthData(): void {
     console.log("AuthService: Clearing auth data");
     localStorage.removeItem(this.tokenKey);
-    this.currentUserData.set(null);
+    // this.currentUserData.set(null);
   }
 
   isLoggedIn(): boolean {
@@ -111,27 +112,34 @@ export class AuthService {
     }
   }
 
-  public handleUserLoging(credentials: any, endpoint: string): Observable<AuthResponse> {
-    console.log("AuthService: Handling user login");
-    this.isAuthenticating.set(true);
-
-    return this.http.post<AuthResponse>(endpoint, credentials).pipe(
+  handleUserLoging(credentials: any, endpoint: string): Observable<AuthResponse> {
+    console.log("AuthService: Attempting login");
+    return this.http.post<AuthResponse>(`${this.host}/api/auth/login`, credentials).pipe(
       tap(response => {
-        if (response) {
-          this.setTokens(response);
-        }
+        console.log("AuthService: Login successful");
+        this.setTokens(response);
       }),
-      catchError(error => this.errorHandler.handleError(error)),
-      finalize(() => {
-        this.isAuthenticating.set(false);
+      catchError(error => {
+        console.error("AuthService: Login failed", error);
+        return throwError(() => error);
       })
     );
   }
 
-  public handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
-    return this.http.post<PrismData>(endpoint, {
-      ...userCredentials
-    });
+  handlerUserRegister(registerData: RegisterData, endpoint: string): Observable<any> {
+    console.log("AuthService: Attempting registration");
+    return this.http.post(endpoint, registerData, { responseType: 'text' }).pipe(
+      tap((response) => {
+        console.log("AuthService: Registration successful");
+      }),
+      catchError(error => {
+        if (error.status === 200) {
+          return of(error.error.text);
+        }
+        console.error("AuthService: Registration failed", error);
+        return throwError(() => error);
+      })
+    );
   }
 
   public handlerChangePassword(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
@@ -198,18 +206,20 @@ export class AuthService {
       return throwError(() => new Error("No refresh token available"));
     }
 
-    return this.http.post<AuthResponse>(`${environment.host}/api/auth/refresh-token`, {
-      refreshToken: refreshToken
-    }).pipe(
-      tap(response => {
-        console.log("AuthService: Token refreshed successfully");
-        this.setTokens(response);
-      }),
-      catchError(error => {
-        console.error("AuthService: Token refresh failed", error);
-        this.logout();
-        return throwError(() => error);
+    return this.http
+      .post<AuthResponse>(`${environment.host}/api/auth/refresh-token`, {
+        refreshToken: refreshToken
       })
-    );
+      .pipe(
+        tap(response => {
+          console.log("AuthService: Token refreshed successfully");
+          this.setTokens(response);
+        }),
+        catchError(error => {
+          console.error("AuthService: Token refresh failed", error);
+          this.logout();
+          return throwError(() => error);
+        })
+      );
   }
 }
