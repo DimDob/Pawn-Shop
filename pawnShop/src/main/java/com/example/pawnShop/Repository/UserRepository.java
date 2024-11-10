@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<AppUser, UUID> {
 
     @EntityGraph(attributePaths = "favoriteProducts")
     Optional<AppUser> findWithFavoritesByEmail(String email);
+
+    Optional<AppUser> findByPasswordResetToken(String token);
 }

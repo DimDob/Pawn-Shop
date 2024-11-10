@@ -12,5 +12,6 @@ public interface AuthService {
     public Result<String> refreshToken(String refreshToken);
     public Result<Boolean> logout(String refreshToken);
     public Result<Boolean> confirmEmail(String token);
-    
+    public Result<Boolean> forgotPassword(String email);
+    public Result<Boolean> resetPassword(String token, String newPassword);
 }

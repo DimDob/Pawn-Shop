@@ -15,31 +15,36 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.security.authentication.AuthenticationProvider;
-@EnableWebSecurity
+import org.springframework.security.config.http.SessionCreationPolicy;
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(registry -> {
-                    registry.requestMatchers("/api/auth/**", "/auth/**", "/home/index", "/data/expose/**", "/products/**").permitAll();
-                    registry.requestMatchers("/home/superAdmin").hasRole("SUPER_ADMIN");
-                    registry.requestMatchers("/home/admin", "/product_type/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
-                    registry.requestMatchers("/favorites/**").authenticated();
-                    registry.requestMatchers("/api/payment/webhook").permitAll();
-                    registry.requestMatchers("/api/payment/**").authenticated();
-                    registry.anyRequest().authenticated();
-                })
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(AbstractHttpConfigurer::disable)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/api/auth/login",
+                    "/api/auth/register",
+                    "/api/auth/confirm-email",
+                    "/api/auth/forgot-password",
+                    "/api/auth/reset-password"
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
     @Bean

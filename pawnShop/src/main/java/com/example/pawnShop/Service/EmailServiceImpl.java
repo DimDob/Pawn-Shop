@@ -38,4 +38,29 @@ public class EmailServiceImpl implements EmailService {
             throw new RuntimeException("Error sending email", e);
         }
     }
+
+    @Override
+    public void sendPasswordResetEmail(String to, String token) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            
+            helper.setTo(to);
+            helper.setSubject("Reset your password");
+            
+            String resetUrl = "http://localhost:4200/auth/reset-password?token=" + token;
+            String emailContent = String.format(
+                "<h3>Password Reset Request</h3>" +
+                "<p>Click the link below to reset your password:</p>" +
+                "<a href='%s'>Reset password</a>" +
+                "<p>This link will expire in 24 hours.</p>", 
+                resetUrl
+            );
+            
+            helper.setText(emailContent, true);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Error sending password reset email", e);
+        }
+    }
 } 

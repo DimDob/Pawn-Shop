@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.example.pawnShop.Service.Contract.JwtService;
 import java.util.Optional;
 import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -143,6 +144,51 @@ public class AuthServiceImp implements AuthService {
             return Result.success(true);
         } catch (Exception e) {
             return Result.error("Failed to logout");
+        }
+    }
+
+    @Override
+    public Result<Boolean> forgotPassword(String email) {
+        try {
+            Optional<AppUser> userOptional = userRepository.findByEmail(email);
+            if (userOptional.isEmpty()) {
+                return Result.error("User not found");
+            }
+
+            AppUser user = userOptional.get();
+            String resetToken = UUID.randomUUID().toString();
+            user.setPasswordResetToken(resetToken);
+            user.setPasswordResetTokenExpiry(LocalDateTime.now().plusHours(24));
+            userRepository.save(user);
+
+            emailService.sendPasswordResetEmail(email, resetToken);
+            return Result.success(true);
+        } catch (Exception e) {
+            return Result.error("Failed to process forgot password request: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Result<Boolean> resetPassword(String token, String newPassword) {
+        try {
+            Optional<AppUser> userOptional = userRepository.findByPasswordResetToken(token);
+            if (userOptional.isEmpty()) {
+                return Result.error("Invalid reset token");
+            }
+
+            AppUser user = userOptional.get();
+            if (user.getPasswordResetTokenExpiry().isBefore(LocalDateTime.now())) {
+                return Result.error("Reset token has expired");
+            }
+
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setPasswordResetToken(null);
+            user.setPasswordResetTokenExpiry(null);
+            userRepository.save(user);
+
+            return Result.success(true);
+        } catch (Exception e) {
+            return Result.error("Failed to reset password: " + e.getMessage());
         }
     }
 }

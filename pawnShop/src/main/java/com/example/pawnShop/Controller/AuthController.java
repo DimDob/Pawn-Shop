@@ -15,7 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.pawnShop.Dto.Auth.ForgotPasswordRequestDto;
+import com.example.pawnShop.Dto.Auth.ResetPasswordRequestDto;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -74,5 +75,23 @@ public class AuthController {
         userRepository.save(user);
         
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDto request) {
+        Result<Boolean> result = authService.forgotPassword(request.getEmail());
+        if(!result.isSuccess()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+        }
+        return ResponseEntity.ok("Password reset email sent");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Validated @RequestBody ResetPasswordRequestDto request) {
+        Result<Boolean> result = authService.resetPassword(request.getToken(), request.getNewPassword());
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+        }
+        return ResponseEntity.ok("Password has been reset successfully");
     }
 }
