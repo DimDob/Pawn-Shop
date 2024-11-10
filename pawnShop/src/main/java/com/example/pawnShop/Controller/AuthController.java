@@ -41,7 +41,7 @@ public class AuthController {
         if(!result.isSuccess()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
-        return ResponseEntity.ok("You are registered!!!");
+        return ResponseEntity.ok("You are registered! Please check your email for confirmation.");
     }
 
     @PostMapping("/refresh-token")
