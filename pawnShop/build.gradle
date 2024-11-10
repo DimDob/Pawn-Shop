@@ -59,6 +59,8 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'com.stripe:stripe-java:24.21.0'
 	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 }
 
 tasks.named('test') {

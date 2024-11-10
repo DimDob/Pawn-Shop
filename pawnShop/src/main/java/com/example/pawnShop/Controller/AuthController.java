@@ -6,6 +6,8 @@ import com.example.pawnShop.Dto.Auth.LoginResponseDto;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
 import com.example.pawnShop.Dto.Auth.RefreshTokenRequestDto;
 import com.example.pawnShop.Dto.Result;
+import com.example.pawnShop.Entity.AppUser;
+import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private final AuthService authService;
+    @Autowired
+    private final UserRepository userRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto loginRequestDto){
@@ -42,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDto request) {
-        Result<LoginResponseDto> result = authService.refreshToken(request.getRefreshToken());
+        Result<String> result = authService.refreshToken(request.getRefreshToken());
         
         if (result.isSuccess()) {
             return ResponseEntity.ok(result.getValue());
@@ -58,5 +62,17 @@ public class AuthController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+    }
+
+    @PostMapping("/confirm-email")
+    public ResponseEntity<?> confirmEmail(@RequestParam String token) {
+        AppUser user = userRepository.findByEmailConfirmationToken(token)
+            .orElseThrow(() -> new RuntimeException("Invalid token"));
+        
+        user.setEmailConfirmed(true);
+        user.setEmailConfirmationToken(null);
+        userRepository.save(user);
+        
+        return ResponseEntity.ok().build();
     }
 }

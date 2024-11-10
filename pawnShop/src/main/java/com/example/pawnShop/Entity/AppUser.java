@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import lombok.ToString;
 import lombok.EqualsAndHashCode;
 import java.util.*;
-
+import java.time.LocalDateTime;
 @Entity
 @Data
 @AllArgsConstructor
@@ -58,6 +58,13 @@ public class AppUser implements UserDetails {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Product> favoriteProducts = new HashSet<>();
+
+    private boolean emailConfirmed = false;
+    private String emailConfirmationToken;
+
+    private boolean emailVerified = false;
+    private String emailVerificationToken;
+    private LocalDateTime emailVerificationTokenExpiry;
 
     // Keep only one default constructor
     public AppUser() {
@@ -107,5 +114,21 @@ public class AppUser implements UserDetails {
             grantedAuthorities.add(newAuthority);
         }
         return grantedAuthorities;
+    }
+
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
+    }
+
+    public String getEmailConfirmationToken() {
+        return emailConfirmationToken;
+    }
+
+    public void setEmailConfirmationToken(String emailConfirmationToken) {
+        this.emailConfirmationToken = emailConfirmationToken;
     }
 }

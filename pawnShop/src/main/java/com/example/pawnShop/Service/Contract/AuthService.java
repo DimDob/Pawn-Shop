@@ -9,6 +9,8 @@ import com.example.pawnShop.Dto.Result;
 public interface AuthService {
     public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto);
     public Result<Boolean> register(RegisterRequestDto registerRequestDto);
-    public Result<LoginResponseDto> refreshToken(String refreshToken);
+    public Result<String> refreshToken(String refreshToken);
     public Result<Boolean> logout(String refreshToken);
+    public Result<Boolean> confirmEmail(String token);
+    
 }

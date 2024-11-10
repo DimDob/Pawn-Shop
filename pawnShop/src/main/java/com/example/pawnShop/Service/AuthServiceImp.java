@@ -19,8 +19,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import com.example.pawnShop.Service.Contract.EmailService;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,87 +32,105 @@ public class AuthServiceImp implements AuthService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
     @Autowired
-    private final AuthFactory authFactory;
-    @Autowired
     private final AuthenticationManager authenticationManager;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final AuthFactory authFactory;
+    @Autowired
+    private final EmailService emailService;
 
     @Override
-    public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto) {
+    public Result<String> refreshToken(String refreshToken) {
         try {
-            if (loginRequestDto == null) {
-                return Result.error("The fields are empty.");
-            }
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword()));
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            AppUser user = (AppUser) authentication.getPrincipal();
-
-            return Result.success(LoginResponseDto.builder()
-                    .username(user.getEmail())
-                    .token(jwtService.generateJwtToken(user))
-                    .isAdmin(user.getIsAdmin())
-                    .build());
-
-        } catch (AuthenticationException e){
-
-            return  Result.error("Incorrect email or password.");
-        }
-    }
-
-    @Override
-    public Result<Boolean> register(RegisterRequestDto registerRequestDto) {
-        try {
-            if (registerRequestDto == null) {
-                return Result.error("The fields are empty.");
-            }
-            if (!registerRequestDto.getPassword().equals(registerRequestDto.getConfirmPassword())) {
-                return Result.error("Password and confirmed password do not match.");
-            }
-            Optional<AppUser> user = userRepository.findByEmail(registerRequestDto.getEmail());
-
-            if (!user.isEmpty()) {
-                return Result.error("There is a user with this email.");
-            }
-            String encodedPassword = passwordEncoder.encode(registerRequestDto.getPassword());
-            AppUser newUser = authFactory.createUser(registerRequestDto, encodedPassword);
-
-            userRepository.save(newUser);
-
-            return Result.success(true);
-
-        } catch(Exception e){
-
-            return Result.error("You can not register this user.");
-        }
-    }
-
-    @Override
-    public Result<LoginResponseDto> refreshToken(String refreshToken) {
-        try {
-            if (!jwtService.isTokenValid(refreshToken)) {
-                return Result.error("Invalid refresh token");
-            }
-
-            String userEmail = jwtService.extractSubject(refreshToken);
-            Optional<AppUser> userOptional = userRepository.findByEmail(userEmail);
-
+            Optional<AppUser> userOptional = userRepository.findByEmail(jwtService.extractSubject(refreshToken));
             if (userOptional.isEmpty()) {
                 return Result.error("User not found");
             }
 
             AppUser user = userOptional.get();
             String newToken = jwtService.generateJwtToken(user);
-
-            return Result.success(LoginResponseDto.builder()
-                    .username(user.getEmail())
-                    .token(newToken)
-                    .isAdmin(user.getIsAdmin())
-                    .build());
+            return Result.success(newToken);
         } catch (Exception e) {
             return Result.error("Failed to refresh token");
+        }
+    }
+
+    @Override
+    public Result<Boolean> confirmEmail(String token) {
+        try {
+            Optional<AppUser> userOptional = userRepository.findByEmailConfirmationToken(token);
+            if (userOptional.isEmpty()) {
+                return Result.error("Invalid token");
+            }
+
+            AppUser user = userOptional.get();
+            user.setEmailConfirmed(true);
+            user.setEmailConfirmationToken(null);
+            userRepository.save(user);
+
+            return Result.success(true);
+        } catch (Exception e) {
+            return Result.error("Failed to confirm email");
+        }
+    }
+
+    @Override
+    public Result<Boolean> register(RegisterRequestDto registerRequestDto) {
+        try {
+            if (userRepository.findByEmail(registerRequestDto.getEmail()).isPresent()) {
+                return Result.error("Email already exists");
+            }
+
+            AppUser user = authFactory.createUser(registerRequestDto, passwordEncoder.encode(registerRequestDto.getPassword()));
+            String confirmationToken = UUID.randomUUID().toString();
+            user.setEmailConfirmationToken(confirmationToken);
+            
+            userRepository.save(user);
+            
+            try {
+                emailService.sendConfirmationEmail(user.getEmail(), confirmationToken);
+            } catch (Exception e) {
+                // Log the error but don't fail registration
+                System.out.println("Failed to send confirmation email: " + e.getMessage());
+                // Consider adding proper logging here
+            }
+            
+            return Result.success(true);
+        } catch (Exception e) {
+            return Result.error("Registration failed: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto) {
+        try {
+            Optional<AppUser> userOptional = userRepository.findByEmail(loginRequestDto.getEmail());
+            if (userOptional.isEmpty()) {
+                return Result.error("Invalid credentials");
+            }
+
+            AppUser user = userOptional.get();
+            if (!user.isEmailConfirmed()) {
+                return Result.error("Please confirm your email first");
+            }
+
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword())
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtService.generateJwtToken(user);
+
+            return Result.success(LoginResponseDto.builder()
+                .username(user.getEmail())
+                .token(jwt)
+                .isAdmin(user.getIsAdmin())
+                .build());
+        } catch (AuthenticationException e) {
+            return Result.error("Invalid credentials");
+        } catch (Exception e) {
+            return Result.error("Login failed: " + e.getMessage());
         }
     }
 
