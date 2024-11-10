@@ -40,18 +40,24 @@ export class RegisterComponent {
         lastName: this.registerForm.get("lastName")?.value
       };
 
+      console.log("RegisterComponent: Sending registration data", registerData);
+
       this.authService.handlerUserRegister(registerData, `${environment.host}/api/auth/register`).subscribe({
-        next: () => {
-          console.log("RegisterComponent: Registration successful");
+        next: (response) => {
+          console.log("RegisterComponent: Registration successful", response);
           this.notificationService.showSuccess("Registration successful! Please check your email to verify your account.");
           this.router.navigate(["/auth/login"]);
         },
-        error: error => {
+        error: (error) => {
           console.error("RegisterComponent: Registration error", error);
-          this.registerError = error.error?.message || "Registration failed";
-          this.notificationService.showError(this.registerError || "An error occurred");
+          const errorMessage = error.error?.message || error.message || "Registration failed";
+          this.registerError = errorMessage;
+          this.notificationService.showError(errorMessage);
         }
       });
+    } else {
+      console.log("RegisterComponent: Form is invalid", this.registerForm.errors);
+      this.notificationService.showError("Please fill all fields correctly");
     }
   }
 

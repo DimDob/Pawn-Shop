@@ -127,15 +127,18 @@ export class AuthService {
   }
 
   handlerUserRegister(registerData: RegisterData, endpoint: string): Observable<any> {
-    console.log("AuthService: Attempting registration");
-    return this.http.post(endpoint, registerData, { responseType: 'text' }).pipe(
-      tap((response) => {
-        console.log("AuthService: Registration successful");
+    console.log("AuthService: Attempting registration", registerData);
+
+    return this.http.post(endpoint, registerData, {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      }),
+      responseType: "text"
+    }).pipe(
+      tap(response => {
+        console.log("AuthService: Registration successful", response);
       }),
       catchError(error => {
-        if (error.status === 200) {
-          return of(error.error.text);
-        }
         console.error("AuthService: Registration failed", error);
         return throwError(() => error);
       })
