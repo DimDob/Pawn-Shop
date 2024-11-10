@@ -1,168 +1,92 @@
-// UI\src\app\components\auth_component\register\register.component.scss
-// Dimensions
-$prism-height: 400px;
-$prism-length: 380px;
-$prism-depth: $prism-length;
-$spacing: 20px;
-$br: 3px;
-
-// Colors
-$text-light: #fff;
-$text-dark: #666;
-$blue: #03a9f4;
-$smoke: #f9f9fa;
-$coral: #ff5751;
-$navy-blue: #42509e;
-$green: #009d34;
-
-.field-wrapper {
-  margin-top: $spacing * 1.5;
-  position: relative;
-
-  label {
-    position: absolute;
-    pointer-events: none;
-    font-size: 0.85em;
-    top: 40%;
-    left: 0;
-    transform: translateY(-50%);
-    transition: all ease-in 0.25s;
-    color: lighten($text-dark, 20%);
-  }
-
-  input[type="text"],
-  input[type="password"],
-  input[type="submit"],
-  textarea {
-    -webkit-appearance: none;
-    appearance: none;
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  input[type="text"],
-  input[type="password"],
-  textarea {
-    width: 100%;
-    border: none;
-    background: transparent;
-    line-height: 2em;
-    border-bottom: 1px solid $green;
-    color: $text-dark;
-
-    &::-webkit-input-placeholder {
-      opacity: 0;
-    }
-
-    &::-moz-placeholder {
-      opacity: 0;
-    }
-
-    &:-ms-input-placeholder {
-      opacity: 0;
-    }
-
-    &:-moz-placeholder {
-      opacity: 0;
-    }
-
-    &:focus,
-    &:not(:placeholder-shown) {
-      + label {
-        top: -35%;
-        color: $navy-blue;
-      }
-    }
-  }
-
-  input[type="submit"] {
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    width: 100%;
-    background: $green;
-    line-height: 1em;
-    color: $text-light;
-    border: 2px solid $green;
-    border-radius: $br;
-    padding: $spacing / 2;
-
-    &:hover {
-      opacity: 0.9;
-    }
-
-    &:active {
-      transform: scale(0.96);
-    }
-  }
-
-  textarea {
-    resize: none;
-    line-height: 1em;
-
-    &:focus,
-    &:not(:placeholder-shown) {
-      + label {
-        top: -25%;
-      }
-    }
-  }
-}
-
-p.error {
-  color: red;
-}
-
 .register-container {
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 70px auto 0;
   padding: 20px;
-
-  h2 {
-    color: $green;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-}
-
-.login-link {
+  color: #009d34;
   text-align: center;
-  margin-top: 20px;
 
-  a {
-    color: $navy-blue;
-    cursor: pointer;
-    text-decoration: underline;
-
-    &:hover {
-      color: $green;
+  .icon {
+    margin-bottom: 30px;
+    fa-icon {
+      font-size: 60px;
+      color: #009d34;
     }
   }
-}
 
-.error-message {
-  color: $coral;
-  text-align: center;
-  margin-top: 10px;
-}
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #009d34;
+    font-weight: 600;
+  }
 
-.additional-links {
-  text-align: center;
-  margin-top: 20px;
+  .form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-  .login-link, .forgot-password-link {
-    margin: 10px 0;
+    .form-group {
+      position: relative;
+      margin-bottom: 20px;
+
+      fa-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #009d34;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 40px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+
+        &.invalid {
+          border-color: red;
+        }
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #009d34;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken(#009d34, 10%);
+      }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .additional-links {
+    margin-top: 20px;
+    text-align: center;
 
     a {
-      color: $navy-blue;
+      color: #009d34;
       cursor: pointer;
       text-decoration: underline;
 
       &:hover {
-        color: $green;
+        color: darken(#009d34, 10%);
       }
     }
   }
-}
+} 

@@ -1,297 +1,93 @@
-// UI\src\app\components\auth_component\login\login.component.scss
-
-// Dimensions
-$prism-height: 400px;
-$prism-length: 380px;
-$prism-depth: $prism-length;
-$spacing: 20px;
-$br: 3px;
-
-// Colors
-$text-light: #fff;
-$text-dark: #666;
-$blue: #03a9f4;
-$smoke: #f9f9fa;
-$coral: #ff5751;
-$navy-blue: #42509e;
-$green: #009d34;
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Tahoma, Verdana, Segoe, sans-serif;
-  font-size: 14px;
-  background: #f6fffd;
-  padding: $spacing;
+.login-container {
+  max-width: 1200px;
+  margin: 70px auto 0;
+  padding: 20px;
+  color: #009d34;
   text-align: center;
-}
-.wrapper {
-  width: $prism-length;
-  height: $prism-height;
-  margin: 60px auto;
-  perspective: 600px;
-  text-align: left;
-}
 
-.rec-prism {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: translateZ(-100px);
-  transition: transform 0.5s ease-in;
-}
-
-.face {
-  position: absolute;
-  width: $prism-length;
-  height: $prism-height;
-  padding: $spacing;
-  background: rgba(250, 250, 250, 0.96);
-  border: 3px solid $green;
-  border-radius: 3px;
-
-  .content {
-    color: $text-dark;
-    h2 {
-      font-size: 1.2em;
-      color: $green;
+  .icon {
+    margin-bottom: 30px;
+    fa-icon {
+      font-size: 60px;
+      color: #009d34;
     }
-    .field-wrapper {
-      margin-top: $spacing * 1.5;
+  }
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #009d34;
+    font-weight: 600;
+  }
+
+  .form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    .form-group {
       position: relative;
+      margin-bottom: 20px;
 
-      label {
+      fa-icon {
         position: absolute;
-        pointer-events: none;
-        font-size: 0.85em;
-        top: 40%;
-        left: 0;
+        left: 15px;
+        top: 50%;
         transform: translateY(-50%);
-        transition: all ease-in 0.25s;
-        color: lighten($text-dark, 20%);
+        color: #009d34;
       }
-      input[type="text"],
-      input[type="password"],
-      input[type="submit"],
-      textarea {
-        -webkit-appearance: none;
-        appearance: none;
-        &:focus {
-          outline: none;
-        }
-      }
-      input[type="text"],
-      input[type="password"],
-      textarea {
+
+      input {
         width: 100%;
-        border: none;
-        background: transparent;
-        line-height: 2em;
-        border-bottom: 1px solid $green;
-        color: $text-dark;
+        padding: 12px 40px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
 
-        &::-webkit-input-placeholder {
-          opacity: 0;
-        }
-        &::-moz-placeholder {
-          opacity: 0;
-        }
-        &:-ms-input-placeholder {
-          opacity: 0;
-        }
-        &:-moz-placeholder {
-          opacity: 0;
-        }
-        &:focus,
-        &:not(:placeholder-shown) {
-          + label {
-            top: -35%;
-            color: $navy-blue;
-          }
+        &.invalid {
+          border-color: red;
         }
       }
-      input[type="submit"] {
-        -webkit-appearance: none;
-        appearance: none;
-        cursor: pointer;
-        width: 100%;
-        background: $green;
-        line-height: 1em;
-        color: $text-light;
-        border: 2px solid $green;
-        border-radius: $br;
-        padding: $spacing / 2;
+    }
 
-        &:hover {
-          opacity: 0.9;
-        }
-        &:active {
-          transform: scale(0.96);
-        }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #009d34;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken(#009d34, 10%);
       }
-      textarea {
-        resize: none;
-        line-height: 1em;
-        &:focus,
-        &:not(:placeholder-shown) {
-          + label {
-            top: -25%;
-          }
-        }
+
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
       }
     }
   }
 
-  .thank-you-msg {
-    position: absolute;
-    width: 200px;
-    height: 130px;
-    text-align: center;
-    font-size: 2em;
-    color: $green;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
+  .additional-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
 
-    &:after {
-      position: absolute;
-      content: "";
-      width: 50px;
-      height: 25px;
-      border: 10px solid $green;
-      border-right: 0;
-      border-top: 0;
-      left: 50%;
-      top: 50%;
-      -webkit-transform: translate(-50%, -50%) rotate(0deg) scale(0);
-      transform: translate(-50%, -50%) rotate(0deg) scale(0);
-      -webkit-animation: success ease-in 0.15s forwards;
-      animation: success ease-in 0.15s forwards;
-      animation-delay: 2.5s;
+    a {
+      color: #009d34;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        color: darken(#009d34, 10%);
+      }
     }
   }
-  &-front {
-    transform: rotateY(0deg) translateZ($prism-length/2);
-  }
-  &-top {
-    height: $prism-depth;
-    transform: rotateX(90deg) translateZ($prism-depth/2);
-  }
-  &-back {
-    transform: rotateY(180deg) translateZ($prism-length/2);
-  }
-  &-right {
-    transform: rotateY(90deg) translateZ($prism-length/2);
-  }
-  &-left {
-    transform: rotateY(-90deg) translateZ($prism-length/2);
-  }
-  &-bottom {
-    height: $prism-depth;
-    transform: rotateX(-90deg) translateZ($prism-height - ($prism-depth/2));
-  }
-}
-
-.psw,
-.signup,
-.singin {
-  display: block;
-  margin: $spacing 0;
-  font-size: 0.75em;
-  text-align: center;
-  color: $navy-blue;
-  cursor: pointer;
-}
-
-small {
-  font-size: 0.7em;
-}
-@-webkit-keyframes success {
-  from {
-    -webkit-transform: translate(-50%, -50%) rotate(0) scale(0);
-  }
-  to {
-    -webkit-transform: translate(-50%, -50%) rotate(-45deg) scale(1);
-  }
-}
-
-.nav {
-  margin: $spacing 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-
-  li {
-    list-style-type: none;
-    font-size: 0.9em;
-    margin: 0 $spacing / 3;
-    color: $navy-blue;
-    position: relative;
-    cursor: pointer;
-    padding: $spacing;
-    border: 2px solid transparent;
-    border-radius: 0.5px;
-    transition: all ease-in-out 0.3s;
-    flex: 1;
-
-    &:hover {
-      background-color: $smoke;
-      border-color: $navy-blue;
-    }
-  }
-
-  &:not(:last-child) {
-    margin-bottom: $spacing / 2;
-  }
-}
-
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 10px 0;
-
-  input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-  }
-
-  label {
-    color: #666;
-    font-size: 14px;
-  }
-}
-
-.register-link {
-  text-align: center;
-  margin-top: 20px;
-
-  a {
-    color: $navy-blue;
-    cursor: pointer;
-    text-decoration: underline;
-
-    &:hover {
-      color: $green;
-    }
-  }
-}
-
-.forgot-password-link {
-  text-align: right;
-  margin: 10px 0;
-
-  a {
-    color: $navy-blue;
-    cursor: pointer;
-    text-decoration: underline;
-    font-size: 0.9em;
-
-    &:hover {
-      color: $green;
-    }
-  }
-}
+} 

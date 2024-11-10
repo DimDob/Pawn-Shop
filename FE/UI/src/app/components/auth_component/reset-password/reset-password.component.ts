@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
 import { NotificationService } from "../../../shared/services/notification.service";
-import matchPasswords from "../utils/match-password-validator";
+import { faLock, faKey } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-reset-password",
@@ -13,6 +13,8 @@ import matchPasswords from "../utils/match-password-validator";
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
   token: string | null = null;
+  faLock = faLock;
+  faKey = faKey;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router, private authService: AuthService, private notificationService: NotificationService) {
     this.resetPasswordForm = this.fb.group({
@@ -22,10 +24,12 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("ResetPasswordComponent: Initializing");
     this.token = this.route.snapshot.queryParamMap.get("token");
     if (!this.token) {
+      console.error("ResetPasswordComponent: No token found");
       this.notificationService.showError("Invalid reset link");
-      this.router.navigate(["/auth/login"]);
+      this.router.navigate(["/login"]);
     }
   }
 
@@ -38,7 +42,7 @@ export class ResetPasswordComponent implements OnInit {
         next: () => {
           console.log("ResetPasswordComponent: Password reset successfully");
           this.notificationService.showSuccess("Password has been reset successfully");
-          this.router.navigate(["/auth/login"]);
+          this.router.navigate(["/login"]);
         },
         error: error => {
           console.error("ResetPasswordComponent: Error resetting password", error);
@@ -46,5 +50,9 @@ export class ResetPasswordComponent implements OnInit {
         }
       });
     }
+  }
+
+  navigateToLogin() {
+    this.router.navigate(["/login"]);
   }
 }
