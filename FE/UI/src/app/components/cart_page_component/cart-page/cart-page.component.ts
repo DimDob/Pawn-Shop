@@ -1,12 +1,11 @@
 // UI\src\app\components\cart_page_component\cart-page\cart-page.component.ts
 
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { CartService } from "./cart.service";
 import { NotificationService } from "../../../shared/services/notification.service";
-import { PaymentService } from "../../../shared/services/payment.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
-import { BehaviorSubject } from "rxjs";
 import { faShoppingCart, faTrash, faCartPlus, faShop, faCreditCard, faHeart, faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
 
 interface CartItem {
@@ -33,7 +32,7 @@ export class CartPageComponent implements OnInit {
 
   isProcessing = false;
 
-  constructor(private cartService: CartService, private paymentService: PaymentService, private notificationService: NotificationService, public favoritesService: FavoritesService) {
+  constructor(private cartService: CartService, private notificationService: NotificationService, private router: Router, public favoritesService: FavoritesService) {
     console.log("CartPageComponent: Initialized");
   }
 
@@ -96,37 +95,8 @@ export class CartPageComponent implements OnInit {
     });
   }
 
-  async purchase(): Promise<void> {
-    console.log("CartPageComponent: Starting purchase process");
-
-    if (this.isProcessing) {
-      return;
-    }
-
-    this.isProcessing = true;
-
-    try {
-      const amount = this.totalCost();
-
-      if (amount <= 0) {
-        throw new Error("Invalid cart amount");
-      }
-
-      this.notificationService.showInfo("Processing payment...");
-
-      const response = await this.paymentService.createCheckoutSession(amount).toPromise();
-
-      if (!response?.sessionId) {
-        throw new Error("No session ID received");
-      }
-
-      console.log("CartPageComponent: Got session ID, redirecting to Stripe");
-      await this.paymentService.redirectToCheckout(response.sessionId);
-    } catch (error: any) {
-      console.error("CartPageComponent: Payment error:", error);
-      this.notificationService.showError(error.message || "Payment failed. Please try again.");
-    } finally {
-      this.isProcessing = false;
-    }
+  purchase(): void {
+    console.log("CartPageComponent: Navigating to order summary");
+    this.router.navigate(["/order-summary"]);
   }
 }

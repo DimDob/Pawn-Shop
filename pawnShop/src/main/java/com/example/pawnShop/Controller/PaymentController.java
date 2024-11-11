@@ -64,6 +64,9 @@ public class PaymentController {
             params.put("success_url", frontendUrl + "/success");
             params.put("cancel_url", frontendUrl + "/cart");
 
+            // Add client_reference_id
+            params.put("client_reference_id", checkoutDto.getOrderId());
+
             // Creating the session
             Session session = Session.create(params);
             

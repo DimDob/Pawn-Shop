@@ -54,11 +54,12 @@ import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
 import { faUser, faBoxOpen, faLock, faStore, faHandshake, faGem, faTag, faEnvelope, faPhone, faLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
-import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";  
+import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/auth_component/reset-password/reset-password.component";
+import { OrderSummaryComponent } from "./components/order-summary/order-summary.component";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent, ConfirmEmailComponent, ForgotPasswordComponent, ResetPasswordComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent, ConfirmEmailComponent, ForgotPasswordComponent, ResetPasswordComponent, OrderSummaryComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule, CommonModule, RouterModule],
   providers: [
     AuthService,

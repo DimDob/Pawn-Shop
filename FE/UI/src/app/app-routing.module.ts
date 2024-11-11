@@ -24,6 +24,7 @@ import { LoginComponent } from "./components/auth_component/login/login.componen
 import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
 import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/auth_component/reset-password/reset-password.component";
+import { OrderSummaryComponent } from "./components/order-summary/order-summary.component";
 
 const routes: Routes = [
   {
@@ -122,6 +123,11 @@ const routes: Routes = [
   {
     path: "favorites",
     component: FavoritesComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "order-summary",
+    component: OrderSummaryComponent,
     canActivate: [authGuard]
   },
   { path: "server-error", component: ServerErrorComponent },
