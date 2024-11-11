@@ -1,11 +1,12 @@
 package com.example.pawnShop.Controller;
 
-import com.example.pawnShop.Dto.Order.OrderSummaryDto;
+import com.example.pawnShop.Dto.Order.OrderCreateDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Service.Contract.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -14,17 +15,17 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/create-summary")
-    public ResponseEntity<?> createOrderSummary(@RequestBody OrderSummaryDto orderSummary) {
-        System.out.println("Received order summary request");
-        Result<OrderSummaryDto> result = orderService.createOrderSummary(orderSummary);
+    @PostMapping("/create")
+    public ResponseEntity<Object> createOrder(@RequestBody OrderCreateDto orderDto) {
+        System.out.println("Received order creation request");
+        Result<OrderCreateDto> result = orderService.createOrder(orderDto);
         
         if (!result.isSuccess()) {
             System.out.println("Failed to create order: " + result.getError());
-            return ResponseEntity.badRequest().body(result.getError());
+            return ResponseEntity.badRequest().body(Map.of("error", result.getError()));
         }
         
         System.out.println("Order created successfully");
-        return ResponseEntity.ok(result.getValue());
+        return ResponseEntity.ok(Map.of("orderId", result.getValue().getId().toString()));
     }
 } 

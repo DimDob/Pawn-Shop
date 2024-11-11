@@ -1,5 +1,6 @@
 package com.example.pawnShop.Service;
 
+import com.example.pawnShop.Dto.Order.OrderCreateDto;
 import com.example.pawnShop.Dto.Order.OrderSummaryDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Entity.Order;
@@ -15,6 +16,10 @@ import java.util.UUID;
 import java.util.Optional;
 import com.example.pawnShop.Dto.Order.ShippingDetailsDto;
 import com.example.pawnShop.Repository.UserRepository;
+import java.util.stream.Collectors;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +27,47 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
+
+    @Override
+    @Transactional
+    public Result<OrderCreateDto> createOrder(OrderCreateDto orderDto) {
+        try {
+            System.out.println("OrderServiceImpl: Creating order");
+            
+            Order order = new Order();
+            order.setTotal(BigDecimal.valueOf(orderDto.getTotal()));
+            order.setShippingAddress(orderDto.getShippingDetails().getStreetAddress());
+            order.setShippingCity(orderDto.getShippingDetails().getCity());
+            order.setShippingState(orderDto.getShippingDetails().getState());
+            order.setShippingPostalCode(orderDto.getShippingDetails().getPostalCode());
+            order.setBuyerName(orderDto.getShippingDetails().getBuyerName());
+            order.setBuyerPhone(orderDto.getShippingDetails().getPhone());
+            order.setEstimatedDeliveryStart(orderDto.getEstimatedDeliveryStart()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
+            order.setEstimatedDeliveryEnd(orderDto.getEstimatedDeliveryEnd()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
+            order.setStatus(OrderStatus.PENDING);
+            
+            var authentication = SecurityContextHolder.getContext().getAuthentication();
+            var user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+            order.setUser(user);
+            
+            Order savedOrder = orderRepository.save(order);
+            orderDto.setId(savedOrder.getId());
+            
+            System.out.println("OrderServiceImpl: Order created successfully with ID: " + savedOrder.getId());
+            return Result.success(orderDto);
+            
+        } catch (Exception e) {
+            System.out.println("OrderServiceImpl: Error creating order: " + e.getMessage());
+            return Result.error("Failed to create order: " + e.getMessage());
+        }
+    }
 
     @Override
     @Transactional

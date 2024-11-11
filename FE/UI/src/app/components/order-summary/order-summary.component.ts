@@ -58,23 +58,19 @@ export class OrderSummaryComponent implements OnInit {
     this.isProcessing = true;
 
     try {
-      // First create order
-      const orderResponse = await this.orderService
-        .createOrder({
-          shippingDetails: this.shippingDetails,
-          items: this.cartItems,
-          total: this.totalCost(),
-          estimatedDeliveryStart: this.estimatedDeliveryStart,
-          estimatedDeliveryEnd: this.estimatedDeliveryEnd
-        })
-        .toPromise();
+      const orderResponse = await this.orderService.createOrder({
+        shippingDetails: this.shippingDetails,
+        items: this.cartItems,
+        total: this.totalCost(),
+        estimatedDeliveryStart: this.estimatedDeliveryStart,
+        estimatedDeliveryEnd: this.estimatedDeliveryEnd
+      }).toPromise();
 
       if (!orderResponse?.orderId) {
         throw new Error("Failed to create order");
       }
 
-      // Then create Stripe session with order ID
-      const amount = this.totalCost();
+      const amount = Math.round(this.totalCost() * 100); // Convert to cents
       const response = await this.paymentService.createCheckoutSession(amount, orderResponse.orderId).toPromise();
 
       if (!response?.sessionId) {
@@ -82,7 +78,7 @@ export class OrderSummaryComponent implements OnInit {
       }
 
       console.log("OrderSummaryComponent: Got session ID, redirecting to Stripe");
-      // await this.paymentService.redirectToCheckout(response.sessionId);
+      await this.paymentService.redirectToCheckout(response.sessionId);
     } catch (error: any) {
       console.error("OrderSummaryComponent: Error:", error);
       this.notificationService.showError(error.message || "Failed to process order");
