@@ -74,6 +74,9 @@ public class AppUser implements UserDetails {
     @Column(name = "password_reset_token_expiry")
     private LocalDateTime passwordResetTokenExpiry;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER; // Default role
+
     // Keep only one default constructor
     public AppUser() {
         enable = true;
@@ -138,5 +141,13 @@ public class AppUser implements UserDetails {
 
     public void setEmailConfirmationToken(String emailConfirmationToken) {
         this.emailConfirmationToken = emailConfirmationToken;
+    }
+
+    public String getRole() {
+        return role.name();
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }

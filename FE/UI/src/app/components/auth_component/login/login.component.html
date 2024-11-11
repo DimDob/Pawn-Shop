@@ -1,3 +1,4 @@
+<!-- UI\src\app\components\auth_component\login\login.component.html -->
 <div class="login-container">
   <div class="icon">
     <fa-icon [icon]="faUser"></fa-icon>
@@ -9,37 +10,32 @@
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <fa-icon [icon]="faUser"></fa-icon>
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="Email"
-          [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-        />
+        <input type="email" formControlName="email" placeholder="Email" [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
       </div>
 
       <div class="form-group">
         <fa-icon [icon]="faLock"></fa-icon>
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="Password"
-          [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        />
+        <input type="password" formControlName="password" placeholder="Password" [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
       </div>
 
       <div class="remember-me">
         <label>
-          <input type="checkbox" formControlName="rememberMe">
+          <input type="checkbox" formControlName="rememberMe" />
           Remember me
         </label>
       </div>
 
+      <div id="google-button"></div>
+
       <button type="submit" [disabled]="!loginForm.valid">Login</button>
     </form>
-
+    <div class="social-login">
+      <p>Or sign in with:</p>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </div>
     <div class="additional-links">
       <a (click)="navigateToForgotPassword()">Forgot Password?</a>
       <a (click)="navigateToRegister()">Create Account</a>
     </div>
   </div>
-</div> 
+</div>

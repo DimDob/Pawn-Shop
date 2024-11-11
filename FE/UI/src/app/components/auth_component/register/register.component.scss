@@ -1,3 +1,4 @@
+// UI\src\app\components\auth_component\register\register.component.scss
 .register-container {
   max-width: 1200px;
   margin: 70px auto 0;
@@ -88,6 +89,21 @@
       &:hover {
         color: darken(#009d34, 10%);
       }
+    }
+  }
+  .social-login {
+    margin: 20px 0;
+    text-align: center;
+
+    p {
+      margin-bottom: 15px;
+      color: #666;
+    }
+
+    .g-signin2 {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
     }
   }
 }

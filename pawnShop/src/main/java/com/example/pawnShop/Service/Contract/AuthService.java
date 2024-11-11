@@ -14,4 +14,6 @@ public interface AuthService {
     public Result<Boolean> confirmEmail(String token);
     public Result<Boolean> forgotPassword(String email);
     public Result<Boolean> resetPassword(String token, String newPassword);
+    public LoginResponseDto handleGoogleLogin(String token);
+    public void handleGoogleRegister(String token);
 }

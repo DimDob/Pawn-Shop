@@ -16,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.example.pawnShop.Dto.Auth.ForgotPasswordRequestDto;
+import com.example.pawnShop.Dto.Auth.GoogleAuthRequestDto;
 import com.example.pawnShop.Dto.Auth.ResetPasswordRequestDto;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
@@ -93,5 +96,16 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
         return ResponseEntity.ok("Password has been reset successfully");
+    }
+
+    @PostMapping("/google/login")
+    public ResponseEntity<LoginResponseDto> googleLogin(@RequestBody GoogleAuthRequestDto request) {
+        return ResponseEntity.ok(authService.handleGoogleLogin(request.getToken()));
+    }
+
+    @PostMapping("/google/register")
+    public ResponseEntity<String> googleRegister(@RequestBody GoogleAuthRequestDto request) {
+        authService.handleGoogleRegister(request.getToken());
+        return ResponseEntity.ok("Successfully registered with Google");
     }
 }

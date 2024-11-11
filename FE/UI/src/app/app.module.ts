@@ -1,6 +1,6 @@
 // UI\src\app\app.module.ts
 
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CommonModule } from "@angular/common";
@@ -8,7 +8,6 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatOptionModule } from "@angular/material/core";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { RouterModule } from "@angular/router";
-
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { FormsModule } from "@angular/forms";
@@ -54,8 +53,9 @@ import { FaIconLibrary } from "@fortawesome/angular-fontawesome";
 import { faUser, faBoxOpen, faLock, faStore, faHandshake, faGem, faTag, faEnvelope, faPhone, faLocationDot, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
-import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";  
+import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/auth_component/reset-password/reset-password.component";
+import { ErrorInterceptor } from "./shared/interceptors/error.interceptor";
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent, ConfirmEmailComponent, ForgotPasswordComponent, ResetPasswordComponent],
@@ -71,8 +71,10 @@ import { ResetPasswordComponent } from "./components/auth_component/reset-passwo
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule {
