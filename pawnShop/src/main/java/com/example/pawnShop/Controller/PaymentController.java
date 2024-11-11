@@ -12,16 +12,22 @@ import com.stripe.model.Event;
 import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.StripeObject;
 import com.stripe.net.Webhook;
-
+import com.example.pawnShop.Service.Contract.OrderService;
+import com.example.pawnShop.Entity.enums.OrderStatus;
+import lombok.RequiredArgsConstructor;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/payment")
 @CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
+@RequiredArgsConstructor
 public class PaymentController {
+
+    private final OrderService orderService;
 
     @Value("${stripe.api.key}")
     private String stripeSecretKey;
@@ -85,13 +91,11 @@ public class PaymentController {
                 case "checkout.session.completed":
                     log.info("Payment successful!");
                     EventDataObjectDeserializer dataObjectDeserializer = event.getDataObjectDeserializer();
-                    StripeObject stripeObject = null;
                     if (dataObjectDeserializer.getObject().isPresent()) {
-                        stripeObject = dataObjectDeserializer.getObject().get();
+                        Session session = (Session) dataObjectDeserializer.getObject().get();
+                        // Update order status to PAID
+                        orderService.updateOrderStatus(UUID.fromString(session.getClientReferenceId()), OrderStatus.PAID);
                     }
-                    Session session = (Session) stripeObject;
-                    String customerEmail = session.getCustomerEmail();
-                    log.info("Customer email: {}", customerEmail);
                     break;
                     
                 case "checkout.session.expired":

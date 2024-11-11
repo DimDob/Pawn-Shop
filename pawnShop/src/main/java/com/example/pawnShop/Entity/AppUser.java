@@ -74,6 +74,11 @@ public class AppUser implements UserDetails {
     @Column(name = "password_reset_token_expiry")
     private LocalDateTime passwordResetTokenExpiry;
 
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Order> orders;
+
     // Keep only one default constructor
     public AppUser() {
         enable = true;
