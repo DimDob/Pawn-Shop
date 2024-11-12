@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import com.example.pawnShop.Dto.Payment.CheckoutSessionDto;
 
 @Service
 @RequiredArgsConstructor
@@ -156,6 +157,33 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             System.out.println("Error updating order status: " + e.getMessage());
             return Result.error("Failed to update order status: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Result<CheckoutSessionDto> createCheckoutSession(CheckoutSessionDto checkoutDto) {
+        try {
+            System.out.println("OrderServiceImpl: Creating checkout session");
+            
+            var order = orderRepository.findById(UUID.fromString(checkoutDto.getOrderId()))
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+            Long amountInCents = order.getTotal().multiply(new BigDecimal("100")).longValue();
+            
+            if (!amountInCents.equals(checkoutDto.getAmount())) {
+                System.out.println("OrderServiceImpl: Amount mismatch - Order total: " + amountInCents + ", Checkout amount: " + checkoutDto.getAmount());
+                throw new RuntimeException("Amount mismatch");
+            }
+            
+            order.setStatus(OrderStatus.PROCESSING);
+            orderRepository.save(order);
+            
+            System.out.println("OrderServiceImpl: Checkout session created successfully");
+            return Result.success(checkoutDto);
+            
+        } catch (Exception e) {
+            System.out.println("OrderServiceImpl: Error creating checkout session: " + e.getMessage());
+            return Result.error("Failed to create checkout session: " + e.getMessage());
         }
     }
 

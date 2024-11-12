@@ -70,8 +70,10 @@ export class OrderSummaryComponent implements OnInit {
         throw new Error("Failed to create order");
       }
 
-      const amount = Math.round(this.totalCost() * 100); // Convert to cents
-      const response = await this.paymentService.createCheckoutSession(amount, orderResponse.orderId).toPromise();
+      const response = await this.paymentService.createCheckoutSession(
+        this.totalCost(),
+        orderResponse.orderId
+      ).toPromise();
 
       if (!response?.sessionId) {
         throw new Error("No session ID received");
@@ -88,7 +90,13 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   validateForm(): boolean {
-    // Implement your form validation logic here
-    return true;
+    return (
+      this.shippingDetails.buyerName.trim() !== "" &&
+      this.shippingDetails.phone.trim() !== "" &&
+      this.shippingDetails.streetAddress.trim() !== "" &&
+      this.shippingDetails.city.trim() !== "" &&
+      this.shippingDetails.state.trim() !== "" &&
+      this.shippingDetails.postalCode.trim() !== ""
+    );
   }
 }
