@@ -21,6 +21,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import com.example.pawnShop.Dto.Payment.CheckoutSessionDto;
+import java.util.List;
+import org.springframework.data.domain.Sort;
 
 @Service
 @RequiredArgsConstructor
@@ -184,6 +186,25 @@ public class OrderServiceImpl implements OrderService {
         } catch (Exception e) {
             System.out.println("OrderServiceImpl: Error creating checkout session: " + e.getMessage());
             return Result.error("Failed to create checkout session: " + e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Result<List<OrderSummaryDto>> getAllOrdersForAdmin() {
+        try {
+            System.out.println("Getting all orders for admin");
+            List<Order> orders = orderRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+            
+            List<OrderSummaryDto> orderSummaries = orders.stream()
+                .map(this::mapOrderToSummaryDto)
+                .collect(Collectors.toList());
+            
+            System.out.println("Successfully retrieved " + orderSummaries.size() + " orders");
+            return Result.success(orderSummaries);
+        } catch (Exception e) {
+            System.out.println("Error getting all orders: " + e.getMessage());
+            return Result.error("Failed to get orders: " + e.getMessage());
         }
     }
 
