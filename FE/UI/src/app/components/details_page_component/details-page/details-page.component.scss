@@ -81,20 +81,41 @@
 
   .button-container {
     display: flex;
-    justify-content: space-between;
-    width: 20%;
-    max-width: 300px;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
     margin: 20px 0;
 
-    .edit-button {
-      background-color: #009d34;
-      margin-right: 14px;
-      margin-left: 0px;
-    }
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: all 0.3s ease;
 
-    .delete-button {
-      background-color: #ff4081;
-      margin-left: 0px;
+      mat-icon {
+        font-size: 20px;
+      }
+
+      &.edit-button {
+        background-color: #009d34;
+
+        &:hover {
+          background-color: darken(#009d34, 10%);
+          transform: translateY(-2px);
+        }
+      }
+
+      &.delete-button {
+        background-color: #ff4081;
+
+        &:hover {
+          background-color: darken(#ff4081, 10%);
+          transform: translateY(-2px);
+        }
+      }
     }
   }
 }

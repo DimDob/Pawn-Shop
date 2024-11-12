@@ -40,10 +40,17 @@
         <p>Condition: {{ product.condition }}</p>
         <p>Stock: {{ product.quantityInStock }}</p>
 
-        @if (isOwner()) {
+        <!-- if owner or admin -->
+        @if (canEditDelete()) {
           <div class="button-container">
-            <button class="edit-button" (click)="onEditProduct()">Edit</button>
-            <button class="delete-button" (click)="onConfirmDelete()">Delete</button>
+            <button class="edit-button" (click)="onEditProduct()">
+              <mat-icon>edit</mat-icon>
+              Edit
+            </button>
+            <button class="delete-button" (click)="onConfirmDelete()">
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button>
           </div>
         } @else {
           <div class="quantity">

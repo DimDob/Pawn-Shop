@@ -46,6 +46,18 @@ export class DetailsPageComponent implements OnInit {
 
   isFavorite = computed(() => (this.product() ? this.favoritesService.isProductFavorite(this.product()!.id) : false));
 
+  canEditDelete = computed(() => {
+    const currentUser = this.authService.getCurrentUser();
+    const product = this.product();
+
+    console.log("DetailsPageComponent: Checking edit/delete permissions");
+    console.log("Current user:", currentUser);
+    console.log("Is admin?", currentUser?.isAdmin);
+    console.log("Is owner?", this.isOwner());
+
+    return Boolean(currentUser?.isAdmin || this.isOwner());
+  });
+
   ngOnInit(): void {
     this.loadProduct();
   }
@@ -132,7 +144,7 @@ export class DetailsPageComponent implements OnInit {
           this.product.set({ ...currentProduct });
           this.notificationService.showSuccess("Removed from favorites");
         },
-        error: (error) => {
+        error: error => {
           if (error.status === 200) {
             console.log("DetailsPageComponent: Product removed successfully (with parsing error)");
             this.product.set({ ...currentProduct });
@@ -150,7 +162,7 @@ export class DetailsPageComponent implements OnInit {
           this.product.set({ ...currentProduct });
           this.notificationService.showSuccess("Added to favorites");
         },
-        error: (error) => {
+        error: error => {
           if (error.status === 200) {
             console.log("DetailsPageComponent: Product added successfully (with parsing error)");
             this.product.set({ ...currentProduct });
