@@ -27,6 +27,12 @@
     <span class="spacer"></span>
 
     <div class="toolbar-options">
+      @if (isAdmin()) {
+      <button mat-button [matMenuTriggerFor]="adminMenu">Admin Panel</button>
+      <mat-menu #adminMenu="matMenu">
+        <button mat-menu-item routerLink="/admin/orders">All Orders</button>
+      </mat-menu>
+      }
       <button mat-button [routerLink]="['/about-us']">About Us</button>
 
       <button mat-button [matMenuTriggerFor]="productsMenu">Products</button>
@@ -62,17 +68,6 @@
         <span class="favorites-count">{{ favoritesCount() }}</span>
         }
       </button>
-    </div>
-
-    <div class="user-actions">
-      @if (isAdmin()) {
-        <button mat-button [matMenuTriggerFor]="adminMenu">
-          Admin Panel
-        </button>
-        <mat-menu #adminMenu="matMenu">
-          <button mat-menu-item routerLink="/admin/orders">All Orders</button>
-        </mat-menu>
-      }
     </div>
   </div>
 </mat-toolbar>
