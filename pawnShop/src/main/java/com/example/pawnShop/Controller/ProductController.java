@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import java.util.UUID;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 @RestController
 @RequestMapping("/")
 @RequiredArgsConstructor
@@ -88,5 +90,20 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                .body("Error fetching products: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/admin/products")
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    public ResponseEntity<?> getAllProductsForAdmin() {
+        log.info("Admin requesting all products");
+        Result<List<ProductDto>> result = productService.getAllProductsForAdmin();
+        
+        if (!result.isSuccess()) {
+            log.error("Error fetching products for admin: {}", result.getError());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+        }
+        
+        log.info("Successfully returned {} products for admin", result.getValue().size());
+        return ResponseEntity.ok(result.getValue());
     }
 }

@@ -203,4 +203,22 @@ public class ProductServiceImp implements ProductService {
             throw new RuntimeException("Error fetching products: " + e.getMessage());
         }
     }
+
+    @Override
+    public Result<List<ProductDto>> getAllProductsForAdmin() {
+        try {
+            log.info("Fetching all products for admin");
+            List<Product> products = productRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
+            
+            List<ProductDto> productDtos = products.stream()
+                    .map(productManualMapper::mapToProductDto)
+                    .collect(Collectors.toList());
+                    
+            log.info("Successfully fetched {} products for admin", productDtos.size());
+            return Result.success(productDtos);
+        } catch (Exception e) {
+            log.error("Error fetching products for admin: ", e);
+            return Result.error("Failed to retrieve products: " + e.getMessage());
+        }
+    }
 }

@@ -16,8 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -35,10 +38,9 @@ public class SecurityConfig {
                     "/api/auth/confirm-email",
                     "/api/auth/forgot-password",
                     "/api/auth/reset-password",
-                    "/api/products/**",
-                   "/api/auth/**", 
-                   "/api/orders/**"
+                    "/api/products/**"
                 ).permitAll()
+                .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
