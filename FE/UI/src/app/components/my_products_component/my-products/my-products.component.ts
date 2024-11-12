@@ -4,6 +4,7 @@ import { Products } from "../../main_page_component/main-page/Interfaces/Product
 import { Router } from "@angular/router";
 import { ProductService } from "../../../shared/services/product.service";
 import { NotificationService } from "../../../shared/services/notification.service";
+import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-my-products",
@@ -11,6 +12,7 @@ import { NotificationService } from "../../../shared/services/notification.servi
   styleUrls: ["./my-products.component.scss"]
 })
 export class MyProductsComponent implements OnInit {
+  faBoxOpen = faBoxOpen;
   protected products = signal<Products[]>([]);
 
   constructor(

@@ -1,4 +1,11 @@
 <!-- UI\src\app\components\my-products\my-products.component.html -->
+<div class="my-products-header">
+  <div class="icon">
+    <fa-icon [icon]="faBoxOpen"></fa-icon>
+  </div>
+  <h1>My Products</h1>
+</div>
+
 <div class="main-page-container">
   <div class="container">
     @for (product of products(); track product.id) {
