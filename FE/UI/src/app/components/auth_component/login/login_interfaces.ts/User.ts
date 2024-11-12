@@ -9,4 +9,5 @@ export interface User {
   loginUsername: string;
   isAdmin: boolean;
   isEmployee: boolean;
+  role?: string;
 }

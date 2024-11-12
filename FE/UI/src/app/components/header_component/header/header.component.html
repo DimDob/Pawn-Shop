@@ -63,5 +63,16 @@
         }
       </button>
     </div>
+
+    <div class="user-actions">
+      @if (isAdmin()) {
+        <button mat-button [matMenuTriggerFor]="adminMenu">
+          Admin Panel
+        </button>
+        <mat-menu #adminMenu="matMenu">
+          <button mat-menu-item routerLink="/admin/orders">All Orders</button>
+        </mat-menu>
+      }
+    </div>
   </div>
 </mat-toolbar>

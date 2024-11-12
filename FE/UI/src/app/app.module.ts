@@ -57,9 +57,11 @@ import { ConfirmEmailComponent } from "./components/auth_component/confirm-email
 import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/auth_component/reset-password/reset-password.component";
 import { OrderSummaryComponent } from "./components/order-summary/order-summary.component";
+import { AdminOrdersComponent } from "./components/admin/admin-orders/admin-orders.component";
+import { AdminService } from "./components/admin/admin.service";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent, ConfirmEmailComponent, ForgotPasswordComponent, ResetPasswordComponent, OrderSummaryComponent],
+  declarations: [AppComponent, LoginComponent, RegisterComponent, MainPageComponent, AuthComponent, ChangePasswordComponent, MatchPasswordsDirective, HeaderComponent, AboutUsComponent, ContactsComponent, FooterComponent, CartPageComponent, DetailsPageComponent, SuccessPageComponent, MyAccountComponent, AddProductComponent, MyProductsComponent, EditProductComponent, NotFoundComponent, FavoritesComponent, ServerErrorComponent, ConfirmEmailComponent, ForgotPasswordComponent, ResetPasswordComponent, OrderSummaryComponent, AdminOrdersComponent],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatToolbarModule, MatButtonModule, MatIconModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatOptionModule, MatMenuModule, FontAwesomeModule, MatPaginatorModule, MatSnackBarModule, CommonModule, RouterModule],
   providers: [
     AuthService,
@@ -72,7 +74,8 @@ import { OrderSummaryComponent } from "./components/order-summary/order-summary.
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    AdminService
   ],
   bootstrap: [AppComponent]
 })

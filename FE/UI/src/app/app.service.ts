@@ -10,7 +10,7 @@ import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { environment } from "../environments/environment";
 import { RegisterData } from "./components/auth_component/register/interfaces/RegisterData";
-
+//Property 'role' does not exist on type 'User'
 interface AccountUpdateData {
   currentPassword: string;
   newUsername?: string;
@@ -129,20 +129,22 @@ export class AuthService {
   handlerUserRegister(registerData: RegisterData, endpoint: string): Observable<any> {
     console.log("AuthService: Attempting registration", registerData);
 
-    return this.http.post(endpoint, registerData, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      }),
-      responseType: "text"
-    }).pipe(
-      tap(response => {
-        console.log("AuthService: Registration successful", response);
-      }),
-      catchError(error => {
-        console.error("AuthService: Registration failed", error);
-        return throwError(() => error);
+    return this.http
+      .post(endpoint, registerData, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        }),
+        responseType: "text"
       })
-    );
+      .pipe(
+        tap(response => {
+          console.log("AuthService: Registration successful", response);
+        }),
+        catchError(error => {
+          console.error("AuthService: Registration failed", error);
+          return throwError(() => error);
+        })
+      );
   }
 
   public handlerChangePassword(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
@@ -157,23 +159,27 @@ export class AuthService {
 
   public getCurrentUser(): User | null {
     const token = this.getToken();
-    if (!token) return null;
+    if (!token) {
+      console.log("No token found");
+      return null;
+    }
 
     try {
       const tokenData = JSON.parse(atob(token.split(".")[1]));
-      console.log("AuthService: Token data:", tokenData);
+      console.log("Token data:", tokenData);
 
       const user: User = {
-        id: tokenData.userId, // Token-a
-        loginUsername: tokenData.sub, // email от subject
-        isAdmin: tokenData.isAdmin, // Token-a
-        isEmployee: false
+        id: tokenData.userId,
+        loginUsername: tokenData.sub,
+        isAdmin: tokenData.isAdmin === true,
+        isEmployee: false,
+        role: tokenData.role
       };
 
-      console.log("AuthService: Current user:", user);
+      console.log("Parsed user:", user);
       return user;
     } catch (error) {
-      console.error("AuthService: Error parsing user data from token:", error);
+      console.error("Error parsing token:", error);
       return null;
     }
   }
@@ -228,11 +234,7 @@ export class AuthService {
 
   confirmEmail(token: string): Observable<any> {
     console.log("AuthService: Confirming email with token", token);
-    return this.http.post(
-      `${environment.host}/api/auth/confirm-email?token=${token}`,
-      {},
-      { responseType: 'text' }
-    ).pipe(
+    return this.http.post(`${environment.host}/api/auth/confirm-email?token=${token}`, {}, { responseType: "text" }).pipe(
       tap(response => {
         console.log("AuthService: Email confirmed successfully", response);
       }),
@@ -248,11 +250,7 @@ export class AuthService {
 
   forgotPassword(email: string): Observable<any> {
     console.log("AuthService: Requesting password reset for email", email);
-    return this.http.post(
-      `${environment.host}/api/auth/forgot-password`,
-      { email },
-      { responseType: "text" }
-    ).pipe(
+    return this.http.post(`${environment.host}/api/auth/forgot-password`, { email }, { responseType: "text" }).pipe(
       tap(response => console.log("AuthService: Password reset email sent")),
       catchError(error => {
         console.error("AuthService: Error requesting password reset", error);
@@ -263,11 +261,7 @@ export class AuthService {
 
   resetPassword(token: string, newPassword: string): Observable<any> {
     console.log("AuthService: Resetting password with token");
-    return this.http.post(
-      `${environment.host}/api/auth/reset-password`,
-      { token, newPassword },
-      { responseType: "text" }
-    ).pipe(
+    return this.http.post(`${environment.host}/api/auth/reset-password`, { token, newPassword }, { responseType: "text" }).pipe(
       tap(response => console.log("AuthService: Password reset successful")),
       catchError(error => {
         console.error("AuthService: Error resetting password", error);
