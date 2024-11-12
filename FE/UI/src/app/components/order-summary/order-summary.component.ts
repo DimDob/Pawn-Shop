@@ -5,6 +5,7 @@ import { PaymentService } from "../../shared/services/payment.service";
 import { NotificationService } from "../../shared/services/notification.service";
 import { ShippingDetails } from "./interfaces/shipping-details.interface";
 import { OrderService } from "../../shared/services/order.service";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-order-summary",
@@ -25,6 +26,8 @@ export class OrderSummaryComponent implements OnInit {
     state: "",
     postalCode: ""
   };
+
+  faShoppingCart = faShoppingCart;
 
   constructor(private cartService: CartService, private paymentService: PaymentService, private notificationService: NotificationService, private router: Router, private orderService: OrderService) {
     console.log("OrderSummaryComponent: Initialized");
