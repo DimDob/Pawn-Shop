@@ -248,18 +248,40 @@ export class AuthService {
   }
 
   refreshToken(): Observable<AuthResponse> {
+    console.log("AuthService: Attempting to refresh token");
     const refreshToken = this.getRefreshToken();
     const rememberMe = localStorage.getItem(this.rememberMeKey) === "true";
 
     if (!refreshToken) {
+      console.log("AuthService: No refresh token available");
+      this.clearTokensAndRedirect();
       return throwError(() => new Error("No refresh token available"));
+    }
+
+    // Ако Remember me не е избрано, не позволяваме refresh
+    if (!rememberMe && sessionStorage.getItem(this.refreshTokenKey)) {
+      console.log("AuthService: Session-only user, clearing tokens");
+      this.clearTokensAndRedirect();
+      return throwError(() => new Error("Session expired"));
     }
 
     return this.http.post<AuthResponse>(`${this.host}/api/auth/refresh-token`, { refreshToken }).pipe(
       tap(response => {
+        console.log("AuthService: Token refresh successful");
         this.setTokens(response, rememberMe);
+      }),
+      catchError(error => {
+        console.error("AuthService: Token refresh failed", error);
+        this.clearTokensAndRedirect();
+        return throwError(() => error);
       })
     );
+  }
+
+  private clearTokensAndRedirect(): void {
+    console.log("AuthService: Clearing tokens and redirecting to login");
+    this.clearToken();
+    this.router.navigate(["/auth/login"]);
   }
 
   confirmEmail(token: string): Observable<any> {
