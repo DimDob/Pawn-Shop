@@ -8,7 +8,7 @@ import { Category } from "../../main_page_component/main-page/enums/Category";
 import { AuthService } from "../../../app.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { computed } from "@angular/core";
-import { AdminService } from "../../admin/admin.service";
+import { AdminService } from "../../admin/admin-orders/admin.service";
 
 @Component({
   selector: "app-header",

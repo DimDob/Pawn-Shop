@@ -1,6 +1,6 @@
 // UI/src/app/components/admin/admin-orders/admin-orders.component.ts
 import { Component, OnInit, signal } from "@angular/core";
-import { AdminService } from "./../admin.service";
+import { AdminService } from "./admin.service";
 import { faListAlt } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
