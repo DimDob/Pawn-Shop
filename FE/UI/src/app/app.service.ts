@@ -123,7 +123,7 @@ export class AuthService {
   }
 
   private setTokens(response: AuthResponse, rememberMe: boolean): void {
-    console.log("AuthService: Setting tokens", { rememberMe });
+    console.log("AuthService: Setting tokens with remember me:", rememberMe);
 
     if (response.token) {
       localStorage.setItem(this.tokenKey, response.token);
@@ -131,40 +131,25 @@ export class AuthService {
 
     if (response.refreshToken) {
       if (rememberMe) {
+        console.log("AuthService: Storing refresh token in localStorage");
         localStorage.setItem(this.refreshTokenKey, response.refreshToken);
         localStorage.setItem(this.rememberMeKey, "true");
       } else {
+        console.log("AuthService: Storing refresh token in sessionStorage");
         sessionStorage.setItem(this.refreshTokenKey, response.refreshToken);
+        localStorage.removeItem(this.refreshTokenKey);
         localStorage.setItem(this.rememberMeKey, "false");
       }
     }
   }
 
   handleUserLoging(credentials: any, endpoint: string): Observable<AuthResponse> {
-    console.log("AuthService: Attempting login with credentials", {
-      email: credentials.email,
-      rememberMe: credentials.rememberMe
-    });
+    console.log("AuthService: Handling user login with remember me:", credentials.rememberMe);
 
     return this.http.post<AuthResponse>(`${this.host}/api/auth/login`, credentials).pipe(
       tap(response => {
         console.log("AuthService: Login successful, setting tokens");
-        console.log("AuthService: Remember me enabled:", credentials.rememberMe);
-
-        if (response.token) {
-          localStorage.setItem(this.tokenKey, response.token);
-        }
-
-        if (response.refreshToken) {
-          if (credentials.rememberMe) {
-            localStorage.setItem(this.refreshTokenKey, response.refreshToken);
-            localStorage.setItem(this.rememberMeKey, "true");
-            console.log("AuthService: Refresh token stored in localStorage");
-          } else {
-            sessionStorage.setItem(this.refreshTokenKey, response.refreshToken);
-            console.log("AuthService: Refresh token stored in sessionStorage");
-          }
-        }
+        this.setTokens(response, credentials.rememberMe);
       }),
       catchError(error => {
         console.error("AuthService: Login failed", error);
