@@ -1,3 +1,4 @@
+// UI/src/app/components/footer_component/footer/footer.component.spec.ts
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FooterComponent } from "./footer.component";
 import { SearchService } from "../../../shared/services/search.service";

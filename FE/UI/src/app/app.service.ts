@@ -10,7 +10,6 @@ import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { environment } from "../environments/environment";
 import { RegisterData } from "./components/auth_component/register/interfaces/RegisterData";
-//Property 'role' does not exist on type 'User'
 interface AccountUpdateData {
   currentPassword: string;
   newUsername?: string;

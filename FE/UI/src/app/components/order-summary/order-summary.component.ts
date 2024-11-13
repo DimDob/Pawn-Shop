@@ -1,3 +1,4 @@
+// UI/src/app/components/order-summary/order-summary.component.ts
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CartService } from "../cart_page_component/cart-page/cart.service";
@@ -61,22 +62,21 @@ export class OrderSummaryComponent implements OnInit {
     this.isProcessing = true;
 
     try {
-      const orderResponse = await this.orderService.createOrder({
-        shippingDetails: this.shippingDetails,
-        items: this.cartItems,
-        total: this.totalCost(),
-        estimatedDeliveryStart: this.estimatedDeliveryStart,
-        estimatedDeliveryEnd: this.estimatedDeliveryEnd
-      }).toPromise();
+      const orderResponse = await this.orderService
+        .createOrder({
+          shippingDetails: this.shippingDetails,
+          items: this.cartItems,
+          total: this.totalCost(),
+          estimatedDeliveryStart: this.estimatedDeliveryStart,
+          estimatedDeliveryEnd: this.estimatedDeliveryEnd
+        })
+        .toPromise();
 
       if (!orderResponse?.orderId) {
         throw new Error("Failed to create order");
       }
 
-      const response = await this.paymentService.createCheckoutSession(
-        this.totalCost(),
-        orderResponse.orderId
-      ).toPromise();
+      const response = await this.paymentService.createCheckoutSession(this.totalCost(), orderResponse.orderId).toPromise();
 
       if (!response?.sessionId) {
         throw new Error("No session ID received");
@@ -93,13 +93,6 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   validateForm(): boolean {
-    return (
-      this.shippingDetails.buyerName.trim() !== "" &&
-      this.shippingDetails.phone.trim() !== "" &&
-      this.shippingDetails.streetAddress.trim() !== "" &&
-      this.shippingDetails.city.trim() !== "" &&
-      this.shippingDetails.state.trim() !== "" &&
-      this.shippingDetails.postalCode.trim() !== ""
-    );
+    return this.shippingDetails.buyerName.trim() !== "" && this.shippingDetails.phone.trim() !== "" && this.shippingDetails.streetAddress.trim() !== "" && this.shippingDetails.city.trim() !== "" && this.shippingDetails.state.trim() !== "" && this.shippingDetails.postalCode.trim() !== "";
   }
 }

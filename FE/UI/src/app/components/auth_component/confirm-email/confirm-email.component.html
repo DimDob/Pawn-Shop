@@ -1,20 +1,21 @@
+<!-- UI/src/app/components/auth_component/confirm-email/confirm-email.component.html -->
 <div class="confirm-email-container">
   @if (confirmationStatus === "confirming") {
-    <div class="confirming">
-      <h2>Confirming your email...</h2>
-      <div class="spinner"></div>
-    </div>
+  <div class="confirming">
+    <h2>Confirming your email...</h2>
+    <div class="spinner"></div>
+  </div>
   } @else if (confirmationStatus === "success") {
-    <div class="success">
-      <h2>Email Confirmed Successfully!</h2>
-      <p>Your email has been confirmed. You can now log in to your account.</p>
-      <button (click)="navigateToLogin()">Go to Login</button>
-    </div>
+  <div class="success">
+    <h2>Email Confirmed Successfully!</h2>
+    <p>Your email has been confirmed. You can now log in to your account.</p>
+    <button (click)="navigateToLogin()">Go to Login</button>
+  </div>
   } @else {
-    <div class="error">
-      <h2>Email Confirmation Failed</h2>
-      <p>{{ errorMessage }}</p>
-      <button (click)="navigateToLogin()">Return to Login</button>
-    </div>
+  <div class="error">
+    <h2>Email Confirmation Failed</h2>
+    <p>{{ errorMessage }}</p>
+    <button (click)="navigateToLogin()">Return to Login</button>
+  </div>
   }
 </div>

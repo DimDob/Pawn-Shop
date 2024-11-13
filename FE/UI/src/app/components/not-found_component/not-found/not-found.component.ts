@@ -1,3 +1,5 @@
+// UI/src/app/components/not-found_component/not-found/not-found.component.ts
+
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
@@ -13,10 +15,7 @@ export class NotFoundComponent {
   faHome = faHome;
   faArrowLeft = faArrowLeft;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   navigateHome() {
     if (this.authService.isLoggedIn()) {

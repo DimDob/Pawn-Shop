@@ -1,3 +1,5 @@
+// UI/src/app/shared/interceptors/auth-interceptor.service.ts
+
 import { Injectable } from "@angular/core";
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from "@angular/common/http";
 import { Observable, EMPTY, throwError } from "rxjs";

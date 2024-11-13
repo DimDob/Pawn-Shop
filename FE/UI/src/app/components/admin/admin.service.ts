@@ -1,3 +1,4 @@
+// UI/src/app/components/admin/admin.service.ts
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
@@ -12,4 +13,4 @@ export class AdminService {
     console.log("Fetching all orders");
     return this.http.get(`${environment.host}/api/orders/admin/all`);
   }
-} 
+}

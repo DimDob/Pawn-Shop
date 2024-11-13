@@ -138,11 +138,7 @@ const routes: Routes = [
     component: AdminOrdersComponent,
     canActivate: [authGuard, adminGuard]
   },
-  // {
-  //   path: "admin/products",
-  //   component: AdminProductsComponent,
-  //   canActivate: [authGuard, adminGuard]
-  // },
+
   { path: "**", component: NotFoundComponent }
 ];
 
