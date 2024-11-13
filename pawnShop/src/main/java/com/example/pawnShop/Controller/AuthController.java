@@ -45,26 +45,6 @@ public class AuthController {
         return ResponseEntity.ok("You are registered! Please check your email for confirmation.");
     }
 
-    @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDto request) {
-        Result<String> result = authService.refreshToken(request.getRefreshToken());
-        
-        if (result.isSuccess()) {
-            return ResponseEntity.ok(result.getValue());
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody RefreshTokenRequestDto request) {
-        Result<Boolean> result = authService.logout(request.getRefreshToken());
-        
-        if (result.isSuccess()) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
-    }
-
     @PostMapping("/confirm-email")
     public ResponseEntity<?> confirmEmail(@RequestParam String token) {
         AppUser user = userRepository.findByEmailConfirmationToken(token)
@@ -93,5 +73,24 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
         }
         return ResponseEntity.ok("Password has been reset successfully");
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequestDto request) {
+        Result<LoginResponseDto> result = authService.refreshToken(request.getRefreshToken());
+        if (!result.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
+        }
+        return ResponseEntity.ok(result.getValue());
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody RefreshTokenRequestDto request) {
+        Result<Boolean> result = authService.logout(request.getRefreshToken());
+        
+        if (result.isSuccess()) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
     }
 }

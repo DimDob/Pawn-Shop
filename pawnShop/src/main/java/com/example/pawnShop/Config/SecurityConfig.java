@@ -38,6 +38,8 @@ public class SecurityConfig {
                     "/api/auth/confirm-email",
                     "/api/auth/forgot-password",
                     "/api/auth/reset-password",
+                    "/api/auth/refresh-token",
+                    "/api/auth/logout",
                     "/api/products/**"
                 ).permitAll()
                 .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
