@@ -66,13 +66,11 @@
   }
 
   button {
-    padding: 10px 20px;
     background-color: #009d34;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin: 5px;
 
     &:hover {
       background-color: darken(#009d34, 5%);
