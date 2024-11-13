@@ -26,7 +26,6 @@ describe("MainPageComponent", () => {
   let routerMock: any;
 
   beforeEach(async () => {
-    // Създаване на mock услуги
     productServiceMock = jasmine.createSpyObj("ProductService", ["getAllProducts"]);
     cartServiceMock = jasmine.createSpyObj("CartService", ["addToCart"]);
     searchServiceMock = {
@@ -178,7 +177,7 @@ describe("MainPageComponent", () => {
     component["applyFilters"]();
     fixture.detectChanges();
 
-      // Check if the filters are applied correctly
+    // Check if the filters are applied correctly
     expect(productServiceMock.getAllProducts).toHaveBeenCalledWith("priceLowToHigh", Category.JEWELRY, "filtered");
     expect(component["products"]()).toEqual(mockFilteredProducts);
     expect(component["filteredProducts"]()).toEqual(mockFilteredProducts);
@@ -201,7 +200,7 @@ describe("MainPageComponent", () => {
     component["onPageChange"](mockPageEvent);
     fixture.detectChanges();
 
-      // Check if the values are updated
+    // Check if the values are updated
     expect(component["pageIndex"]()).toBe(1);
     expect(component["pageSize"]()).toBe(50);
     expect(localStorage.getItem("preferredPageSize")).toBe("50");

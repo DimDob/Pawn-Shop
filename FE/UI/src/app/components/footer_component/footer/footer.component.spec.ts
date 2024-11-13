@@ -32,7 +32,7 @@ describe("FooterComponent", () => {
 
     await TestBed.configureTestingModule({
       declarations: [FooterComponent],
-      imports: [FontAwesomeModule], // Added FontAwesomeModule
+      imports: [FontAwesomeModule],
       providers: [{ provide: SearchService, useValue: mockSearchService }, provideRouter([])]
     }).compileComponents();
   });
