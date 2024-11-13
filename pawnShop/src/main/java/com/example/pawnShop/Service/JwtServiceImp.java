@@ -19,8 +19,8 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImp implements JwtService {
     private static final String SECRET_KEY = "7BE0B397565E158158AE1DAF477D25C46E5429203120C4565CD7CE0530CE1C69";
-    private static final Long VALIDITY_TIME = TimeUnit.MINUTES.toMillis(1);//jwt token validity time
-    private static final Long REFRESH_TOKEN_VALIDITY = TimeUnit.DAYS.toMillis(7);
+    private static final Long VALIDITY_TIME = TimeUnit.MINUTES.toMillis(60);//jwt token validity time
+    private static final Long REFRESH_TOKEN_VALIDITY = TimeUnit.DAYS.toMillis(90);//refresh token validity time
  
     @Override
     public String generateJwtToken(AppUser user) {
