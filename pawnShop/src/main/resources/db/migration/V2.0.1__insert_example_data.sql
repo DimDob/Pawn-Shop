@@ -1,3 +1,4 @@
+-- V2.0.1__insert_example_data.sql
 -- Inserting data into the cities table
 INSERT INTO cities (id, name)
 VALUES ('c1d257e3-6b84-4f4c-bad4-50b3a57c6d26', 'New York'),

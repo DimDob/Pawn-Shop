@@ -1,3 +1,4 @@
+-- V2.0.0__create_relations_between_tables.sql
 alter table if exists pawn_shops
     drop constraint if exists UK_furecjp418sn0gyim0mo97sb5;
 

@@ -1,3 +1,4 @@
+-- V2.0.5__create_orders_tables.sql
 CREATE TABLE orders (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL,

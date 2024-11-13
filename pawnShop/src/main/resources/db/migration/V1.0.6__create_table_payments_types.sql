@@ -1,3 +1,4 @@
+-- V1.0.6__create_table_payments_types.sql
 create table payments_types
 (
     id                 uuid           not null,

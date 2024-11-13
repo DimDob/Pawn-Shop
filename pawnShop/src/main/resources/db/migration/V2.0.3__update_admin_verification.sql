@@ -1,3 +1,4 @@
+-- V2.0.3__update_admin_verification.sql
 -- Update existing admin users to be fully verified
 UPDATE users 
 SET email_confirmed = true,

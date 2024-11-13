@@ -1,3 +1,4 @@
+-- V1.0.7__create_table_products.sql
 create table products
 (
     id                  uuid         not null,
