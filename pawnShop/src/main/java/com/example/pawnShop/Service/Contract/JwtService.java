@@ -13,4 +13,5 @@ public interface JwtService {
     public String extractSubject(String token);
     public <T> T extractClaim(String token, Function<Claims,T> claimsResolver);
     public boolean isTokenValid(String token);
+    String generateRefreshToken(AppUser user);
 }

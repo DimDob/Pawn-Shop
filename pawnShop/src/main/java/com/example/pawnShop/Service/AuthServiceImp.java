@@ -122,32 +122,27 @@ public class AuthServiceImp implements AuthService {
     @Override
     public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto) {
         try {
-            Optional<AppUser> userOptional = userRepository.findByEmail(loginRequestDto.getEmail());
-            if (userOptional.isEmpty()) {
-                return Result.error("Invalid credentials");
-            }
-
-            AppUser user = userOptional.get();
-            if (!user.isEmailConfirmed()) {
-                return Result.error("Please confirm your email first");
-            }
-
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                    loginRequestDto.getEmail(),
+                    loginRequestDto.getPassword()
+                )
             );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtService.generateJwtToken(user);
-
-            return Result.success(LoginResponseDto.builder()
+    
+            AppUser user = (AppUser) authentication.getPrincipal();
+            String jwtToken = jwtService.generateJwtToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+    
+            LoginResponseDto response = LoginResponseDto.builder()
                 .username(user.getEmail())
-                .token(jwt)
+                .token(jwtToken)
+                .refreshToken(refreshToken)
                 .isAdmin(user.getIsAdmin())
-                .build());
+                .build();
+    
+            return Result.success(response);
         } catch (AuthenticationException e) {
             return Result.error("Invalid credentials");
-        } catch (Exception e) {
-            return Result.error("Login failed: " + e.getMessage());
         }
     }
 

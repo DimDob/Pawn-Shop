@@ -31,7 +31,8 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const credentials = {
         email: this.loginForm.get("email")?.value,
-        password: this.loginForm.get("password")?.value
+        password: this.loginForm.get("password")?.value,
+        rememberMe: this.loginForm.get("rememberMe")?.value
       };
 
       this.authService.handleUserLoging(credentials, "").subscribe({
