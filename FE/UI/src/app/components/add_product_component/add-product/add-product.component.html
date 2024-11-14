@@ -72,15 +72,16 @@
     </div>
 
     <div>
-      <label class="description-label">Description</label>
-      <textarea formControlName="description" maxlength="50" minlength="3" placeholder="Enter product description (3-50 characters)"> </textarea>
-      @if (addProductForm.get('description')?.errors?.['required'] && addProductForm.get('description')?.touched) {
+      <label class="description-label" for="description">Description</label>
+      <textarea id="description" formControlName="description" maxlength="200" minlength="10" placeholder="Enter product description (10-200 characters)"></textarea>
+      <!-- Error Messages -->
+      @if (addProductForm.get('description')?.touched) { @if (addProductForm.get('description')?.errors?.['required']) {
       <span class="error-message">Description is required</span>
       } @if (addProductForm.get('description')?.errors?.['minlength']) {
-      <span class="error-message">Description must be at least 3 characters</span>
+      <span class="error-message">Description must be at least 10 characters</span>
       } @if (addProductForm.get('description')?.errors?.['maxlength']) {
-      <span class="error-message">Description cannot exceed 50 characters</span>
-      }
+      <span class="error-message">Description cannot exceed 200 characters</span>
+      } }
     </div>
 
     <div>

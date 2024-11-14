@@ -115,4 +115,10 @@
     text-align: center;
     margin-top: 10px;
   }
+  textarea {
+    width: 492px; /* Sets the width to 500px */
+    height: 200px; /* Sets the height to 200px */
+    resize: vertical; /* Allows users to resize vertically if needed */
+    border: 1px solid #009d34;
+  }
 }
