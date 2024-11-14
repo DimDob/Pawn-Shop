@@ -20,4 +20,5 @@ export interface Products {
   secondHandPrice?: number;
   productTypeId: string;
   createdAt: string;
+  description: string;
 }

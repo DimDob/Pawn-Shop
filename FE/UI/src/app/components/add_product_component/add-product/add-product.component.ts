@@ -42,7 +42,8 @@ export class AddProductComponent implements OnInit {
       condition: ["", Validators.required],
       price: ["", [Validators.required, Validators.min(0)]],
       quantityInStock: ["", Validators.required],
-      productTypeId: ["", Validators.required]
+      productTypeId: ["", Validators.required],
+      description: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
 
     // Subscribe to category changes

@@ -190,7 +190,8 @@ describe("AddProductComponent", () => {
       size: 42,
       sex: "none",
       productTypeId: "1",
-      picture: "data:image/png;base64,dummybase64string"
+      picture: "data:image/png;base64,dummybase64string",
+      description: "This is a test description"
     });
 
     // Mock productService.addProduct to return a success response

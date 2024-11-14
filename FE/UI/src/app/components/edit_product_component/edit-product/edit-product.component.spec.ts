@@ -40,7 +40,8 @@ describe("EditProductComponent", () => {
     isRunOutOfStock: false,
     condition: "new",
     productTypeId: "type1",
-    createdAt: "2024-01-01"
+    createdAt: "2024-01-01",
+    description: "This is a test description"
   };
 
   const mockProductTypes: ProductType[] = [
@@ -221,6 +222,7 @@ describe("EditProductComponent", () => {
         color: "Red",
         size: 14,
         sex: "none",
+        description: "This is a test description",
         productTypeId: "type2"
       })
     );

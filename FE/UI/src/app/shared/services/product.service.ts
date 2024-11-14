@@ -55,6 +55,7 @@ export class ProductService {
           sex: (productData.get("sex") as string) || "none",
           quantityInStock: Number(productData.get("quantityInStock")),
           isRunOutOfStock: false,
+          description: productData.get("description") as string,
           productTypeId: productType.id
         };
 
@@ -100,6 +101,7 @@ export class ProductService {
           sex: productData.sex || "none",
           quantityInStock: Number(productData.quantityInStock),
           isRunOutOfStock: false,
+          description: productData.description,
           productTypeId: productType.id,
           ownerId: productData.ownerId
         };

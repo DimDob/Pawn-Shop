@@ -48,7 +48,8 @@ export class EditProductComponent implements OnInit {
       category: ["", Validators.required],
       price: ["", [Validators.required, Validators.min(0)]],
       quantityInStock: ["", Validators.required],
-      productTypeId: ["", Validators.required]
+      productTypeId: ["", Validators.required],
+      description: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
 
     this.editProductForm.get("category")?.valueChanges.subscribe(category => {
