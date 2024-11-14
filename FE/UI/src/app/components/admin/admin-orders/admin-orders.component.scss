@@ -74,4 +74,30 @@
       }
     }
   }
+
+  .paginator {
+    margin-top: 20px;
+    background: transparent;
+    color: #009d34;
+
+    ::ng-deep {
+      .mat-mdc-paginator {
+        background: transparent;
+      }
+
+      .mat-mdc-paginator-container {
+        color: #009d34;
+      }
+
+      .mat-mdc-paginator-range-label,
+      .mat-mdc-paginator-page-size-label {
+        color: #009d34;
+      }
+
+      .mat-mdc-paginator-navigation-previous,
+      .mat-mdc-paginator-navigation-next {
+        color: #009d34;
+      }
+    }
+  }
 }

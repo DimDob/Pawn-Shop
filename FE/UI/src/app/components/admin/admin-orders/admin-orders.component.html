@@ -7,7 +7,7 @@
   <h1>All Orders</h1>
 
   <div class="orders-grid">
-    @for (order of orders(); track order.id) {
+    @for (order of paginatedOrders(); track order.id) {
     <div class="order-card">
       <div class="order-header">
         <h3>Order Details</h3>
@@ -32,4 +32,13 @@
     </div>
     }
   </div>
+
+  <mat-paginator
+    [length]="totalOrders()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[25, 50, 100]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+    class="paginator">
+  </mat-paginator>
 </div>
