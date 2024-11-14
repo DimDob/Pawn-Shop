@@ -198,7 +198,7 @@ describe("EditProductComponent", () => {
     component.editProductForm.controls["price"].setValue(150);
     component.editProductForm.controls["color"].setValue("Red");
     component.editProductForm.controls["size"].setValue(14);
-    component.editProductForm.controls["sex"].setValue("unisex");
+    component.editProductForm.controls["sex"].setValue("none");
 
     // Update productTypeId based on new category
     component["updateProductTypeId"](Category.ELECTRONICS);
@@ -220,7 +220,7 @@ describe("EditProductComponent", () => {
         price: 150,
         color: "Red",
         size: 14,
-        sex: "unisex",
+        sex: "none",
         productTypeId: "type2"
       })
     );

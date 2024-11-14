@@ -52,7 +52,7 @@ export class ProductService {
           condition: productData.get("condition") as string,
           color: productData.get("color") as string,
           size: Number(productData.get("size")),
-          sex: (productData.get("sex") as string) || "Unisex",
+          sex: (productData.get("sex") as string) || "none",
           quantityInStock: 10,
           isRunOutOfStock: false,
           productTypeId: productType.id
@@ -97,7 +97,7 @@ export class ProductService {
           condition: productData.condition,
           color: productData.color,
           size: Number(productData.size),
-          sex: productData.sex || "Unisex",
+          sex: productData.sex || "none",
           quantityInStock: 5,
           isRunOutOfStock: false,
           productTypeId: productType.id,
