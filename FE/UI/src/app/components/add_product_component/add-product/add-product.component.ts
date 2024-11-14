@@ -39,6 +39,7 @@ export class AddProductComponent implements OnInit {
       model: [""],
       name: ["", Validators.required],
       category: ["", Validators.required],
+      condition: ["", Validators.required],
       price: ["", [Validators.required, Validators.min(0)]],
       productTypeId: ["", Validators.required]
     });

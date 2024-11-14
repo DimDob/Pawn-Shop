@@ -32,6 +32,16 @@
     </div>
 
     <div>
+      <label>Condition</label>
+      <select formControlName="condition">
+        <option value="">Select Condition</option>
+        <option value="new">New</option>
+        <option value="like new">Like New</option>
+        <option value="used">Used</option>
+      </select>
+    </div>
+
+    <div>
       <label>Price (€)</label>
       <input formControlName="price" type="number" min="0" step="0.01" (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)" />
     </div>
