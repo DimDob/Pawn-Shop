@@ -24,10 +24,14 @@
     margin: 0;
     margin-bottom: 20px;
   }
-  // make search border green
+
+  .search-label {
+    color: #009d34;
+  }
+
   .search-container {
     width: 100%;
-    max-width: 400px; // Same width as the title
+    max-width: 400px;
     margin: 0 auto;
 
     mat-form-field {

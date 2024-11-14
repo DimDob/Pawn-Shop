@@ -7,9 +7,9 @@
 
   <!-- Add search input -->
   <div class="search-container">
-    <mat-form-field appearance="outline">
-      <mat-label>Search my products</mat-label>
-      <input matInput type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" />
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label class="search-label">Search my products</mat-label>
+      <input matInput type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" class="search-input" />
     </mat-form-field>
   </div>
 </div>
