@@ -6,6 +6,7 @@ import { ProductService } from "../../../shared/services/product.service";
 import { NotificationService } from "../../../shared/services/notification.service";
 import { faBoxArchive } from "@fortawesome/free-solid-svg-icons";
 import { PageEvent, MatPaginator } from "@angular/material/paginator";
+import { Category } from "../../main_page_component/main-page/enums/Category";
 
 @Component({
   selector: "app-my-products",
@@ -22,6 +23,11 @@ export class MyProductsComponent implements OnInit {
   protected paginatedProducts = signal<Products[]>([]);
   protected products = signal<Products[]>([]);
   protected isGridView = signal<boolean>(true);
+  protected searchTerm = signal<string>("");
+  protected selectedSortOption = signal<string>("");
+  protected selectedCategory = signal<string>("");
+  protected categories = Object.values(Category);
+  protected originalProducts = signal<Products[]>([]);
 
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
@@ -40,9 +46,10 @@ export class MyProductsComponent implements OnInit {
     this.productService.getMyProducts().subscribe({
       next: (products) => {
         console.log("MyProductsComponent: Products loaded successfully", products);
+        this.originalProducts.set(products);
         this.products.set(products);
         this.totalProducts.set(products.length);
-        this.paginateProducts();
+        this.applyFilters();
       },
       error: (error) => {
         console.error("MyProductsComponent: Error loading products", error);
@@ -78,4 +85,47 @@ export class MyProductsComponent implements OnInit {
     console.log("Toggling view");
     this.isGridView.update(value => !value);
   }
+
+  protected onSearchChange(term: string): void {
+    console.log("Search term changed:", term);
+    this.searchTerm.set(term);
+    this.applyFilters();
+  }
+
+  protected onSortChange(option: string): void {
+    console.log("Sort option changed:", option);
+    this.selectedSortOption.set(option);
+    this.applyFilters();
+  }
+
+  protected onCategoryChange(category: string): void {
+    console.log("Category changed:", category);
+    this.selectedCategory.set(category);
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
+    console.log("Applying filters");
+    let filteredProducts = [...this.originalProducts()];
+
+    // Apply search filter
+    if (this.searchTerm()) {
+      const searchTerm = this.searchTerm().toLowerCase();
+      filteredProducts = filteredProducts.filter(product =>
+        product.name.toLowerCase().includes(searchTerm) ||
+        product.manufacturer?.toLowerCase().includes(searchTerm) ||
+        product.model?.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Apply category filter
+    if (this.selectedCategory()) {
+      filteredProducts = filteredProducts.filter(product => product.category === this.selectedCategory());
+    }
+
+    this.products.set(filteredProducts);
+    this.totalProducts.set(filteredProducts.length);
+    this.paginateProducts();
+  }
 }
+
