@@ -17,7 +17,8 @@ create table products
     owner_id            uuid         not null,
     category            varchar(255),
     product_type_id     uuid,
+    created_at          TIMESTAMP    DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    description         varchar(50)  not null check (length(description) >= 3),
     picture             TEXT,
-    created_at         TIMESTAMP    DEFAULT CURRENT_TIMESTAMP NOT NULL,
     primary key (id)
 )

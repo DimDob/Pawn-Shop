@@ -86,6 +86,7 @@ public class ProductServiceImp implements ProductService {
             existingProduct.setQuantityInStock(productDto.getQuantityInStock());
             existingProduct.setIsRunOutOfStock(productDto.getIsRunOutOfStock());
             existingProduct.setProductType(productType);
+            existingProduct.setDescription(productDto.getDescription());
 
             // Save the updated product
             productRepository.save(existingProduct);
