@@ -7,31 +7,45 @@
 </div>
 
 <div class="main-page-container">
-  <div class="container">
-    @for (product of products(); track product.id) {
+  <div class="controls">
+    <div class="view-toggle">
+      <button mat-button (click)="toggleView()" [class.active]="isGridView()">
+        <span>Grid</span>
+      </button>
+      <button mat-button (click)="toggleView()" [class.active]="!isGridView()">
+        <span>List</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container" [class.list-view]="!isGridView()">
+    @for(product of paginatedProducts(); track product.id) {
     <div class="card" (click)="goToDetails(product.id)">
       <div class="imgBx">
-        <img [src]="product.picture" [alt]="product.name" />
+        <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
       </div>
-
       <div class="contentBx">
-        <h2>{{ product.name }}</h2>
-
-        @if (product.size !== undefined) {
-        <div class="size">
-          <h3>Size :</h3>
-          <span>{{ product.size }}</span>
+        <div class="product-info">
+          <h2>{{ product?.name }}</h2>
+          <div class="price">{{ product?.price | currency }}</div>
+          <div class="details">
+            @if(product?.manufacturer) {
+            <div class="manufacturer">
+              <h3>Manufacturer:</h3>
+              <span>{{ product?.manufacturer }}</span>
+            </div>
+            } @if(product?.model) {
+            <div class="model">
+              <h3>Model:</h3>
+              <span>{{ product?.model }}</span>
+            </div>
+            }
+          </div>
         </div>
-        } @if (product.color) {
-        <div class="color">
-          <h3>Color :</h3>
-          <span>{{ product.color }}</span>
-        </div>
-        }
-
-        <a class="buy-now" (click)="goToDetails(product.id); $event.stopPropagation()">View Details</a>
       </div>
     </div>
     }
   </div>
+
+  <mat-paginator [length]="totalProducts()" [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
 </div>
