@@ -12,12 +12,12 @@
     </div>
 
     <div>
-      <label>Manufacturer</label>
+      <label>Manufacturer (optional)</label>
       <input formControlName="manufacturer" type="text" />
     </div>
 
     <div>
-      <label>Model</label>
+      <label>Model (optional)</label>
       <input formControlName="model" type="text" />
     </div>
 
@@ -26,20 +26,14 @@
       <select formControlName="category">
         <option value="">Select Category</option>
         @for (category of categories; track category) {
-          <option [value]="category">{{ category }}</option>
+        <option [value]="category">{{ category }}</option>
         }
       </select>
     </div>
 
     <div>
       <label>Price (€)</label>
-      <input
-        formControlName="price"
-        type="number"
-        min="0"
-        step="0.01"
-        (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)"
-      />
+      <input formControlName="price" type="number" min="0" step="0.01" (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)" />
     </div>
 
     <div>
@@ -49,13 +43,7 @@
 
     <div>
       <label>Size (EU) (optional)</label>
-      <input
-        formControlName="size"
-        type="number"
-        min="0"
-        step="0.5"
-        (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)"
-      />
+      <input formControlName="size" type="number" min="0" step="0.5" (keypress)="(($event.charCode >= 48 && $event.charCode <= 57) || $event.charCode === 46)" />
     </div>
 
     <div>
@@ -77,6 +65,6 @@
   </form>
 
   @if (errorMessage) {
-    <p class="error-message">{{ errorMessage }}</p>
+  <p class="error-message">{{ errorMessage }}</p>
   }
 </div>
