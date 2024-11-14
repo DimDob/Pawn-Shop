@@ -47,6 +47,7 @@ export class EditProductComponent implements OnInit {
       name: ["", Validators.required],
       category: ["", Validators.required],
       price: ["", [Validators.required, Validators.min(0)]],
+      quantityInStock: ["", Validators.required],
       productTypeId: ["", Validators.required]
     });
 

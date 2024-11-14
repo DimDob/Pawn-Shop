@@ -53,7 +53,7 @@ export class ProductService {
           color: productData.get("color") as string,
           size: Number(productData.get("size")),
           sex: (productData.get("sex") as string) || "none",
-          quantityInStock: 10,
+          quantityInStock: Number(productData.get("quantityInStock")),
           isRunOutOfStock: false,
           productTypeId: productType.id
         };
@@ -98,7 +98,7 @@ export class ProductService {
           color: productData.color,
           size: Number(productData.size),
           sex: productData.sex || "none",
-          quantityInStock: 5,
+          quantityInStock: Number(productData.quantityInStock),
           isRunOutOfStock: false,
           productTypeId: productType.id,
           ownerId: productData.ownerId
