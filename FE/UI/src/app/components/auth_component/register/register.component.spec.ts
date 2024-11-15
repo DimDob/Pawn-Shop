@@ -98,14 +98,16 @@ describe("RegisterComponent", () => {
     form.get("email")?.markAsTouched();
     fixture.detectChanges();
 
-    const errorMsg = fixture.debugElement.query(By.css(".error-message"));
-    expect(errorMsg).toBeTruthy();
-    expect(errorMsg.nativeElement.textContent).toContain("Please enter a valid email address");
+    const emailErrorMsg = fixture.debugElement.queryAll(By.css(".error-message")).find(de => de.nativeElement.textContent.includes("Please enter a valid email address"));
+    expect(emailErrorMsg).toBeTruthy();
+    if (emailErrorMsg) {
+      expect(emailErrorMsg.nativeElement.textContent).toContain("Please enter a valid email address");
+    }
   });
 
   it("must show an error if the password does not match the pattern", () => {
     const form = component.registerForm;
-    form.get("password")?.setValue("invalid1"); // Променено: минимум 8 символа, но не съответства на патерна
+    form.get("password")?.setValue("invalid1");
     form.get("password")?.markAsTouched();
     fixture.detectChanges();
 
