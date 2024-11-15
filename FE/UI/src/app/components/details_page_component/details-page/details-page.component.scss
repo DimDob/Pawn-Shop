@@ -99,6 +99,7 @@
 
       &.edit-button {
         background-color: #009d34;
+        width: 140px;
 
         &:hover {
           background-color: darken(#009d34, 10%);
@@ -108,7 +109,7 @@
 
       &.delete-button {
         background-color: #ff4081;
-
+        width: 140px;
         &:hover {
           background-color: darken(#ff4081, 10%);
           transform: translateY(-2px);
