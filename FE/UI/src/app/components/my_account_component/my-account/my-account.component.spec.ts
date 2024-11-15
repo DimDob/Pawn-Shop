@@ -19,6 +19,16 @@ class MockAuthService {
       return of(false);
     }
   }
+
+  getCurrentUser() {
+    return {
+      id: 1,
+      loginUsername: "testuser",
+      isAdmin: false,
+      isEmployee: false,
+      role: "user"
+    };
+  }
 }
 
 // Mock for Router
