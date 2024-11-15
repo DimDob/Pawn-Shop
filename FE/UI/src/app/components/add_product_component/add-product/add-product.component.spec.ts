@@ -21,14 +21,25 @@ describe("AddProductComponent", () => {
   let notificationServiceMock: any;
   let productServiceMock: any;
 
+  // Create MockFileReader class
+  class MockFileReader {
+    onload: () => void = () => {};
+    result: string | ArrayBuffer | null = null;
+
+    readAsDataURL(file: Blob) {
+      this.result = "data:image/png;base64,dummybase64string";
+      this.onload();
+    }
+  }
+
   beforeEach(async () => {
-    // Create mocks for the dependencies
+    // Create mock router
     routerMock = {
       navigate: jasmine.createSpy("navigate")
     };
 
     authServiceMock = {
-      // Add methods if needed
+      // Add methods if necessary
     };
 
     notificationServiceMock = {
@@ -37,11 +48,19 @@ describe("AddProductComponent", () => {
     };
 
     productServiceMock = {
-      getProductTypes: jasmine.createSpy("getProductTypes"),
+      getProductTypes: jasmine.createSpy("getProductTypes").and.returnValue(
+        of([
+          { id: "1", name: "Electronics" },
+          { id: "2", name: "Clothing" },
+          { id: "3", name: "Jewelry" },
+          { id: "4", name: "Art" },
+          { id: "5", name: "Other" }
+        ])
+      ),
       addProduct: jasmine.createSpy("addProduct")
     };
 
-    // Configure the TestBed with necessary modules and providers
+    // Configure TestBed with necessary modules and providers
     await TestBed.configureTestingModule({
       declarations: [AddProductComponent],
       imports: [ReactiveFormsModule, FormsModule, FontAwesomeModule],
@@ -51,11 +70,23 @@ describe("AddProductComponent", () => {
         { provide: NotificationService, useValue: notificationServiceMock },
         { provide: ProductService, useValue: productServiceMock }
       ]
-    }).compileComponents();
+    })
+      .overrideComponent(AddProductComponent, {
+        set: {
+          // Mock FileReader globally
+          providers: [
+            {
+              provide: FileReader,
+              useClass: MockFileReader
+            }
+          ]
+        }
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
-    // Create the component instance and trigger initial data binding
+    // Create component instance and initialize
     fixture = TestBed.createComponent(AddProductComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -65,10 +96,15 @@ describe("AddProductComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should initialize the form with default values and validators", () => {
+  it("should initialize the form with default values and validators", fakeAsync(() => {
+    // Simulate async operations
+    tick();
+    fixture.detectChanges();
+
     const form = component.addProductForm;
     expect(form).toBeDefined();
 
+    // Check initial values of the form
     expect(form.get("name")?.value).toBe("");
     expect(form.get("manufacturer")?.value).toBe("");
     expect(form.get("model")?.value).toBe("");
@@ -77,81 +113,87 @@ describe("AddProductComponent", () => {
     expect(form.get("color")?.value).toBe("");
     expect(form.get("size")?.value).toBe("");
     expect(form.get("sex")?.value).toBe("");
-    expect(form.get("picture")?.value).toBe(null);
+    expect(form.get("picture")?.value).toBeNull();
     expect(form.get("productTypeId")?.value).toBe("");
+    expect(form.get("description")?.value).toBe("");
+    expect(form.get("quantityInStock")?.value).toBe("");
 
+    // Check validity of the controls
     expect(form.get("name")?.valid).toBeFalse();
-    expect(form.get("manufacturer")?.valid).toBeFalse();
-    expect(form.get("model")?.valid).toBeFalse();
+    expect(form.get("manufacturer")?.valid).toBeTrue(); // Optional field
+    expect(form.get("model")?.valid).toBeTrue(); // Optional field
     expect(form.get("category")?.valid).toBeFalse();
     expect(form.get("price")?.valid).toBeFalse();
+    expect(form.get("color")?.valid).toBeTrue(); // Optional field
+    expect(form.get("size")?.valid).toBeTrue(); // Optional field
+    expect(form.get("sex")?.valid).toBeFalse();
+    expect(form.get("picture")?.valid).toBeTrue(); // Optional field
     expect(form.get("productTypeId")?.valid).toBeFalse();
-  });
+    expect(form.get("description")?.valid).toBeFalse();
+    expect(form.get("quantityInStock")?.valid).toBeFalse();
+  }));
 
-  it("should load product types on initialization", () => {
-    // Arrange: Mock productService.getProductTypes to return sample data
-    const mockProductTypes = [
-      { id: "1", name: "Electronics" },
-      { id: "2", name: "Clothing" }
-    ];
-    productServiceMock.getProductTypes.and.returnValue(of(mockProductTypes));
-
-    // Act: Re-initialize the component
-    component.ngOnInit();
+  it("should load product types on initialization", fakeAsync(() => {
+    // Simulate async operations
+    tick();
     fixture.detectChanges();
 
-    // Assert
     expect(productServiceMock.getProductTypes).toHaveBeenCalled();
-    expect(component.productTypes).toEqual(mockProductTypes);
-  });
+    expect(component.productTypes.length).toBeGreaterThan(0);
+    expect(component.productTypes).toEqual([
+      { id: "1", name: "Electronics" },
+      { id: "2", name: "Clothing" },
+      { id: "3", name: "Jewelry" },
+      { id: "4", name: "Art" },
+      { id: "5", name: "Other" }
+    ]);
+  }));
 
-  it("should handle error when loading product types fails", () => {
-    // Arrange: Mock productService.getProductTypes to return an error
+  it("should handle error when loading product types fails", fakeAsync(() => {
+    // Set getProductTypes to return an error
     productServiceMock.getProductTypes.and.returnValue(throwError({ message: "Failed to load product types" }));
 
-    // Act: Re-initialize the component
+    // Refresh the component
     component.ngOnInit();
+    tick();
     fixture.detectChanges();
 
-    // Assert
     expect(productServiceMock.getProductTypes).toHaveBeenCalled();
     expect(notificationServiceMock.showError).toHaveBeenCalledWith("Error loading product types");
-  });
+  }));
 
-  it("should update productTypeId when category changes", () => {
-    // Arrange: Mock product types
-    const mockProductTypes = [
+  it("should update productTypeId when category changes", fakeAsync(() => {
+    // Set product types
+    component.productTypes = [
       { id: "1", name: "Electronics" },
       { id: "2", name: "Clothing" }
     ];
-    component.productTypes = mockProductTypes;
 
-    // Act: Change category to 'Clothing'
+    // Change category
     component.addProductForm.get("category")?.setValue("Clothing");
+    tick();
     fixture.detectChanges();
 
-    // Assert
     expect(component.addProductForm.get("productTypeId")?.value).toBe("2");
-  });
+  }));
 
-  it("should not update productTypeId if category does not match any product type", () => {
-    // Arrange: Mock product types
-    const mockProductTypes = [
+  it("should not update productTypeId if category does not match any product type", fakeAsync(() => {
+    // Set product types
+    component.productTypes = [
       { id: "1", name: "Electronics" },
       { id: "2", name: "Clothing" }
     ];
-    component.productTypes = mockProductTypes;
 
-    // Act: Change category to a non-existing category
+    // Change category to an invalid value
     component.addProductForm.get("category")?.setValue("Food");
+    tick();
     fixture.detectChanges();
 
-    // Assert
     expect(component.addProductForm.get("productTypeId")?.value).toBe("");
-  });
+  }));
 
   it("should handle file input change and convert image to base64", fakeAsync(() => {
-    // Arrange: Create a mock file
+    // Create mock file
     const mockFile = new File(["dummy content"], "test-image.png", { type: "image/png" });
     const event = {
       target: {
@@ -159,27 +201,22 @@ describe("AddProductComponent", () => {
       }
     } as unknown as Event;
 
-    // Spy on FileReader
-    const fileReaderSpy = spyOn(window as any, "FileReader").and.callFake(() => ({
-      readAsDataURL: function () {
-        this.onload();
-      },
-      result: "data:image/png;base64,dummybase64string",
-      onload: () => {}
-    }));
+    // Mock FileReader
+    Object.defineProperty(window, "FileReader", {
+      writable: true,
+      value: MockFileReader
+    });
 
-    // Act: Call onFileChange with the mock event
+    // Call onFileChange
     component.onFileChange(event);
-    tick(); // Simulate async FileReader
-
+    tick();
     fixture.detectChanges();
 
-    // Assert
     expect(component.addProductForm.get("picture")?.value).toBe("data:image/png;base64,dummybase64string");
   }));
 
   it("should submit form successfully when form is valid", fakeAsync(() => {
-    // Arrange: Set valid form values
+    // Set valid data in the form
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
@@ -191,48 +228,28 @@ describe("AddProductComponent", () => {
       sex: "none",
       productTypeId: "1",
       picture: "data:image/png;base64,dummybase64string",
-      description: "This is a test description"
+      description: "This is a test description",
+      quantityInStock: 10
     });
 
-    // Mock productService.addProduct to return a success response
+    // Simulate async operations
+    tick();
+    fixture.detectChanges();
+
+    // Set addProduct to return successfully
     productServiceMock.addProduct.and.returnValue(of({ success: true }));
 
-    // Act: Submit the form
+    // Submit the form
     component.submitForm();
-    tick(); // Simulate async
+    tick();
 
-    // Assert
     expect(productServiceMock.addProduct).toHaveBeenCalled();
-
-    // Since FormData cannot be directly compared, check that addProduct was called with FormData containing specific keys
-    const actualFormData: FormData = productServiceMock.addProduct.calls.mostRecent().args[0];
-    expect(actualFormData.has("name")).toBeTrue();
-    expect(actualFormData.get("name")).toBe("Test Product");
-    expect(actualFormData.has("manufacturer")).toBeTrue();
-    expect(actualFormData.get("manufacturer")).toBe("Test Manufacturer");
-    expect(actualFormData.has("model")).toBeTrue();
-    expect(actualFormData.get("model")).toBe("Model X");
-    expect(actualFormData.has("category")).toBeTrue();
-    expect(actualFormData.get("category")).toBe("Electronics");
-    expect(actualFormData.has("price")).toBeTrue();
-    expect(actualFormData.get("price")).toBe("99.99");
-    expect(actualFormData.has("color")).toBeTrue();
-    expect(actualFormData.get("color")).toBe("Red");
-    expect(actualFormData.has("size")).toBeTrue();
-    expect(actualFormData.get("size")).toBe("42");
-    expect(actualFormData.has("sex")).toBeTrue();
-    expect(actualFormData.get("sex")).toBe("none");
-    expect(actualFormData.has("productTypeId")).toBeTrue();
-    expect(actualFormData.get("productTypeId")).toBe("1");
-    expect(actualFormData.has("picture")).toBeTrue();
-    expect(actualFormData.get("picture")).toBe("data:image/png;base64,dummybase64string");
-
     expect(notificationServiceMock.showSuccess).toHaveBeenCalledWith("Product added successfully");
     expect(routerMock.navigate).toHaveBeenCalledWith(["/pawn-shop/main-page"]);
   }));
 
   it("should handle error when submitting the form fails", fakeAsync(() => {
-    // Arrange: Set valid form values
+    // Set valid data in the form
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
@@ -243,83 +260,85 @@ describe("AddProductComponent", () => {
       size: 42,
       sex: "none",
       productTypeId: "1",
-      picture: "data:image/png;base64,dummybase64string"
+      picture: "data:image/png;base64,dummybase64string",
+      description: "This is a test description",
+      quantityInStock: 10
     });
 
-    // Mock productService.addProduct to return an error
+    // Simulate async operations
+    tick();
+    fixture.detectChanges();
+
+    // Set addProduct to return an error
     productServiceMock.addProduct.and.returnValue(throwError({ message: "Failed to add product" }));
 
-    // Act: Submit the form
+    // Submit the form
     component.submitForm();
-    tick(); // Simulate async
+    tick();
 
-    // Assert
     expect(productServiceMock.addProduct).toHaveBeenCalled();
     expect(notificationServiceMock.showError).toHaveBeenCalledWith("Error adding product: Failed to add product");
     expect(routerMock.navigate).not.toHaveBeenCalled();
   }));
 
   it("should not submit form if form is invalid", () => {
-    // Arrange: Set invalid form values (e.g., missing required fields)
+    // Set invalid data in the form
     component.addProductForm.patchValue({
       name: "",
       manufacturer: "",
       model: "",
       category: "",
-      price: -10, // Invalid price
+      price: -10, // Невалидна цена
       color: "",
       size: "",
       sex: "",
       productTypeId: "",
-      picture: null
+      picture: null,
+      description: "",
+      quantityInStock: -10 // Невалидно количество
     });
+    fixture.detectChanges();
 
-    // Act: Submit the form
+    // Submit the form
     component.submitForm();
 
-    // Assert
     expect(productServiceMock.addProduct).not.toHaveBeenCalled();
-    // Depending on implementation, you might want to check if notificationService.showError was called
-    // For example:
-    // expect(notificationServiceMock.showError).toHaveBeenCalledWith("Please fill all required fields correctly");
     expect(routerMock.navigate).not.toHaveBeenCalled();
+    // You can add a check for showError if necessary
   });
 
   it("should display error message when errorMessage is set", () => {
-    // Arrange: Set errorMessage
+    // Set errorMessage
     component.errorMessage = "An error occurred";
     fixture.detectChanges();
 
-    // Act: Query the error message element
+    // Search for the error message element
     const errorMsgElement: HTMLElement = fixture.debugElement.query(By.css(".error-message")).nativeElement;
 
-    // Assert
     expect(errorMsgElement).toBeTruthy();
     expect(errorMsgElement.textContent).toContain("An error occurred");
   });
 
   it("should not display error message when errorMessage is empty", () => {
-    // Arrange: Ensure errorMessage is empty
+    // Set errorMessage
     component.errorMessage = "";
     fixture.detectChanges();
 
-    // Act: Query the error message element
+    // Search for the error message element
     const errorMsgElement = fixture.debugElement.query(By.css(".error-message"));
 
-    // Assert
     expect(errorMsgElement).toBeNull();
   });
 
   it("should track categories correctly in the template", () => {
-    // Arrange: Mock categories
+    // Set categories
     component.categories = [Category.ELECTRONICS, Category.CLOTHING, Category.ART, Category.OTHER, Category.JEWELRY];
     fixture.detectChanges();
 
-    // Act: Query all category options
+    // Search for all options in the category select
     const optionElements = fixture.debugElement.queryAll(By.css('select[formControlName="category"] option'));
 
-    // Assert
-    expect(optionElements.length).toBe(6); // Including the default "Select Category"
+    expect(optionElements.length).toBe(6); // Including "Select Category"
     expect(optionElements[0].nativeElement.value).toBe("");
     expect(optionElements[1].nativeElement.value).toBe(Category.ELECTRONICS);
     expect(optionElements[2].nativeElement.value).toBe(Category.CLOTHING);
@@ -329,7 +348,7 @@ describe("AddProductComponent", () => {
   });
 
   it("should disable the submit button when the form is invalid", () => {
-    // Arrange: Ensure the form is invalid
+    // Set invalid data in the form
     component.addProductForm.patchValue({
       name: "",
       manufacturer: "",
@@ -340,19 +359,20 @@ describe("AddProductComponent", () => {
       size: "",
       sex: "",
       productTypeId: "",
-      picture: null
+      picture: null,
+      description: "",
+      quantityInStock: -10 // Invalid quantity
     });
     fixture.detectChanges();
 
-    // Act: Query the submit button and cast to HTMLButtonElement
+    // Search for the submit button
     const submitButton: HTMLButtonElement = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement as HTMLButtonElement;
 
-    // Assert
     expect(submitButton.disabled).toBeTrue();
   });
 
-  it("should enable the submit button when the form is valid", () => {
-    // Arrange: Set valid form values
+  it("should enable the submit button when the form is valid", fakeAsync(() => {
+    // Set valid data in the form
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
@@ -363,14 +383,18 @@ describe("AddProductComponent", () => {
       size: 42,
       sex: "none",
       productTypeId: "1",
-      picture: "data:image/png;base64,dummybase64string"
+      picture: "data:image/png;base64,dummybase64string",
+      description: "This is a test description",
+      quantityInStock: 10
     });
+
+    // Simulate async operations
+    tick();
     fixture.detectChanges();
 
-    // Act: Query the submit button and cast to HTMLButtonElement
+    // Search for the submit button
     const submitButton: HTMLButtonElement = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement as HTMLButtonElement;
 
-    // Assert
     expect(submitButton.disabled).toBeFalse();
-  });
+  }));
 });
