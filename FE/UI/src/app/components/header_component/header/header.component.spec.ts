@@ -33,7 +33,6 @@ describe("HeaderComponent", () => {
   const mockFavorites$ = new BehaviorSubject<any[]>([]);
   const mockEvents$ = new BehaviorSubject<any>(new NavigationEnd(1, "/", "/"));
 
-  // Добавяне на mockUser
   const mockUser = {
     id: 1,
     loginUsername: "testUser",
@@ -42,11 +41,9 @@ describe("HeaderComponent", () => {
     role: "user"
   };
 
-  // Добавяне на mockToken
   const mockToken = "mocked-jwt-token";
 
   beforeEach(async () => {
-    // Инициализиране на шпи обектите
     cartService = jasmine.createSpyObj("CartService", ["addToCart", "removeFromCart"], {
       items$: mockItems$.asObservable()
     });
@@ -57,30 +54,21 @@ describe("HeaderComponent", () => {
       events: mockEvents$.asObservable()
     });
 
-    // Добавяне на 'getCurrentUser' и 'getToken' към AuthService шпи обекта
     authService = jasmine.createSpyObj("AuthService", ["logout", "getCurrentUser", "getToken"]);
-    authService.getCurrentUser.and.returnValue(mockUser as unknown as User); // Задаване на стойност
-    authService.getToken.and.returnValue(mockToken); // Задаване на стойност
+    authService.getCurrentUser.and.returnValue(mockUser as unknown as User);
+    authService.getToken.and.returnValue(mockToken);
 
     favoritesService = jasmine.createSpyObj("FavoritesService", ["addToFavorites", "removeFromFavorites"], {
       favorites$: mockFavorites$.asObservable()
     });
 
+    router.navigateByUrl.and.returnValue(Promise.resolve(true));
+
     await TestBed.configureTestingModule({
-      imports: [
-        FormsModule, // Добавен FormsModule
-        MatToolbarModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatIconModule,
-        NoopAnimationsModule
-      ],
+      imports: [FormsModule, MatToolbarModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatMenuModule, MatIconModule, NoopAnimationsModule],
       declarations: [HeaderComponent],
       providers: [{ provide: CartService, useValue: cartService }, { provide: SearchService, useValue: searchService }, { provide: Router, useValue: router }, { provide: AuthService, useValue: authService }, { provide: FavoritesService, useValue: favoritesService }, provideRouter([])],
-      schemas: [NO_ERRORS_SCHEMA] // Добавено
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
