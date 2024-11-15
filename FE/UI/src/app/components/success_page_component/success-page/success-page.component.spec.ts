@@ -2,8 +2,9 @@
 
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { SuccessPageComponent } from "./success-page.component";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome"; // Added if the component uses FontAwesome icons
-import { RouterTestingModule } from "@angular/router/testing"; // Added if there is navigation
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { RouterTestingModule } from "@angular/router/testing";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 
 describe("SuccessPageComponent", () => {
   let component: SuccessPageComponent;
@@ -12,10 +13,7 @@ describe("SuccessPageComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SuccessPageComponent],
-      imports: [
-        FontAwesomeModule, // Included if FontAwesome icons are used
-        RouterTestingModule // Included if the component uses Router
-      ],
+      imports: [FontAwesomeModule, RouterTestingModule, NoopAnimationsModule],
       providers: []
     }).compileComponents();
   });
