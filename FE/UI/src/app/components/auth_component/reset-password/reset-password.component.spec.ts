@@ -85,8 +85,12 @@ describe("ResetPasswordComponent", () => {
 
   it("must show an error if the new password does not match the pattern", () => {
     const form = component.resetPasswordForm;
-    form.get("newPassword")?.setValue("invalid"); // does not match the pattern
+    form.get("newPassword")?.setValue("invalid");
     form.get("confirmPassword")?.setValue("invalid");
+
+    form.get("newPassword")?.markAsTouched();
+    form.get("confirmPassword")?.markAsTouched();
+
     fixture.detectChanges();
 
     const errorMsg = fixture.debugElement.query(By.css(".error-message"));
