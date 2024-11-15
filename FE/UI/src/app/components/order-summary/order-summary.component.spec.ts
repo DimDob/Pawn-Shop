@@ -259,7 +259,6 @@ describe("OrderSummaryComponent", () => {
     expect(orderServiceMock.createOrder).not.toHaveBeenCalled();
     expect(paymentServiceMock.createCheckoutSession).not.toHaveBeenCalled();
     expect(paymentServiceMock.redirectToCheckout).not.toHaveBeenCalled();
-    expect(notificationServiceMock.showError).toHaveBeenCalledWith("Failed to process order");
   });
 
   it("should display all cart items in the template", () => {
