@@ -1,19 +1,18 @@
 // UI\src\app\app.component.spec.ts
 import { TestBed } from "@angular/core/testing";
 import { AppComponent } from "./app.component";
-import { HttpClientTestingModule } from "@angular/common/http/testing"; // Добавено
-import { RouterTestingModule } from "@angular/router/testing"; // Добавено
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { RouterModule } from "@angular/router";
+import { ErrorHandlerService } from "./shared/services/error-handler.service";
 
 describe("AppComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
-      imports: [
-        HttpClientTestingModule, // Запазено
-        RouterTestingModule // Добавено
-      ],
+      imports: [HttpClientTestingModule, RouterModule.forRoot([])],
       providers: [
-        { provide: "title", useValue: "auth" } // Премахнат provideRouter([])
+        { provide: "title", useValue: "auth" },
+        { provide: ErrorHandlerService, useValue: {} }
       ]
     }).compileComponents();
   });
