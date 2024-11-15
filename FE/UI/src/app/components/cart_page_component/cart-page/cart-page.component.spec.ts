@@ -7,6 +7,7 @@ import { Router } from "@angular/router";
 import { of } from "rxjs";
 import { provideRouter, Routes } from "@angular/router";
 import { Component } from "@angular/core";
+import { Category } from "../../main_page_component/main-page/enums/Category";
 
 @Component({
   template: ""
@@ -31,7 +32,10 @@ describe("CartPageComponent", () => {
     model: "Air Max",
     name: "Test Shoe",
     category: "Shoes",
-    price: 100
+    price: 100,
+    productTypeId: "1",
+    createdAt: "2024-01-01",
+    description: "Description 1"
   };
 
   const mockCartItems = [{ product: mockProducts, quantity: 2 }];
@@ -57,7 +61,8 @@ describe("CartPageComponent", () => {
   });
 
   it("should initialize with cart items", () => {
-    expect(component.cartItems).toEqual(mockCartItems);
+    const expectedCartItems = [{ product: { ...mockProducts, id: "1", category: Category.OTHER }, quantity: 2 }];
+    expect(component.cartItems).toEqual(expectedCartItems);
   });
 
   it("should increase quantity", () => {

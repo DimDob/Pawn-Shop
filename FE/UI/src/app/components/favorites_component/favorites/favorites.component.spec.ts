@@ -35,7 +35,8 @@ describe("FavoritesComponent", () => {
         createdAt: "2024-01-01",
         manufacturer: "Manufacturer A",
         model: "Model X",
-        condition: "new"
+        condition: "new",
+        description: "Description 1"
       },
       {
         id: "2",
@@ -47,7 +48,8 @@ describe("FavoritesComponent", () => {
         createdAt: "2024-02-01",
         manufacturer: "Manufacturer B",
         model: "Model Y",
-        condition: "used"
+        condition: "used",
+        description: "Description 2"
       }
     ]);
 
@@ -101,7 +103,8 @@ describe("FavoritesComponent", () => {
       createdAt: "2024-01-01",
       manufacturer: "Manufacturer A",
       model: "Model X",
-      condition: "new"
+      condition: "new",
+      description: "Description 1"
     };
 
     // Call the method

@@ -51,7 +51,8 @@ describe("MyProductsComponent", () => {
         category: Category.ELECTRONICS, // Using a valid enum member
         price: 100,
         productTypeId: "type1",
-        createdAt: "2024-01-01"
+        createdAt: "2024-01-01",
+        description: "Description 1"
       },
       {
         id: "2",
@@ -60,7 +61,8 @@ describe("MyProductsComponent", () => {
         category: Category.CLOTHING, // Using a valid enum member
         price: 200,
         productTypeId: "type2",
-        createdAt: "2024-02-01"
+        createdAt: "2024-02-01",
+        description: "Description 2"
       }
     ];
 

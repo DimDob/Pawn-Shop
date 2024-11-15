@@ -71,7 +71,8 @@ describe("MainPageComponent", () => {
         category: Category.ELECTRONICS,
         price: 100,
         productTypeId: "type1",
-        createdAt: "2024-01-01"
+        createdAt: "2024-01-01",
+        description: "Description 1"
       },
       {
         id: "2",
@@ -80,7 +81,8 @@ describe("MainPageComponent", () => {
         category: Category.CLOTHING,
         price: 200,
         productTypeId: "type2",
-        createdAt: "2024-02-01"
+        createdAt: "2024-02-01",
+        description: "Description 2"
       }
     ];
 
@@ -130,7 +132,8 @@ describe("MainPageComponent", () => {
       category: Category.ELECTRONICS,
       price: 100,
       productTypeId: "type1",
-      createdAt: "2024-01-01"
+      createdAt: "2024-01-01",
+      description: "Description 1"
     };
 
     // Call the method
@@ -162,7 +165,8 @@ describe("MainPageComponent", () => {
         category: Category.JEWELRY,
         price: 150,
         productTypeId: "type3",
-        createdAt: "2024-03-01"
+        createdAt: "2024-03-01",
+        description: "Description 1"
       }
     ];
 

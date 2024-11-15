@@ -99,4 +99,12 @@ export class CartPageComponent implements OnInit {
     console.log("CartPageComponent: Navigating to order summary");
     this.router.navigate(["/order-summary"]);
   }
+
+  getQuantity(productId: string): number {
+    console.log("Getting quantity for product ID:", productId);
+    const item = this.cartItems.find(item => item.product.id === productId);
+    const quantity = item ? item.quantity : 0;
+    console.log("Quantity found:", quantity);
+    return quantity;
+  }
 }
