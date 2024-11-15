@@ -10,14 +10,22 @@ import { Component } from "@angular/core";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { NotificationService } from "../../../shared/services/notification.service";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome"; // Добавено
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @Component({
   template: ""
 })
 class SuccessComponent {}
 
-const routes: Routes = [{ path: "success", component: SuccessComponent }];
+@Component({
+  template: ""
+})
+class OrderSummaryComponent {}
+
+const routes: Routes = [
+  { path: "success", component: SuccessComponent },
+  { path: "order-summary", component: OrderSummaryComponent }
+];
 
 describe("CartPageComponent", () => {
   let component: CartPageComponent;
@@ -27,7 +35,7 @@ describe("CartPageComponent", () => {
   let router: Router;
 
   const mockProducts = {
-    id: "1", // Променено от number на string за съответствие с интерфейса
+    id: "1",
     picture: "test.jpg",
     color: "blue",
     size: 42,
@@ -52,8 +60,8 @@ describe("CartPageComponent", () => {
     notificationService = jasmine.createSpyObj("NotificationService", ["showSuccess", "showError", "showInfo"]);
 
     await TestBed.configureTestingModule({
-      declarations: [CartPageComponent, SuccessComponent],
-      imports: [HttpClientTestingModule, FontAwesomeModule], // Добавено FontAwesomeModule
+      declarations: [CartPageComponent, SuccessComponent, OrderSummaryComponent],
+      imports: [HttpClientTestingModule, FontAwesomeModule],
       providers: [{ provide: CartService, useValue: cartService }, { provide: NotificationService, useValue: notificationService }, provideRouter(routes)]
     }).compileComponents();
 
@@ -108,6 +116,6 @@ describe("CartPageComponent", () => {
     tick();
 
     expect(cartService.clearCart).toHaveBeenCalled();
-    expect(router.url).toBe("/success");
+    expect(router.url).toBe("/order-summary");
   }));
 });

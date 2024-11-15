@@ -97,6 +97,7 @@ export class CartPageComponent implements OnInit {
 
   purchase(): void {
     console.log("CartPageComponent: Navigating to order summary");
+    this.cartService.clearCart();
     this.router.navigate(["/order-summary"]);
   }
 
