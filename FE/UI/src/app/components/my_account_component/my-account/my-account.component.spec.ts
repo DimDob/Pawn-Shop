@@ -1,4 +1,4 @@
-// UI/src/app/components/my_account_component/my-account/my-account.component.spec.ts
+// UI\src\app\components\my_account_component\my-account\my-account.component.spec.ts
 
 import { ComponentFixture, TestBed, fakeAsync, tick } from "@angular/core/testing";
 import { MyAccountComponent } from "./my-account.component";
@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { of, throwError } from "rxjs";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations"; // Добавен импорт
+import { NotificationService } from "../../../shared/services/notification.service"; // Добавен импорт
 
 // Mock for AuthService
 class MockAuthService {
@@ -31,10 +32,16 @@ class MockAuthService {
     };
   }
 
-  // Новата функция updateUserAccount
+  // Коригирана функция updateUserAccount
   updateUserAccount(data: any) {
     console.log("MockAuthService: updateUserAccount called with", data);
-    return of({ success: true });
+    if (data.currentPassword === "error_password") {
+      return throwError(() => ({
+        status: 400,
+        error: { message: "Error verifying password" }
+      }));
+    }
+    return of("Success"); // Връща стринг, съобразно responseType: 'text'
   }
 }
 
@@ -43,22 +50,36 @@ class MockRouter {
   navigate = jasmine.createSpy("navigate");
 }
 
+// Mock for NotificationService
+class MockNotificationService {
+  showSuccess = jasmine.createSpy("showSuccess");
+  showError = jasmine.createSpy("showError");
+  showInfo = jasmine.createSpy("showInfo");
+}
+
 describe("MyAccountComponent", () => {
   let component: MyAccountComponent;
   let fixture: ComponentFixture<MyAccountComponent>;
   let mockAuthService: MockAuthService;
   let mockRouter: MockRouter;
+  let mockNotificationService: MockNotificationService; // Добавена променлива
   let formBuilder: FormBuilder;
 
   beforeEach(async () => {
     mockAuthService = new MockAuthService();
     mockRouter = new MockRouter();
+    mockNotificationService = new MockNotificationService(); // Инициализиране на MockNotificationService
     formBuilder = new FormBuilder();
 
     await TestBed.configureTestingModule({
       declarations: [MyAccountComponent],
       imports: [ReactiveFormsModule, FontAwesomeModule, NoopAnimationsModule], // Добавен NoopAnimationsModule
-      providers: [{ provide: AuthService, useValue: mockAuthService }, { provide: Router, useValue: mockRouter }, FormBuilder]
+      providers: [
+        { provide: AuthService, useValue: mockAuthService },
+        { provide: Router, useValue: mockRouter },
+        { provide: NotificationService, useValue: mockNotificationService }, // Добавен MockNotificationService
+        FormBuilder
+      ]
     }).compileComponents();
   });
 
@@ -113,7 +134,7 @@ describe("MyAccountComponent", () => {
     component.myAccountForm.controls["currentPassword"].setValue("correct_password");
 
     component.onSubmit();
-    tick();
+    tick(2000); // Увеличен тик за setTimeout в handleSuccessfulUpdate
 
     expect(spy).toHaveBeenCalledWith("correct_password");
     expect(component.errorMessage).toBe("");
@@ -121,7 +142,8 @@ describe("MyAccountComponent", () => {
 
   // Test for successful data update with correct password
   it("should show success message on correct password", fakeAsync(() => {
-    spyOn(window, "alert");
+    // Спаяйте методите на NotificationService вместо window.alert
+    expect(mockNotificationService.showSuccess).not.toHaveBeenCalled();
 
     component.myAccountForm.controls["username"].setValue("testuser");
     component.myAccountForm.controls["email"].setValue("test@example.com");
@@ -129,10 +151,10 @@ describe("MyAccountComponent", () => {
     component.myAccountForm.controls["currentPassword"].setValue("correct_password");
 
     component.onSubmit();
-    tick();
+    tick(2000); // Увеличен тик за setTimeout в handleSuccessfulUpdate
 
     expect(component.errorMessage).toBe("");
-    expect(window.alert).toHaveBeenCalledWith("Account details updated successfully");
+    expect(mockNotificationService.showSuccess).toHaveBeenCalledWith("Successfully updated credentials");
   }));
 
   // Test for showing error on incorrect current password
@@ -146,6 +168,7 @@ describe("MyAccountComponent", () => {
     tick();
 
     expect(component.errorMessage).toBe("Incorrect current password");
+    expect(mockNotificationService.showError).toHaveBeenCalledWith("Incorrect current password");
   }));
 
   // Test for showing error on verifyPassword error
@@ -159,6 +182,7 @@ describe("MyAccountComponent", () => {
     tick();
 
     expect(component.errorMessage).toBe("Error verifying password");
+    expect(mockNotificationService.showError).toHaveBeenCalledWith("Error verifying password");
   }));
 
   // Test for navigation to password change page
