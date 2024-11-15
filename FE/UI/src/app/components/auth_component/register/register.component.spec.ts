@@ -10,6 +10,8 @@ import { of, throwError } from "rxjs";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { By } from "@angular/platform-browser";
 import { environment } from "../../../../environments/environment";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { trigger, transition } from "@angular/animations"; // Добавено
 
 describe("RegisterComponent", () => {
   let component: RegisterComponent;
@@ -34,13 +36,20 @@ describe("RegisterComponent", () => {
 
     await TestBed.configureTestingModule({
       declarations: [RegisterComponent],
-      imports: [ReactiveFormsModule, FontAwesomeModule],
+      imports: [ReactiveFormsModule, FontAwesomeModule, BrowserAnimationsModule],
       providers: [
         { provide: AuthService, useValue: authServiceMock },
         { provide: NotificationService, useValue: notificationServiceMock },
         { provide: Router, useValue: routerMock }
       ]
-    }).compileComponents();
+    })
+      .overrideComponent(RegisterComponent, {
+        // Добавено
+        set: {
+          animations: [trigger("if", [transition("* <=> *", [])])]
+        }
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
