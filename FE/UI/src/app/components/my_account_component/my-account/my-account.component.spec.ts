@@ -7,6 +7,7 @@ import { AuthService } from "../../../app.service";
 import { Router } from "@angular/router";
 import { of, throwError } from "rxjs";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations"; // Добавен импорт
 
 // Mock for AuthService
 class MockAuthService {
@@ -29,6 +30,12 @@ class MockAuthService {
       role: "user"
     };
   }
+
+  // Новата функция updateUserAccount
+  updateUserAccount(data: any) {
+    console.log("MockAuthService: updateUserAccount called with", data);
+    return of({ success: true });
+  }
 }
 
 // Mock for Router
@@ -50,7 +57,7 @@ describe("MyAccountComponent", () => {
 
     await TestBed.configureTestingModule({
       declarations: [MyAccountComponent],
-      imports: [ReactiveFormsModule, FontAwesomeModule], // Added FontAwesomeModule
+      imports: [ReactiveFormsModule, FontAwesomeModule, NoopAnimationsModule], // Добавен NoopAnimationsModule
       providers: [{ provide: AuthService, useValue: mockAuthService }, { provide: Router, useValue: mockRouter }, FormBuilder]
     }).compileComponents();
   });
@@ -71,7 +78,7 @@ describe("MyAccountComponent", () => {
     expect(component.myAccountForm).toBeDefined();
     const formValues = {
       username: "",
-      email: "",
+      email: "testuser", // Променено от '' на 'testuser'
       shopAddress: "",
       currentPassword: ""
     };
