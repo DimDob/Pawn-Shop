@@ -12,6 +12,7 @@ import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { of, throwError } from "rxjs";
 import { By } from "@angular/platform-browser";
+import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 
 describe("AddProductComponent", () => {
   let component: AddProductComponent;
@@ -216,12 +217,13 @@ describe("AddProductComponent", () => {
   }));
 
   it("should submit form successfully when form is valid", fakeAsync(() => {
-    // Set valid data in the form
+    // Настройване на валидни данни във формата, включително 'condition'
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: "Electronics",
+      condition: "new", // Добавено поле
       price: 99.99,
       color: "Red",
       size: 42,
@@ -232,29 +234,45 @@ describe("AddProductComponent", () => {
       quantityInStock: 10
     });
 
-    // Simulate async operations
+    // Настройване на addProduct да връща успешно Product обект
+    const mockProduct: Products = {
+      id: "123",
+      name: "Test Product",
+      manufacturer: "Test Manufacturer",
+      model: "Model X",
+      category: Category.ELECTRONICS,
+      condition: "new", // Добавено поле
+      price: 99.99,
+      color: "Red",
+      size: 42,
+      sex: "none",
+      productTypeId: "1",
+      picture: "data:image/png;base64,dummybase64string",
+      description: "This is a test description",
+      quantityInStock: 10,
+      isRunOutOfStock: false,
+      createdAt: new Date().toISOString()
+    };
+    productServiceMock.addProduct.and.returnValue(of(mockProduct));
+
+    // Подаване на формата
+    component.submitForm();
     tick();
     fixture.detectChanges();
 
-    // Set addProduct to return successfully
-    productServiceMock.addProduct.and.returnValue(of({ success: true }));
-
-    // Submit the form
-    component.submitForm();
-    tick();
-
-    expect(productServiceMock.addProduct).toHaveBeenCalled();
+    expect(productServiceMock.addProduct).toHaveBeenCalledWith(jasmine.any(FormData));
     expect(notificationServiceMock.showSuccess).toHaveBeenCalledWith("Product added successfully");
     expect(routerMock.navigate).toHaveBeenCalledWith(["/pawn-shop/main-page"]);
   }));
 
   it("should handle error when submitting the form fails", fakeAsync(() => {
-    // Set valid data in the form
+    // Настройване на валидни данни във формата, включително 'condition'
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: "Electronics",
+      condition: "new", // Добавено поле
       price: 99.99,
       color: "Red",
       size: 42,
@@ -265,18 +283,15 @@ describe("AddProductComponent", () => {
       quantityInStock: 10
     });
 
-    // Simulate async operations
+    // Настройване на addProduct да връща грешка
+    productServiceMock.addProduct.and.returnValue(throwError(() => new Error("Failed to add product")));
+
+    // Подаване на формата
+    component.submitForm();
     tick();
     fixture.detectChanges();
 
-    // Set addProduct to return an error
-    productServiceMock.addProduct.and.returnValue(throwError({ message: "Failed to add product" }));
-
-    // Submit the form
-    component.submitForm();
-    tick();
-
-    expect(productServiceMock.addProduct).toHaveBeenCalled();
+    expect(productServiceMock.addProduct).toHaveBeenCalledWith(jasmine.any(FormData));
     expect(notificationServiceMock.showError).toHaveBeenCalledWith("Error adding product: Failed to add product");
     expect(routerMock.navigate).not.toHaveBeenCalled();
   }));
@@ -372,12 +387,13 @@ describe("AddProductComponent", () => {
   });
 
   it("should enable the submit button when the form is valid", fakeAsync(() => {
-    // Set valid data in the form
+    // Настройване на валидни данни във формата, включително 'condition'
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: "Electronics",
+      condition: "new", // Добавено поле
       price: 99.99,
       color: "Red",
       size: 42,
@@ -388,11 +404,32 @@ describe("AddProductComponent", () => {
       quantityInStock: 10
     });
 
-    // Simulate async operations
+    // Настройване на addProduct да връща успешно Product обект
+    const mockProduct: Products = {
+      id: "123",
+      name: "Test Product",
+      manufacturer: "Test Manufacturer",
+      model: "Model X",
+      category: Category.ELECTRONICS,
+      condition: "new", // Добавено поле
+      price: 99.99,
+      color: "Red",
+      size: 42,
+      sex: "none",
+      productTypeId: "1",
+      picture: "data:image/png;base64,dummybase64string",
+      description: "This is a test description",
+      quantityInStock: 10,
+      isRunOutOfStock: false,
+      createdAt: new Date().toISOString()
+    };
+    productServiceMock.addProduct.and.returnValue(of(mockProduct));
+
+    // Симулиране на асинхронни операции
     tick();
     fixture.detectChanges();
 
-    // Search for the submit button
+    // Търсене на бутона за подаване
     const submitButton: HTMLButtonElement = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement as HTMLButtonElement;
 
     expect(submitButton.disabled).toBeFalse();
