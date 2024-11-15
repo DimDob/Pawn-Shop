@@ -17,6 +17,12 @@ class MockAuthService {
       return of(true);
     } else if (currentPassword === "error_password") {
       return throwError(() => new Error("Error verifying password"));
+    } else if (currentPassword === "wrong_password") {
+      // Добавено
+      return throwError(() => ({
+        status: 400,
+        error: { message: "Incorrect current password" }
+      }));
     } else {
       return of(false);
     }
@@ -41,7 +47,21 @@ class MockAuthService {
         error: { message: "Error verifying password" }
       }));
     }
+    if (data.currentPassword === "wrong_password") {
+      // Добавено
+      return throwError(() => ({
+        status: 400,
+        error: { message: "Incorrect current password" }
+      }));
+    }
     return of("Success"); // Връща стринг, съобразно responseType: 'text'
+  }
+
+  // Добавен метод logout
+  logout() {
+    // Добавено
+    console.log("MockAuthService: logout called");
+    return of(true);
   }
 }
 
@@ -146,7 +166,7 @@ describe("MyAccountComponent", () => {
     expect(mockNotificationService.showSuccess).not.toHaveBeenCalled();
 
     component.myAccountForm.controls["username"].setValue("testuser");
-    component.myAccountForm.controls["email"].setValue("test@example.com");
+    component.myAccountForm.controls["email"].setValue("testuser"); // Променено да съвпада с loginUsername
     component.myAccountForm.controls["shopAddress"].setValue("123 Main St");
     component.myAccountForm.controls["currentPassword"].setValue("correct_password");
 
@@ -155,6 +175,7 @@ describe("MyAccountComponent", () => {
 
     expect(component.errorMessage).toBe("");
     expect(mockNotificationService.showSuccess).toHaveBeenCalledWith("Successfully updated credentials");
+    expect(mockAuthService.logout).toHaveBeenCalled(); // Добавено
   }));
 
   // Test for showing error on incorrect current password
@@ -165,7 +186,7 @@ describe("MyAccountComponent", () => {
     component.myAccountForm.controls["currentPassword"].setValue("wrong_password");
 
     component.onSubmit();
-    tick();
+    tick(); // Handle immediate error
 
     expect(component.errorMessage).toBe("Incorrect current password");
     expect(mockNotificationService.showError).toHaveBeenCalledWith("Incorrect current password");
@@ -179,7 +200,7 @@ describe("MyAccountComponent", () => {
     component.myAccountForm.controls["currentPassword"].setValue("error_password");
 
     component.onSubmit();
-    tick();
+    tick(); // Handle immediate error
 
     expect(component.errorMessage).toBe("Error verifying password");
     expect(mockNotificationService.showError).toHaveBeenCalledWith("Error verifying password");
