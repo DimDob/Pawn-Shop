@@ -80,6 +80,9 @@ describe("MyAccountComponent", () => {
     mockNotificationService = jasmine.createSpyObj("NotificationService", ["showSuccess", "showError", "showInfo"]);
     formBuilder = new FormBuilder();
 
+    // Добавено: Шпионин на метода logout
+    spyOn(mockAuthService, "logout").and.callThrough();
+
     await TestBed.configureTestingModule({
       declarations: [MyAccountComponent],
       imports: [ReactiveFormsModule, FontAwesomeModule, NoopAnimationsModule],
@@ -149,12 +152,11 @@ describe("MyAccountComponent", () => {
     expect(component.errorMessage).toBe("");
   }));
 
-  // Test for successful data update with correct password
   it("should show success message on correct password", fakeAsync(() => {
     expect(mockNotificationService.showSuccess).not.toHaveBeenCalled();
 
     component.myAccountForm.controls["username"].setValue("testuser");
-    component.myAccountForm.controls["email"].setValue("testuser");
+    component.myAccountForm.controls["email"].setValue("newemail@example.com");
     component.myAccountForm.controls["shopAddress"].setValue("123 Main St");
     component.myAccountForm.controls["currentPassword"].setValue("correct_password");
 
@@ -162,7 +164,7 @@ describe("MyAccountComponent", () => {
     tick(2000);
 
     expect(component.errorMessage).toBe("");
-    expect(mockNotificationService.showSuccess).toHaveBeenCalledWith("Successfully updated credentials");
+    expect(mockNotificationService.showSuccess).toHaveBeenCalledWith("Successfully updated credentials. Please login with new credentials");
     expect(mockAuthService.logout).toHaveBeenCalled();
   }));
 
