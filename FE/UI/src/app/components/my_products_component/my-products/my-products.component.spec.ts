@@ -8,6 +8,13 @@ import { Router } from "@angular/router";
 import { of, throwError } from "rxjs";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { Category } from "../../main_page_component/main-page/enums/Category"; // Добавен импорт за Category
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { FormsModule } from "@angular/forms";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 describe("MyProductsComponent", () => {
   let component: MyProductsComponent;
@@ -24,6 +31,7 @@ describe("MyProductsComponent", () => {
 
     await TestBed.configureTestingModule({
       declarations: [MyProductsComponent],
+      imports: [FontAwesomeModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatPaginatorModule, FormsModule, BrowserAnimationsModule],
       providers: [
         { provide: ProductService, useValue: productServiceMock },
         { provide: NotificationService, useValue: notificationServiceMock },
