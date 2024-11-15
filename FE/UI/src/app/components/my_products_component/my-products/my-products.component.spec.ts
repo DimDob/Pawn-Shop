@@ -7,7 +7,7 @@ import { NotificationService } from "../../../shared/services/notification.servi
 import { Router } from "@angular/router";
 import { of, throwError } from "rxjs";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
-import { Category } from "../../main_page_component/main-page/enums/Category"; // Добавен импорт за Category
+import { Category } from "../../main_page_component/main-page/enums/Category";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -56,7 +56,7 @@ describe("MyProductsComponent", () => {
         id: "1",
         picture: "image1.jpg",
         name: "Product 1",
-        category: Category.ELECTRONICS, // Using a valid enum member
+        category: Category.ELECTRONICS,
         price: 100,
         productTypeId: "type1",
         createdAt: "2024-01-01",
@@ -66,7 +66,7 @@ describe("MyProductsComponent", () => {
         id: "2",
         picture: "image2.jpg",
         name: "Product 2",
-        category: Category.CLOTHING, // Using a valid enum member
+        category: Category.CLOTHING,
         price: 200,
         productTypeId: "type2",
         createdAt: "2024-02-01",

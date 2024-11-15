@@ -255,7 +255,6 @@ describe("AddProductComponent", () => {
     };
     productServiceMock.addProduct.and.returnValue(of(mockProduct));
 
-    // Подаване на формата
     component.submitForm();
     tick();
     fixture.detectChanges();
@@ -266,13 +265,12 @@ describe("AddProductComponent", () => {
   }));
 
   it("should handle error when submitting the form fails", fakeAsync(() => {
-    // Настройване на валидни данни във формата, включително 'condition'
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: "Electronics",
-      condition: "new", // Добавено поле
+      condition: "new",
       price: 99.99,
       color: "Red",
       size: 42,
@@ -283,10 +281,8 @@ describe("AddProductComponent", () => {
       quantityInStock: 10
     });
 
-    // Настройване на addProduct да връща грешка
     productServiceMock.addProduct.and.returnValue(throwError(() => new Error("Failed to add product")));
 
-    // Подаване на формата
     component.submitForm();
     tick();
     fixture.detectChanges();
@@ -303,14 +299,14 @@ describe("AddProductComponent", () => {
       manufacturer: "",
       model: "",
       category: "",
-      price: -10, // Невалидна цена
+      price: -10,
       color: "",
       size: "",
       sex: "",
       productTypeId: "",
       picture: null,
       description: "",
-      quantityInStock: -10 // Невалидно количество
+      quantityInStock: -10
     });
     fixture.detectChanges();
 
@@ -387,13 +383,12 @@ describe("AddProductComponent", () => {
   });
 
   it("should enable the submit button when the form is valid", fakeAsync(() => {
-    // Настройване на валидни данни във формата, включително 'condition'
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: "Electronics",
-      condition: "new", // Добавено поле
+      condition: "new",
       price: 99.99,
       color: "Red",
       size: 42,
@@ -404,14 +399,13 @@ describe("AddProductComponent", () => {
       quantityInStock: 10
     });
 
-    // Настройване на addProduct да връща успешно Product обект
     const mockProduct: Products = {
       id: "123",
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: Category.ELECTRONICS,
-      condition: "new", // Добавено поле
+      condition: "new",
       price: 99.99,
       color: "Red",
       size: 42,
@@ -425,11 +419,9 @@ describe("AddProductComponent", () => {
     };
     productServiceMock.addProduct.and.returnValue(of(mockProduct));
 
-    // Симулиране на асинхронни операции
     tick();
     fixture.detectChanges();
 
-    // Търсене на бутона за подаване
     const submitButton: HTMLButtonElement = fixture.debugElement.query(By.css('button[type="submit"]')).nativeElement as HTMLButtonElement;
 
     expect(submitButton.disabled).toBeFalse();

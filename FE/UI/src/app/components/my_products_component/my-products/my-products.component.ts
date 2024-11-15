@@ -16,7 +16,6 @@ import { Category } from "../../main_page_component/main-page/enums/Category";
 export class MyProductsComponent implements OnInit {
   faBoxArchive = faBoxArchive;
 
-  // Добавяне на сигнали за пагинация
   protected pageSize = signal<number>(Number(localStorage.getItem("myProductsPageSize")) || 25);
   protected pageIndex = signal<number>(Number(localStorage.getItem("myProductsPageIndex")) || 0);
   protected totalProducts = signal<number>(0);

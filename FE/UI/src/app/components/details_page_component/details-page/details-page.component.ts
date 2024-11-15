@@ -66,7 +66,7 @@ export class DetailsPageComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get("id");
     if (!productId) {
       this.error.set("Product ID not found");
-      this.product.set(null); // Задаване на null при липсващ ID
+      this.product.set(null);
       this.router.navigate(["/not-found"]);
       return;
     }
@@ -82,7 +82,7 @@ export class DetailsPageComponent implements OnInit {
       error: error => {
         console.error("DetailsPageComponent: Error loading product:", error);
         this.error.set("Error loading product");
-        this.product.set(null); // Задаване на null при грешка
+        this.product.set(null);
         this.loading.set(false);
         this.notificationService.showError("Error loading product details");
         this.router.navigate(["/not-found"]);

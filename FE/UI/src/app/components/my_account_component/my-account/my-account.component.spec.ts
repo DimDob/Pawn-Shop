@@ -18,7 +18,6 @@ class MockAuthService {
     } else if (currentPassword === "error_password") {
       return throwError(() => new Error("Error verifying password"));
     } else if (currentPassword === "wrong_password") {
-      // Добавено
       return throwError(() => ({
         status: 400,
         error: { message: "Incorrect current password" }
@@ -52,7 +51,7 @@ class MockAuthService {
         error: { message: "Incorrect current password" }
       }));
     }
-    return of("Success"); // Връща стринг, съобразно responseType: 'text'
+    return of("Success");
   }
 
   logout() {
@@ -80,7 +79,6 @@ describe("MyAccountComponent", () => {
     mockNotificationService = jasmine.createSpyObj("NotificationService", ["showSuccess", "showError", "showInfo"]);
     formBuilder = new FormBuilder();
 
-    // Добавено: Шпионин на метода logout
     spyOn(mockAuthService, "logout").and.callThrough();
 
     await TestBed.configureTestingModule({

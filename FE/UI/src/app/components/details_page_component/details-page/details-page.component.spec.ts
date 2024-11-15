@@ -135,7 +135,6 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should handle error when product is not found", fakeAsync(() => {
-    // Настройка на мок, за да върне грешка
     mockProductService.getProductById.and.returnValue(throwError(() => new Error("Product not found")));
 
     createComponent();
@@ -180,8 +179,6 @@ describe("DetailsPageComponent", () => {
 
     expect(mockCartService.addToCart).toHaveBeenCalledWith(mockProduct, 0);
     expect(mockNotificationService.showSuccess).toHaveBeenCalledWith("Product added to cart");
-    // В зависимост от реализацията, може да искате да предотвратите добавянето с количество <= 0
-    // Актуализирайте теста съответно, ако съществува такава логика
   }));
 
   it("should navigate to edit product page if user is the owner", fakeAsync(() => {
@@ -243,7 +240,6 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should toggle favorite status to add to favorites", fakeAsync(() => {
-    // Настройка на мок, за да върне false (продуктът не е любим)
     mockFavoritesService.isProductFavorite.and.returnValue(false);
     mockFavoritesService.addToFavorites.and.returnValue(of("Product added to favorites"));
 
@@ -257,7 +253,6 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should toggle favorite status to remove from favorites", fakeAsync(() => {
-    // Настройка на мок, за да върне true (продуктът е любим)
     mockFavoritesService.isProductFavorite.and.returnValue(true);
     mockFavoritesService.removeFromFavorites.and.returnValue(of("Product removed from favorites"));
 
@@ -271,7 +266,6 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should handle error when adding to favorites", fakeAsync(() => {
-    // Настройка на мок, за да върне false и грешка при добавяне
     mockFavoritesService.isProductFavorite.and.returnValue(false);
     mockFavoritesService.addToFavorites.and.returnValue(throwError(() => new Error("Add to favorites failed")));
 
@@ -285,7 +279,6 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should handle error when removing from favorites", fakeAsync(() => {
-    // Настройка на мок, за да върне true и грешка при премахване
     mockFavoritesService.isProductFavorite.and.returnValue(true);
     mockFavoritesService.removeFromFavorites.and.returnValue(throwError(() => new Error("Remove from favorites failed")));
 
@@ -308,7 +301,6 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should determine if the product is favorite", fakeAsync(() => {
-    // Настройка на мок, за да върне true (продуктът е любим)
     mockFavoritesService.isProductFavorite.and.returnValue(true);
     mockProductService.getProductById.and.returnValue(of(mockProduct));
 
@@ -320,10 +312,8 @@ describe("DetailsPageComponent", () => {
   }));
 
   it("should handle missing product ID in route", fakeAsync(() => {
-    // Настройка на мок, за да върне null при запитване за ID
     mockActivatedRoute.snapshot.paramMap.get = (key: string) => null;
 
-    // Re-create component с актуализирания мок
     fixture = TestBed.createComponent(DetailsPageComponent);
     component = fixture.componentInstance;
     component.ngOnInit();

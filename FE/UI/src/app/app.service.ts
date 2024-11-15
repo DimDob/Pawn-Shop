@@ -258,7 +258,7 @@ export class AuthService {
       return throwError(() => new Error("No refresh token available"));
     }
 
-    // Ако Remember me не е избрано, не позволяваме refresh
+    // if remember me is not selected, we clear the tokens and redirect to login
     if (!rememberMe && sessionStorage.getItem(this.refreshTokenKey)) {
       console.log("AuthService: Session-only user, clearing tokens");
       this.clearTokensAndRedirect();

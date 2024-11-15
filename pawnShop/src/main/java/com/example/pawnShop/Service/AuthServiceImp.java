@@ -198,10 +198,7 @@ public class AuthServiceImp implements AuthService {
             if (userOptional.isEmpty()) {
                 return Result.error("User not found");
             }
-            
-            // Тук можете да добавите допълнителна логика за logout,
-            // например инвалидиране на токена или записване в blacklist
-            
+    
             return Result.success(true);
         } catch (Exception e) {
             return Result.error("Failed to logout: " + e.getMessage());

@@ -17,12 +17,7 @@ export class MyAccountComponent implements OnInit {
   public errorMessage: string = "";
   private currentUser: any;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private notificationService: NotificationService
-  ) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private notificationService: NotificationService) {}
 
   ngOnInit() {
     console.log("MyAccountComponent: Initializing");
@@ -38,8 +33,7 @@ export class MyAccountComponent implements OnInit {
     if (this.currentUser) {
       console.log("MyAccountComponent: Setting initial form values");
       this.myAccountForm.patchValue({
-        email: this.currentUser.loginUsername,
-        // Можем да добавим и други полета, ако са налични в токена
+        email: this.currentUser.loginUsername
       });
     }
   }
@@ -74,11 +68,11 @@ export class MyAccountComponent implements OnInit {
 
     console.log("MyAccountComponent: Sending update request", updateData);
     this.authService.updateUserAccount(updateData).subscribe({
-      next: (response) => {
+      next: response => {
         console.log("MyAccountComponent: Update successful", response);
         this.handleSuccessfulUpdate(isEmailChanged);
       },
-      error: (error) => {
+      error: error => {
         console.error("MyAccountComponent: Update failed", error);
         if (error.status === 200) {
           console.log("MyAccountComponent: Update successful (with parsing error)");
