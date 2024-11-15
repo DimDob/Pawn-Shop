@@ -94,6 +94,9 @@ export class EditProductComponent implements OnInit {
       if (id) {
         this.productId.set(id);
         this.loadProductData(id);
+      } else {
+        this.errorMessage.set("Product ID not found");
+        this.router.navigate(["/not-found"]);
       }
     });
   }

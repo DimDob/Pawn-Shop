@@ -1,331 +1,167 @@
-// UI/src/app/components/edit_product_component/edit-product/edit-product.component.spec.ts
+// UI/src/app/components/edit_product_component/edit-product/edit-product.component.ts
 
-import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from "@angular/core/testing";
-import { EditProductComponent } from "./edit-product.component";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ProductService } from "../../../shared/services/product.service";
-import { NotificationService } from "../../../shared/services/notification.service";
-import { AuthService } from "../../../app.service";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { of, throwError, BehaviorSubject } from "rxjs";
-import { Products } from "../../main_page_component/main-page/Interfaces/Products";
+import { Component, OnInit, signal, computed, inject } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "../../main_page_component/main-page/enums/Category";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Products } from "../../main_page_component/main-page/Interfaces/Products";
+import { NotificationService } from "../../../shared/services/notification.service";
+import { ProductService } from "../../../shared/services/product.service";
 import { ProductType } from "../../../shared/interfaces/product-type.interface";
-import { By } from "@angular/platform-browser";
-import { DebugElement } from "@angular/core";
-import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
-describe("EditProductComponent", () => {
-  let component: EditProductComponent;
-  let fixture: ComponentFixture<EditProductComponent>;
-  let mockActivatedRoute: any;
-  let mockProductService: any;
-  let mockNotificationService: any;
-  let mockRouter: any;
-  let mockAuthService: any;
+@Component({
+  selector: "app-edit-product",
+  templateUrl: "./edit-product.component.html",
+  styleUrls: ["./edit-product.component.scss"]
+})
+export class EditProductComponent implements OnInit {
+  public editProductForm: FormGroup;
+  public categories = Object.values(Category);
+  public errorMessage = signal<string>("");
+  public faEdit = faEdit;
+  public productId = signal<string>("");
+  public currentProduct = signal<Products | null>(null);
+  public productTypes: ProductType[] = [];
 
-  const mockProduct: Products = {
-    id: "a1b2c3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6",
-    picture: "http://pngimg.com/uploads/running_shoes/running_shoes_PNG5782.png",
-    color: "blue",
-    size: 12,
-    sex: "male",
-    manufacturer: "Nike",
-    model: "Air Max",
-    name: "Nike Air Max",
-    category: Category.CLOTHING,
-    price: 100,
-    ownerId: "746d68ff-1002-4c71-82e0-177a648ef988",
-    quantityInStock: 1,
-    isRunOutOfStock: false,
-    condition: "new",
-    productTypeId: "type1",
-    createdAt: "2024-01-01",
-    description: "This is a test description"
-  };
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
+  private productService = inject(ProductService);
 
-  const mockProductTypes: ProductType[] = [
-    { id: "type1", name: "Clothing" },
-    { id: "type2", name: "Electronics" }
-    // Add more mock product types as needed
-  ];
+  public isFormValid = computed(() => this.editProductForm?.valid ?? false);
 
-  beforeEach(waitForAsync(() => {
-    // Mock ActivatedRoute
-    mockActivatedRoute = {
-      snapshot: {
-        paramMap: {
-          get: (key: string) => {
-            if (key === "id") {
-              return mockProduct.id;
-            }
-            return null;
-          }
-        }
-      }
-    };
+  constructor() {
+    this.initForm();
+  }
 
-    // Mock ProductService
-    mockProductService = jasmine.createSpyObj(["getProductById", "getProductTypes", "updateProduct"]);
-    mockProductService.getProductById.and.returnValue(of(mockProduct));
-    mockProductService.getProductTypes.and.returnValue(of(mockProductTypes));
-    mockProductService.updateProduct.and.returnValue(of("Product updated successfully"));
-
-    // Mock NotificationService
-    mockNotificationService = jasmine.createSpyObj(["showSuccess", "showError"]);
-    mockNotificationService.showSuccess.and.stub();
-    mockNotificationService.showError.and.stub();
-
-    // Mock Router
-    mockRouter = jasmine.createSpyObj(["navigate"]);
-
-    // Mock AuthService
-    mockAuthService = jasmine.createSpyObj(["getCurrentUser"]);
-    mockAuthService.getCurrentUser.and.returnValue({
-      id: "746d68ff-1002-4c71-82e0-177a648ef988",
-      loginUsername: "user@example.com",
-      isAdmin: false,
-      isEmployee: false
+  private initForm(): void {
+    this.editProductForm = this.fb.group({
+      picture: [null],
+      color: [""],
+      size: [""],
+      sex: [""],
+      manufacturer: [""],
+      model: [""],
+      condition: ["", Validators.required],
+      name: ["", Validators.required],
+      category: ["", Validators.required],
+      price: ["", [Validators.required, Validators.min(0)]],
+      quantityInStock: ["", Validators.required],
+      productTypeId: ["", Validators.required],
+      description: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
 
-    TestBed.configureTestingModule({
-      declarations: [EditProductComponent],
-      imports: [FormsModule, ReactiveFormsModule, FontAwesomeModule],
-      providers: [
-        { provide: ActivatedRoute, useValue: mockActivatedRoute },
-        { provide: ProductService, useValue: mockProductService },
-        { provide: NotificationService, useValue: mockNotificationService },
-        { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService }
-      ]
-    }).compileComponents();
-  }));
+    this.editProductForm.get("category")?.valueChanges.subscribe(category => {
+      this.updateProductTypeId(category);
+    });
+  }
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(EditProductComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  ngOnInit(): void {
+    this.loadProductTypes();
+    this.setupRouteSubscription();
+  }
 
-  it("should create EditProductComponent", () => {
-    expect(component).toBeTruthy();
-  });
+  private loadProductTypes(): void {
+    this.productService.getProductTypes().subscribe({
+      next: types => {
+        console.log("EditProductComponent: Loaded product types:", types);
+        this.productTypes = types;
 
-  it("should initialize the form with product data on ngOnInit", fakeAsync(() => {
-    // Wait for async operations
-    tick();
-    fixture.detectChanges();
-
-    expect(component.productId()).toBe(mockProduct.id);
-    expect(component.currentProduct()).toEqual(mockProduct);
-    expect(component.editProductForm.value.name).toBe(mockProduct.name);
-    expect(component.editProductForm.value.manufacturer).toBe(mockProduct.manufacturer);
-    expect(component.editProductForm.value.model).toBe(mockProduct.model);
-    expect(component.editProductForm.value.category).toBe(mockProduct.category);
-    expect(component.editProductForm.value.price).toBe(mockProduct.price);
-    expect(component.editProductForm.value.color).toBe(mockProduct.color);
-    expect(component.editProductForm.value.size).toBe(mockProduct.size);
-    expect(component.editProductForm.value.sex).toBe(mockProduct.sex);
-    expect(component.editProductForm.value.productTypeId).toBe(mockProduct.productTypeId);
-  }));
-
-  it("should load product types and set productTypeId based on category", fakeAsync(() => {
-    tick();
-    fixture.detectChanges();
-
-    expect(mockProductService.getProductTypes).toHaveBeenCalled();
-    expect(component.productTypes).toEqual(mockProductTypes);
-    expect(component.editProductForm.value.productTypeId).toBe("type1");
-  }));
-
-  it("should handle error when loading product types", fakeAsync(() => {
-    mockProductService.getProductTypes.and.returnValue(throwError(() => new Error("Failed to load product types")));
-    component.ngOnInit();
-    tick();
-    fixture.detectChanges();
-
-    expect(mockNotificationService.showError).toHaveBeenCalledWith("Error loading product types");
-    expect(component.productTypes).toEqual([]);
-  }));
-
-  it("should update productTypeId when category changes", fakeAsync(() => {
-    tick();
-    fixture.detectChanges();
-
-    const newCategory = "Electronics";
-    const newProductTypeId = "type2";
-
-    // Change the category in the form
-    component.editProductForm.controls["category"].setValue(newCategory);
-    fixture.detectChanges();
-    tick();
-
-    expect(component.editProductForm.value.productTypeId).toBe(newProductTypeId);
-  }));
-
-  it("should handle file input change and set picture as base64 string", fakeAsync(() => {
-    const dummyFile = new File(["dummy content"], "example.png", { type: "image/png" });
-    const event = {
-      target: {
-        files: [dummyFile]
+        const category = this.editProductForm.get("category")?.value;
+        if (category) {
+          this.updateProductTypeId(category);
+        }
+      },
+      error: error => {
+        console.error("EditProductComponent: Error loading product types:", error);
+        this.notificationService.showError("Error loading product types");
       }
-    } as unknown as Event;
+    });
+  }
 
-    // Spy on FileReader methods
-    const fileReaderSpy = jasmine.createSpyObj("FileReader", ["readAsDataURL", "onload"]);
-    (window as any).FileReader = jasmine.createSpy().and.returnValue(fileReaderSpy);
+  private updateProductTypeId(category: string): void {
+    const matchingType = this.productTypes.find(type => type.name === category);
+    if (matchingType) {
+      console.log("EditProductComponent: Setting productTypeId to:", matchingType.id);
+      this.editProductForm.patchValue({ productTypeId: matchingType.id }, { emitEvent: false });
+    }
+  }
 
-    component.onFileChange(event);
-    fixture.detectChanges();
+  private setupRouteSubscription(): void {
+    this.route.paramMap.subscribe(params => {
+      const id = params.get("id");
+      if (id) {
+        this.productId.set(id);
+        this.loadProductData(id);
+      } else {
+        this.errorMessage.set("Product ID not found");
+        this.router.navigate(["/not-found"]);
+      }
+    });
+  }
 
-    expect(fileReaderSpy.readAsDataURL).toHaveBeenCalledWith(dummyFile);
+  public onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const file = target.files[0];
+      console.log("EditProductComponent: Selected file:", file.name);
 
-    // Simulate the onload event
-    const base64String = "data:image/png;base64,dummybase64string";
-    fileReaderSpy.onload({ target: { result: base64String } } as any);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        console.log("EditProductComponent: Converted image to base64");
 
-    expect(component.editProductForm.value.picture).toBe(base64String);
-  }));
+        this.editProductForm.patchValue({
+          picture: base64String
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
-  it("should submit the form and update the product", fakeAsync(() => {
-    tick();
-    fixture.detectChanges();
+  public loadProductData(id: string): void {
+    this.productService.getProductById(id).subscribe({
+      next: product => {
+        console.log("EditProductComponent: Product loaded:", product);
+        this.currentProduct.set(product);
+        this.updateFormWithProduct(product);
+      },
+      error: error => {
+        console.error("EditProductComponent: Error loading product:", error);
+        this.notificationService.showError("Product not found");
+        this.router.navigate(["/not-found"]);
+      }
+    });
+  }
 
-    // Update form values
-    component.editProductForm.controls["name"].setValue("Updated Product Name");
-    component.editProductForm.controls["manufacturer"].setValue("Updated Manufacturer");
-    component.editProductForm.controls["model"].setValue("Updated Model");
-    component.editProductForm.controls["category"].setValue(Category.ELECTRONICS);
-    component.editProductForm.controls["price"].setValue(150);
-    component.editProductForm.controls["color"].setValue("Red");
-    component.editProductForm.controls["size"].setValue(14);
-    component.editProductForm.controls["sex"].setValue("none");
+  private updateFormWithProduct(product: Products): void {
+    this.editProductForm.patchValue({
+      ...product,
+      category: product.category
+    });
+  }
 
-    // Update productTypeId based on new category
-    component["updateProductTypeId"](Category.ELECTRONICS);
-    fixture.detectChanges();
-    tick();
+  public submitForm(): void {
+    if (this.editProductForm.invalid) {
+      this.errorMessage.set("Please fill all required fields");
+      return;
+    }
 
-    // Submit the form
-    component.submitForm();
-    tick();
-    fixture.detectChanges();
+    const formData = this.editProductForm.value;
+    const productId = this.productId();
 
-    expect(mockProductService.updateProduct).toHaveBeenCalledWith(
-      mockProduct.id,
-      jasmine.objectContaining({
-        name: "Updated Product Name",
-        manufacturer: "Updated Manufacturer",
-        model: "Updated Model",
-        category: Category.ELECTRONICS,
-        price: 150,
-        color: "Red",
-        size: 14,
-        sex: "none",
-        description: "This is a test description",
-        productTypeId: "type2"
-      })
-    );
-    expect(mockNotificationService.showSuccess).toHaveBeenCalledWith("Product updated successfully");
-    expect(mockRouter.navigate).toHaveBeenCalledWith(["/pawn-shop/main-page"]);
-  }));
-
-  it("should handle error when updating the product", fakeAsync(() => {
-    mockProductService.updateProduct.and.returnValue(throwError(() => new Error("Update failed")));
-    tick();
-    fixture.detectChanges();
-
-    // Submit the form
-    component.submitForm();
-    tick();
-    fixture.detectChanges();
-
-    expect(mockProductService.updateProduct).toHaveBeenCalled();
-    expect(mockNotificationService.showError).toHaveBeenCalledWith("Error updating product: Update failed");
-    expect(mockRouter.navigate).not.toHaveBeenCalled();
-  }));
-
-  it("should display error message when form is invalid and submitted", fakeAsync(() => {
-    tick();
-    fixture.detectChanges();
-
-    // Invalidate the form by clearing required fields
-    component.editProductForm.controls["name"].setValue("");
-    component.editProductForm.controls["manufacturer"].setValue("");
-    component.editProductForm.controls["model"].setValue("");
-    component.editProductForm.controls["category"].setValue("");
-    component.editProductForm.controls["price"].setValue(null);
-    component.editProductForm.controls["color"].setValue("");
-    component.editProductForm.controls["size"].setValue(null);
-    component.editProductForm.controls["sex"].setValue("");
-
-    fixture.detectChanges();
-
-    // Submit the form
-    component.submitForm();
-    tick();
-    fixture.detectChanges();
-
-    expect(component.errorMessage()).toBe("Please fill all required fields");
-    expect(mockProductService.updateProduct).not.toHaveBeenCalled();
-    expect(mockNotificationService.showSuccess).not.toHaveBeenCalled();
-    expect(mockRouter.navigate).not.toHaveBeenCalled();
-  }));
-
-  it("should navigate to not-found page if product ID is missing", fakeAsync(() => {
-    // Modify the ActivatedRoute to return null for 'id'
-    mockActivatedRoute.snapshot.paramMap.get = (key: string) => null;
-
-    // Reinitialize the component
-    fixture.destroy();
-    fixture = TestBed.createComponent(EditProductComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-    tick();
-
-    expect(component.productId()).toBe("");
-    expect(component.currentProduct()).toBeNull();
-    expect(component.errorMessage()).toBe("Product ID not found");
-    expect(mockRouter.navigate).toHaveBeenCalledWith(["/not-found"]);
-  }));
-
-  it("should disable submit button if form is invalid", fakeAsync(() => {
-    tick();
-    fixture.detectChanges();
-
-    // Invalidate the form
-    component.editProductForm.controls["name"].setValue("");
-    component.editProductForm.controls["manufacturer"].setValue("");
-    component.editProductForm.controls["model"].setValue("");
-    component.editProductForm.controls["category"].setValue("");
-    component.editProductForm.controls["price"].setValue(null);
-
-    fixture.detectChanges();
-
-    const submitButton: DebugElement = fixture.debugElement.query(By.css('button[type="submit"]'));
-    expect(submitButton.nativeElement.disabled).toBeTrue();
-  }));
-
-  it("should enable submit button if form is valid", fakeAsync(() => {
-    tick();
-    fixture.detectChanges();
-
-    // Ensure the form is valid
-    component.editProductForm.controls["name"].setValue("Valid Name");
-    component.editProductForm.controls["manufacturer"].setValue("Valid Manufacturer");
-    component.editProductForm.controls["model"].setValue("Valid Model");
-    component.editProductForm.controls["category"].setValue(Category.CLOTHING);
-    component.editProductForm.controls["price"].setValue(200);
-
-    // Set optional fields if necessary
-    component.editProductForm.controls["color"].setValue("Green");
-    component.editProductForm.controls["size"].setValue(14);
-    component.editProductForm.controls["sex"].setValue("female");
-
-    fixture.detectChanges();
-    tick();
-
-    const submitButton: DebugElement = fixture.debugElement.query(By.css('button[type="submit"]'));
-    expect(submitButton.nativeElement.disabled).toBeFalse();
-  }));
-});
+    this.productService.updateProduct(productId, formData).subscribe({
+      next: response => {
+        console.log("EditProductComponent: Product updated successfully", response);
+        this.notificationService.showSuccess("Product updated successfully");
+        this.router.navigate(["/pawn-shop/main-page"]);
+      },
+      error: error => {
+        console.error("EditProductComponent: Error updating product:", error);
+        this.notificationService.showError("Error updating product: " + error.message);
+      }
+    });
+  }
+}
