@@ -10,9 +10,5 @@ import { AuthService } from "./app.service";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  constructor(
-    private router: Router,
-    public authService: AuthService,
-    @Inject("title") public title: string
-  ) {}
+  constructor(private router: Router, public authService: AuthService, @Inject("title") public title: string) {}
 }
