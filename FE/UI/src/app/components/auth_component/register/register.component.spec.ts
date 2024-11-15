@@ -105,13 +105,13 @@ describe("RegisterComponent", () => {
 
   it("must show an error if the password does not match the pattern", () => {
     const form = component.registerForm;
-    form.get("password")?.setValue("invalid");
+    form.get("password")?.setValue("invalid1"); // Променено: минимум 8 символа, но не съответства на патерна
     form.get("password")?.markAsTouched();
     fixture.detectChanges();
 
-    const errorMsg = fixture.debugElement.query(By.css(".error-message"));
-    expect(errorMsg).toBeTruthy();
-    expect(errorMsg.nativeElement.textContent).toContain("Password must contain uppercase, lowercase, number and special character");
+    const errorMsgs = fixture.debugElement.queryAll(By.css(".error-message"));
+    const patternError = errorMsgs.find(de => de.nativeElement.textContent.includes("Password must contain uppercase, lowercase, number and special character"));
+    expect(patternError).toBeTruthy();
   });
 
   it("must call authService.handlerUserRegister when the form is valid", () => {
