@@ -2,6 +2,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { AboutUsComponent } from "./about-us.component";
 import { provideRouter } from "@angular/router";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 describe("AboutUsComponent", () => {
   let component: AboutUsComponent;
@@ -10,6 +11,7 @@ describe("AboutUsComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [AboutUsComponent],
+      imports: [FontAwesomeModule],
       providers: [provideRouter([])]
     }).compileComponents();
   });
