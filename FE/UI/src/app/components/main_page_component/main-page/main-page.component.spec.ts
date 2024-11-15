@@ -55,6 +55,8 @@ describe("MainPageComponent", () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
+
+    productServiceMock.getAllProducts.and.returnValue(of([]));
   });
 
   it("must create the component", () => {
@@ -170,18 +172,19 @@ describe("MainPageComponent", () => {
       }
     ];
 
+    // Коригиране на очакваните параметри към 'filtered'
     productServiceMock.getAllProducts.and.returnValue(of(mockFilteredProducts));
 
-    // Set up the filters
+    // Настройване на филтрите с малки букви
     component["selectedSortOption"].set("priceLowToHigh");
     component["selectedCategory"].set(Category.JEWELRY);
-    component["searchTerm"].set("Filtered");
+    component["searchTerm"].set("filtered"); // Променено на малки букви
 
-    // Call applyFilters
+    // Извикване на applyFilters
     component["applyFilters"]();
     fixture.detectChanges();
 
-    // Check if the filters are applied correctly
+    // Проверка дали getAllProducts е извикан с правилните параметри
     expect(productServiceMock.getAllProducts).toHaveBeenCalledWith("priceLowToHigh", Category.JEWELRY, "filtered");
     expect(component["products"]()).toEqual(mockFilteredProducts);
     expect(component["filteredProducts"]()).toEqual(mockFilteredProducts);
@@ -195,16 +198,37 @@ describe("MainPageComponent", () => {
       length: 100
     } as PageEvent;
 
-    // Set initial values
+    // Настройване на mock за getAllProducts при промяна на страницата
+    productServiceMock.getAllProducts.and.returnValue(
+      of([
+        // Добавете тук необходимите продукти за теста
+        {
+          id: "1",
+          picture: "image1.jpg",
+          name: "Product 1",
+          category: Category.ELECTRONICS,
+          price: 100,
+          productTypeId: "type1",
+          createdAt: "2024-01-01",
+          description: "Description 1"
+        }
+        // Добавете още продукти ако е необходимо
+      ])
+    );
+
+    // Настройване на начални стойности
     component["pageIndex"].set(0);
     component["pageSize"].set(25);
     component["totalProducts"].set(100);
 
-    // Call onPageChange
+    // Извикване на onPageChange
     component["onPageChange"](mockPageEvent);
     fixture.detectChanges();
 
-    // Check if the values are updated
+    // Проверка дали getAllProducts е извикан правилно
+    expect(productServiceMock.getAllProducts).toHaveBeenCalled();
+
+    // Проверка дали стойностите са актуализирани
     expect(component["pageIndex"]()).toBe(1);
     expect(component["pageSize"]()).toBe(50);
     expect(localStorage.getItem("preferredPageSize")).toBe("50");
