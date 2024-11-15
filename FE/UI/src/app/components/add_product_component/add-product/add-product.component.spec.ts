@@ -132,6 +132,8 @@ describe("AddProductComponent", () => {
     expect(form.get("productTypeId")?.valid).toBeFalse();
     expect(form.get("description")?.valid).toBeFalse();
     expect(form.get("quantityInStock")?.valid).toBeFalse();
+
+    expect(form.get("condition")?.hasError("required")).toBeTrue();
   }));
 
   it("should load product types on initialization", fakeAsync(() => {
@@ -217,13 +219,12 @@ describe("AddProductComponent", () => {
   }));
 
   it("should submit form successfully when form is valid", fakeAsync(() => {
-    // Настройване на валидни данни във формата, включително 'condition'
     component.addProductForm.patchValue({
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: "Electronics",
-      condition: "new", // Добавено поле
+      condition: "new",
       price: 99.99,
       color: "Red",
       size: 42,
@@ -234,14 +235,13 @@ describe("AddProductComponent", () => {
       quantityInStock: 10
     });
 
-    // Настройване на addProduct да връща успешно Product обект
     const mockProduct: Products = {
       id: "123",
       name: "Test Product",
       manufacturer: "Test Manufacturer",
       model: "Model X",
       category: Category.ELECTRONICS,
-      condition: "new", // Добавено поле
+      condition: "new",
       price: 99.99,
       color: "Red",
       size: 42,
