@@ -90,6 +90,9 @@ public class Product {
     @JoinColumn(name = "product_type_id")
     private ProductType productType;
 
+    @Column(nullable = false, length = 50)
+    private String description;
+
     @PrePersist
     protected void onCreate() {
         if (createdAt == null) {

@@ -1,3 +1,4 @@
+// UI/src/app/components/auth_component/confirm-email/confirm-email.component.scss
 .confirm-email-container {
   display: flex;
   justify-content: center;
@@ -22,7 +23,9 @@
     margin: 20px auto;
   }
 
-  .success, .error, .confirming {
+  .success,
+  .error,
+  .confirming {
     background-color: white;
     padding: 30px;
     border-radius: 8px;
@@ -57,6 +60,10 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

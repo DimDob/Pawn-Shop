@@ -1,5 +1,6 @@
 // UI/src/app/components/header_component/header/header.component.spec.ts
-
+import { FormsModule } from "@angular/forms"; // Добавен импорт
+import { NO_ERRORS_SCHEMA } from "@angular/core"; // Добавен импорт
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { HeaderComponent } from "./header.component";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
@@ -17,6 +18,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatIconModule } from "@angular/material/icon";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { User } from "../../auth_component/login/login_interfaces.ts/User";
 
 describe("HeaderComponent", () => {
   let component: HeaderComponent;
@@ -31,6 +33,16 @@ describe("HeaderComponent", () => {
   const mockFavorites$ = new BehaviorSubject<any[]>([]);
   const mockEvents$ = new BehaviorSubject<any>(new NavigationEnd(1, "/", "/"));
 
+  const mockUser = {
+    id: 1,
+    loginUsername: "testUser",
+    isAdmin: false,
+    isEmployee: false,
+    role: "user"
+  };
+
+  const mockToken = "mocked-jwt-token";
+
   beforeEach(async () => {
     cartService = jasmine.createSpyObj("CartService", ["addToCart", "removeFromCart"], {
       items$: mockItems$.asObservable()
@@ -42,16 +54,21 @@ describe("HeaderComponent", () => {
       events: mockEvents$.asObservable()
     });
 
-    authService = jasmine.createSpyObj("AuthService", ["logout"]);
+    authService = jasmine.createSpyObj("AuthService", ["logout", "getCurrentUser", "getToken"]);
+    authService.getCurrentUser.and.returnValue(mockUser as unknown as User);
+    authService.getToken.and.returnValue(mockToken);
 
-    favoritesService = jasmine.createSpyObj("FavoritesService", [], {
+    favoritesService = jasmine.createSpyObj("FavoritesService", ["addToFavorites", "removeFromFavorites"], {
       favorites$: mockFavorites$.asObservable()
     });
 
+    router.navigateByUrl.and.returnValue(Promise.resolve(true));
+
     await TestBed.configureTestingModule({
-      imports: [MatToolbarModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatMenuModule, MatIconModule, NoopAnimationsModule],
+      imports: [FormsModule, MatToolbarModule, MatFormFieldModule, MatSelectModule, MatInputModule, MatButtonModule, MatMenuModule, MatIconModule, NoopAnimationsModule],
       declarations: [HeaderComponent],
-      providers: [{ provide: CartService, useValue: cartService }, { provide: SearchService, useValue: searchService }, { provide: Router, useValue: router }, { provide: AuthService, useValue: authService }, { provide: FavoritesService, useValue: favoritesService }, provideRouter([])]
+      providers: [{ provide: CartService, useValue: cartService }, { provide: SearchService, useValue: searchService }, { provide: Router, useValue: router }, { provide: AuthService, useValue: authService }, { provide: FavoritesService, useValue: favoritesService }, provideRouter([])],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

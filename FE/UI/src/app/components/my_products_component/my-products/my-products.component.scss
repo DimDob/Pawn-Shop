@@ -1,1 +1,86 @@
+// UI/src/app/components/my_products_component/my-products/my-products.component.scss
+
 @import "../../main_page_component/main-page/main-page.component.scss";
+
+.my-products-header {
+  max-width: 1200px;
+  margin: 20px auto;
+  text-align: center;
+  padding: 20px;
+
+  .icon {
+    margin-bottom: 10px;
+
+    fa-icon {
+      font-size: 40px;
+      color: #009d34;
+    }
+  }
+
+  h1 {
+    font-size: 2em;
+    color: #009d34;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .search-label {
+    color: #009d34;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+
+    mat-form-field {
+      width: 100%;
+
+      ::ng-deep {
+        .mat-form-field-outline {
+          color: #009d34;
+        }
+
+        .mat-form-field-label {
+          color: #009d34;
+        }
+
+        .mat-icon {
+          color: #009d34;
+        }
+
+        .mat-input-element {
+          color: white;
+        }
+
+        .mat-form-field-outline-thick {
+          color: #009d34;
+        }
+      }
+    }
+  }
+}
+
+// Override filter controls styles
+.filter-controls {
+  mat-form-field {
+    ::ng-deep {
+      .mat-form-field-outline {
+        color: #009d34;
+      }
+
+      .mat-select-value {
+        color: white;
+      }
+
+      .mat-form-field-label {
+        color: #009d34;
+      }
+
+      .mat-select-arrow {
+        color: #009d34;
+      }
+    }
+  }
+}

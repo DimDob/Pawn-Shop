@@ -43,6 +43,8 @@ public class ProductExportDTO {
 
     private Boolean isRunOutOfStock;
 
+    private String description;
+
     public String getPrice() {
         return price != null ? price.toString() : "0";
     }

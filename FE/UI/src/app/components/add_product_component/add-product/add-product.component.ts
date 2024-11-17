@@ -21,13 +21,7 @@ export class AddProductComponent implements OnInit {
   public faBoxOpen = faBoxOpen;
   productTypes: ProductType[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private notificationService: NotificationService,
-    private productService: ProductService,
-    private authService: AuthService
-  ) {
+  constructor(private fb: FormBuilder, private router: Router, private notificationService: NotificationService, private productService: ProductService, private authService: AuthService) {
     this.initForm();
   }
 
@@ -38,15 +32,18 @@ export class AddProductComponent implements OnInit {
   private initForm() {
     this.addProductForm = this.fb.group({
       picture: [null],
-      color: ["", Validators.required],
-      size: ["", Validators.required],
-      sex: [""],
-      manufacturer: ["", Validators.required],
-      model: ["", Validators.required],
+      color: [""],
+      size: [""],
+      sex: ["", Validators.required],
+      manufacturer: [""],
+      model: [""],
       name: ["", Validators.required],
       category: ["", Validators.required],
+      condition: [null, Validators.required],
       price: ["", [Validators.required, Validators.min(0)]],
-      productTypeId: ["", Validators.required]
+      quantityInStock: ["", Validators.required],
+      productTypeId: ["", Validators.required],
+      description: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
 
     // Subscribe to category changes
@@ -57,7 +54,7 @@ export class AddProductComponent implements OnInit {
 
   private loadProductTypes() {
     this.productService.getProductTypes().subscribe({
-      next: (types) => {
+      next: types => {
         console.log("AddProductComponent: Loaded product types:", types);
         this.productTypes = types;
 
@@ -67,7 +64,7 @@ export class AddProductComponent implements OnInit {
           this.updateProductTypeId(category);
         }
       },
-      error: (error) => {
+      error: error => {
         console.error("AddProductComponent: Error loading product types:", error);
         this.notificationService.showError("Error loading product types");
       }
@@ -106,12 +103,12 @@ export class AddProductComponent implements OnInit {
     });
 
     this.productService.addProduct(formData).subscribe({
-      next: (response) => {
+      next: response => {
         console.log("AddProductComponent: Product added successfully", response);
         this.notificationService.showSuccess("Product added successfully");
         this.router.navigate(["/pawn-shop/main-page"]);
       },
-      error: (error) => {
+      error: error => {
         console.error("AddProductComponent: Error adding product", error);
         this.notificationService.showError("Error adding product: " + error.message);
       }

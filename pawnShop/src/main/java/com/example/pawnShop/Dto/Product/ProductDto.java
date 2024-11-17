@@ -30,6 +30,7 @@ public class ProductDto {
     private UUID productTypeId;
     private UUID ownerId;
     private LocalDateTime createdAt;
+    private String description;
 
     public UUID getOwnerId() {
         return ownerId;

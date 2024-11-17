@@ -3,6 +3,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { authGuard } from "./shared/guards/auth.guard";
+import { adminGuard } from "./shared/guards/admin.guard";
 
 import { MainPageComponent } from "./components/main_page_component/main-page/main-page.component";
 import { AuthComponent } from "./components/auth_component/auth/auth.component";
@@ -24,7 +25,9 @@ import { LoginComponent } from "./components/auth_component/login/login.componen
 import { ConfirmEmailComponent } from "./components/auth_component/confirm-email/confirm-email.component";
 import { ForgotPasswordComponent } from "./components/auth_component/forgot-password/forgot-password.component";
 import { ResetPasswordComponent } from "./components/auth_component/reset-password/reset-password.component";
-
+import { OrderSummaryComponent } from "./components/order-summary/order-summary.component";
+import { AdminOrdersComponent } from "./components/admin/admin-orders/admin-orders.component";
+// import { AdminProductsComponent } from "./components/admin/admin-products/admin-products.component";
 const routes: Routes = [
   {
     path: "",
@@ -124,7 +127,18 @@ const routes: Routes = [
     component: FavoritesComponent,
     canActivate: [authGuard]
   },
+  {
+    path: "order-summary",
+    component: OrderSummaryComponent,
+    canActivate: [authGuard]
+  },
   { path: "server-error", component: ServerErrorComponent },
+  {
+    path: "admin/orders",
+    component: AdminOrdersComponent,
+    canActivate: [authGuard, adminGuard]
+  },
+
   { path: "**", component: NotFoundComponent }
 ];
 

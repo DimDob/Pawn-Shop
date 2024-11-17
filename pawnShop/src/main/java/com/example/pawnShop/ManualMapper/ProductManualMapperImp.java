@@ -52,6 +52,7 @@ public class ProductManualMapperImp implements ProductManualMapper {
         }
         // Include createdAt
         dto.setCreatedAt(product.getCreatedAt());
+        dto.setDescription(product.getDescription());
         return dto;
     }
 
@@ -73,6 +74,7 @@ public class ProductManualMapperImp implements ProductManualMapper {
         product.setQuantityInStock(productDto.getQuantityInStock());
         product.setIsRunOutOfStock(productDto.getIsRunOutOfStock());
         // Owner and ProductType are set in the service layer
+        product.setDescription(productDto.getDescription());
         return product;
     }
 }

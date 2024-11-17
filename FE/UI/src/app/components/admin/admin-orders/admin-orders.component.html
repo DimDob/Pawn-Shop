@@ -1,0 +1,44 @@
+<!-- UI/src/app/components/admin/admin-orders/admin-orders.component.html -->
+<div class="admin-orders-container">
+  <div class="icon">
+    <fa-icon [icon]="faListAlt"></fa-icon>
+  </div>
+
+  <h1>All Orders</h1>
+
+  <div class="orders-grid">
+    @for (order of paginatedOrders(); track order.id) {
+    <div class="order-card">
+      <div class="order-header">
+        <h3>Order Details</h3>
+        <span class="total">Total: ${{ order.total }}</span>
+      </div>
+
+      <div class="shipping-info">
+        <h4>Shipping Information</h4>
+        <p><strong>Name:</strong> {{ order.shippingDetails.buyerName }}</p>
+        <p><strong>Phone:</strong> {{ order.shippingDetails.phone }}</p>
+        <p><strong>Address:</strong> {{ order.shippingDetails.streetAddress }}</p>
+        <p><strong>City:</strong> {{ order.shippingDetails.city }}</p>
+        <p><strong>State:</strong> {{ order.shippingDetails.state }}</p>
+        <p><strong>Postal Code:</strong> {{ order.shippingDetails.postalCode }}</p>
+      </div>
+
+      <div class="delivery-info">
+        <p><strong>Estimated Delivery:</strong></p>
+        <p>From: {{ order.estimatedDeliveryStart | date }}</p>
+        <p>To: {{ order.estimatedDeliveryEnd | date }}</p>
+      </div>
+    </div>
+    }
+  </div>
+
+  <mat-paginator
+    [length]="totalOrders()"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[25, 50, 100]"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+    class="paginator">
+  </mat-paginator>
+</div>

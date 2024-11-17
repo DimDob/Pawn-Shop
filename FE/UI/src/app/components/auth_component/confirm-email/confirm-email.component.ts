@@ -1,3 +1,4 @@
+// UI/src/app/components/auth_component/confirm-email/confirm-email.component.ts
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
@@ -24,11 +25,11 @@ export class ConfirmEmailComponent implements OnInit {
     }
 
     this.authService.confirmEmail(token).subscribe({
-      next: (response) => {
+      next: response => {
         console.log("ConfirmEmailComponent: Email confirmed successfully", response);
         this.confirmationStatus = "success";
       },
-      error: (error) => {
+      error: error => {
         if (error.status === 200) {
           this.confirmationStatus = "success";
         } else {

@@ -1,3 +1,4 @@
+-- V2.0.1__insert_example_data.sql
 -- Inserting data into the cities table
 INSERT INTO cities (id, name)
 VALUES ('c1d257e3-6b84-4f4c-bad4-50b3a57c6d26', 'New York'),
@@ -51,22 +52,22 @@ VALUES ('1ae72b08-2905-413c-80c4-df4aa1db4884', 'UIC12345', true, true, CURRENT_
         (SELECT id FROM users WHERE email = 'admin1@example.com'));
 
 -- Inserting data into the products table
-INSERT INTO products (id, color, is_run_out_of_stock, manufacturer, model, name, pawn_percentage, price,
+INSERT INTO products (id, color, is_run_out_of_stock, manufacturer, model, name, description, pawn_percentage, price,
                       quantity_in_stock, second_hand_price, sex, size, owner_id, category, condition, picture)
-VALUES (uuid_generate_v4(), 'Black', false, 'Sony', 'WH-1000XM4', 'Noise Cancelling Headphones', 50.00, 349.99,
-        10, 175.00, 'unisex', NULL, (SELECT id FROM users WHERE email = 'user1@example.com'),
+VALUES (uuid_generate_v4(), 'Black', false, 'Sony', 'WH-1000XM4', 'Noise Cancelling Headphones', 'Premium wireless headphones with ANC', 50.00, 349.99,
+        10, 175.00, 'none', NULL, (SELECT id FROM users WHERE email = 'user1@example.com'),
         'ELECTRONICS', 'new', 'https://cdn.ozone.bg/media/catalog/product/cache/1/image/a4e40ebdc3e371adff845072e1c73f37/b/e/265075c7e34c91b18c1766c0bc95cf0c/bezzhichni-slushalki-sony---wh-1000xm4--anc--cherni-30.jpg'),
-       (uuid_generate_v4(), 'Gold', false, 'Tiffany', 'Tiffany Setting', 'Diamond Ring', 60.00, 1200.00, 5,
+       (uuid_generate_v4(), 'Gold', false, 'Tiffany', 'Tiffany Setting', 'Diamond Ring', 'Elegant diamond engagement ring', 60.00, 1200.00, 5,
         800.00, 'female', NULL, (SELECT id FROM users WHERE email = 'user2@example.com'),
         'CLOTHING', 'like new', 'https://thediamondoak.com/cdn/shop/collections/tiffany_1.10_PS-8.jpg?v=1635470014'),
-       (uuid_generate_v4(), 'Red', false, 'Makita', 'XFD131', 'Cordless Drill', 40.00, 149.99, 15, 100.00,
-        'unisex', NULL, (SELECT id FROM users WHERE email = 'user3@example.com'),
+       (uuid_generate_v4(), 'Red', false, 'Makita', 'XFD131', 'Cordless Drill', 'Powerful cordless drill kit', 40.00, 149.99, 15, 100.00,
+        'none', NULL, (SELECT id FROM users WHERE email = 'user3@example.com'),
         'JEWELRY', 'used', 'https://cdn.makitatools.com/apps/cms/img360/XFD131/images/img01.jpg'),
-       (uuid_generate_v4(), 'Brown', false, 'Yamaha', 'FG800', 'Acoustic Guitar', 70.00, 199.99, 8, 120.00,
-        'unisex', NULL, (SELECT id FROM users WHERE email = 'admin1@example.com'),
+       (uuid_generate_v4(), 'Brown', false, 'Yamaha', 'FG800', 'Acoustic Guitar', 'Classic acoustic guitar for beginners', 70.00, 199.99, 8, 120.00,
+        'none', NULL, (SELECT id FROM users WHERE email = 'admin1@example.com'),
         'ART', 'new', 'https://cdn.mos.cms.futurecdn.net/9LjTbX3VL2n5zUpMvSELMn.jpg'),
-       (uuid_generate_v4(), 'Blue', false, 'Trek', 'Marlin 5', 'Mountain Bike', 80.00, 499.99, 12, 350.00,
-        'unisex', NULL, (SELECT id FROM users WHERE email = 'admin2@example.com'),
+       (uuid_generate_v4(), 'Blue', false, 'Trek', 'Marlin 5', 'Mountain Bike', 'Durable mountain bike for trails', 80.00, 499.99, 12, 350.00,
+        'none', NULL, (SELECT id FROM users WHERE email = 'admin2@example.com'),
         'OTHER', 'like new', 'https://bikezone.bg/uploads/planinski-velosiped-trek-marlin-5-27.5-lithium-grey-1_37601_49191649791983.webp');
 
 -- Inserting data into the payments table

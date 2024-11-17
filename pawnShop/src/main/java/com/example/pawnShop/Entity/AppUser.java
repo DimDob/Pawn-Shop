@@ -74,8 +74,15 @@ public class AppUser implements UserDetails {
     @Column(name = "password_reset_token_expiry")
     private LocalDateTime passwordResetTokenExpiry;
 
+// sign-in-with-google-endpoint-BE-and-FE
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER; // Default role
+//
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Order> orders;
+// google-sign-in-be-fe-1
 
     // Keep only one default constructor
     public AppUser() {

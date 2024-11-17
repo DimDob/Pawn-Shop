@@ -1,3 +1,4 @@
+-- V1.0.3__create_table_pawn_shops.sql
 create table pawn_shops
 (
     id                 uuid         not null,

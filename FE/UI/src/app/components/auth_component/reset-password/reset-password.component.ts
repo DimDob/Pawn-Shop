@@ -1,3 +1,5 @@
+// UI/src/app/components/auth_component/reset-password/reset-password.component.ts
+
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";

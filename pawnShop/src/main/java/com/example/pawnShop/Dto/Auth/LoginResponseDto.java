@@ -14,4 +14,5 @@ public class LoginResponseDto {
     private String username;
     private String token;
     private Boolean isAdmin;
+    private String refreshToken;
 }

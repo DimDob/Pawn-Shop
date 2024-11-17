@@ -5,10 +5,8 @@ import { Products } from "./Interfaces/Products";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { SearchService } from "../../../shared/services/search.service";
 import { Subscription } from "rxjs";
-import { PageEvent } from "@angular/material/paginator";
+import { PageEvent, MatPaginator } from "@angular/material/paginator";
 import { Category } from "./enums/Category";
-import { MatIconModule } from "@angular/material/icon";
-import { MatPaginator } from "@angular/material/paginator";
 import { ProductService } from "../../../shared/services/product.service";
 import { ErrorHandlerService } from "../../../shared/services/error-handler.service";
 import { catchError } from "rxjs";
@@ -129,19 +127,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
       search: this.searchTerm()
     });
 
-    this.productService.getAllProducts(
-      this.selectedSortOption(),
-      this.selectedCategory(),
-      this.searchTerm()
-    ).subscribe({
-      next: (products) => {
+    this.productService.getAllProducts(this.selectedSortOption(), this.selectedCategory(), this.searchTerm()).subscribe({
+      next: products => {
         console.log("Received filtered products:", products);
         this.products.set(products);
         this.filteredProducts.set(products);
         this.totalProducts.set(products.length);
         this.paginateProducts();
       },
-      error: (error) => {
+      error: error => {
         console.error("Error fetching filtered products:", error);
         alert("Error loading products. Please try again.");
       }

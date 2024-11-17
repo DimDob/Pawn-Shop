@@ -38,15 +38,18 @@ export class EditProductComponent implements OnInit {
   private initForm(): void {
     this.editProductForm = this.fb.group({
       picture: [null],
-      color: ["", Validators.required],
-      size: ["", Validators.required],
+      color: [""],
+      size: [""],
       sex: [""],
-      manufacturer: ["", Validators.required],
-      model: ["", Validators.required],
+      manufacturer: [""],
+      model: [""],
+      condition: ["", Validators.required],
       name: ["", Validators.required],
       category: ["", Validators.required],
       price: ["", [Validators.required, Validators.min(0)]],
-      productTypeId: ["", Validators.required]
+      quantityInStock: ["", Validators.required],
+      productTypeId: ["", Validators.required],
+      description: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
 
     this.editProductForm.get("category")?.valueChanges.subscribe(category => {
@@ -61,7 +64,7 @@ export class EditProductComponent implements OnInit {
 
   private loadProductTypes(): void {
     this.productService.getProductTypes().subscribe({
-      next: (types) => {
+      next: types => {
         console.log("EditProductComponent: Loaded product types:", types);
         this.productTypes = types;
 
@@ -70,7 +73,7 @@ export class EditProductComponent implements OnInit {
           this.updateProductTypeId(category);
         }
       },
-      error: (error) => {
+      error: error => {
         console.error("EditProductComponent: Error loading product types:", error);
         this.notificationService.showError("Error loading product types");
       }
@@ -91,6 +94,9 @@ export class EditProductComponent implements OnInit {
       if (id) {
         this.productId.set(id);
         this.loadProductData(id);
+      } else {
+        this.errorMessage.set("Product ID not found");
+        this.router.navigate(["/not-found"]);
       }
     });
   }
@@ -116,12 +122,12 @@ export class EditProductComponent implements OnInit {
 
   public loadProductData(id: string): void {
     this.productService.getProductById(id).subscribe({
-      next: (product) => {
+      next: product => {
         console.log("EditProductComponent: Product loaded:", product);
         this.currentProduct.set(product);
         this.updateFormWithProduct(product);
       },
-      error: (error) => {
+      error: error => {
         console.error("EditProductComponent: Error loading product:", error);
         this.notificationService.showError("Product not found");
         this.router.navigate(["/not-found"]);
@@ -146,12 +152,12 @@ export class EditProductComponent implements OnInit {
     const productId = this.productId();
 
     this.productService.updateProduct(productId, formData).subscribe({
-      next: (response) => {
+      next: response => {
         console.log("EditProductComponent: Product updated successfully", response);
         this.notificationService.showSuccess("Product updated successfully");
         this.router.navigate(["/pawn-shop/main-page"]);
       },
-      error: (error) => {
+      error: error => {
         console.error("EditProductComponent: Error updating product:", error);
         this.notificationService.showError("Error updating product: " + error.message);
       }

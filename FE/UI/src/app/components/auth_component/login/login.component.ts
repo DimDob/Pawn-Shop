@@ -1,5 +1,6 @@
-// UI\src\app\components\auth_component\login\login.component.ts
+// UI/src/app/components/auth_component/login/login.component.ts
 import { Component, OnInit, NgZone } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
@@ -70,8 +71,28 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
+// sign-in-with-google-endpoint-BE-and-FE
       console.log("Form submitted", this.loginForm.value);
       // Handle form submission
+//
+      const credentials = {
+        email: this.loginForm.get("email")?.value,
+        password: this.loginForm.get("password")?.value,
+        rememberMe: this.loginForm.get("rememberMe")?.value
+      };
+
+      this.authService.handleUserLoging(credentials, "").subscribe({
+        next: () => {
+          console.log("LoginComponent: Login successful");
+          this.router.navigate(["/pawn-shop/main-page"]);
+        },
+        error: error => {
+          console.error("LoginComponent: Login error", error);
+          this.loginError = error.error?.message || "Wrong email or password";
+          this.notificationService.showError(this.loginError || "An error occurred");
+        }
+      });
+// google-sign-in-be-fe-1
     }
   }
 

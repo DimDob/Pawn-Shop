@@ -1,3 +1,4 @@
+// Dto/Result.java
 package com.example.pawnShop.Dto;
 
 import lombok.Getter;

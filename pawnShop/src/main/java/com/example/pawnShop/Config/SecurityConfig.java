@@ -16,8 +16,11 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -29,8 +32,22 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
+// sign-in-with-google-endpoint-BE-and-FE
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/public/**").permitAll()
+//
+                .requestMatchers(
+                    "/api/auth/login",
+                    "/api/auth/register",
+                    "/api/auth/confirm-email",
+                    "/api/auth/forgot-password",
+                    "/api/auth/reset-password",
+                    "/api/auth/refresh-token",
+                    "/api/auth/logout",
+                    "/api/products/**"
+                ).permitAll()
+                .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
+// google-sign-in-be-fe-1
                 .anyRequest().authenticated()
             )
             .oauth2Login(oauth2 -> oauth2

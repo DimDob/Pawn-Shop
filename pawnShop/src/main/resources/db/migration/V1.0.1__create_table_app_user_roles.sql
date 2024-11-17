@@ -1,3 +1,4 @@
+-- V1.0.1__create_table_app_user_roles.sql
 create table app_user_roles
 (
     app_user_id uuid not null,

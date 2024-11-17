@@ -1,0 +1,50 @@
+<!-- UI/src/app/components/order-summary/order-summary.component.html -->
+<div class="order-summary-header">
+  <div class="icon">
+    <fa-icon [icon]="faFileInvoiceDollar"></fa-icon>
+  </div>
+  <h1>Order Summary</h1>
+</div>
+
+<div class="order-summary-container">
+  <div class="shipping-details">
+    <h2>Shipping Details</h2>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="shippingDetails.buyerName" placeholder="Full Name" />
+      <input type="tel" [(ngModel)]="shippingDetails.phone" placeholder="Phone Number" />
+      <input type="text" [(ngModel)]="shippingDetails.streetAddress" placeholder="Street Address" />
+      <input type="text" [(ngModel)]="shippingDetails.city" placeholder="City" />
+      <input type="text" [(ngModel)]="shippingDetails.state" placeholder="State" />
+      <input type="text" [(ngModel)]="shippingDetails.postalCode" placeholder="Postal Code" />
+    </div>
+
+    <div class="estimated-delivery">
+      <h3>Estimated Arrival Date:</h3>
+      <p>{{ estimatedDeliveryStart | date : "MM/dd/yyyy" }} - {{ estimatedDeliveryEnd | date : "MM/dd/yyyy" }}</p>
+    </div>
+  </div>
+
+  <div class="order-details">
+    <h2>Order Summary</h2>
+    <div class="items-list">
+      @for (item of cartItems; track item.product.id) {
+      <div class="item">
+        <div class="item-details">
+          <span class="name">{{ item.product.name }}</span>
+          <span class="quantity">Quantity: {{ item.quantity }}</span>
+          <span class="price">${{ item.product.price * item.quantity }}</span>
+        </div>
+      </div>
+      }
+    </div>
+
+    <div class="total">
+      <span>Total:</span>
+      <span>${{ totalCost() }}</span>
+    </div>
+
+    <button class="place-order-btn" [disabled]="isProcessing" (click)="placeOrder()">
+      {{ isProcessing ? "Processing..." : "Place Order" }}
+    </button>
+  </div>
+</div>

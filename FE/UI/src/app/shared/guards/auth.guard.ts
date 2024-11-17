@@ -1,3 +1,5 @@
+// UI/src/app/shared/guards/auth.guard.ts
+
 import { inject } from "@angular/core";
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from "@angular/router";
 import { AuthService } from "../../app.service";
@@ -8,8 +10,7 @@ export const authGuard = (route: ActivatedRouteSnapshot, state: RouterStateSnaps
 
   const requestedUrl = state.url;
 
-  if (requestedUrl.includes("/auth/confirm-email") ||
-      requestedUrl.includes("/auth/reset-password")) {
+  if (requestedUrl.includes("/auth/confirm-email") || requestedUrl.includes("/auth/reset-password")) {
     return true;
   }
 

@@ -8,6 +8,7 @@ import { Category } from "../../main_page_component/main-page/enums/Category";
 import { AuthService } from "../../../app.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { computed } from "@angular/core";
+import { AdminService } from "../../admin/admin-orders/admin.service";
 
 @Component({
   selector: "app-header",
@@ -36,6 +37,17 @@ export class HeaderComponent implements OnChanges {
 
   // Add this property to store categories
   categories = signal<string[]>([Category.ELECTRONICS, Category.CLOTHING, Category.JEWELRY, Category.ART, Category.OTHER]);
+
+  isAdmin = computed(() => {
+    const user = this.authService.getCurrentUser();
+    const token = this.authService.getToken();
+
+    console.log("Raw token:", token);
+    console.log("Current user in header:", user);
+    console.log("Is admin?", user?.isAdmin);
+
+    return user?.isAdmin === true;
+  });
 
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService, private favoritesService: FavoritesService) {
     this.initializeSubscriptions();

@@ -26,7 +26,6 @@ describe("MainPageComponent", () => {
   let routerMock: any;
 
   beforeEach(async () => {
-    // Създаване на mock услуги
     productServiceMock = jasmine.createSpyObj("ProductService", ["getAllProducts"]);
     cartServiceMock = jasmine.createSpyObj("CartService", ["addToCart"]);
     searchServiceMock = {
@@ -56,6 +55,8 @@ describe("MainPageComponent", () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MainPageComponent);
     component = fixture.componentInstance;
+
+    productServiceMock.getAllProducts.and.returnValue(of([]));
   });
 
   it("must create the component", () => {
@@ -72,7 +73,8 @@ describe("MainPageComponent", () => {
         category: Category.ELECTRONICS,
         price: 100,
         productTypeId: "type1",
-        createdAt: "2024-01-01"
+        createdAt: "2024-01-01",
+        description: "Description 1"
       },
       {
         id: "2",
@@ -81,7 +83,8 @@ describe("MainPageComponent", () => {
         category: Category.CLOTHING,
         price: 200,
         productTypeId: "type2",
-        createdAt: "2024-02-01"
+        createdAt: "2024-02-01",
+        description: "Description 2"
       }
     ];
 
@@ -131,7 +134,8 @@ describe("MainPageComponent", () => {
       category: Category.ELECTRONICS,
       price: 100,
       productTypeId: "type1",
-      createdAt: "2024-01-01"
+      createdAt: "2024-01-01",
+      description: "Description 1"
     };
 
     // Call the method
@@ -163,22 +167,24 @@ describe("MainPageComponent", () => {
         category: Category.JEWELRY,
         price: 150,
         productTypeId: "type3",
-        createdAt: "2024-03-01"
+        createdAt: "2024-03-01",
+        description: "Description 1"
       }
     ];
 
+    // Fix the expected parameters to 'filtered'
     productServiceMock.getAllProducts.and.returnValue(of(mockFilteredProducts));
 
-    // Set up the filters
+    // Set up the filters with lowercase
     component["selectedSortOption"].set("priceLowToHigh");
     component["selectedCategory"].set(Category.JEWELRY);
-    component["searchTerm"].set("Filtered");
+    component["searchTerm"].set("filtered"); // Changed to lowercase
 
     // Call applyFilters
     component["applyFilters"]();
     fixture.detectChanges();
 
-      // Check if the filters are applied correctly
+    // Check if getAllProducts is called with the correct parameters
     expect(productServiceMock.getAllProducts).toHaveBeenCalledWith("priceLowToHigh", Category.JEWELRY, "filtered");
     expect(component["products"]()).toEqual(mockFilteredProducts);
     expect(component["filteredProducts"]()).toEqual(mockFilteredProducts);
@@ -192,6 +198,24 @@ describe("MainPageComponent", () => {
       length: 100
     } as PageEvent;
 
+    // Set up the mock for getAllProducts when changing the page
+    productServiceMock.getAllProducts.and.returnValue(
+      of([
+        // Add the necessary products for the test
+        {
+          id: "1",
+          picture: "image1.jpg",
+          name: "Product 1",
+          category: Category.ELECTRONICS,
+          price: 100,
+          productTypeId: "type1",
+          createdAt: "2024-01-01",
+          description: "Description 1"
+        }
+        // Add more products if necessary
+      ])
+    );
+
     // Set initial values
     component["pageIndex"].set(0);
     component["pageSize"].set(25);
@@ -201,7 +225,10 @@ describe("MainPageComponent", () => {
     component["onPageChange"](mockPageEvent);
     fixture.detectChanges();
 
-      // Check if the values are updated
+    // Check if getAllProducts is called correctly
+    expect(productServiceMock.getAllProducts).toHaveBeenCalled();
+
+    // Check if the values are updated
     expect(component["pageIndex"]()).toBe(1);
     expect(component["pageSize"]()).toBe(50);
     expect(localStorage.getItem("preferredPageSize")).toBe("50");

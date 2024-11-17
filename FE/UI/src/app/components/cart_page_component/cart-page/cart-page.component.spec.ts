@@ -7,22 +7,35 @@ import { Router } from "@angular/router";
 import { of } from "rxjs";
 import { provideRouter, Routes } from "@angular/router";
 import { Component } from "@angular/core";
+import { Category } from "../../main_page_component/main-page/enums/Category";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { NotificationService } from "../../../shared/services/notification.service";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 
 @Component({
   template: ""
 })
 class SuccessComponent {}
 
-const routes: Routes = [{ path: "success", component: SuccessComponent }];
+@Component({
+  template: ""
+})
+class OrderSummaryComponent {}
+
+const routes: Routes = [
+  { path: "success", component: SuccessComponent },
+  { path: "order-summary", component: OrderSummaryComponent }
+];
 
 describe("CartPageComponent", () => {
   let component: CartPageComponent;
   let fixture: ComponentFixture<CartPageComponent>;
   let cartService: jasmine.SpyObj<CartService>;
+  let notificationService: jasmine.SpyObj<NotificationService>;
   let router: Router;
 
   const mockProducts = {
-    id: 1,
+    id: "1",
     picture: "test.jpg",
     color: "blue",
     size: 42,
@@ -30,8 +43,11 @@ describe("CartPageComponent", () => {
     manufacturer: "Nike",
     model: "Air Max",
     name: "Test Shoe",
-    category: "Shoes",
-    price: 100
+    category: "Clothing",
+    price: 100,
+    productTypeId: "1",
+    createdAt: "2024-01-01",
+    description: "Description 1"
   };
 
   const mockCartItems = [{ product: mockProducts, quantity: 2 }];
@@ -41,9 +57,12 @@ describe("CartPageComponent", () => {
       items$: of(mockCartItems)
     });
 
+    notificationService = jasmine.createSpyObj("NotificationService", ["showSuccess", "showError", "showInfo"]);
+
     await TestBed.configureTestingModule({
-      declarations: [CartPageComponent, SuccessComponent],
-      providers: [{ provide: CartService, useValue: cartService }, provideRouter(routes)]
+      declarations: [CartPageComponent, SuccessComponent, OrderSummaryComponent],
+      imports: [HttpClientTestingModule, FontAwesomeModule],
+      providers: [{ provide: CartService, useValue: cartService }, { provide: NotificationService, useValue: notificationService }, provideRouter(routes)]
     }).compileComponents();
 
     fixture = TestBed.createComponent(CartPageComponent);
@@ -57,7 +76,8 @@ describe("CartPageComponent", () => {
   });
 
   it("should initialize with cart items", () => {
-    expect(component.cartItems).toEqual(mockCartItems);
+    const expectedCartItems = [{ product: { ...mockProducts, category: Category.CLOTHING }, quantity: 2 }];
+    expect(component.cartItems).toEqual(expectedCartItems);
   });
 
   it("should increase quantity", () => {
@@ -87,8 +107,8 @@ describe("CartPageComponent", () => {
 
   it("should calculate total cost", () => {
     cartService.getTotalCost.and.returnValue(200);
-    component.totalCost();
-    expect(component.totalCost()).toBe(200);
+    const total = component.totalCost();
+    expect(total).toBe(200);
   });
 
   it("should handle purchase", fakeAsync(() => {
@@ -96,6 +116,6 @@ describe("CartPageComponent", () => {
     tick();
 
     expect(cartService.clearCart).toHaveBeenCalled();
-    expect(router.url).toBe("/success");
+    expect(router.url).toBe("/order-summary");
   }));
 });

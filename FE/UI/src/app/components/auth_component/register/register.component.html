@@ -1,4 +1,5 @@
-<!-- UI\src\app\components\auth_component\register\register.component.html -->
+<!-- UI/src/app/components/auth_component/register/register.component.html -->
+
 <div class="register-container">
   <div class="icon">
     <fa-icon [icon]="faUser"></fa-icon>
@@ -11,6 +12,9 @@
       <div class="form-group">
         <fa-icon [icon]="faEnvelope"></fa-icon>
         <input type="email" formControlName="email" placeholder="Email" [class.invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
+        <!-- Добавени съобщения за грешка при имейл -->
+        <div class="error-message" [@if]="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">Email is required</div>
+        <div class="error-message" [@if]="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched">Please enter a valid email address</div>
       </div>
 
       <div class="form-group">
@@ -26,9 +30,9 @@
       <div class="form-group">
         <fa-icon [icon]="faLock"></fa-icon>
         <input type="password" formControlName="password" placeholder="Password" [class.invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
-        <div class="error-message" *ngIf="registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched">Password must be at least 8 characters long</div>
-        <div class="error-message" *ngIf="registerForm.get('password')?.errors?.['maxlength'] && registerForm.get('password')?.touched">Password must not exceed 32 characters</div>
-        <div class="error-message" *ngIf="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched">Password must contain uppercase, lowercase, number and special character</div>
+        <div class="error-message" [@if]="registerForm.get('password')?.errors?.['minlength'] && registerForm.get('password')?.touched">Password must be at least 8 characters long</div>
+        <div class="error-message" [@if]="registerForm.get('password')?.errors?.['maxlength'] && registerForm.get('password')?.touched">Password must not exceed 32 characters</div>
+        <div class="error-message" [@if]="registerForm.get('password')?.errors?.['pattern'] && registerForm.get('password')?.touched">Password must contain uppercase, lowercase, number and special character</div>
       </div>
 
       <div class="form-group">

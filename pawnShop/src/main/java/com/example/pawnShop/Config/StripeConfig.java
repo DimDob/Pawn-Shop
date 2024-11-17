@@ -1,3 +1,4 @@
+// Config/StripeConfig.java
 package com.example.pawnShop.Config;
 
 import com.stripe.Stripe;

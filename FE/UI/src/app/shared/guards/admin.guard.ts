@@ -7,26 +7,13 @@ import { User } from "../../components/auth_component/login/login_interfaces.ts/
 export const adminGuard = () => {
   const router = inject(Router);
   const authService = inject(AuthService);
+  const user = authService.getCurrentUser();
 
-  // Get user data from localStorage
-  const userStr = localStorage.getItem("user");
-
-  // Check if there is a logged in user
-  if (!userStr) {
-    router.navigate(["/auth/login"]);
-    return false;
-  }
-
-  // Parse user data
-  const user: User = JSON.parse(userStr);
-
-  // Check if the user is an admin
-  if (!user.isAdmin) {
-    // If not an admin, redirect to main page
+  if (!user?.isAdmin) {
+    console.log("AdminGuard: Access denied - not an admin");
     router.navigate(["/pawn-shop/main-page"]);
     return false;
   }
 
-  // If an admin, allow access
   return true;
 };

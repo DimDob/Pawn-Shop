@@ -3,6 +3,7 @@ package com.example.pawnShop.Service;
 
 import com.example.pawnShop.Dto.Auth.LoginRequestDto;
 import com.example.pawnShop.Dto.Auth.LoginResponseDto;
+import com.example.pawnShop.Dto.Auth.RefreshTokenRequestDto;
 import com.example.pawnShop.Dto.Auth.RegisterRequestDto;
 import com.example.pawnShop.Dto.Result;
 import com.example.pawnShop.Entity.AppUser;
@@ -13,6 +14,8 @@ import com.example.pawnShop.Service.Contract.AuthService;
 import com.example.pawnShop.Service.Contract.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +23,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import com.example.pawnShop.Service.Contract.JwtService;
 import java.util.Optional;
 import java.util.UUID;
@@ -116,18 +122,29 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public Result<String> refreshToken(String refreshToken) {
+    public Result<LoginResponseDto> refreshToken(String refreshToken) {
         try {
-            Optional<AppUser> userOptional = userRepository.findByEmail(jwtService.extractSubject(refreshToken));
+            if (!jwtService.isTokenValid(refreshToken)) {
+                return Result.error("Refresh token is expired or invalid");
+            }
+    
+            String userEmail = jwtService.extractSubject(refreshToken);
+            Optional<AppUser> userOptional = userRepository.findByEmail(userEmail);
+            
             if (userOptional.isEmpty()) {
                 return Result.error("User not found");
             }
-
+    
             AppUser user = userOptional.get();
             String newToken = jwtService.generateJwtToken(user);
-            return Result.success(newToken);
+            
+            return Result.success(LoginResponseDto.builder()
+                    .username(user.getEmail())
+                    .token(newToken)
+                    .isAdmin(user.getIsAdmin())
+                    .build());
         } catch (Exception e) {
-            return Result.error("Failed to refresh token");
+            return Result.error("Failed to refresh token: " + e.getMessage());
         }
     }
 
@@ -179,45 +196,27 @@ public class AuthServiceImp implements AuthService {
     @Override
     public Result<LoginResponseDto> login(LoginRequestDto loginRequestDto) {
         try {
-            Optional<AppUser> userOptional = userRepository.findByEmail(loginRequestDto.getEmail());
-            if (userOptional.isEmpty()) {
-                return Result.error("Invalid credentials");
-            }
-
-            AppUser user = userOptional.get();
-            if (!user.isEmailConfirmed()) {
-                return Result.error("Please confirm your email first");
-            }
-
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                    loginRequestDto.getEmail(),
+                    loginRequestDto.getPassword()
+                )
             );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtService.generateJwtToken(user);
-
-            return Result.success(LoginResponseDto.builder()
+    
+            AppUser user = (AppUser) authentication.getPrincipal();
+            String jwtToken = jwtService.generateJwtToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+    
+            LoginResponseDto response = LoginResponseDto.builder()
                 .username(user.getEmail())
-                .token(jwt)
+                .token(jwtToken)
+                .refreshToken(refreshToken)
                 .isAdmin(user.getIsAdmin())
-                .build());
+                .build();
+    
+            return Result.success(response);
         } catch (AuthenticationException e) {
             return Result.error("Invalid credentials");
-        } catch (Exception e) {
-            return Result.error("Login failed: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public Result<Boolean> logout(String refreshToken) {
-        try {
-            if (!jwtService.isTokenValid(refreshToken)) {
-                return Result.error("Invalid token");
-            }
-            // Тук можете да добавите допълнителна логика за blacklisting на токена
-            return Result.success(true);
-        } catch (Exception e) {
-            return Result.error("Failed to logout");
         }
     }
 
@@ -267,6 +266,7 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
+// sign-in-with-google-endpoint-BE-and-FE
     public Result<LoginResponseDto> handleGoogleAuthCode(String code) {
         try {
             // Exchange code for tokens
@@ -357,4 +357,18 @@ public class AuthServiceImp implements AuthService {
         // Add your registration logic here
         return Result.success(true); // Adjust return value as needed
     }
+//
+    public Result<Boolean> logout(String refreshToken) {
+        try {
+            Optional<AppUser> userOptional = userRepository.findByEmail(jwtService.extractSubject(refreshToken));
+            if (userOptional.isEmpty()) {
+                return Result.error("User not found");
+            }
+    
+            return Result.success(true);
+        } catch (Exception e) {
+            return Result.error("Failed to logout: " + e.getMessage());
+        }
+    }
+// google-sign-in-be-fe-1
 }

@@ -49,12 +49,13 @@ export class ProductService {
           secondHandPrice: Number(productData.get("price")) * 0.8,
           picture: productData.get("picture") as string,
           category: category,
-          condition: "New",
+          condition: productData.get("condition") as string,
           color: productData.get("color") as string,
           size: Number(productData.get("size")),
-          sex: (productData.get("sex") as string) || "Unisex",
-          quantityInStock: 10,
+          sex: (productData.get("sex") as string) || "none",
+          quantityInStock: Number(productData.get("quantityInStock")),
           isRunOutOfStock: false,
+          description: productData.get("description") as string,
           productTypeId: productType.id
         };
 
@@ -94,12 +95,13 @@ export class ProductService {
           secondHandPrice: Number(productData.price) * 0.8,
           picture: productData.picture || null,
           category: category,
-          condition: "New",
+          condition: productData.condition,
           color: productData.color,
           size: Number(productData.size),
-          sex: productData.sex || "Unisex",
-          quantityInStock: 5,
+          sex: productData.sex || "none",
+          quantityInStock: Number(productData.quantityInStock),
           isRunOutOfStock: false,
+          description: productData.description,
           productTypeId: productType.id,
           ownerId: productData.ownerId
         };
@@ -139,43 +141,47 @@ export class ProductService {
     let params = new HttpParams();
 
     // Only add parameters if they have values
-    if (sortBy && sortBy.trim() !== '') {
-      params = params.set('sortBy', sortBy);
+    if (sortBy && sortBy.trim() !== "") {
+      params = params.set("sortBy", sortBy);
     }
-    if (category && category.trim() !== '') {
-      params = params.set('category', category);
+    if (category && category.trim() !== "") {
+      params = params.set("category", category);
     }
-    if (searchTerm && searchTerm.trim() !== '') {
-      params = params.set('searchTerm', searchTerm);
+    if (searchTerm && searchTerm.trim() !== "") {
+      params = params.set("searchTerm", searchTerm);
     }
 
-    return this.http.get<Products[]>(`${this.baseUrl}/products`, {
-      headers: this.authService.getAuthHeaders(),
-      params: params
-    }).pipe(
-      tap(products => console.log("ProductService: Received products:", products)),
-      catchError(error => {
-        console.error("ProductService: Error fetching products:", error);
-        return throwError(() => error);
+    return this.http
+      .get<Products[]>(`${this.baseUrl}/products`, {
+        headers: this.authService.getAuthHeaders(),
+        params: params
       })
-    );
+      .pipe(
+        tap(products => console.log("ProductService: Received products:", products)),
+        catchError(error => {
+          console.error("ProductService: Error fetching products:", error);
+          return throwError(() => error);
+        })
+      );
   }
 
   deleteProduct(productId: string): Observable<string> {
     console.log("ProductService: Deleting product:", productId);
 
-    return this.http.delete(`${this.baseUrl}/product-delete/${productId}`, {
-      headers: this.authService.getAuthHeaders(),
-      responseType: 'text'
-    }).pipe(
-      tap(response => {
-        console.log("ProductService: Delete successful:", response);
-      }),
-      catchError(error => {
-        console.error("ProductService: Error deleting product:", error);
-        return throwError(() => error);
+    return this.http
+      .delete(`${this.baseUrl}/product-delete/${productId}`, {
+        headers: this.authService.getAuthHeaders(),
+        responseType: "text"
       })
-    );
+      .pipe(
+        tap(response => {
+          console.log("ProductService: Delete successful:", response);
+        }),
+        catchError(error => {
+          console.error("ProductService: Error deleting product:", error);
+          return throwError(() => error);
+        })
+      );
   }
 
   getMyProducts(): Observable<Products[]> {
