@@ -73,9 +73,9 @@ export class RegisterComponent implements OnInit {
         console.log("Google register successful", response);
         localStorage.setItem("token", response.token);
         localStorage.setItem("user", JSON.stringify(response.user));
-        this.router.navigate(["/home"]);
+        this.router.navigate(["/pawn-shop/main-page"]);
       },
-      error: (error) => {
+      error: error => {
         console.error("Google register failed", error);
         if (error.status === 409) {
           this.router.navigate(["/auth/login"]);

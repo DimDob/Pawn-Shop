@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import com.example.pawnShop.Dto.Auth.ForgotPasswordRequestDto;
 import com.example.pawnShop.Dto.Auth.GoogleAuthRequestDto;
 import com.example.pawnShop.Dto.Auth.ResetPasswordRequestDto;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.stereotype.Service;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class AuthController {
     @Autowired
     private final AuthService authService;
@@ -31,12 +31,11 @@ public class AuthController {
     private final UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Validated @RequestBody LoginRequestDto loginRequestDto){
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) {
         Result<LoginResponseDto> result = authService.login(loginRequestDto);
-        if(!result.isSuccess()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result.getError());
-        }
-        return ResponseEntity.ok(result.getValue());
+        return result.isSuccess() 
+            ? ResponseEntity.ok(result.getData())
+            : ResponseEntity.badRequest().body(result.getMessage());
     }
 
     @PostMapping("/register")
@@ -99,13 +98,28 @@ public class AuthController {
     }
 
     @PostMapping("/google/login")
-    public ResponseEntity<LoginResponseDto> googleLogin(@RequestBody GoogleAuthRequestDto request) {
-        return ResponseEntity.ok(authService.handleGoogleLogin(request.getToken()));
+    public ResponseEntity<?> googleLogin(@RequestBody GoogleAuthRequestDto request) {
+        Result<LoginResponseDto> result = authService.handleGoogleLogin(request.getToken());
+        return result.isSuccess()
+            ? ResponseEntity.ok(result.getData())
+            : ResponseEntity.badRequest().body(result.getMessage());
     }
 
     @PostMapping("/google/register")
     public ResponseEntity<String> googleRegister(@RequestBody GoogleAuthRequestDto request) {
         authService.handleGoogleRegister(request.getToken());
         return ResponseEntity.ok("Successfully registered with Google");
+    }
+
+    @GetMapping("/login/oauth2/code/google")
+    public ResponseEntity<?> googleCallback(@RequestParam("code") String code) {
+        try {
+            Result<LoginResponseDto> result = authService.handleGoogleAuthCode(code);
+            return result.isSuccess()
+                ? ResponseEntity.ok(result.getData())
+                : ResponseEntity.badRequest().body(result.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to process Google authentication");
+        }
     }
 }

@@ -26,4 +26,13 @@ public class Result<T> {
         return new Result<>(error);
     }
 
+
+    // get data from result
+    public T getData() {
+        return this.value;
+    }
+    //get message from result
+    public String getMessage() {
+        return this.error.getMessage();
+    }
 }

@@ -26,26 +26,44 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     console.log("Initializing Google Sign-In");
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com",
-      callback: this.handleCredentialResponse.bind(this),
-      auto_select: false,
-      cancel_on_tap_outside: true
-    });
 
-    // @ts-ignore
-    google.accounts.id.renderButton(document.getElementById("google-button"), { theme: "outline", size: "large", width: "100%" });
+    // Wait for the document to be fully loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      // @ts-ignore
+      if (window.google && window.google.accounts) {
+        this.initializeGoogleSignIn();
+      } else {
+        // Retry after a short delay if google is not yet available
+        setTimeout(() => this.initializeGoogleSignIn(), 1000);
+      }
+    });
+  }
+
+  private initializeGoogleSignIn() {
+    try {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com",
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+
+      // @ts-ignore
+      google.accounts.id.renderButton(document.getElementById("google-button"), { theme: "outline", size: "large", width: "100%" });
+    } catch (error) {
+      console.error("Failed to initialize Google Sign-In:", error);
+    }
   }
 
   async handleCredentialResponse(response: any) {
-    console.log("Google response:", response);
+    console.log("Full Google response:", response);
     this.ngZone.run(() => {
       if (response.credential) {
-        console.log("LoginComponent: Got Google credential");
+        console.log("Token length:", response.credential.length);
         this.handleGoogleLogin(response.credential);
       } else {
-        console.error("LoginComponent: No credential in response");
+        console.error("No credential in response:", response);
       }
     });
   }
@@ -72,7 +90,7 @@ export class LoginComponent implements OnInit {
         console.log("Google login successful", response);
         // Store the token from response
         localStorage.setItem("token", response.token);
-        this.router.navigate(["/home"]);
+        this.router.navigate(["/"]);
       },
       error: error => {
         console.error("Google login failed", error);

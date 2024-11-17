@@ -40,6 +40,15 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import jakarta.annotation.PostConstruct;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
+import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
+import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImp implements AuthService {
@@ -58,9 +67,17 @@ public class AuthServiceImp implements AuthService {
     private final EmailService emailService;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private String googleClientId;
+    private String clientId;
+    
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String clientSecret;
+    
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
+    private String redirectUri;
 
     private GoogleIdTokenVerifier verifier;
+
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImp.class);
 
     @PostConstruct
     public void init() {
@@ -69,7 +86,7 @@ public class AuthServiceImp implements AuthService {
             JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
             
             verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-                .setAudience(Collections.singletonList(googleClientId))
+                .setAudience(Collections.singletonList(clientId))
                 .build();
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize Google token verifier", e);
@@ -250,30 +267,94 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public LoginResponseDto handleGoogleLogin(String token) {
-        GoogleIdToken idToken = verifyGoogleToken(token);
-        GoogleIdToken.Payload payload = idToken.getPayload();
-        
-        String email = payload.getEmail();
-        AppUser user = userRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found"));
+    public Result<LoginResponseDto> handleGoogleAuthCode(String code) {
+        try {
+            // Exchange code for tokens
+            GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
+                new NetHttpTransport(),
+                GsonFactory.getDefaultInstance(),
+                "https://oauth2.googleapis.com/token",
+                clientId,
+                clientSecret,
+                code,
+                redirectUri)
+                .execute();
+
+            // Get user info
+            GoogleIdToken idToken = tokenResponse.parseIdToken();
+            GoogleIdToken.Payload payload = idToken.getPayload();
+
+            String email = payload.getEmail();
             
-        return createLoginResponse(user);
+            // Find or create user
+            AppUser user = userRepository.findByEmail(email)
+                .orElseGet(() -> createGoogleUser(payload));
+
+            // Generate JWT token
+            String jwtToken = jwtService.generateJwtToken(user);
+            
+            return Result.success(LoginResponseDto.builder()
+                .username(user.getEmail())
+                .token(jwtToken)
+                .isAdmin(user.getRole().equals("ADMIN"))
+                .build());
+                
+        } catch (Exception e) {
+            return Result.error("Failed to process Google authentication: " + e.getMessage());
+        }
+    }
+
+    private AppUser createGoogleUser(GoogleIdToken.Payload payload) {
+        AppUser user = new AppUser();
+        user.setEmail(payload.getEmail());
+        user.setFirstName((String) payload.get("given_name"));
+        user.setLastName((String) payload.get("family_name"));
+        user.setEmailConfirmed(true);
+        user.setRole(UserRole.USER);
+        user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        System.out.println("Creating new Google user with email: " + payload.getEmail());
+        return userRepository.save(user);
     }
 
     @Override
-public void handleGoogleRegister(String token) {
-    GoogleIdToken idToken = verifyGoogleToken(token);
-    GoogleIdToken.Payload payload = idToken.getPayload();
-    
-    AppUser user = new AppUser();
-    user.setEmail(payload.getEmail());
-    user.setFirstName((String) payload.get("given_name"));
-    user.setLastName((String) payload.get("family_name"));
-    user.setEmailConfirmed(true);
-    user.setRole(UserRole.USER);
-    user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); // Generate random password for Google users
-    
-    userRepository.save(user);
-}
+    public Result<LoginResponseDto> handleGoogleLogin(String token) {
+        try {
+            log.info("Processing Google login token of length: {}", token.length());
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    new NetHttpTransport(), GsonFactory.getDefaultInstance())
+                    .setAudience(Collections.singletonList(clientId))
+                    .build();
+
+            GoogleIdToken idToken = verifier.verify(token);
+            if (idToken != null) {
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                String email = payload.getEmail();
+                log.info("Google login attempt for email: {}", email);
+                
+                AppUser user = userRepository.findByEmail(email)
+                    .orElseGet(() -> createGoogleUser(payload));
+
+                String jwtToken = jwtService.generateJwtToken(user);
+                
+                return Result.success(LoginResponseDto.builder()
+                    .username(user.getEmail())
+                    .token(jwtToken)
+                    .isAdmin(user.getRole().equals(UserRole.ADMIN))
+                    .build());
+            }
+            log.error("Invalid ID token");
+            return Result.error("Invalid ID token");
+        } catch (Exception e) {
+            log.error("Google login failed", e);
+            return Result.error(e.getMessage());
+        }
+    }
+
+    @Override
+    public Result<Boolean> handleGoogleRegister(String token) {
+        // Implement the logic for handling Google registration
+        System.out.println("Handling Google registration with token: " + token);
+        // Add your registration logic here
+        return Result.success(true); // Adjust return value as needed
+    }
 }
