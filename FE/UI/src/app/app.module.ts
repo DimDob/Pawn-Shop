@@ -75,7 +75,7 @@ import { AdminService } from "./components/admin/admin-orders/admin.service";
       useClass: AuthInterceptor,
       multi: true
     },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     AdminService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

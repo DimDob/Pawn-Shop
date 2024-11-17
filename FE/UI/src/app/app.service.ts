@@ -23,12 +23,8 @@ interface AccountUpdateData {
 export class AuthService {
   private readonly tokenKey = "auth_token";
   private readonly refreshTokenKey = "refresh_token";
-// sign-in-with-google-endpoint-BE-and-FE
   private readonly host = "http://localhost:8080";
-=======
   private readonly rememberMeKey = "remember_me";
-  private readonly host = environment.host;
-// google-sign-in-be-fe-1
 
   constructor(private http: HttpClient, private router: Router, private errorHandler: ErrorHandlerService) {}
 
@@ -124,27 +120,6 @@ export class AuthService {
   isLoggedIn(): boolean {
     const token = this.getToken();
     return token !== null && !this.isTokenExpired();
-  }
-
-  private setTokens(response: AuthResponse, rememberMe: boolean): void {
-    console.log("AuthService: Setting tokens with remember me:", rememberMe);
-
-    if (response.token) {
-      localStorage.setItem(this.tokenKey, response.token);
-    }
-
-    if (response.refreshToken) {
-      if (rememberMe) {
-        console.log("AuthService: Storing refresh token in localStorage");
-        localStorage.setItem(this.refreshTokenKey, response.refreshToken);
-        localStorage.setItem(this.rememberMeKey, "true");
-      } else {
-        console.log("AuthService: Storing refresh token in sessionStorage");
-        sessionStorage.setItem(this.refreshTokenKey, response.refreshToken);
-        localStorage.removeItem(this.refreshTokenKey);
-        localStorage.setItem(this.rememberMeKey, "false");
-      }
-    }
   }
 
   handleUserLoging(credentials: any, endpoint: string): Observable<AuthResponse> {
@@ -326,13 +301,42 @@ export class AuthService {
     );
   }
 
-  handleGoogleLogin(token: string): Observable<any> {
+  handleGoogleLogin(token: string): Observable<AuthResponse> {
     console.log("AuthService: Sending Google login request");
-    return this.http.post(`${this.host}/api/auth/google/login`, { token });
+    return this.http.post<AuthResponse>(`${this.host}/api/auth/google/login`, { token }).pipe(
+      tap(response => {
+        console.log("Google login response:", response);
+      }),
+      catchError(error => {
+        console.error("Google login error:", error);
+        return throwError(() => error);
+      })
+    );
   }
 
   handleGoogleRegister(token: string): Observable<any> {
     console.log("AuthService: Sending Google register request");
     return this.http.post(`${this.host}/api/auth/google/register`, { token });
+  }
+
+  public setTokens(response: AuthResponse, rememberMe: boolean): void {
+    console.log("AuthService: Setting tokens with remember me:", rememberMe);
+
+    if (response.token) {
+      localStorage.setItem(this.tokenKey, response.token);
+      console.log("Token stored:", response.token);
+    }
+
+    if (response.refreshToken) {
+      if (rememberMe) {
+        console.log("AuthService: Storing refresh token in localStorage");
+        localStorage.setItem(this.refreshTokenKey, response.refreshToken);
+        localStorage.setItem(this.rememberMeKey, "true");
+      } else {
+        console.log("AuthService: Storing refresh token in sessionStorage");
+        sessionStorage.setItem(this.refreshTokenKey, response.refreshToken);
+        localStorage.setItem(this.rememberMeKey, "false");
+      }
+    }
   }
 }

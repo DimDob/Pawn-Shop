@@ -1,11 +1,11 @@
 // UI/src/app/components/auth_component/login/login.component.ts
 import { Component, OnInit, NgZone } from "@angular/core";
-import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
 import { GoogleCredentialResponse } from "../../../shared/types/google-types";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { NotificationService } from "../../../shared/services/notification.service";
 
 @Component({
   selector: "app-login",
@@ -16,8 +16,9 @@ export class LoginComponent implements OnInit {
   faUser = faUser;
   faLock = faLock;
   loginForm: FormGroup;
+  loginError: string;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private ngZone: NgZone) {
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private ngZone: NgZone, private notificationService: NotificationService) {
     this.loginForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required],
@@ -71,10 +72,10 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-// sign-in-with-google-endpoint-BE-and-FE
+      // sign-in-with-google-endpoint-BE-and-FE
       console.log("Form submitted", this.loginForm.value);
       // Handle form submission
-//
+      //
       const credentials = {
         email: this.loginForm.get("email")?.value,
         password: this.loginForm.get("password")?.value,
@@ -92,7 +93,6 @@ export class LoginComponent implements OnInit {
           this.notificationService.showError(this.loginError || "An error occurred");
         }
       });
-// google-sign-in-be-fe-1
     }
   }
 
@@ -107,17 +107,20 @@ export class LoginComponent implements OnInit {
   private handleGoogleLogin(token: string) {
     console.log("LoginComponent: Handling Google login with token length:", token.length);
     this.authService.handleGoogleLogin(token).subscribe({
-      next: response => {
+      next: (response: any) => {
         console.log("Google login successful", response);
-        // Store the token from response
-        localStorage.setItem("token", response.token);
-        this.router.navigate(["/"]);
+
+        // Store the token using the auth service
+        this.authService.setTokens(response, true); // Always remember Google users
+
+        // Use the router service for navigation
+        this.ngZone.run(() => {
+          this.router.navigate(["/pawn-shop/main-page"]);
+        });
       },
       error: error => {
         console.error("Google login failed", error);
-        if (error.status === 403) {
-          console.error("Access forbidden. Check backend permissions.");
-        }
+        this.notificationService.showError("Google login failed. Please try again.");
       }
     });
   }

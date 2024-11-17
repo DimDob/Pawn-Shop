@@ -1,5 +1,4 @@
 // UI/src/app/components/auth_component/register/register.component.ts
-import { Component } from "@angular/core";
 import { Component, OnInit, NgZone } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
