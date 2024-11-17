@@ -23,8 +23,12 @@ interface AccountUpdateData {
 export class AuthService {
   private readonly tokenKey = "auth_token";
   private readonly refreshTokenKey = "refresh_token";
+// sign-in-with-google-endpoint-BE-and-FE
+  private readonly host = "http://localhost:8080";
+=======
   private readonly rememberMeKey = "remember_me";
   private readonly host = environment.host;
+// google-sign-in-be-fe-1
 
   constructor(private http: HttpClient, private router: Router, private errorHandler: ErrorHandlerService) {}
 
@@ -320,5 +324,15 @@ export class AuthService {
         return throwError(() => error);
       })
     );
+  }
+
+  handleGoogleLogin(token: string): Observable<any> {
+    console.log("AuthService: Sending Google login request");
+    return this.http.post(`${this.host}/api/auth/google/login`, { token });
+  }
+
+  handleGoogleRegister(token: string): Observable<any> {
+    console.log("AuthService: Sending Google register request");
+    return this.http.post(`${this.host}/api/auth/google/register`, { token });
   }
 }

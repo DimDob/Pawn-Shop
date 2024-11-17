@@ -1,4 +1,8 @@
+// sign-in-with-google-endpoint-BE-and-FE
+<!-- UI\src\app\components\auth_component\login\login.component.html -->
+//
 <!-- UI/src/app/components/auth_component/login/login.component.html -->
+// google-sign-in-be-fe-1
 <div class="login-container">
   <div class="icon">
     <fa-icon [icon]="faUser"></fa-icon>
@@ -25,9 +29,14 @@
         </label>
       </div>
 
+      <div id="google-button"></div>
+
       <button type="submit" [disabled]="!loginForm.valid">Login</button>
     </form>
-
+    <div class="social-login">
+      <p>Or sign in with:</p>
+      <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    </div>
     <div class="additional-links">
       <a (click)="navigateToForgotPassword()">Forgot Password?</a>
       <a (click)="navigateToRegister()">Create Account</a>

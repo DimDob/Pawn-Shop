@@ -1,5 +1,4 @@
-// UI/src/app/components/auth_component/login/login.component.scss
-
+// UI\src\app\components\auth_component\login\login.component.scss
 .login-container {
   max-width: 1200px;
   margin: 70px auto 0;
@@ -98,6 +97,28 @@
     label {
       margin-left: 0;
       margin-right: 282px;
+    }
+  }
+
+  .google-btn-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .social-login {
+    margin: 20px 0;
+    text-align: center;
+
+    p {
+      margin-bottom: 15px;
+      color: #666;
+    }
+
+    .g-signin2 {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
     }
   }
 }
