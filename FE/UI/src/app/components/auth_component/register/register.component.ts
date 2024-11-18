@@ -84,30 +84,33 @@ export class RegisterComponent implements OnInit {
         lastName: this.registerForm.get("lastName")?.value
       };
 
-      this.authService.register(registerData).pipe(
-        catchError(error => {
-          if (error.status === 200) {
-            // Success case with text response
+      this.authService
+        .register(registerData)
+        .pipe(
+          catchError(error => {
+            if (error.status === 200) {
+              // Success case with text response
+              this.notificationService.showSuccess("Registration successful! Please check your email to confirm your account.");
+              this.router.navigate(["/auth/login"]);
+              return EMPTY;
+            }
+            throw error;
+          })
+        )
+        .subscribe({
+          next: () => {
             this.notificationService.showSuccess("Registration successful! Please check your email to confirm your account.");
             this.router.navigate(["/auth/login"]);
-            return EMPTY;
+          },
+          error: error => {
+            console.error("Registration failed:", error);
+            if (error.status === 409) {
+              this.notificationService.showError("An account with this email already exists.");
+            } else {
+              this.notificationService.showError("Registration failed. Please try again.");
+            }
           }
-          throw error;
-        })
-      ).subscribe({
-        next: () => {
-          this.notificationService.showSuccess("Registration successful! Please check your email to confirm your account.");
-          this.router.navigate(["/auth/login"]);
-        },
-        error: (error) => {
-          console.error("Registration failed:", error);
-          if (error.status === 409) {
-            this.notificationService.showError("An account with this email already exists.");
-          } else {
-            this.notificationService.showError("Registration failed. Please try again.");
-          }
-        }
-      });
+        });
     } else {
       this.markFormGroupTouched(this.registerForm);
     }
@@ -174,10 +177,20 @@ export class RegisterComponent implements OnInit {
     const password = form.get("password");
     const confirmPassword = form.get("confirmPassword");
 
-    if (password && confirmPassword && password.value !== confirmPassword.value) {
-      confirmPassword?.setErrors({ passwordMismatch: true });
-    } else {
-      confirmPassword?.setErrors(null);
+    if (password && confirmPassword) {
+      if (password.value !== confirmPassword.value) {
+        confirmPassword.setErrors({ ...confirmPassword.errors, passwordMismatch: true });
+      } else {
+        const errors = confirmPassword.errors;
+        if (errors) {
+          delete errors["passwordMismatch"];
+          if (Object.keys(errors).length === 0) {
+            confirmPassword.setErrors(null);
+          } else {
+            confirmPassword.setErrors(errors);
+          }
+        }
+      }
     }
   }
 }
