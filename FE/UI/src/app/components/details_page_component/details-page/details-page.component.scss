@@ -8,7 +8,7 @@
   margin: 0 auto;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   .image-container {
     position: relative;
@@ -58,6 +58,7 @@
       color: #009d34;
       font-size: 24px;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .price {
@@ -73,6 +74,11 @@
     }
     p {
       color: #009d34;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      width: 100%;
     }
   }
 
@@ -86,12 +92,14 @@
         display: block;
         margin-bottom: 8px;
         color: #009d34;
+        text-align: center;
       }
 
       .quantity-buttons {
         display: flex;
         align-items: center;
         gap: 10px;
+        justify-content: center;
 
         button {
           background: #009d34;
@@ -124,7 +132,7 @@
     }
 
     .add-to-cart-button {
-      width: 100%;
+      width: 30%;
       padding: 12px;
       background: #009d34;
       color: white;
@@ -137,6 +145,7 @@
       justify-content: center;
       gap: 8px;
       transition: all 0.3s ease;
+      margin: 0 auto;
 
       &:hover:not([disabled]) {
         background: darken(#009d34, 10%);
@@ -309,7 +318,7 @@
   &.delete {
     background-color: #ff4081;
     color: white;
-
+    // margin-right: 60%;
     &:hover {
       background-color: darken(#ff4081, 10%);
       transform: translateY(-2px);
