@@ -359,7 +359,7 @@
 
   .modal-header {
     display: flex;
-    align-items: center;
+    align-items: start;
     gap: 12px;
     margin-bottom: 16px;
 
@@ -400,6 +400,7 @@
     .confirm-delete {
       background-color: #ff4081;
       color: white;
+      margin-right: 14%;
 
       &:hover {
         background-color: darken(#ff4081, 10%);
