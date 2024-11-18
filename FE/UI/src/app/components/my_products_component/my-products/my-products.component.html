@@ -4,78 +4,85 @@
     <fa-icon [icon]="faBoxArchive"></fa-icon>
   </div>
   <h1>My Products</h1>
+</div>
 
-  <!-- Add search input -->
-  <div class="search-container">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label class="search-label">Search my products</mat-label>
-      <input matInput type="text" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange($event)" class="search-input" />
-    </mat-form-field>
+<div class="empty-state" *ngIf="products().length === 0">
+  <div class="empty-state-content">
+    <fa-icon [icon]="faBox" class="empty-icon"></fa-icon
+    ><!-- ? -->
+    <h2>No Products Yet</h2>
+    <p>You haven't created any products yet. Start selling by adding your first product!</p>
+    <button class="add-product-btn" (click)="navigateToAddProduct()">
+      <fa-icon [icon]="faPlus"></fa-icon>
+      Add Your First Product
+    </button>
   </div>
 </div>
 
-<div class="main-page-container">
-  <div class="controls">
-    <div class="filter-controls">
-      <mat-form-field appearance="fill">
-        <mat-label>Sort</mat-label>
-        <mat-select [value]="selectedSortOption()" (valueChange)="onSortChange($event)">
-          <mat-option value="">No Sorting</mat-option>
-          <mat-option value="newest">Newest First</mat-option>
-          <mat-option value="priceLowToHigh">Price (Low to High)</mat-option>
-          <mat-option value="priceHighToLow">Price (High to Low)</mat-option>
-        </mat-select>
-      </mat-form-field>
+<div class="products-container" *ngIf="products().length > 0">
+  <div class="main-page-container">
+    <div class="controls">
+      <div class="filter-controls">
+        <mat-form-field appearance="fill">
+          <mat-label>Sort</mat-label>
+          <mat-select [value]="selectedSortOption()" (valueChange)="onSortChange($event)">
+            <mat-option value="">No Sorting</mat-option>
+            <mat-option value="newest">Newest First</mat-option>
+            <mat-option value="priceLowToHigh">Price (Low to High)</mat-option>
+            <mat-option value="priceHighToLow">Price (High to Low)</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Category</mat-label>
-        <mat-select [value]="selectedCategory()" (valueChange)="onCategoryChange($event)">
-          <mat-option value="">All</mat-option>
-          @for(category of categories; track category) {
-          <mat-option [value]="category">{{ category }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="view-toggle">
-      <button mat-button (click)="toggleView()" [class.active]="isGridView()">
-        <span>Grid</span>
-      </button>
-      <button mat-button (click)="toggleView()" [class.active]="!isGridView()">
-        <span>List</span>
-      </button>
-    </div>
-  </div>
-
-  <div class="container" [class.list-view]="!isGridView()">
-    @for(product of paginatedProducts(); track product.id) {
-    <div class="card" (click)="goToDetails(product.id)">
-      <div class="imgBx">
-        <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
-      </div>
-      <div class="contentBx">
-        <div class="product-info">
-          <h2>{{ product?.name }}</h2>
-          <div class="price">{{ product?.price | currency }}</div>
-          <div class="details">
-            @if(product?.manufacturer) {
-            <div class="manufacturer">
-              <h3>Manufacturer:</h3>
-              <span>{{ product?.manufacturer }}</span>
-            </div>
-            } @if(product?.model) {
-            <div class="model">
-              <h3>Model:</h3>
-              <span>{{ product?.model }}</span>
-            </div>
+        <mat-form-field appearance="fill">
+          <mat-label>Category</mat-label>
+          <mat-select [value]="selectedCategory()" (valueChange)="onCategoryChange($event)">
+            <mat-option value="">All</mat-option>
+            @for(category of categories; track category) {
+            <mat-option [value]="category">{{ category }}</mat-option>
             }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="view-toggle">
+        <button mat-button (click)="toggleView()" [class.active]="isGridView()">
+          <span>Grid</span>
+        </button>
+        <button mat-button (click)="toggleView()" [class.active]="!isGridView()">
+          <span>List</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="container" [class.list-view]="!isGridView()">
+      @for(product of paginatedProducts(); track product.id) {
+      <div class="card" (click)="goToDetails(product.id)">
+        <div class="imgBx">
+          <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
+        </div>
+        <div class="contentBx">
+          <div class="product-info">
+            <h2>{{ product?.name }}</h2>
+            <div class="price">{{ product?.price | currency }}</div>
+            <div class="details">
+              @if(product?.manufacturer) {
+              <div class="manufacturer">
+                <h3>Manufacturer:</h3>
+                <span>{{ product?.manufacturer }}</span>
+              </div>
+              } @if(product?.model) {
+              <div class="model">
+                <h3>Model:</h3>
+                <span>{{ product?.model }}</span>
+              </div>
+              }
+            </div>
           </div>
         </div>
       </div>
+      }
     </div>
-    }
-  </div>
 
-  <mat-paginator [length]="totalProducts()" [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
+    <mat-paginator [length]="totalProducts()" [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
+  </div>
 </div>

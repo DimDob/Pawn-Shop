@@ -4,7 +4,7 @@ import { Products } from "../../main_page_component/main-page/Interfaces/Product
 import { Router } from "@angular/router";
 import { ProductService } from "../../../shared/services/product.service";
 import { NotificationService } from "../../../shared/services/notification.service";
-import { faBoxArchive } from "@fortawesome/free-solid-svg-icons";
+import { faBoxArchive, faBox, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { PageEvent, MatPaginator } from "@angular/material/paginator";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 
@@ -15,6 +15,8 @@ import { Category } from "../../main_page_component/main-page/enums/Category";
 })
 export class MyProductsComponent implements OnInit {
   faBoxArchive = faBoxArchive;
+  faBox = faBox;
+  faPlus = faPlus;
 
   protected pageSize = signal<number>(Number(localStorage.getItem("myProductsPageSize")) || 25);
   protected pageIndex = signal<number>(Number(localStorage.getItem("myProductsPageIndex")) || 0);
@@ -30,11 +32,7 @@ export class MyProductsComponent implements OnInit {
 
   @ViewChild(MatPaginator) private paginator: MatPaginator;
 
-  constructor(
-    private productService: ProductService,
-    private router: Router,
-    private notificationService: NotificationService
-  ) {}
+  constructor(private productService: ProductService, private router: Router, private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     console.log("MyProductsComponent: Loading products");
@@ -43,14 +41,14 @@ export class MyProductsComponent implements OnInit {
 
   private loadMyProducts(): void {
     this.productService.getMyProducts().subscribe({
-      next: (products) => {
+      next: products => {
         console.log("MyProductsComponent: Products loaded successfully", products);
         this.originalProducts.set(products);
         this.products.set(products);
         this.totalProducts.set(products.length);
         this.applyFilters();
       },
-      error: (error) => {
+      error: error => {
         console.error("MyProductsComponent: Error loading products", error);
         this.notificationService.showError("Failed to load products. Please try again later.");
       }
@@ -110,11 +108,7 @@ export class MyProductsComponent implements OnInit {
     // Apply search filter
     if (this.searchTerm()) {
       const searchTerm = this.searchTerm().toLowerCase();
-      filteredProducts = filteredProducts.filter(product =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.manufacturer?.toLowerCase().includes(searchTerm) ||
-        product.model?.toLowerCase().includes(searchTerm)
-      );
+      filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchTerm) || product.manufacturer?.toLowerCase().includes(searchTerm) || product.model?.toLowerCase().includes(searchTerm));
     }
 
     // Apply category filter
@@ -126,5 +120,8 @@ export class MyProductsComponent implements OnInit {
     this.totalProducts.set(filteredProducts.length);
     this.paginateProducts();
   }
-}
 
+  navigateToAddProduct() {
+    this.router.navigate(["/add-product"]);
+  }
+}

@@ -15,6 +15,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { FormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { By } from "@angular/platform-browser";
 
 describe("MyProductsComponent", () => {
   let component: MyProductsComponent;
@@ -107,5 +108,23 @@ describe("MyProductsComponent", () => {
 
     // Check if navigation is called with the correct parameters
     expect(routerMock.navigate).toHaveBeenCalledWith(["/product", productId]);
+  });
+
+  it("should show empty state message when no products exist", () => {
+    productServiceMock.getMyProducts.and.returnValue(of([]));
+
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    const emptyStateElement = fixture.debugElement.query(By.css(".empty-state"));
+    expect(emptyStateElement).toBeTruthy();
+
+    const message = fixture.debugElement.query(By.css(".empty-state-content p"));
+    expect(message.nativeElement.textContent).toContain("You haven't created any products yet");
+  });
+
+  it("should navigate to add product page when clicking add product button", () => {
+    component.navigateToAddProduct();
+    expect(routerMock.navigate).toHaveBeenCalledWith(["/product-add"]);
   });
 });
