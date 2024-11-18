@@ -174,7 +174,7 @@ describe("RegisterComponent", () => {
     fixture.detectChanges();
 
     expect(form.valid).toBeFalse();
-    expect(component.registerError).toBeNull();
+    expect(component.registerForm).toBeNull();
   });
 
   it("must navigate to login when navigateToLogin is called", () => {
