@@ -129,21 +129,18 @@ describe("RegisterComponent", () => {
 
     component.onSubmit();
 
-    expect(authServiceMock.register).toHaveBeenCalledWith(
-      {
-        email: "test@example.com",
-        password: "Valid@123",
-        confirmPassword: "Valid@123",
-        firstName: "John",
-        lastName: "Doe"
-      },
-      `${environment.host}/api/auth/register`
-    );
-    expect(notificationServiceMock.showSuccess).toHaveBeenCalledWith("Registration successful! Please check your email to verify your account.");
+    expect(authServiceMock.register).toHaveBeenCalledWith({
+      email: "test@example.com",
+      password: "Valid@123",
+      confirmPassword: "Valid@123",
+      firstName: "John",
+      lastName: "Doe"
+    });
+    expect(notificationServiceMock.showSuccess).toHaveBeenCalledWith("Registration successful! Please check your email to confirm your account.");
     expect(routerMock.navigate).toHaveBeenCalledWith(["/auth/login"]);
   });
 
-  it("must show an error if handlerUserRegister returns an error", () => {
+  it("must show an error if authService.register returns an error", () => {
     const form = component.registerForm;
     form.get("email")?.setValue("test@example.com");
     form.get("password")?.setValue("Valid@123");
@@ -151,21 +148,18 @@ describe("RegisterComponent", () => {
     form.get("firstName")?.setValue("John");
     form.get("lastName")?.setValue("Doe");
 
-    authServiceMock.handlerUserRegister.and.returnValue(throwError({ error: { message: "Registration failed" } }));
+    authServiceMock.register.and.returnValue(throwError({ status: 409 }));
 
     component.onSubmit();
 
-    expect(authServiceMock.handlerUserRegister).toHaveBeenCalledWith(
-      {
-        email: "test@example.com",
-        password: "Valid@123",
-        confirmPassword: "Valid@123",
-        firstName: "John",
-        lastName: "Doe"
-      },
-      `${environment.host}/api/auth/register`
-    );
-    expect(notificationServiceMock.showError).toHaveBeenCalledWith("Registration failed");
+    expect(authServiceMock.register).toHaveBeenCalledWith({
+      email: "test@example.com",
+      password: "Valid@123",
+      confirmPassword: "Valid@123",
+      firstName: "John",
+      lastName: "Doe"
+    });
+    expect(notificationServiceMock.showError).toHaveBeenCalledWith("An account with this email already exists.");
   });
 
   it("must be invalid if the passwords do not match", () => {
