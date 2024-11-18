@@ -7,6 +7,7 @@ import { GoogleCredentialResponse } from "../../../shared/types/google-types";
 import { faUser, faLock, faEnvelope, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import { NotificationService } from "../../../shared/services/notification.service";
 import { environment } from "../../../../environments/environment";
+import { RegisterData } from "./interfaces/RegisterData";
 
 @Component({
   selector: "app-register",
@@ -21,13 +22,18 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
 
   constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private ngZone: NgZone, private notificationService: NotificationService) {
-    this.registerForm = this.formBuilder.group({
-      email: ["", [Validators.required, Validators.email]],
-      firstName: ["", Validators.required],
-      lastName: ["", Validators.required],
-      password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
-      confirmPassword: ["", Validators.required]
-    });
+    this.registerForm = this.formBuilder.group(
+      {
+        email: ["", [Validators.required, Validators.email]],
+        firstName: ["", Validators.required],
+        lastName: ["", Validators.required],
+        password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
+        confirmPassword: ["", Validators.required]
+      },
+      {
+        validators: this.passwordMatchValidator
+      }
+    );
   }
 
   ngOnInit() {
@@ -66,9 +72,48 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      console.log("Form submitted", this.registerForm.value);
-      // Handle form submission
+      console.log("RegisterComponent: Submitting registration form");
+
+      const registerData: RegisterData = {
+        email: this.registerForm.get("email")?.value,
+        password: this.registerForm.get("password")?.value,
+        confirmPassword: this.registerForm.get("confirmPassword")?.value,
+        firstName: this.registerForm.get("firstName")?.value,
+        lastName: this.registerForm.get("lastName")?.value
+      };
+
+      console.log("RegisterComponent: Registration data prepared:", registerData);
+
+      this.authService.register(registerData).subscribe({
+        next: response => {
+          console.log("Registration successful:", response);
+          this.notificationService.showSuccess("Registration successful! Please check your email to confirm your account.");
+          this.router.navigate(["/auth/login"]);
+        },
+        error: error => {
+          console.error("Registration failed:", error);
+          if (error.status === 409) {
+            this.notificationService.showError("An account with this email already exists.");
+          } else {
+            this.notificationService.showError("Registration failed. Please try again.");
+          }
+        }
+      });
+    } else {
+      console.log("RegisterComponent: Form is invalid");
+      this.markFormGroupTouched(this.registerForm);
     }
+  }
+
+  // Helper method to mark all form controls as touched
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 
   navigateToLogin() {
@@ -115,5 +160,16 @@ export class RegisterComponent implements OnInit {
         }
       }
     });
+  }
+
+  private passwordMatchValidator(form: FormGroup) {
+    const password = form.get("password");
+    const confirmPassword = form.get("confirmPassword");
+
+    if (password && confirmPassword && password.value !== confirmPassword.value) {
+      confirmPassword?.setErrors({ passwordMismatch: true });
+    } else {
+      confirmPassword?.setErrors(null);
+    }
   }
 }

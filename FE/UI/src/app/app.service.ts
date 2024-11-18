@@ -360,4 +360,17 @@ export class AuthService {
       }
     }
   }
+
+  register(registerData: RegisterData): Observable<any> {
+    console.log("AuthService: Sending registration request");
+    return this.http.post(`${this.host}/api/auth/register`, registerData).pipe(
+      tap(response => {
+        console.log("Registration response:", response);
+      }),
+      catchError(error => {
+        console.error("Registration error:", error);
+        return throwError(() => error);
+      })
+    );
+  }
 }
