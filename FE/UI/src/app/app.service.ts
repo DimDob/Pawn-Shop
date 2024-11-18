@@ -5,7 +5,7 @@ import { Injectable, signal, computed } from "@angular/core";
 import { Observable, of, throwError, EMPTY } from "rxjs";
 import { User } from "./components/auth_component/login/login_interfaces.ts/User";
 import { AuthResponse } from "./components/auth_component/login/login_interfaces.ts/AuthResponse";
-import { tap, catchError, finalize } from "rxjs/operators";
+import { tap, catchError, finalize, map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
 import { environment } from "../environments/environment";
@@ -316,7 +316,28 @@ export class AuthService {
 
   handleGoogleRegister(token: string): Observable<any> {
     console.log("AuthService: Sending Google register request");
-    return this.http.post(`${this.host}/api/auth/google/register`, { token });
+    return this.http.post(`${this.host}/api/auth/google/register`, { token }, { responseType: 'text' }).pipe(
+      tap(response => {
+        console.log("Google register response:", response);
+      }),
+      map((response: any) => {
+        // If response is text, try to parse it as JSON
+        try {
+          return JSON.parse(response);
+        } catch {
+          return response;
+        }
+      }),
+      catchError(error => {
+        // Handle 200 status with text response
+        if (error.status === 200 && error.error && error.error.text) {
+          console.log("Successful registration with text response:", error.error.text);
+          return of(error.error.text);
+        }
+        console.error("Google register error:", error);
+        return throwError(() => error);
+      })
+    );
   }
 
   public setTokens(response: AuthResponse, rememberMe: boolean): void {

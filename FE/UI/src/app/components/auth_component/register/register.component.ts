@@ -5,7 +5,8 @@ import { Router } from "@angular/router";
 import { AuthService } from "../../../app.service";
 import { GoogleCredentialResponse } from "../../../shared/types/google-types";
 import { faUser, faLock, faEnvelope, faIdCard } from "@fortawesome/free-solid-svg-icons";
-import { GoogleAuthResponse } from "../../../shared/types/google-types";
+import { NotificationService } from "../../../shared/services/notification.service";
+import { environment } from "../../../../environments/environment";
 
 @Component({
   selector: "app-register",
@@ -19,7 +20,7 @@ export class RegisterComponent implements OnInit {
   faIdCard = faIdCard;
   registerForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private ngZone: NgZone) {
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private ngZone: NgZone, private notificationService: NotificationService) {
     this.registerForm = this.formBuilder.group({
       email: ["", [Validators.required, Validators.email]],
       firstName: ["", Validators.required],
@@ -30,29 +31,37 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("Initializing Google Register");
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com",
-      callback: this.handleCredentialResponse.bind(this),
-      auto_select: false,
-      cancel_on_tap_outside: true
-    });
-
-    // @ts-ignore
-    google.accounts.id.renderButton(document.getElementById("google-button-register"), { theme: "outline", size: "large", width: "100%" });
-  }
-
-  async handleCredentialResponse(response: any) {
-    console.log("Google response:", response);
-    this.ngZone.run(() => {
-      if (response.credential) {
-        console.log("RegisterComponent: Got Google credential");
-        this.handleGoogleRegister(response.credential);
+    // Initialize Google Sign-In
+    document.addEventListener("DOMContentLoaded", () => {
+      // @ts-ignore
+      if (window.google && window.google.accounts) {
+        this.initializeGoogleSignIn();
       } else {
-        console.error("RegisterComponent: No credential in response");
+        setTimeout(() => this.initializeGoogleSignIn(), 1000);
       }
     });
+  }
+
+  private initializeGoogleSignIn() {
+    try {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com",
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+
+      // @ts-ignore
+      google.accounts.id.renderButton(document.getElementById("google-button-register"), { theme: "outline", size: "large", width: "100%" });
+    } catch (error) {
+      console.error("Error initializing Google Sign-In:", error);
+    }
+  }
+
+  private handleCredentialResponse(response: any) {
+    console.log("RegisterComponent: Got Google credential");
+    this.handleGoogleRegister(response);
   }
 
   onSubmit() {
@@ -66,19 +75,43 @@ export class RegisterComponent implements OnInit {
     this.router.navigate(["/auth/login"]);
   }
 
-  private handleGoogleRegister(token: string) {
+  private handleGoogleRegister(response: any) {
     console.log("RegisterComponent: Handling Google register");
+    const token = response.credential;
+
     this.authService.handleGoogleRegister(token).subscribe({
-      next: (response: GoogleAuthResponse) => {
-        console.log("Google register successful", response);
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("user", JSON.stringify(response.user));
-        this.router.navigate(["/pawn-shop/main-page"]);
+      next: response => {
+        console.log("Google register successful:", response);
+        // След успешна регистрация, направете вход
+        this.authService.handleGoogleLogin(token).subscribe({
+          next: loginResponse => {
+            console.log("Auto login after registration successful");
+            this.authService.setTokens(loginResponse, true); // Remember Google users
+            this.router.navigate(["/pawn-shop/main-page"]);
+          },
+          error: error => {
+            console.error("Auto login after registration failed:", error);
+            this.router.navigate(["/auth/login"]);
+          }
+        });
       },
       error: error => {
-        console.error("Google register failed", error);
-        if (error.status === 409) {
-          this.router.navigate(["/auth/login"]);
+        console.error("Google register failed:", error);
+        if (error.status === 200) {
+          // Handle successful registration with error response
+          this.authService.handleGoogleLogin(token).subscribe({
+            next: loginResponse => {
+              console.log("Auto login after registration successful");
+              this.authService.setTokens(loginResponse, true);
+              this.router.navigate(["/pawn-shop/main-page"]);
+            },
+            error: loginError => {
+              console.error("Auto login after registration failed:", loginError);
+              this.router.navigate(["/auth/login"]);
+            }
+          });
+        } else {
+          this.notificationService.showError("Registration failed. Please try again.");
         }
       }
     });
