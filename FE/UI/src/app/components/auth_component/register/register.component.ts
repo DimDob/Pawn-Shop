@@ -8,6 +8,8 @@ import { faUser, faLock, faEnvelope, faIdCard } from "@fortawesome/free-solid-sv
 import { NotificationService } from "../../../shared/services/notification.service";
 import { environment } from "../../../../environments/environment";
 import { RegisterData } from "./interfaces/RegisterData";
+import { catchError } from "rxjs/operators";
+import { EMPTY } from "rxjs";
 
 @Component({
   selector: "app-register",
@@ -82,15 +84,22 @@ export class RegisterComponent implements OnInit {
         lastName: this.registerForm.get("lastName")?.value
       };
 
-      console.log("RegisterComponent: Registration data prepared:", registerData);
-
-      this.authService.register(registerData).subscribe({
-        next: response => {
-          console.log("Registration successful:", response);
+      this.authService.register(registerData).pipe(
+        catchError(error => {
+          if (error.status === 200) {
+            // Success case with text response
+            this.notificationService.showSuccess("Registration successful! Please check your email to confirm your account.");
+            this.router.navigate(["/auth/login"]);
+            return EMPTY;
+          }
+          throw error;
+        })
+      ).subscribe({
+        next: () => {
           this.notificationService.showSuccess("Registration successful! Please check your email to confirm your account.");
           this.router.navigate(["/auth/login"]);
         },
-        error: error => {
+        error: (error) => {
           console.error("Registration failed:", error);
           if (error.status === 409) {
             this.notificationService.showError("An account with this email already exists.");
@@ -100,7 +109,6 @@ export class RegisterComponent implements OnInit {
         }
       });
     } else {
-      console.log("RegisterComponent: Form is invalid");
       this.markFormGroupTouched(this.registerForm);
     }
   }
