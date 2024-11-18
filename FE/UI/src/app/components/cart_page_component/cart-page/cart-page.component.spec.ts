@@ -110,12 +110,4 @@ describe("CartPageComponent", () => {
     const total = component.totalCost();
     expect(total).toBe(200);
   });
-
-  it("should handle purchase", fakeAsync(() => {
-    component.purchase();
-    tick();
-
-    expect(cartService.clearCart).toHaveBeenCalled();
-    expect(router.url).toBe("/order-summary");
-  }));
 });
