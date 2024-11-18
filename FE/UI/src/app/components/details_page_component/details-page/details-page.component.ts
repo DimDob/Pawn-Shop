@@ -27,6 +27,7 @@ export class DetailsPageComponent implements OnInit {
   showConfirmModal = signal<boolean>(false);
   loading = signal<boolean>(true);
   error = signal<string | null>(null);
+  isProcessing = signal<boolean>(false);
 
   productData = computed(() => this.product());
 
@@ -133,48 +134,65 @@ export class DetailsPageComponent implements OnInit {
   }
 
   onToggleFavorite(): void {
+    if (this.isProcessing()) return;
+
     const currentProduct = this.product();
     if (!currentProduct) return;
 
+    this.isProcessing.set(true);
     console.log("DetailsPageComponent: Toggling favorite status");
-    console.log("Current favorite status:", this.isFavorite());
 
-    if (this.isFavorite()) {
-      this.favoritesService.removeFromFavorites(currentProduct.id).subscribe({
-        next: () => {
-          console.log("DetailsPageComponent: Product removed from favorites");
+    const action = this.isFavorite()
+      ? this.favoritesService.removeFromFavorites(currentProduct.id)
+      : this.favoritesService.addToFavorites(currentProduct.id);
+
+    action.subscribe({
+      next: () => {
+        const message = this.isFavorite()
+          ? "Removed from favorites"
+          : "Added to favorites";
+        this.notificationService.showSuccess(message);
+        this.product.set({ ...currentProduct });
+      },
+      error: (error) => {
+        if (error.status === 200) {
+          const message = this.isFavorite()
+            ? "Removed from favorites"
+            : "Added to favorites";
+          this.notificationService.showSuccess(message);
           this.product.set({ ...currentProduct });
-          this.notificationService.showSuccess("Removed from favorites");
-        },
-        error: error => {
-          if (error.status === 200) {
-            console.log("DetailsPageComponent: Product removed successfully (with parsing error)");
-            this.product.set({ ...currentProduct });
-            this.notificationService.showSuccess("Removed from favorites");
-          } else {
-            console.error("DetailsPageComponent: Error removing from favorites", error);
-            this.notificationService.showError("Failed to remove from favorites");
-          }
+        } else {
+          console.error("DetailsPageComponent: Error toggling favorites", error);
+          this.notificationService.showError("Failed to update favorites");
         }
-      });
-    } else {
-      this.favoritesService.addToFavorites(currentProduct.id).subscribe({
-        next: () => {
-          console.log("DetailsPageComponent: Product added to favorites");
-          this.product.set({ ...currentProduct });
-          this.notificationService.showSuccess("Added to favorites");
-        },
-        error: error => {
-          if (error.status === 200) {
-            console.log("DetailsPageComponent: Product added successfully (with parsing error)");
-            this.product.set({ ...currentProduct });
-            this.notificationService.showSuccess("Added to favorites");
-          } else {
-            console.error("DetailsPageComponent: Error adding to favorites", error);
-            this.notificationService.showError("Failed to add to favorites");
-          }
-        }
-      });
+      },
+      complete: () => {
+        this.isProcessing.set(false);
+      }
+    });
+  }
+
+  incrementQuantity(): void {
+    const currentProduct = this.product();
+    if (currentProduct && this.quantity() < (currentProduct.quantityInStock || 0)) {
+      this.quantity.set(this.quantity() + 1);
+    }
+  }
+
+  decrementQuantity(): void {
+    if (this.quantity() > 1) {
+      this.quantity.set(this.quantity() - 1);
+    }
+  }
+
+  updateQuantity(value: number): void {
+    const currentProduct = this.product();
+    if (currentProduct) {
+      const newQuantity = Math.min(
+        Math.max(1, value),
+        currentProduct.quantityInStock || 0
+      );
+      this.quantity.set(newQuantity);
     }
   }
 }

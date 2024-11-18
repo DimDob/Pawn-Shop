@@ -7,7 +7,7 @@
 <div class="details-container">
   <div class="image-container">
     <img [src]="product.picture" [alt]="product.manufacturer + ' ' + product.model" onerror="this.src='assets/images/placeholder.jpg'" />
-    <button mat-icon-button (click)="onToggleFavorite()" class="favorite-button" [class.is-favorite]="isFavorite()">
+    <button mat-icon-button (click)="onToggleFavorite()" class="favorite-button" [class.is-favorite]="isFavorite()" [disabled]="isProcessing()">
       <mat-icon [style.color]="isFavorite() ? '#ff4081' : '#009d34'">
         {{ isFavorite() ? "favorite" : "favorite_border" }}
       </mat-icon>
@@ -28,14 +28,12 @@
 
     <p>Category: {{ product.category }}</p>
     <p class="price">Price: €{{ product.price }}</p>
-    <!-- <p class="second-hand-price">Second Hand Price: €{{ product.secondHandPrice }}</p> -->
     <p>Condition: {{ product.condition }}</p>
     <p>Stock: {{ product.quantityInStock }}</p>
-    <p>Description: {{ product.description }}</p>
+    <p class="description">Description: {{ product.description }}</p>
 
-    <!-- if owner or admin -->
     @if (canEditDelete()) {
-    <div class="button-container">
+    <div class="action-buttons">
       <button class="edit-button" (click)="onEditProduct()">
         <mat-icon>edit</mat-icon>
         Edit
@@ -46,11 +44,20 @@
       </button>
     </div>
     } @else {
-    <div class="quantity">
-      <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" [ngModel]="quantity()" (ngModelChange)="quantity.set($event)" min="1" [max]="product.quantityInStock || 0" />
+    <div class="purchase-controls">
+      <div class="quantity-control">
+        <label for="quantity">Quantity:</label>
+        <div class="quantity-buttons">
+          <button (click)="decrementQuantity()" [disabled]="quantity() <= 1">-</button>
+          <input type="number" id="quantity" [ngModel]="quantity()" (ngModelChange)="updateQuantity($event)" min="1" [max]="product.quantityInStock || 0" />
+          <button (click)="incrementQuantity()" [disabled]="quantity() >= (product.quantityInStock || 0)">+</button>
+        </div>
+      </div>
+      <button class="add-to-cart-button" (click)="onAddToCart()" [disabled]="product.isRunOutOfStock || isProcessing()">
+        <mat-icon>shopping_cart</mat-icon>
+        Add to Cart
+      </button>
     </div>
-    <button class="add-to-cart" (click)="onAddToCart()" [disabled]="product.isRunOutOfStock">Add to Cart</button>
     }
   </div>
 </div>
