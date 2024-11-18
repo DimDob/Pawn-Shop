@@ -22,7 +22,8 @@ describe("RegisterComponent", () => {
 
   beforeEach(async () => {
     authServiceMock = {
-      handlerUserRegister: jasmine.createSpy("handlerUserRegister")
+      handlerUserRegister: jasmine.createSpy("handlerUserRegister"),
+      register: jasmine.createSpy("register")
     };
 
     notificationServiceMock = {
@@ -116,7 +117,7 @@ describe("RegisterComponent", () => {
     expect(patternError).toBeTruthy();
   });
 
-  it("must call authService.handlerUserRegister when the form is valid", () => {
+  it("must call authService.register when the form is valid", () => {
     const form = component.registerForm;
     form.get("email")?.setValue("test@example.com");
     form.get("password")?.setValue("Valid@123");
@@ -124,11 +125,11 @@ describe("RegisterComponent", () => {
     form.get("firstName")?.setValue("John");
     form.get("lastName")?.setValue("Doe");
 
-    authServiceMock.handlerUserRegister.and.returnValue(of({}));
+    authServiceMock.register.and.returnValue(of({}));
 
     component.onSubmit();
 
-    expect(authServiceMock.handlerUserRegister).toHaveBeenCalledWith(
+    expect(authServiceMock.register).toHaveBeenCalledWith(
       {
         email: "test@example.com",
         password: "Valid@123",
@@ -174,7 +175,7 @@ describe("RegisterComponent", () => {
     fixture.detectChanges();
 
     expect(form.valid).toBeFalse();
-    expect(component.registerForm).toBeNull();
+    expect(form.get("confirmPassword")?.errors?.["passwordMismatch"]).toBeTrue();
   });
 
   it("must navigate to login when navigateToLogin is called", () => {
