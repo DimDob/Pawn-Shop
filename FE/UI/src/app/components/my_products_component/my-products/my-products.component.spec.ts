@@ -125,6 +125,6 @@ describe("MyProductsComponent", () => {
 
   it("should navigate to add product page when clicking add product button", () => {
     component.navigateToAddProduct();
-    expect(routerMock.navigate).toHaveBeenCalledWith(["/product-add"]);
+    expect(routerMock.navigate).toHaveBeenCalledWith(["/add-product"]);
   });
 });
