@@ -91,7 +91,7 @@ describe("OrderSummaryComponent", () => {
     const startDate = component.estimatedDeliveryStart;
     const endDate = component.estimatedDeliveryEnd;
     const dateText: HTMLElement = fixture.debugElement.query(By.css(".estimated-delivery p")).nativeElement;
-    const expectedText = `${startDate.toLocaleDateString("en-US")} - ${endDate.toLocaleDateString("en-US")}`;
+    const expectedText = `${startDate.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })} - ${endDate.toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })}`;
     expect(dateText.textContent).toContain(expectedText);
   });
 
