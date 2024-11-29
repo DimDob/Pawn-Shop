@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Config\JwtAuthenticationFilter.java
 package com.example.pawnShop.Config;
 
 import com.example.pawnShop.Service.Contract.JwtService;
@@ -26,23 +27,52 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request,response);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        logger.info("Processing request: " + request.getRequestURI());
+        logger.info("Request method: " + request.getMethod());
+        logger.info("Is OPTIONS request: " + request.getMethod().equals("OPTIONS"));
+
+        if (request.getServletPath().contains("/api/auth/") ||
+            request.getMethod().equals("OPTIONS")) {
+            logger.info("Skipping authentication for path: " + request.getServletPath());
+            filterChain.doFilter(request, response);
             return;
         }
-        String jwt = authHeader.substring(7);
-        String username = jwtService.extractSubject(jwt);
-
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if(userDetails != null && jwtService.isTokenValid(jwt)){
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
+        
+        String authHeader = request.getHeader("Authorization");
+        logger.info("Auth header: " + authHeader);
+        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            logger.warn("No valid auth header found");
+            filterChain.doFilter(request, response);
+            return;
         }
+        
+        try {
+            String jwt = authHeader.substring(7);
+            String username = jwtService.extractSubject(jwt);
+            logger.info("Extracted username from token: " + username);
+
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                if (userDetails != null && jwtService.isTokenValid(jwt)) {
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    logger.info("User authenticated: " + username);
+                } else {
+                    logger.warn("Invalid token or user details not found for username: " + username);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Cannot set user authentication: " + e.getMessage());
+        }
+
         filterChain.doFilter(request, response);
     }
 }

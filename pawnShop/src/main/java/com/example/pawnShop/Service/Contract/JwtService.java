@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Service\Contract\JwtService.java
 package com.example.pawnShop.Service.Contract;
 
 import com.example.pawnShop.Entity.AppUser;
@@ -12,4 +13,5 @@ public interface JwtService {
     public String extractSubject(String token);
     public <T> T extractClaim(String token, Function<Claims,T> claimsResolver);
     public boolean isTokenValid(String token);
+    String generateRefreshToken(AppUser user);
 }

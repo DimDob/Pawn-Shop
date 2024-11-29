@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Entity\AppUser.java
 package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;
@@ -7,12 +8,10 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+import java.util.*;
+import java.time.LocalDateTime;
 @Entity
 @Data
 @AllArgsConstructor
@@ -36,11 +35,11 @@ public class AppUser implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Basic
-    private Boolean enable;
+    @Column(name = "enable")
+    private Boolean enable = false;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private List<Role> roles;
 
     @ManyToOne
@@ -50,6 +49,42 @@ public class AppUser implements UserDetails {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "user_favorites",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Product> favoriteProducts = new HashSet<>();
+
+    @Column(name = "email_confirmed")
+    private Boolean emailConfirmed = false;
+    private String emailConfirmationToken;
+
+    @Column(name = "email_verified")
+    private Boolean emailVerified = false;
+    private String emailVerificationToken;
+    private LocalDateTime emailVerificationTokenExpiry;
+
+    @Column(name = "password_reset_token")
+    private String passwordResetToken;
+
+    @Column(name = "password_reset_token_expiry")
+    private LocalDateTime passwordResetTokenExpiry;
+
+// sign-in-with-google-endpoint-BE-and-FE
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER; // Default role
+//
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Order> orders;
+// google-sign-in-be-fe-1
+
+    // Keep only one default constructor
     public AppUser() {
         enable = true;
     }
@@ -64,9 +99,10 @@ public class AppUser implements UserDetails {
         return password;
     }
 
+    // Changed getUsername to return email for authentication
     @Override
     public String getUsername() {
-        return firstName + " " + lastName;
+        return email;
     }
 
     @Override
@@ -90,13 +126,35 @@ public class AppUser implements UserDetails {
     }
 
     private List<? extends GrantedAuthority> mapRoleToGrantedAuthority() {
-
         List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Role s : roles) {
             SimpleGrantedAuthority newAuthority = new SimpleGrantedAuthority(s.toString());
             grantedAuthorities.add(newAuthority);
         }
-
         return grantedAuthorities;
+    }
+
+    public boolean isEmailConfirmed() {
+        return emailConfirmed;
+    }
+
+    public void setEmailConfirmed(boolean emailConfirmed) {
+        this.emailConfirmed = emailConfirmed;
+    }
+
+    public String getEmailConfirmationToken() {
+        return emailConfirmationToken;
+    }
+
+    public void setEmailConfirmationToken(String emailConfirmationToken) {
+        this.emailConfirmationToken = emailConfirmationToken;
+    }
+
+    public String getRole() {
+        return role.name();
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 }

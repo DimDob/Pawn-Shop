@@ -1,146 +1,127 @@
-// UI\src\app\components\auth_component\login\login.component.ts
-import { Component, ElementRef, AfterViewInit, OnInit, SimpleChanges, Output, EventEmitter } from "@angular/core";
-import { PrismData } from "./login_interfaces.ts/prismData";
-import prismDetailsTemplate from "./templates/prismDetails.template";
-import { User } from "./login_interfaces.ts/User";
-import userTemplate from "./templates/user.template";
-import { NgForm } from "@angular/forms";
-import { AuthService } from "../../../app.service";
-import { environment } from "../../../../environments/environment";
+// UI/src/app/components/auth_component/login/login.component.ts
+import { Component, OnInit, NgZone } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { AuthService } from "../../../app.service";
+import { GoogleCredentialResponse } from "../../../shared/types/google-types";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
+import { NotificationService } from "../../../shared/services/notification.service";
+
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"]
 })
-export class LoginComponent {
-  public showLoginOnClick = () => this.showLogin();
-  public showForgotPasswordOnClick = () => this.showForgotPassword();
-  public userLogingOnClick = (form: any) => {
-    this.userLoging(form);
-  };
-  @Output() userCheck: EventEmitter<User> = new EventEmitter<User>();
+export class LoginComponent implements OnInit {
+  faUser = faUser;
+  faLock = faLock;
+  loginForm: FormGroup;
+  loginError: string;
 
-  @Output() userCredentials: EventEmitter<PrismData> = new EventEmitter<PrismData>();
-
-  public prismDetails: PrismData;
-
-  public user: User;
-
-  public isEverythingInitialized: boolean;
-
-  public prism: HTMLElement;
-
-  public loginError: string | null = null;
-
-  constructor(
-    private elementRef: ElementRef,
-    private authService: AuthService,
-    private router: Router
-  ) {}
-
-  ngAfterViewInit() {
-    this.isEverythingInitialized = true;
-
-    this.prism = this.elementRef.nativeElement.querySelector(".rec-prism");
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder, private ngZone: NgZone, private notificationService: NotificationService) {
+    this.loginForm = this.formBuilder.group({
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required],
+      rememberMe: [false]
+    });
   }
 
-  ngOnInit(): void {
-    this.prismDetails = { ...prismDetailsTemplate };
-    this.user = { ...userTemplate };
+  ngOnInit() {
+    console.log("Initializing Google Sign-In");
+
+    // Wait for the document to be fully loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      // @ts-ignore
+      if (window.google && window.google.accounts) {
+        this.initializeGoogleSignIn();
+      } else {
+        // Retry after a short delay if google is not yet available
+        setTimeout(() => this.initializeGoogleSignIn(), 1000);
+      }
+    });
   }
 
-  get isForgotPassword() {
-    return this.prismDetails.forgotPassword;
-  }
+  private initializeGoogleSignIn() {
+    try {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com",
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
 
-  userLoging(logingForm: NgForm) {
-    this.loginError = null;
-
-    if (logingForm.invalid) {
-      this.loginError = "Моля, попълнете всички полета";
-      return;
-    }
-
-    const credentials = {
-      email: this.prismDetails.loginUsername,
-      password: this.prismDetails.loginPassword
-    };
-
-    this.userCredentials.emit(this.prismDetails);
-  }
-
-  handleUserRegister(prismDetails: PrismData) {
-    this.prismDetails = prismDetails;
-    const endpoint = environment.host + "/auth/register";
-
-    this.authService.handlerUserRegister(prismDetails, endpoint);
-
-    this.clearUserDetails();
-    this.showThankYou();
-  }
-
-  onUserCheck() {
-    this.userCheck.emit(this.user);
-  }
-
-  checkIfUserIsAdmin(adminForm: NgForm) {
-    if (adminForm.invalid) {
-      return;
-    }
-
-    if (this.prismDetails.administratorEmail === "admin") {
-      //Here it will be replaced with actual email, which we will check in the DB
-      this.user.isAdmin = true;
-    } else {
-      this.user.isAdmin = false;
-    }
-  }
-  showSignup(): void {
-    if (this.prism) {
-      // This better be done in ngOnChanges()
-      this.prismDetails.forgotPassword = false;
-      this.prism.style.transform = "translateZ(-100px) rotateY(-90deg)";
+      // @ts-ignore
+      google.accounts.id.renderButton(document.getElementById("google-button"), { theme: "outline", size: "large", width: "100%" });
+    } catch (error) {
+      console.error("Failed to initialize Google Sign-In:", error);
     }
   }
 
-  showLogin(): void {
-    if (this.prism) {
-      this.prismDetails.forgotPassword = false;
-      this.prism.style.transform = "translateZ(-100px)";
+  async handleCredentialResponse(response: any) {
+    console.log("Full Google response:", response);
+    this.ngZone.run(() => {
+      if (response.credential) {
+        console.log("Token length:", response.credential.length);
+        this.handleGoogleLogin(response.credential);
+      } else {
+        console.error("No credential in response:", response);
+      }
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      // sign-in-with-google-endpoint-BE-and-FE
+      console.log("Form submitted", this.loginForm.value);
+      // Handle form submission
+      //
+      const credentials = {
+        email: this.loginForm.get("email")?.value,
+        password: this.loginForm.get("password")?.value,
+        rememberMe: this.loginForm.get("rememberMe")?.value
+      };
+
+      this.authService.handleUserLoging(credentials, "").subscribe({
+        next: () => {
+          console.log("LoginComponent: Login successful");
+          this.router.navigate(["/pawn-shop/main-page"]);
+        },
+        error: error => {
+          console.error("LoginComponent: Login error", error);
+          this.loginError = error.error?.message || "Wrong email or password";
+          this.notificationService.showError(this.loginError || "An error occurred");
+        }
+      });
     }
   }
 
-  showForgotPassword(): void {
-    if (this.prism) {
-      this.prismDetails.forgotPassword = true;
-      this.prism.style.transform = "translateZ(-100px) rotateY(-180deg)";
-    }
+  navigateToRegister() {
+    this.router.navigate(["/auth/register"]);
   }
 
-  showCreateEmployeeAccount(): void {
-    if (this.prism) {
-      this.prismDetails.forgotPassword = false;
-      this.prism.style.transform = "translateZ(-100px) rotateX(-90deg)";
-    }
+  navigateToForgotPassword() {
+    this.router.navigate(["/auth/forgot-password"]);
   }
 
-  showContactUs(): void {
-    if (this.prism) {
-      this.prismDetails.forgotPassword = false;
-      this.prism.style.transform = "translateZ(-100px) rotateY(90deg)";
-    }
-  }
+  private handleGoogleLogin(token: string) {
+    console.log("LoginComponent: Handling Google login with token length:", token.length);
+    this.authService.handleGoogleLogin(token).subscribe({
+      next: (response: any) => {
+        console.log("Google login successful", response);
 
-  showThankYou(): void {
-    if (this.prism) {
-      this.prism.style.transform = "translateZ(-100px) rotateX(90deg)";
-    }
-  }
+        // Store the token using the auth service
+        this.authService.setTokens(response, true); // Always remember Google users
 
-  clearUserDetails() {
-    this.prismDetails = {
-      ...prismDetailsTemplate
-    };
+        // Use the router service for navigation
+        this.ngZone.run(() => {
+          this.router.navigate(["/pawn-shop/main-page"]);
+        });
+      },
+      error: error => {
+        console.error("Google login failed", error);
+        this.notificationService.showError("Google login failed. Please try again.");
+      }
+    });
   }
 }

@@ -1,60 +1,83 @@
 // UI\src\app\components\auth_component\change-password\change-password.component.ts
-import { Component, OnInit, OnDestroy, signal } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { PrismData } from "../login/login_interfaces.ts/prismData";
-import prismDetailsTemplate from "../login/templates/prismDetails.template";
 import { ChangePasswordService } from "./change-password.service";
-import { Subscription } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
+import { NotificationService } from "../../../shared/services/notification.service";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-change-password",
   templateUrl: "./change-password.component.html",
-  styleUrl: "./change-password.component.scss"
+  styleUrls: ["./change-password.component.scss"]
 })
-export class ChangePasswordComponent implements OnInit, OnDestroy {
+export class ChangePasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
-  prismDetails = signal<PrismData>({ ...prismDetailsTemplate });
-  userId = signal<string | null>(null);
-  private changePasswordSubscription?: Subscription;
+  faLock = faLock;
 
-  constructor(
-    private fb: FormBuilder,
-    private changePasswordService: ChangePasswordService,
-    private activeRoute: ActivatedRoute
-  ) {
-    this.resetPasswordForm = this.fb.group({
-      password: ['', Validators.required],
-      reEnteredPassword: ['', Validators.required]
-    }, { validator: this.passwordMatchValidator });
+  constructor(private fb: FormBuilder, private changePasswordService: ChangePasswordService, private router: Router, private notificationService: NotificationService) {
+    this.resetPasswordForm = this.fb.group(
+      {
+        currentPassword: ["", [Validators.required, Validators.minLength(6)]],
+        newPassword: ["", [Validators.required, Validators.minLength(6)]],
+        confirmNewPassword: ["", [Validators.required]]
+      },
+      { validator: this.passwordMatchValidator }
+    );
   }
 
   ngOnInit(): void {
-    this.userId.set(this.activeRoute.snapshot.paramMap.get("userId"));
-  }
-
-  ngOnDestroy(): void {
-    this.changePasswordSubscription?.unsubscribe();
+    console.log("ChangePasswordComponent: Initializing");
   }
 
   passwordMatchValidator(g: FormGroup) {
-    return g.get('password')?.value === g.get('reEnteredPassword')?.value
-      ? null
-      : { mismatch: true };
+    const newPass = g.get("newPassword")?.value;
+    const confirmPass = g.get("confirmNewPassword")?.value;
+    return newPass === confirmPass ? null : { mismatch: true };
   }
 
   onSubmit(): void {
+    console.log("ChangePasswordComponent: Form submitted");
+
     if (this.resetPasswordForm.invalid) {
+      console.log("ChangePasswordComponent: Form is invalid");
+      this.notificationService.showError("Please fill all fields correctly");
       return;
     }
 
     const passwordData = {
-      ...this.prismDetails(),
-      changedPassword: this.resetPasswordForm.get('password')?.value,
-      changedPassword2: this.resetPasswordForm.get('reEnteredPassword')?.value
+      currentPassword: this.resetPasswordForm.get("currentPassword")?.value,
+      newPassword: this.resetPasswordForm.get("newPassword")?.value,
+      confirmNewPassword: this.resetPasswordForm.get("confirmNewPassword")?.value
     };
 
-    this.changePasswordSubscription = this.changePasswordService
-      .changePassword(passwordData, this.userId());
+    console.log("ChangePasswordComponent: Sending password change request");
+    this.changePasswordService.changePassword(passwordData).subscribe({
+      next: () => {
+        console.log("ChangePasswordComponent: Password changed successfully");
+        this.notificationService.showSuccess("Password changed successfully. Please login with your new password");
+        setTimeout(() => {
+          localStorage.removeItem("auth_token");
+          this.router.navigate(["/auth/login"]);
+        }, 2000);
+      },
+      error: error => {
+        console.error("ChangePasswordComponent: Error changing password", error);
+        if (error.status === 200) {
+          this.notificationService.showSuccess("Password changed successfully. Please login with your new password");
+          setTimeout(() => {
+            localStorage.removeItem("auth_token");
+            this.router.navigate(["/auth/login"]);
+          }, 2000);
+        } else {
+          this.notificationService.showError(error.error || "Failed to change password");
+        }
+      }
+    });
+  }
+
+  onCancel(): void {
+    console.log("ChangePasswordComponent: Navigating back to my account");
+    this.router.navigate(["/my-account"]);
   }
 }

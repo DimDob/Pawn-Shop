@@ -5,10 +5,8 @@ import { Products } from "./Interfaces/Products";
 import { CartService } from "../../cart_page_component/cart-page/cart.service";
 import { SearchService } from "../../../shared/services/search.service";
 import { Subscription } from "rxjs";
-import { PageEvent } from "@angular/material/paginator";
+import { PageEvent, MatPaginator } from "@angular/material/paginator";
 import { Category } from "./enums/Category";
-import { MatIconModule } from "@angular/material/icon";
-import { MatPaginator } from "@angular/material/paginator";
 import { ProductService } from "../../../shared/services/product.service";
 import { ErrorHandlerService } from "../../../shared/services/error-handler.service";
 import { catchError } from "rxjs";
@@ -123,47 +121,25 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   protected applyFilters(): void {
-    if (!this.products()) {
-      console.warn("No products available to filter");
-      return;
-    }
-
-    let filtered = this.products().filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(this.searchTerm()) || product.model?.toLowerCase().includes(this.searchTerm()) || product.category?.toLowerCase().includes(this.searchTerm());
-
-      const matchesCategory = !this.selectedCategory() || product.category?.toLowerCase() === this.selectedCategory().toLowerCase();
-
-      return matchesSearch && matchesCategory;
+    console.log("Applying filters:", {
+      sort: this.selectedSortOption(),
+      category: this.selectedCategory(),
+      search: this.searchTerm()
     });
 
-    if (this.selectedSortOption()) {
-      filtered = this.sortProducts(filtered);
-    }
-
-    this.filteredProducts.set(filtered);
-    this.totalProducts.set(filtered.length);
-
-    this.adjustPageIndexIfNeeded();
-    this.paginateProducts();
-  }
-
-  private sortProducts(products: Products[]): Products[] {
-    const sorted = [...products];
-    switch (this.selectedSortOption()) {
-      case "priceAsc":
-        sorted.sort((a, b) => a.price - b.price);
-        break;
-      case "priceDesc":
-        sorted.sort((a, b) => b.price - a.price);
-        break;
-      case "nameAsc":
-        sorted.sort((a, b) => a.name.localeCompare(b.name));
-        break;
-      case "nameDesc":
-        sorted.sort((a, b) => b.name.localeCompare(a.name));
-        break;
-    }
-    return sorted;
+    this.productService.getAllProducts(this.selectedSortOption(), this.selectedCategory(), this.searchTerm()).subscribe({
+      next: products => {
+        console.log("Received filtered products:", products);
+        this.products.set(products);
+        this.filteredProducts.set(products);
+        this.totalProducts.set(products.length);
+        this.paginateProducts();
+      },
+      error: error => {
+        console.error("Error fetching filtered products:", error);
+        alert("Error loading products. Please try again.");
+      }
+    });
   }
 
   private adjustPageIndexIfNeeded(): void {

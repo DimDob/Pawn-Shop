@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Service\Contract\ProductTypeService.java
 package com.example.pawnShop.Service.Contract;
 
 import com.example.pawnShop.Dto.Product.ProductTypeDto;

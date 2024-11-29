@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Entity\Address.java
 package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;
@@ -25,6 +26,9 @@ public class Address {
 
     @Basic
     private String number;
+
+    @Basic
+    private String street; 
 
     @ManyToOne
     @JoinColumn(name = "city_id")

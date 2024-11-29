@@ -1,0 +1,103 @@
+// UI/src/app/components/admin/admin-orders/admin-orders.component.scss
+.admin-orders-container {
+  max-width: 1200px;
+  margin: 70px auto 0;
+  padding: 20px;
+  color: #009d34;
+  text-align: center;
+
+  .icon {
+    margin-bottom: 30px;
+    fa-icon {
+      font-size: 60px;
+      color: #009d34;
+    }
+  }
+
+  h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #009d34;
+    font-weight: 600;
+  }
+
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .order-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+
+      h3 {
+        color: #009d34;
+        margin: 0;
+      }
+
+      .total {
+        font-weight: bold;
+        color: #009d34;
+      }
+    }
+
+    .shipping-info,
+    .delivery-info {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+
+      h4 {
+        color: #009d34;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin: 5px 0;
+        color: #666;
+      }
+    }
+  }
+
+  .paginator {
+    margin-top: 20px;
+    background: transparent;
+    color: #009d34;
+
+    ::ng-deep {
+      .mat-mdc-paginator {
+        background: transparent;
+      }
+
+      .mat-mdc-paginator-container {
+        color: #009d34;
+      }
+
+      .mat-mdc-paginator-range-label,
+      .mat-mdc-paginator-page-size-label {
+        color: #009d34;
+      }
+
+      .mat-mdc-paginator-navigation-previous,
+      .mat-mdc-paginator-navigation-next {
+        color: #009d34;
+      }
+    }
+  }
+}

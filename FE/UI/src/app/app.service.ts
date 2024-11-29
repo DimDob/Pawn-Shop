@@ -5,68 +5,157 @@ import { Injectable, signal, computed } from "@angular/core";
 import { Observable, of, throwError, EMPTY } from "rxjs";
 import { User } from "./components/auth_component/login/login_interfaces.ts/User";
 import { AuthResponse } from "./components/auth_component/login/login_interfaces.ts/AuthResponse";
-import { tap, catchError, finalize } from "rxjs/operators";
+import { tap, catchError, finalize, map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
+import { environment } from "../environments/environment";
+import { RegisterData } from "./components/auth_component/register/interfaces/RegisterData";
+interface AccountUpdateData {
+  currentPassword: string;
+  newUsername?: string;
+  newEmail?: string;
+  newShopAddress?: string;
+}
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
   private readonly tokenKey = "auth_token";
-  private isAuthenticating = signal<boolean>(false);
-  public isAuthenticated = computed(() => !!this.getToken());
+  private readonly refreshTokenKey = "refresh_token";
+  private readonly host = "http://localhost:8080";
+  private readonly rememberMeKey = "remember_me";
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private errorHandler: ErrorHandlerService
-  ) {}
+  constructor(private http: HttpClient, private router: Router, private errorHandler: ErrorHandlerService) {}
 
-  public handleUserLoging(credentials: { email: string; password: string }, endpoint: string): Observable<AuthResponse> {
-    if (this.isAuthenticating()) {
-      return EMPTY;
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    console.log("AuthService: Creating headers with token");
+    return new HttpHeaders({
+      Authorization: `Bearer ${token || ""}`,
+      "Content-Type": "application/json"
+    });
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      console.log("AuthService: No token found");
+      return true;
     }
 
-    this.isAuthenticating.set(true);
+    try {
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      const expirationDate = new Date(tokenData.exp * 1000);
+      const currentDate = new Date();
 
-    return this.http.post<AuthResponse>(endpoint, credentials).pipe(
+      console.log("AuthService: Token expiration check");
+      console.log("Current time:", currentDate);
+      console.log("Token expires:", expirationDate);
+      console.log("Time until expiration (seconds):", (expirationDate.getTime() - currentDate.getTime()) / 1000);
+
+      const isExpired = expirationDate < currentDate;
+
+      if (isExpired) {
+        console.log("AuthService: Token is expired, attempting refresh");
+        this.refreshToken().subscribe({
+          next: () => console.log("AuthService: Token refreshed successfully"),
+          error: error => {
+            console.error("AuthService: Token refresh failed", error);
+            this.clearToken();
+          }
+        });
+      }
+
+      return isExpired;
+    } catch (error) {
+      console.error("AuthService: Error parsing token", error);
+      this.clearToken();
+      return true;
+    }
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  private clearToken(): void {
+    console.log("AuthService: Clearing tokens");
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
+    localStorage.removeItem(this.rememberMeKey);
+  }
+
+  logout(): void {
+    console.log("AuthService: Logging out user");
+    const currentToken = this.getToken();
+
+    if (currentToken) {
+      this.http
+        .post(`${environment.host}/auth/logout`, {
+          refreshToken: currentToken
+        })
+        .pipe(
+          finalize(() => {
+            this.clearAuthData();
+            this.router.navigate(["/auth/login"]);
+          })
+        )
+        .subscribe({
+          next: () => console.log("AuthService: Logout successful"),
+          error: error => console.error("AuthService: Logout error", error)
+        });
+    } else {
+      this.clearAuthData();
+      this.router.navigate(["/auth/login"]);
+    }
+  }
+
+  private clearAuthData(): void {
+    console.log("AuthService: Clearing auth data");
+    localStorage.removeItem(this.tokenKey);
+    // this.currentUserData.set(null);
+  }
+
+  isLoggedIn(): boolean {
+    const token = this.getToken();
+    return token !== null && !this.isTokenExpired();
+  }
+
+  handleUserLoging(credentials: any, endpoint: string): Observable<AuthResponse> {
+    console.log("AuthService: Handling user login with remember me:", credentials.rememberMe);
+
+    return this.http.post<AuthResponse>(`${this.host}/api/auth/login`, credentials).pipe(
       tap(response => {
-        if (response?.token) {
-          localStorage.setItem(this.tokenKey, response.token);
-        }
+        console.log("AuthService: Login successful, setting tokens");
+        this.setTokens(response, credentials.rememberMe);
       }),
-      catchError(error => this.errorHandler.handleError(error)),
-      finalize(() => {
-        this.isAuthenticating.set(false);
+      catchError(error => {
+        console.error("AuthService: Login failed", error);
+        return throwError(() => error);
       })
     );
   }
 
-  public isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
+  handlerUserRegister(registerData: RegisterData, endpoint: string): Observable<any> {
+    console.log("AuthService: Attempting registration", registerData);
 
-  public logout(): void {
-    localStorage.removeItem(this.tokenKey);
-  }
-
-  public getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  public getAuthHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`
-    });
-  }
-
-  public handlerUserRegister(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
-    return this.http.post<PrismData>(endpoint, {
-      ...userCredentials
-    });
+    return this.http
+      .post(endpoint, registerData, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        }),
+        responseType: "text"
+      })
+      .pipe(
+        tap(response => {
+          console.log("AuthService: Registration successful", response);
+        }),
+        catchError(error => {
+          console.error("AuthService: Registration failed", error);
+          return throwError(() => error);
+        })
+      );
   }
 
   public handlerChangePassword(userCredentials: PrismData, endpoint: string): Observable<PrismData> {
@@ -79,35 +168,209 @@ export class AuthService {
     return of(currentPassword === "correct_password");
   }
 
-  public getCurrentUser(): User {
+  public getCurrentUser(): User | null {
     const token = this.getToken();
-
     if (!token) {
-      return {
-        id: "",
-        loginUsername: "",
-        isAdmin: false,
-        isEmployee: false
-      };
+      console.log("No token found");
+      return null;
     }
 
     try {
-      const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+      const tokenData = JSON.parse(atob(token.split(".")[1]));
+      console.log("Token data:", tokenData);
 
-      return {
-        id: tokenPayload.userId || "2bd8729c-997d-4adb-a19e-9392bc42c7d8",
-        loginUsername: tokenPayload.username || tokenPayload.email,
-        isAdmin: tokenPayload.isAdmin || false,
-        isEmployee: tokenPayload.isEmployee || false
+      const user: User = {
+        id: tokenData.userId,
+        loginUsername: tokenData.sub,
+        isAdmin: tokenData.isAdmin === true,
+        isEmployee: false,
+        role: tokenData.role
       };
+
+      console.log("Parsed user:", user);
+      return user;
     } catch (error) {
-      alert("Error decoding user token");
-      return {
-        id: "",
-        loginUsername: "",
-        isAdmin: false,
-        isEmployee: false
-      };
+      console.error("Error parsing token:", error);
+      return null;
     }
+  }
+
+  updateUserAccount(data: AccountUpdateData): Observable<any> {
+    console.log("AuthService: Updating user account", data);
+    return this.http
+      .put(`${environment.host}/my-account/update`, data, {
+        headers: this.getAuthHeaders(),
+        responseType: "text"
+      })
+      .pipe(
+        tap(response => {
+          console.log("AuthService: Account updated successfully", response);
+        }),
+        catchError(error => {
+          if (error.status === 200) {
+            console.log("AuthService: Account updated successfully (with empty response)");
+            return of("Success");
+          }
+          console.error("AuthService: Error updating account", error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  private getRefreshToken(): string | null {
+    console.log("AuthService: Getting refresh token");
+    const localToken = localStorage.getItem(this.refreshTokenKey);
+    const sessionToken = sessionStorage.getItem(this.refreshTokenKey);
+    const token = localToken || sessionToken;
+    console.log("AuthService: Found refresh token in:", localToken ? "localStorage" : sessionToken ? "sessionStorage" : "nowhere");
+    return token;
+  }
+
+  refreshToken(): Observable<AuthResponse> {
+    console.log("AuthService: Attempting to refresh token");
+    const refreshToken = this.getRefreshToken();
+    const rememberMe = localStorage.getItem(this.rememberMeKey) === "true";
+
+    if (!refreshToken) {
+      console.log("AuthService: No refresh token available");
+      this.clearTokensAndRedirect();
+      return throwError(() => new Error("No refresh token available"));
+    }
+
+    // if remember me is not selected, we clear the tokens and redirect to login
+    if (!rememberMe && sessionStorage.getItem(this.refreshTokenKey)) {
+      console.log("AuthService: Session-only user, clearing tokens");
+      this.clearTokensAndRedirect();
+      return throwError(() => new Error("Session expired"));
+    }
+
+    return this.http.post<AuthResponse>(`${this.host}/api/auth/refresh-token`, { refreshToken }).pipe(
+      tap(response => {
+        console.log("AuthService: Token refresh successful");
+        this.setTokens(response, rememberMe);
+      }),
+      catchError(error => {
+        console.error("AuthService: Token refresh failed", error);
+        this.clearTokensAndRedirect();
+        return throwError(() => error);
+      })
+    );
+  }
+
+  private clearTokensAndRedirect(): void {
+    console.log("AuthService: Clearing tokens and redirecting to login");
+    this.clearToken();
+    this.router.navigate(["/auth/login"]);
+  }
+
+  confirmEmail(token: string): Observable<any> {
+    console.log("AuthService: Confirming email with token", token);
+    return this.http.post(`${environment.host}/api/auth/confirm-email?token=${token}`, {}, { responseType: "text" }).pipe(
+      tap(response => {
+        console.log("AuthService: Email confirmed successfully", response);
+      }),
+      catchError(error => {
+        console.error("AuthService: Email confirmation failed", error);
+        if (error.status === 200) {
+          return of(error.error.text);
+        }
+        return throwError(() => error);
+      })
+    );
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    console.log("AuthService: Requesting password reset for email", email);
+    return this.http.post(`${environment.host}/api/auth/forgot-password`, { email }, { responseType: "text" }).pipe(
+      tap(response => console.log("AuthService: Password reset email sent")),
+      catchError(error => {
+        console.error("AuthService: Error requesting password reset", error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    console.log("AuthService: Resetting password with token");
+    return this.http.post(`${environment.host}/api/auth/reset-password`, { token, newPassword }, { responseType: "text" }).pipe(
+      tap(response => console.log("AuthService: Password reset successful")),
+      catchError(error => {
+        console.error("AuthService: Error resetting password", error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  handleGoogleLogin(token: string): Observable<AuthResponse> {
+    console.log("AuthService: Sending Google login request");
+    return this.http.post<AuthResponse>(`${this.host}/api/auth/google/login`, { token }).pipe(
+      tap(response => {
+        console.log("Google login response:", response);
+      }),
+      catchError(error => {
+        console.error("Google login error:", error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  handleGoogleRegister(token: string): Observable<any> {
+    console.log("AuthService: Sending Google register request");
+    return this.http.post(`${this.host}/api/auth/google/register`, { token }, { responseType: 'text' }).pipe(
+      tap(response => {
+        console.log("Google register response:", response);
+      }),
+      map((response: any) => {
+        // If response is text, try to parse it as JSON
+        try {
+          return JSON.parse(response);
+        } catch {
+          return response;
+        }
+      }),
+      catchError(error => {
+        // Handle 200 status with text response
+        if (error.status === 200 && error.error && error.error.text) {
+          console.log("Successful registration with text response:", error.error.text);
+          return of(error.error.text);
+        }
+        console.error("Google register error:", error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  public setTokens(response: AuthResponse, rememberMe: boolean): void {
+    console.log("AuthService: Setting tokens with remember me:", rememberMe);
+
+    if (response.token) {
+      localStorage.setItem(this.tokenKey, response.token);
+      console.log("Token stored:", response.token);
+    }
+
+    if (response.refreshToken) {
+      if (rememberMe) {
+        console.log("AuthService: Storing refresh token in localStorage");
+        localStorage.setItem(this.refreshTokenKey, response.refreshToken);
+        localStorage.setItem(this.rememberMeKey, "true");
+      } else {
+        console.log("AuthService: Storing refresh token in sessionStorage");
+        sessionStorage.setItem(this.refreshTokenKey, response.refreshToken);
+        localStorage.setItem(this.rememberMeKey, "false");
+      }
+    }
+  }
+
+  register(registerData: RegisterData): Observable<any> {
+    console.log("AuthService: Sending registration request");
+    return this.http.post(`${this.host}/api/auth/register`, registerData).pipe(
+      tap(response => {
+        console.log("Registration response:", response);
+      }),
+      catchError(error => {
+        console.error("Registration error:", error);
+        return throwError(() => error);
+      })
+    );
   }
 }

@@ -25,11 +25,22 @@ export class SearchService {
 
   // Method to set the selected category
   setSelectedCategory(category: string) {
+    console.log("SearchService: Setting category to:", category);
     this.selectedCategorySubject.next(category);
   }
 
   // Method to set the selected sort option
   setSortOption(option: string) {
     this.sortOptionSubject.next(option);
+  }
+
+  // Add method to get current category
+  getCurrentCategory(): string {
+    return this.selectedCategorySubject.getValue();
+  }
+
+  // Add method to get current search term
+  getCurrentSearchTerm(): string {
+    return this.searchTermSubject.getValue();
   }
 }

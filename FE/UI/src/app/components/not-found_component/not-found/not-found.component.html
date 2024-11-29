@@ -1,0 +1,26 @@
+<!-- UI/src/app/components/not-found_component/not-found/not-found.component.html -->
+
+<div class="not-found-container">
+  <div class="content">
+    <div class="error-wrapper">
+      <div class="error-code">4</div>
+      <fa-icon [icon]="faCompass" class="compass-icon"></fa-icon>
+      <div class="error-code">4</div>
+    </div>
+
+    <h1>The page you are looking for does not exist</h1>
+    <p>It seems you've lost your way in the space. Let's help you get back.</p>
+
+    <div class="actions">
+      <button mat-stroked-button color="primary" (click)="goBack()" class="back-button">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        Back
+      </button>
+
+      <button mat-raised-button color="primary" (click)="navigateHome()" class="home-button">
+        <fa-icon [icon]="faHome"></fa-icon>
+        Home
+      </button>
+    </div>
+  </div>
+</div>

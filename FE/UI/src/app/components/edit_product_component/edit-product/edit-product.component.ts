@@ -1,12 +1,13 @@
 // UI\src\app\components\edit_product_component\edit-product\edit-product.component.ts
-import { Component, OnInit, signal, computed, effect, inject, Signal } from "@angular/core";
+import { Component, OnInit, signal, computed, effect, inject } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Category } from "../../main_page_component/main-page/enums/Category";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { ActivatedRoute, Router } from "@angular/router";
-import { SeedDataService } from "../../main_page_component/main-page/seedData/seed-data.service";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
 import { NotificationService } from "../../../shared/services/notification.service";
+import { ProductService } from "../../../shared/services/product.service";
+import { ProductType } from "../../../shared/interfaces/product-type.interface";
 
 @Component({
   selector: "app-edit-product",
@@ -14,86 +15,131 @@ import { NotificationService } from "../../../shared/services/notification.servi
   styleUrls: ["./edit-product.component.scss"]
 })
 export class EditProductComponent implements OnInit {
-  // Public properties
   public editProductForm: FormGroup;
   public categories = Object.values(Category);
   public errorMessage = signal<string>("");
   public faEdit = faEdit;
   public productId = signal<string>("");
   public currentProduct = signal<Products | null>(null);
+  public productTypes: ProductType[] = [];
 
-  // Private properties
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-  private seedDataService = inject(SeedDataService);
   private router = inject(Router);
   private notificationService = inject(NotificationService);
+  private productService = inject(ProductService);
 
-  // Computed values
   public isFormValid = computed(() => this.editProductForm?.valid ?? false);
 
   constructor() {
-    // Initialize form
+    this.initForm();
+  }
+
+  private initForm(): void {
     this.editProductForm = this.fb.group({
       picture: [null],
-      color: ["", Validators.required],
-      size: ["", Validators.required],
+      color: [""],
+      size: [""],
       sex: [""],
-      manufacturer: ["", Validators.required],
-      model: ["", Validators.required],
+      manufacturer: [""],
+      model: [""],
+      condition: ["", Validators.required],
       name: ["", Validators.required],
       category: ["", Validators.required],
-      price: ["", [Validators.required, Validators.min(0)]]
+      price: ["", [Validators.required, Validators.min(0)]],
+      quantityInStock: ["", Validators.required],
+      productTypeId: ["", Validators.required],
+      description: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(50)]]
     });
 
-    // Setup effect for form changes
-    effect(() => {
-      if (this.currentProduct()) {
-        this.updateFormWithProduct(this.currentProduct()!);
+    this.editProductForm.get("category")?.valueChanges.subscribe(category => {
+      this.updateProductTypeId(category);
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadProductTypes();
+    this.setupRouteSubscription();
+  }
+
+  private loadProductTypes(): void {
+    this.productService.getProductTypes().subscribe({
+      next: types => {
+        console.log("EditProductComponent: Loaded product types:", types);
+        this.productTypes = types;
+
+        const category = this.editProductForm.get("category")?.value;
+        if (category) {
+          this.updateProductTypeId(category);
+        }
+      },
+      error: error => {
+        console.error("EditProductComponent: Error loading product types:", error);
+        this.notificationService.showError("Error loading product types");
       }
     });
   }
 
-  // Lifecycle hooks
-  public ngOnInit(): void {
-    this.setupRouteSubscription();
+  private updateProductTypeId(category: string): void {
+    const matchingType = this.productTypes.find(type => type.name === category);
+    if (matchingType) {
+      console.log("EditProductComponent: Setting productTypeId to:", matchingType.id);
+      this.editProductForm.patchValue({ productTypeId: matchingType.id }, { emitEvent: false });
+    }
   }
 
-  // Private methods
   private setupRouteSubscription(): void {
     this.route.paramMap.subscribe(params => {
       const id = params.get("id");
       if (id) {
         this.productId.set(id);
         this.loadProductData(id);
+      } else {
+        this.errorMessage.set("Product ID not found");
+        this.router.navigate(["/not-found"]);
+      }
+    });
+  }
+
+  public onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      const file = target.files[0];
+      console.log("EditProductComponent: Selected file:", file.name);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        console.log("EditProductComponent: Converted image to base64");
+
+        this.editProductForm.patchValue({
+          picture: base64String
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  public loadProductData(id: string): void {
+    this.productService.getProductById(id).subscribe({
+      next: product => {
+        console.log("EditProductComponent: Product loaded:", product);
+        this.currentProduct.set(product);
+        this.updateFormWithProduct(product);
+      },
+      error: error => {
+        console.error("EditProductComponent: Error loading product:", error);
+        this.notificationService.showError("Product not found");
+        this.router.navigate(["/not-found"]);
       }
     });
   }
 
   private updateFormWithProduct(product: Products): void {
-    this.editProductForm.patchValue(product);
-  }
-
-  // Public methods
-  public onFileChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files?.length) {
-      const file = target.files[0];
-      this.editProductForm.patchValue({
-        picture: file
-      });
-    }
-  }
-
-  public loadProductData(id: string): void {
-    const product = this.seedDataService.products.find(p => p.id === id);
-    if (product) {
-      this.currentProduct.set(product);
-    } else {
-      this.errorMessage.set("Product not found");
-      this.notificationService.showError("Product not found");
-      this.router.navigate(["/not-found"]);
-    }
+    this.editProductForm.patchValue({
+      ...product,
+      category: product.category
+    });
   }
 
   public submitForm(): void {
@@ -102,24 +148,19 @@ export class EditProductComponent implements OnInit {
       return;
     }
 
-    try {
-      const currentId = this.productId();
-      if (currentId) {
-        const formData = this.editProductForm.value;
-        const index = this.seedDataService.products.findIndex(p => p.id === currentId);
+    const formData = this.editProductForm.value;
+    const productId = this.productId();
 
-        if (index !== -1) {
-          this.seedDataService.products[index] = {
-            ...this.seedDataService.products[index],
-            ...formData
-          };
-          this.notificationService.showSuccess("Product updated successfully");
-          this.router.navigate(["/pawn-shop/main-page"]);
-        }
+    this.productService.updateProduct(productId, formData).subscribe({
+      next: response => {
+        console.log("EditProductComponent: Product updated successfully", response);
+        this.notificationService.showSuccess("Product updated successfully");
+        this.router.navigate(["/pawn-shop/main-page"]);
+      },
+      error: error => {
+        console.error("EditProductComponent: Error updating product:", error);
+        this.notificationService.showError("Error updating product: " + error.message);
       }
-    } catch (error) {
-      this.errorMessage.set("An error occurred while updating the product");
-      this.notificationService.showError("An error occurred while updating the product");
-    }
+    });
   }
 }

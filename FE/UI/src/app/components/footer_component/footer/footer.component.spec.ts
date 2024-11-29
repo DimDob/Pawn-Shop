@@ -1,3 +1,4 @@
+// UI/src/app/components/footer_component/footer/footer.component.spec.ts
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FooterComponent } from "./footer.component";
 import { SearchService } from "../../../shared/services/search.service";
@@ -32,7 +33,7 @@ describe("FooterComponent", () => {
 
     await TestBed.configureTestingModule({
       declarations: [FooterComponent],
-      imports: [FontAwesomeModule], // Added FontAwesomeModule
+      imports: [FontAwesomeModule],
       providers: [{ provide: SearchService, useValue: mockSearchService }, provideRouter([])]
     }).compileComponents();
   });

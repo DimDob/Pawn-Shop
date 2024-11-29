@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Config\AppConfig.java
 package com.example.pawnShop.Config;
 
 import com.example.pawnShop.Repository.UserRepository;
@@ -18,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    @Autowired
+    // @Autowired
     private final UserRepository userRepository;
     @Bean
     public UserDetailsService userDetailsService(){

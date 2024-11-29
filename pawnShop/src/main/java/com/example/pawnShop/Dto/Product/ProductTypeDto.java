@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Dto\Product\ProductTypeDto.java
 package com.example.pawnShop.Dto.Product;
 
 import lombok.*;

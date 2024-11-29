@@ -1,6 +1,34 @@
 <!-- UI\src\app\components\success_page_component\success-page\success-page.component.html -->
 
 <div class="success-container">
-  <h1>Thank you for your purchase!</h1>
-  <button [routerLink]="['/pawn-shop/main-page']">Home</button>
+  <div class="icon">
+    <fa-icon [icon]="faCheckCircle"></fa-icon>
+  </div>
+
+  <h1>Thank You for Your Purchase!</h1>
+
+  <div class="content-section">
+    <h2>Order Confirmed</h2>
+    <p>Your payment has been processed successfully. We'll start preparing your items for delivery right away.</p>
+  </div>
+
+  <div class="action-cards">
+    <div class="action-card">
+      <fa-icon [icon]="faHome"></fa-icon>
+      <h3>Return Home</h3>
+      <p>Browse more products in our collection</p>
+      <button [routerLink]="['/pawn-shop/main-page']" class="action-btn">
+        Go to Homepage
+      </button>
+    </div>
+
+    <div class="action-card">
+      <fa-icon [icon]="faShoppingBag"></fa-icon>
+      <h3>Continue Shopping</h3>
+      <p>Explore our latest arrivals</p>
+      <button [routerLink]="['/pawn-shop/main-page']" class="action-btn">
+        View Products
+      </button>
+    </div>
+  </div>
 </div>

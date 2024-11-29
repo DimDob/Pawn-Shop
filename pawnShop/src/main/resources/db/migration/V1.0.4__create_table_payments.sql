@@ -1,3 +1,4 @@
+-- V1.0.4__create_table_payments.sql
 create table payments
 (
     id                      uuid not null,

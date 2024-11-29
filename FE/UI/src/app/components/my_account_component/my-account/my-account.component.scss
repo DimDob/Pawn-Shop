@@ -1,52 +1,91 @@
 // UI\src\app\components\my_account_component\my-account\my-account.component.scss
 .my-account {
+  max-width: 500px;
+  margin: 70px auto 0;
+  padding: 20px;
   color: #009d34;
-  margin-top: 70px;
 
   .icon {
     text-align: center;
-    margin-bottom: 10px;
-    font-size: 50px;
+    margin-bottom: 20px;
+
+    fa-icon {
+      font-size: 50px;
+      color: #009d34;
+    }
   }
 
   h2 {
     text-align: center;
+    margin-bottom: 30px;
+    color: #009d34;
   }
 
-  form {
-    max-width: 400px;
-    margin: 0 auto;
+  .form-group {
+    margin-bottom: 20px;
 
-    div {
-      margin-bottom: 15px;
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
 
-      label {
-        display: block;
-        margin-bottom: 5px;
-      }
-
-      input {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #009d34;
-        border-radius: 4px;
+      .required {
+        color: #f44336;
       }
     }
 
-    button {
+    input {
       width: 100%;
       padding: 10px;
-      background-color: #009d34;
-      color: #fff;
-      border: none;
+      border: 1px solid #009d34;
       border-radius: 4px;
-      cursor: pointer;
+      font-size: 16px;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: darken(#009d34, 10%);
+        box-shadow: 0 0 0 2px rgba(0, 157, 52, 0.1);
+      }
+
+      &.ng-invalid.ng-touched {
+        border-color: #f44336;
+      }
+    }
+
+    .error-text {
+      color: #f44336;
+      font-size: 12px;
+      margin-top: 5px;
+      display: block;
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background-color: #009d34;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken(#009d34, 5%);
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
   }
 
   .error-message {
-    color: red;
+    color: #f44336;
     text-align: center;
+    margin: 15px 0;
   }
 
   a {

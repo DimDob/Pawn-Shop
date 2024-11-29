@@ -8,6 +8,7 @@ import { Category } from "../../main_page_component/main-page/enums/Category";
 import { AuthService } from "../../../app.service";
 import { FavoritesService } from "../../favorites_component/favorites/favorites.service";
 import { computed } from "@angular/core";
+import { AdminService } from "../../admin/admin-orders/admin.service";
 
 @Component({
   selector: "app-header",
@@ -21,7 +22,7 @@ export class HeaderComponent implements OnChanges {
   private readonly INITIAL_SEARCH_TERM = "";
 
   // Inputs and Outputs
-  categories = input<Category[]>();
+  // categories = input<Category[]>();
   categoryChanged = output<string>();
 
   // Signals
@@ -33,6 +34,20 @@ export class HeaderComponent implements OnChanges {
   // Computed values
   isCartPage = signal(false);
   isFavoritesPage = signal(false);
+
+  // Add this property to store categories
+  categories = signal<string[]>([Category.ELECTRONICS, Category.CLOTHING, Category.JEWELRY, Category.ART, Category.OTHER]);
+
+  isAdmin = computed(() => {
+    const user = this.authService.getCurrentUser();
+    const token = this.authService.getToken();
+
+    console.log("Raw token:", token);
+    console.log("Current user in header:", user);
+    console.log("Is admin?", user?.isAdmin);
+
+    return user?.isAdmin === true;
+  });
 
   constructor(private cartService: CartService, private router: Router, private searchService: SearchService, private authService: AuthService, private favoritesService: FavoritesService) {
     this.initializeSubscriptions();
@@ -70,7 +85,13 @@ export class HeaderComponent implements OnChanges {
   }
 
   onCategoryChange(category: string): void {
+    console.log("Category changed to:", category);
     this.currentCategory.set(category);
+    this.searchService.setSelectedCategory(category);
+    this.router.navigate(["/pawn-shop/main-page"], {
+      queryParams: { category: category || null },
+      queryParamsHandling: "merge"
+    });
   }
 
   onSearch(): void {

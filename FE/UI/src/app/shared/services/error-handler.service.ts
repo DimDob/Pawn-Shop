@@ -1,3 +1,5 @@
+// UI/src/app/shared/services/error-handler.service.ts
+
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";

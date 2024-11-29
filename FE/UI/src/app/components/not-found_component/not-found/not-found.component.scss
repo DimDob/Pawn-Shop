@@ -1,0 +1,136 @@
+// UI/src/app/components/not-found_component/not-found/not-found.component.scss
+
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f6f8fb 0%, #dbe4f0 100%);
+  padding: 20px;
+
+  .content {
+    text-align: center;
+    background: white;
+    padding: 60px 40px;
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+    transform: translateY(-5%);
+  }
+
+  .error-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+
+    .error-code {
+      font-size: 120px;
+      font-weight: 700;
+      background: linear-gradient(45deg, #009d34, #009d34);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .compass-icon {
+      font-size: 80px;
+      color: #009d34;
+      margin: 0 10px;
+      animation: spin 4s linear infinite;
+    }
+  }
+
+  h1 {
+    font-size: 32px;
+    color: #009d34;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    font-size: 18px;
+    color: #009d34;
+    margin-bottom: 40px;
+    line-height: 1.6;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  // .ng-fa-icon {
+  //   color: #ffffff;
+  // }
+
+  .actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+
+      &.back-button {
+        background: transparent;
+        border: 2px solid #009d34;
+
+        &:hover {
+          background: rgba(63, 81, 181, 0.1);
+        }
+      }
+
+      &.home-button {
+        background: #009d34;
+
+        &:hover {
+          background: #009d34;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(63, 81, 181, 0.4);
+        }
+      }
+
+      fa-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-container {
+    .content {
+      padding: 40px 20px;
+    }
+
+    .error-wrapper {
+      .error-code {
+        font-size: 80px;
+      }
+
+      .compass-icon {
+        font-size: 60px;
+      }
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+  }
+}

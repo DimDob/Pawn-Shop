@@ -15,7 +15,7 @@
     <div class="category-dropdown">
       <mat-form-field appearance="outline" class="category-field">
         <mat-label>Category</mat-label>
-        <mat-select (selectionChange)="onCategoryChange($event.value)" #categorySelect [panelClass]="'custom-select-panel'" disableOptionCentering>
+        <mat-select [value]="currentCategory()" (selectionChange)="onCategoryChange($event.value)" #categorySelect [panelClass]="'custom-select-panel'" disableOptionCentering>
           <mat-option value="">All</mat-option>
           @for (category of categories(); track category) {
           <mat-option [value]="category">{{ category }}</mat-option>
@@ -27,6 +27,12 @@
     <span class="spacer"></span>
 
     <div class="toolbar-options">
+      @if (isAdmin()) {
+      <button mat-button [matMenuTriggerFor]="adminMenu">Admin Panel</button>
+      <mat-menu #adminMenu="matMenu">
+        <button mat-menu-item routerLink="/admin/orders">All Orders</button>
+      </mat-menu>
+      }
       <button mat-button [routerLink]="['/about-us']">About Us</button>
 
       <button mat-button [matMenuTriggerFor]="productsMenu">Products</button>

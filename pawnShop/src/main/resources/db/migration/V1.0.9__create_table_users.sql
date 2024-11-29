@@ -1,3 +1,4 @@
+-- V1.0.9__create_table_users.sql
 create table users
 (
     id          uuid         not null,

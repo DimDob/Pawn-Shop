@@ -1,30 +1,87 @@
-<!-- UI\src\app\components\my-products\my-products.component.html -->
-<div class="main-page-container">
-  <div class="container">
-    @for (product of products(); track product.id) {
-    <div class="card" (click)="goToDetails(product.id)">
-      <div class="imgBx">
-        <img [src]="product.picture" [alt]="product.name" />
-      </div>
-
-      <div class="contentBx">
-        <h2>{{ product.name }}</h2>
-
-        @if (product.size !== undefined) {
-        <div class="size">
-          <h3>Size :</h3>
-          <span>{{ product.size }}</span>
-        </div>
-        } @if (product.color) {
-        <div class="color">
-          <h3>Color :</h3>
-          <span>{{ product.color }}</span>
-        </div>
-        }
-
-        <a class="buy-now" (click)="goToDetails(product.id); $event.stopPropagation()">View Details</a>
-      </div>
-    </div>
-    }
+<div class="my-products-header">
+  <div class="icon">
+    <fa-icon [icon]="faBoxArchive"></fa-icon>
+  </div>
+  <h1>My Products</h1>
+</div>
+@if (products().length === 0) {
+<div class="empty-state">
+  <div class="empty-state-content">
+    <fa-icon [icon]="faBox" class="empty-icon"></fa-icon>
+    <h2>No Products Yet</h2>
+    <p>You haven't created any products yet. Start selling by adding your first product!</p>
+    <button class="add-product-btn" (click)="navigateToAddProduct()">
+      <fa-icon [icon]="faPlus"></fa-icon>
+      Add Your First Product
+    </button>
   </div>
 </div>
+} @if (products().length > 0) {
+<div class="products-container">
+  <div class="main-page-container">
+    <div class="controls">
+      <div class="filter-controls">
+        <mat-form-field appearance="fill">
+          <mat-label>Sort</mat-label>
+          <mat-select [value]="selectedSortOption()" (valueChange)="onSortChange($event)">
+            <mat-option value="">No Sorting</mat-option>
+            <mat-option value="newest">Newest First</mat-option>
+            <mat-option value="priceLowToHigh">Price (Low to High)</mat-option>
+            <mat-option value="priceHighToLow">Price (High to Low)</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Category</mat-label>
+          <mat-select [value]="selectedCategory()" (valueChange)="onCategoryChange($event)">
+            <mat-option value="">All</mat-option>
+            @for (category of categories; track category) {
+            <mat-option [value]="category">{{ category }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="view-toggle">
+        <button mat-button (click)="toggleView()" [class.active]="isGridView()">
+          <span>Grid</span>
+        </button>
+        <button mat-button (click)="toggleView()" [class.active]="!isGridView()">
+          <span>List</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="container" [class.list-view]="!isGridView()">
+      @for (product of paginatedProducts(); track product) {
+      <div class="card" (click)="goToDetails(product.id)">
+        <div class="imgBx">
+          <img [src]="product?.picture || 'assets/images/default-image.jpg'" [alt]="product?.manufacturer + ' ' + product?.model" />
+        </div>
+        <div class="contentBx">
+          <div class="product-info">
+            <h2>{{ product?.name }}</h2>
+            <div class="price">{{ product?.price | currency }}</div>
+            <div class="details">
+              @if (product?.manufacturer) {
+              <div class="manufacturer">
+                <h3>Manufacturer:</h3>
+                <span>{{ product?.manufacturer }}</span>
+              </div>
+              } @if (product?.model) {
+              <div class="model">
+                <h3>Model:</h3>
+                <span>{{ product?.model }}</span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <mat-paginator [length]="totalProducts()" [pageSize]="pageSize()" [pageSizeOptions]="[25, 50, 100]" (page)="onPageChange($event)" showFirstLastButtons class="paginator"> </mat-paginator>
+  </div>
+</div>
+}

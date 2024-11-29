@@ -1,1 +1,145 @@
+// UI/src/app/components/my_products_component/my-products/my-products.component.scss
+
 @import "../../main_page_component/main-page/main-page.component.scss";
+
+.my-products-header {
+  max-width: 1200px;
+  margin: 20px auto;
+  text-align: center;
+  padding: 20px;
+
+  .icon {
+    margin-bottom: 10px;
+
+    fa-icon {
+      font-size: 40px;
+      color: #009d34;
+    }
+  }
+
+  h1 {
+    font-size: 2em;
+    color: #009d34;
+    font-weight: 600;
+    margin: 0;
+    margin-bottom: 20px;
+  }
+
+  .search-label {
+    color: #009d34;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+
+    mat-form-field {
+      width: 100%;
+
+      ::ng-deep {
+        .mat-form-field-outline {
+          color: #009d34;
+        }
+
+        .mat-form-field-label {
+          color: #009d34;
+        }
+
+        .mat-icon {
+          color: #009d34;
+        }
+
+        .mat-input-element {
+          color: white;
+        }
+
+        .mat-form-field-outline-thick {
+          color: #009d34;
+        }
+      }
+    }
+  }
+}
+
+// Override filter controls styles
+.filter-controls {
+  mat-form-field {
+    ::ng-deep {
+      .mat-form-field-outline {
+        color: #009d34;
+      }
+
+      .mat-select-value {
+        color: white;
+      }
+
+      .mat-form-field-label {
+        color: #009d34;
+      }
+
+      .mat-select-arrow {
+        color: #009d34;
+      }
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 20px;
+
+  .empty-state-content {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 90%;
+
+    .empty-icon {
+      font-size: 64px;
+      color: #009d34;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .add-product-btn {
+      background-color: #009d34;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: darken(#009d34, 10%);
+      }
+
+      fa-icon {
+        font-size: 14px;
+      }
+    }
+  }
+}

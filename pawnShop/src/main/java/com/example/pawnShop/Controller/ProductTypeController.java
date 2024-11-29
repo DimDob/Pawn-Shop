@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Controller\ProductTypeController.java
 package com.example.pawnShop.Controller;
 
 import com.example.pawnShop.Dto.Product.ProductTypeDto;

@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Dto\CustomError.java
 package com.example.pawnShop.Dto;
 
 import lombok.Getter;

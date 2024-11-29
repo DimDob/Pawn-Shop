@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Service\JwtServiceImp.java
 package com.example.pawnShop.Service;
 
 import com.example.pawnShop.Entity.AppUser;
@@ -18,12 +19,15 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImp implements JwtService {
     private static final String SECRET_KEY = "7BE0B397565E158158AE1DAF477D25C46E5429203120C4565CD7CE0530CE1C69";
-    private static final Long VALIDITY_TIME = TimeUnit.MINUTES.toMillis(30);
-
+    private static final Long VALIDITY_TIME = TimeUnit.MINUTES.toMillis(60);//jwt token validity time
+    private static final Long REFRESH_TOKEN_VALIDITY = TimeUnit.DAYS.toMillis(90);//refresh token validity time
+ 
     @Override
     public String generateJwtToken(AppUser user) {
         return Jwts.builder()
                 .subject(user.getEmail())
+                .claim("userId", user.getId().toString())
+                .claim("isAdmin", user.getIsAdmin())
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(VALIDITY_TIME)))
                 .signWith(generateKey())
@@ -33,6 +37,8 @@ public class JwtServiceImp implements JwtService {
         return Jwts.builder()
                 .claims(extraClaims)
                 .subject(user.getEmail())
+                .claim("userId", user.getId().toString())
+                .claim("isAdmin", user.getIsAdmin())
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(Date.from(Instant.now().plusMillis(VALIDITY_TIME)))
                 .signWith(generateKey())
@@ -64,5 +70,14 @@ public class JwtServiceImp implements JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+    @Override
+    public String generateRefreshToken(AppUser user) {
+        return Jwts.builder()
+            .subject(user.getEmail())
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_VALIDITY))
+            .signWith(generateKey())
+            .compact();
     }
 }

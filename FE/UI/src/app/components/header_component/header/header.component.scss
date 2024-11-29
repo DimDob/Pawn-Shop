@@ -29,6 +29,26 @@
 
     .category-field {
       width: 100%;
+
+      ::ng-deep {
+        .mat-mdc-select-value {
+          color: white;
+        }
+
+        .mat-mdc-select-arrow {
+          color: white;
+        }
+
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__notch,
+        .mdc-notched-outline__trailing {
+          border-color: white !important;
+        }
+
+        .mat-mdc-form-field-label {
+          color: white;
+        }
+      }
     }
   }
 
@@ -121,26 +141,15 @@
   }
 
   .custom-select-panel {
-    margin-top: 4px !important;
-    min-width: calc(100% + 12px) !important;
-    transform: translateX(-6px) !important;
-
-    .mdc-list {
-      padding: 0 !important;
-    }
+    margin-top: 4px;
 
     .mat-mdc-option {
-      min-height: 48px !important;
-      padding: 0 16px;
-      color: rgba(0, 0, 0, 0.87) !important;
-      font-size: 16px;
-
       &:hover {
-        background: rgba(0, 157, 52, 0.1);
+        background-color: rgba(0, 157, 52, 0.1);
       }
 
       &.mat-mdc-option-active {
-        background: rgba(0, 157, 52, 0.2);
+        background-color: rgba(0, 157, 52, 0.2);
       }
     }
   }

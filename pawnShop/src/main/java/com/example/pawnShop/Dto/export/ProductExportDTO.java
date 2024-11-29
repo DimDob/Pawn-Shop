@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Dto\export\ProductExportDTO.java
 package com.example.pawnShop.Dto.export;
 
 import lombok.AllArgsConstructor;
@@ -41,6 +42,8 @@ public class ProductExportDTO {
     private Integer quantityInStock;
 
     private Boolean isRunOutOfStock;
+
+    private String description;
 
     public String getPrice() {
         return price != null ? price.toString() : "0";

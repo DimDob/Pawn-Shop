@@ -7,7 +7,7 @@ export interface Products {
   condition?: "new" | "like new" | "used";
   color?: string;
   size?: number;
-  sex?: "male" | "female" | "unisex";
+  sex?: "male" | "female" | "none";
   manufacturer?: string;
   model?: string;
   name: string;
@@ -18,4 +18,7 @@ export interface Products {
   ownerId?: string;
   pawnPercentage?: number;
   secondHandPrice?: number;
+  productTypeId: string;
+  createdAt: string;
+  description: string;
 }

@@ -1,3 +1,4 @@
+// pawnShop\src\main\java\com\example\pawnShop\Entity\Payment.java
 package com.example.pawnShop.Entity;
 
 import jakarta.persistence.*;
@@ -26,7 +27,12 @@ public class Payment {
     @JoinColumn(name = "payment_type_id")
     private PaymentType paymentType;
 
-    @ManyToMany(mappedBy = "payments")
+    @ManyToMany
+    @JoinTable(
+        name = "payments_pawnshops",
+        joinColumns = @JoinColumn(name = "payment_id"),
+        inverseJoinColumns = @JoinColumn(name = "pawn_shop_id")
+    )
     private List<PawnShop> pawnShopList;
 
     @Column(name = "subscription_start_date")
