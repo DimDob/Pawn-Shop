@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable, tap, catchError, of } from "rxjs";
 import { Products } from "../../main_page_component/main-page/Interfaces/Products";
-import { environment } from "../../../../environments/environment";
+import { environment } from "../../../../environments/environment.prod";
 
 interface FavoriteResponse {
   products: Products[];
@@ -24,7 +24,7 @@ export class FavoritesService {
   private loadFavorites() {
     console.log("FavoritesService: Loading favorites from server");
     this.http.get<Products[]>(`${environment.host}/favorites`).subscribe({
-      next: (response) => {
+      next: response => {
         console.log("FavoritesService: Raw response from server:", response);
 
         // Check if response is valid
@@ -39,7 +39,7 @@ export class FavoritesService {
         console.log("FavoritesService: Processed products:", products);
         this.favoritesSubject.next(products);
       },
-      error: (error) => {
+      error: error => {
         console.error("FavoritesService: Error loading favorites", error);
         this.favoritesSubject.next([]);
       }
@@ -49,7 +49,7 @@ export class FavoritesService {
   addToFavorites(productId: string): Observable<any> {
     console.log("FavoritesService: Adding product to favorites", productId);
     return this.http.post(`${environment.host}/favorites/${productId}`, {}, { responseType: "text" }).pipe(
-      tap((response) => {
+      tap(response => {
         console.log("FavoritesService: Product added successfully", response);
         this.loadFavorites();
       }),

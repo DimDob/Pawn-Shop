@@ -8,7 +8,7 @@ import { AuthResponse } from "./components/auth_component/login/login_interfaces
 import { tap, catchError, finalize, map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import { ErrorHandlerService } from "./shared/services/error-handler.service";
-import { environment } from "../environments/environment";
+import { environment } from "../environments/environment.prod";
 import { RegisterData } from "./components/auth_component/register/interfaces/RegisterData";
 interface AccountUpdateData {
   currentPassword: string;
@@ -316,7 +316,7 @@ export class AuthService {
 
   handleGoogleRegister(token: string): Observable<any> {
     console.log("AuthService: Sending Google register request");
-    return this.http.post(`${this.host}/api/auth/google/register`, { token }, { responseType: 'text' }).pipe(
+    return this.http.post(`${this.host}/api/auth/google/register`, { token }, { responseType: "text" }).pipe(
       tap(response => {
         console.log("Google register response:", response);
       }),

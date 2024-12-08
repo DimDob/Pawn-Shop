@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http"
 import { Observable, throwError } from "rxjs";
 import { Products } from "../../components/main_page_component/main-page/Interfaces/Products";
 import { ProductType } from "../interfaces/product-type.interface";
-import { environment } from "../../../environments/environment";
+import { environment } from "../../../environments/environment.prod";
 import { AuthService } from "../../app.service";
 import { catchError, switchMap, tap } from "rxjs/operators";
 

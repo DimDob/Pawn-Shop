@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 import { of, throwError } from "rxjs";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { By } from "@angular/platform-browser";
-import { environment } from "../../../../environments/environment";
+import { environment } from "../../../../environments/environment.prod";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { trigger, transition } from "@angular/animations"; // Добавено
 

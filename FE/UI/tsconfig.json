@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-  "strictPropertyInitialization": false,
+    "strictPropertyInitialization": false,
 
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -21,20 +21,16 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "src/app/shared/types"
-    ]
+    "lib": ["ES2022", "dom"],
+    "typeRoots": ["node_modules/@types", "src/app/shared/types"],
+    "paths": {
+      "@env/*": ["./src/environments/environment.prod.ts"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  },
-
+  }
 }

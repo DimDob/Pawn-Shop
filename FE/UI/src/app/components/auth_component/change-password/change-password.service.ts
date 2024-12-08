@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Observable, of, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { environment } from "../../../../environments/environment.development";
+import { environment } from "../../../../environments/environment.prod";
 import { NotificationService } from "../../../shared/services/notification.service";
 
 @Injectable({

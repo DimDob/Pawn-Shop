@@ -6,7 +6,7 @@ import { AuthService } from "../../../app.service";
 import { GoogleCredentialResponse } from "../../../shared/types/google-types";
 import { faUser, faLock, faEnvelope, faIdCard } from "@fortawesome/free-solid-svg-icons";
 import { NotificationService } from "../../../shared/services/notification.service";
-import { environment } from "../../../../environments/environment";
+import { environment } from "../../../../environments/environment.prod";
 import { RegisterData } from "./interfaces/RegisterData";
 import { catchError } from "rxjs/operators";
 import { EMPTY } from "rxjs";
