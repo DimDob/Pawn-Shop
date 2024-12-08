@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "vercel-build": "NODE_ENV=production ng build --configuration production"
+    "vercel-build": "ng build --configuration production --aot"
   },
   "private": true,
   "dependencies": {
