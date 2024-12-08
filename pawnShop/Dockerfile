@@ -11,4 +11,4 @@ COPY build/libs/pawnShop-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 8080
 
 # Run the jar file
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar", "--server.port=$PORT"]
