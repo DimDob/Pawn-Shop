@@ -45,9 +45,11 @@ public class SecurityConfig {
                     "/api/auth/google/**",
                     "/api/auth/google/login",
                     "/api/auth/google/register",
-                    "/api/auth/google/callback"
+                    "/api/auth/google/callback",
+                    "/actuator/health"
                 ).permitAll()
                 .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                .requestMatchers("/actuator/**").authenticated()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
