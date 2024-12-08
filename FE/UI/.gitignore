@@ -44,3 +44,4 @@ Thumbs.db
 # Ignore environment variables
 /src/environments/environment.ts
 /src/environments/environment.development.ts
+.vercel

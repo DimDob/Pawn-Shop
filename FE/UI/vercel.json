@@ -2,22 +2,10 @@
   "version": 2,
   "framework": "angular",
   "outputDirectory": "dist/browser",
+  "buildCommand": "npm run vercel-build",
+  "installCommand": "npm install --legacy-peer-deps",
   "routes": [
-    {
-      "src": "/(assets|images|icons|fonts)/(.*)",
-      "dest": "/$1/$2"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "/favicon.ico"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
