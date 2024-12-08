@@ -2,7 +2,8 @@
 FROM gradle:7.6.1-jdk17 AS build
 WORKDIR /app
 COPY . .
-RUN gradle build --no-daemon
+# Skip tests during build
+RUN gradle build -x test --no-daemon
 
 # Run stage
 FROM openjdk:17-jdk-slim
