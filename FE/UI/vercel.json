@@ -1,36 +1,23 @@
 {
   "version": 2,
+  "framework": "angular",
+  "outputDirectory": "dist/browser",
   "routes": [
     {
-      "handle": "filesystem"
+      "src": "/(assets|images|icons|fonts)/(.*)",
+      "dest": "/$1/$2"
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
+      "src": "/manifest.json",
+      "dest": "/manifest.json"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/favicon.ico",
+      "dest": "/favicon.ico"
     },
     {
       "src": "/(.*)",
       "dest": "/index.html"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/browser",
-        "buildCommand": "npm run vercel-build"
-      }
     }
   ]
 }

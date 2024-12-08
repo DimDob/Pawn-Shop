@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "vercel-build": "ng build --configuration production && cp dist/browser/index.html dist/browser/404.html && cp src/_redirects dist/browser/_redirects"
+    "vercel-build": "NODE_ENV=production ng build --configuration production"
   },
   "private": true,
   "dependencies": {

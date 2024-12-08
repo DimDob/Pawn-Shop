@@ -1,10 +1,10 @@
 export const environment = {
   production: true,
-  host: "https://pawn-shop-2uwd.onrender.com",
+  host: process.env["HOST"] || "https://pawn-shop-2uwd.onrender.com",
   stripe: {
-    publishableKey: "pk_test_51QIbSJEiHz0Qd84krtOOWXUeSOTGcyYtYln2jseDriIQcKGFLDMSU0PrNTYUzaygkG9bWb85qeBjCgAnLNjBVP6W000Awpy5fJ"
+    publishableKey: process.env["STRIPE_PUBLISHABLE_KEY"]
   },
   google: {
-    clientId: "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com"
+    clientId: process.env["GOOGLE_CLIENT_ID"]
   }
 };

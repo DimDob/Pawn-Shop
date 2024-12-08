@@ -31,7 +31,7 @@ import { AdminOrdersComponent } from "./components/admin/admin-orders/admin-orde
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "auth/login",
+    redirectTo: "/home",
     pathMatch: "full"
   },
   {
@@ -139,16 +139,11 @@ const routes: Routes = [
     canActivate: [authGuard, adminGuard]
   },
 
-  { path: "**", component: NotFoundComponent }
+  { path: "**", redirectTo: "/home" }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      useHash: false,
-      initialNavigation: "enabledBlocking"
-    })
-  ],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
