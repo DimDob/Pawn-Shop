@@ -2,7 +2,7 @@
   "version": 2,
   "framework": "angular",
   "outputDirectory": "dist/browser",
-  "buildCommand": "npm run build",
+  "buildCommand": "chmod +x vercel-build.sh && ./vercel-build.sh",
   "installCommand": "npm install --legacy-peer-deps",
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
