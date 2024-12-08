@@ -1,14 +1,12 @@
-# Use AdoptOpenJDK 17 as base image
-FROM openjdk:17-jdk-slim
-
-# Set the working directory in the container
+# Build stage
+FROM gradle:7.6.1-jdk17 AS build
 WORKDIR /app
+COPY . .
+RUN gradle build --no-daemon
 
-# Copy the packaged jar file into the container
-COPY build/libs/pawnShop-0.0.1-SNAPSHOT.jar /app/app.jar
-
-# Expose the port your app runs on
+# Run stage
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/build/libs/pawnShop-0.0.1-SNAPSHOT.jar /app/app.jar
 EXPOSE 8080
-
-# Run the jar file
 CMD ["java", "-jar", "app.jar", "--server.port=$PORT"]
