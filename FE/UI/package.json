@@ -4,10 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "vercel-build": "bash vercel-build.sh"
+    "vercel-build": "npm install -g @angular/cli && ng build"
   },
   "private": true,
   "dependencies": {
