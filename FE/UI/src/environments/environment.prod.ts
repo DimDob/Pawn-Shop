@@ -1,3 +1,5 @@
+declare const process: any;
+
 export const environment = {
   production: true,
   host: process.env["HOST"] || "https://pawn-shop-2uwd.onrender.com",

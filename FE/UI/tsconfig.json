@@ -23,7 +23,7 @@
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
     "types": ["node"],
-    "typeRoots": ["node_modules/@types", "src/app/shared/types"],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
       "@env/*": ["./src/environments/environment.prod.ts"]
     }
