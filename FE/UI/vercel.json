@@ -1,15 +1,6 @@
 {
   "version": 2,
-  "framework": null,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/browser"
-      }
-    }
-  ],
+  "framework": "angular",
   "routes": [
     {
       "src": "/assets/(.*)",
@@ -25,10 +16,5 @@
       "headers": { "cache-control": "public, max-age=0, must-revalidate" },
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "HOST": "https://pawn-shop-2uwd.onrender.com",
-    "STRIPE_PUBLISHABLE_KEY": "pk_test_51QIbSJEiHz0Qd84krtOOWXUeSOTGcyYtYln2jseDriIQcKGFLDMSU0PrNTYUzaygkG9bWb85qeBjCgAnLNjBVP6W000Awpy5fJ",
-    "GOOGLE_CLIENT_ID": "330278508587-to2kfidhb611106vcpehancribb7li0t.apps.googleusercontent.com"
-  }
+  ]
 }
