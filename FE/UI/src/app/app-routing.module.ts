@@ -31,7 +31,7 @@ import { AdminOrdersComponent } from "./components/admin/admin-orders/admin-orde
 const routes: Routes = [
   {
     path: "",
-    redirectTo: "/home",
+    redirectTo: "auth/login",
     pathMatch: "full"
   },
   {
