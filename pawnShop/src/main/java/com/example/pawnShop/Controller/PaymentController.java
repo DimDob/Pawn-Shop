@@ -18,7 +18,9 @@ import com.example.pawnShop.Dto.Result;
 
 @RestController
 @RequestMapping("/api/payment")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {
+    "${allowed.origins}"
+}, allowCredentials = "true")
 @Slf4j
 @RequiredArgsConstructor
 public class PaymentController {
@@ -28,7 +30,7 @@ public class PaymentController {
     @Value("${stripe.api.key}")
     private String stripeSecretKey;
 
-    @Value("${frontend.url:http://localhost:4200}")
+    @Value("${frontend.url}")
     private String frontendUrl;
 
     @PostMapping("/create-checkout-session")

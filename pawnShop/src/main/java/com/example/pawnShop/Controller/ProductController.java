@@ -74,7 +74,9 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    @CrossOrigin(origins = "http://localhost:4200")
+    @CrossOrigin(origins = {
+        "${allowed.origins}"
+    }, allowCredentials = "true")
     public ResponseEntity<?> getAllProducts(
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String category,

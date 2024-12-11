@@ -11,6 +11,7 @@ import com.example.pawnShop.Repository.UserRepository;
 import com.example.pawnShop.Service.Contract.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,10 +25,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = {
-    "https://pawnshop17.vercel.app",
-    "http://localhost:4200"
+    "${allowed.origins}"
 }, allowCredentials = "true")
 public class AuthController {
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Autowired
     private final AuthService authService;
     @Autowired
