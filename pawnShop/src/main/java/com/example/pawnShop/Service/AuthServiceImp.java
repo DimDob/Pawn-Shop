@@ -274,6 +274,7 @@ public class AuthServiceImp implements AuthService {
         user.setLastName((String) payload.get("family_name"));
         user.setEmailConfirmed(true);
         user.setRole(UserRole.USER);
+        user.setEnable(true);
         user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
         System.out.println("Creating new Google user with email: " + payload.getEmail());
         return userRepository.save(user);
@@ -295,12 +296,8 @@ public class AuthServiceImp implements AuthService {
     public Result<LoginResponseDto> handleGoogleLogin(String token) {
         try {
             log.info("Processing Google login token of length: {}", token.length());
-            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
-                    new NetHttpTransport(), GsonFactory.getDefaultInstance())
-                    .setAudience(Collections.singletonList(clientId))
-                    .build();
-
             GoogleIdToken idToken = verifier.verify(token);
+            
             if (idToken != null) {
                 GoogleIdToken.Payload payload = idToken.getPayload();
                 String email = payload.getEmail();
@@ -310,11 +307,13 @@ public class AuthServiceImp implements AuthService {
                     .orElseGet(() -> createGoogleUser(payload));
 
                 String jwtToken = jwtService.generateJwtToken(user);
+                String refreshToken = jwtService.generateRefreshToken(user);
                 
                 return Result.success(LoginResponseDto.builder()
                     .username(user.getEmail())
                     .token(jwtToken)
-                    .isAdmin(user.getRole().equals(UserRole.ADMIN))
+                    .refreshToken(refreshToken)
+                    .isAdmin(user.getRole().equals("ADMIN"))
                     .build());
             }
             log.error("Invalid ID token");
