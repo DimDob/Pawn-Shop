@@ -312,17 +312,33 @@ public class AuthServiceImp implements AuthService {
                 log.info("Google login attempt for email: {}", email);
                 
                 AppUser user = userRepository.findByEmail(email)
-                    .orElseGet(() -> createGoogleUser(payload));
+                    .orElseGet(() -> {
+                        AppUser newUser = new AppUser();
+                        newUser.setEmail(email);
+                        newUser.setFirstName((String) payload.get("given_name"));
+                        newUser.setLastName((String) payload.get("family_name"));
+                        newUser.setEmailConfirmed(true);
+                        newUser.setRole(UserRole.USER);
+                        newUser.setEnable(true);
+                        newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+                        
+                        log.info("Creating new Google user with email: {} and role: {}", 
+                            email, UserRole.USER);
+                        
+                        return userRepository.save(newUser);
+                    });
 
                 String jwtToken = jwtService.generateJwtToken(user);
                 String refreshToken = jwtService.generateRefreshToken(user);
                 
-                return Result.success(LoginResponseDto.builder()
+                LoginResponseDto response = LoginResponseDto.builder()
                     .username(user.getEmail())
                     .token(jwtToken)
                     .refreshToken(refreshToken)
-                    .isAdmin(user.getRole().equals("ADMIN"))
-                    .build());
+                    .isAdmin(UserRole.ADMIN.equals(user.getRole()))
+                    .build();
+                    
+                return Result.success(response);
             }
             log.error("Invalid ID token");
             return Result.error("Invalid ID token");
