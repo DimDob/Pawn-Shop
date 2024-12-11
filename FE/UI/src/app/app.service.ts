@@ -23,7 +23,7 @@ interface AccountUpdateData {
 export class AuthService {
   private readonly tokenKey = "auth_token";
   private readonly refreshTokenKey = "refresh_token";
-  private readonly host = "http://localhost:8080";
+  private readonly host = environment.host;
   private readonly rememberMeKey = "remember_me";
 
   constructor(private http: HttpClient, private router: Router, private errorHandler: ErrorHandlerService) {}
