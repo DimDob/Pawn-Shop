@@ -76,7 +76,8 @@ public class AppUser implements UserDetails {
 
 // sign-in-with-google-endpoint-BE-and-FE
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER; // Default role
+    @Column(nullable = false)
+    private UserRole role = UserRole.USER; // Default роля
 //
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
@@ -150,11 +151,11 @@ public class AppUser implements UserDetails {
         this.emailConfirmationToken = emailConfirmationToken;
     }
 
-    public String getRole() {
-        return role.name();
+    public UserRole getRole() {
+        return role != null ? role : UserRole.USER; // Защита срещу null
     }
 
     public void setRole(UserRole role) {
-        this.role = role;
+        this.role = role != null ? role : UserRole.USER;
     }
 }

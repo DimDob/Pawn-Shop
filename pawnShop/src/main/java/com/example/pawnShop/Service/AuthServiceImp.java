@@ -147,11 +147,15 @@ public class AuthServiceImp implements AuthService {
 
     private LoginResponseDto createLoginResponse(AppUser user) {
         String jwtToken = jwtService.generateJwtToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+        
+        log.info("Creating login response for user: {} with role: {}", user.getEmail(), user.getRole());
         
         return LoginResponseDto.builder()
             .username(user.getEmail())
             .token(jwtToken)
-            .isAdmin(user.getRole().equals("ADMIN"))
+            .refreshToken(refreshToken)
+            .isAdmin(UserRole.ADMIN == user.getRole())
             .build();
     }
 
@@ -312,33 +316,10 @@ public class AuthServiceImp implements AuthService {
                 log.info("Google login attempt for email: {}", email);
                 
                 AppUser user = userRepository.findByEmail(email)
-                    .orElseGet(() -> {
-                        AppUser newUser = new AppUser();
-                        newUser.setEmail(email);
-                        newUser.setFirstName((String) payload.get("given_name"));
-                        newUser.setLastName((String) payload.get("family_name"));
-                        newUser.setEmailConfirmed(true);
-                        newUser.setRole(UserRole.USER);
-                        newUser.setEnable(true);
-                        newUser.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-                        
-                        log.info("Creating new Google user with email: {} and role: {}", 
-                            email, UserRole.USER);
-                        
-                        return userRepository.save(newUser);
-                    });
+                    .orElseGet(() -> createGoogleUser(payload));
 
-                String jwtToken = jwtService.generateJwtToken(user);
-                String refreshToken = jwtService.generateRefreshToken(user);
-                
-                LoginResponseDto response = LoginResponseDto.builder()
-                    .username(user.getEmail())
-                    .token(jwtToken)
-                    .refreshToken(refreshToken)
-                    .isAdmin(UserRole.ADMIN.equals(user.getRole()))
-                    .build();
-                    
-                return Result.success(response);
+                log.info("User found/created with role: {}", user.getRole());
+                return Result.success(createLoginResponse(user));
             }
             log.error("Invalid ID token");
             return Result.error("Invalid ID token");
@@ -351,7 +332,6 @@ public class AuthServiceImp implements AuthService {
     @Override
     public Result<LoginResponseDto> handleGoogleAuthCode(String code) {
         try {
-            // Exchange code for tokens
             GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
                 new NetHttpTransport(),
                 GsonFactory.getDefaultInstance(),
@@ -362,26 +342,17 @@ public class AuthServiceImp implements AuthService {
                 redirectUri)
                 .execute();
 
-            // Get user info
             GoogleIdToken idToken = tokenResponse.parseIdToken();
             GoogleIdToken.Payload payload = idToken.getPayload();
-
             String email = payload.getEmail();
             
-            // Find or create user
             AppUser user = userRepository.findByEmail(email)
                 .orElseGet(() -> createGoogleUser(payload));
 
-            // Generate JWT token
-            String jwtToken = jwtService.generateJwtToken(user);
-            
-            return Result.success(LoginResponseDto.builder()
-                .username(user.getEmail())
-                .token(jwtToken)
-                .isAdmin(user.getRole().equals("ADMIN"))
-                .build());
-                
+            log.info("User authenticated via Google Auth Code with role: {}", user.getRole());
+            return Result.success(createLoginResponse(user));
         } catch (Exception e) {
+            log.error("Failed to process Google authentication", e);
             return Result.error("Failed to process Google authentication: " + e.getMessage());
         }
     }
