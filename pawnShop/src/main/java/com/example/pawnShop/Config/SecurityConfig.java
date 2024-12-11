@@ -67,20 +67,17 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        
+        // Добавяме всички разрешени домейни
         configuration.setAllowedOrigins(Arrays.asList(
-            allowedOrigins.split(",")
+            "https://pawnshop18.vercel.app",
+            "https://pawnshop18-e19sgjzv8-georgi-markovs-projects-ed3f0f66.vercel.app",
+            "http://localhost:4200",
+            "https://accounts.google.com"
         ));
-        configuration.addAllowedOrigin("https://accounts.google.com");
+        
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList(
-            "Authorization", 
-            "Content-Type", 
-            "Accept",
-            "X-Requested-With",
-            "Origin",
-            "Access-Control-Request-Method",
-            "Access-Control-Request-Headers"
-        ));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);

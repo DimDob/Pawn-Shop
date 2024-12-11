@@ -268,16 +268,24 @@ public class AuthServiceImp implements AuthService {
     }
 
     private AppUser createGoogleUser(GoogleIdToken.Payload payload) {
-        AppUser user = new AppUser();
-        user.setEmail(payload.getEmail());
-        user.setFirstName((String) payload.get("given_name"));
-        user.setLastName((String) payload.get("family_name"));
-        user.setEmailConfirmed(true);
-        user.setRole(UserRole.USER);
-        user.setEnable(true);
-        user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
-        System.out.println("Creating new Google user with email: " + payload.getEmail());
-        return userRepository.save(user);
+        try {
+            AppUser user = new AppUser();
+            user.setEmail(payload.getEmail());
+            user.setFirstName((String) payload.get("given_name"));
+            user.setLastName((String) payload.get("family_name"));
+            user.setEmailConfirmed(true);
+            user.setRole(UserRole.USER);
+            user.setEnable(true);
+            user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+            
+            log.info("Creating new Google user with email: {} and role: {}", 
+                payload.getEmail(), UserRole.USER);
+            
+            return userRepository.save(user);
+        } catch (Exception e) {
+            log.error("Error creating Google user: {}", e.getMessage());
+            throw new RuntimeException("Failed to create Google user", e);
+        }
     }
 
     private GoogleIdToken verifyGoogleToken(String token) {
