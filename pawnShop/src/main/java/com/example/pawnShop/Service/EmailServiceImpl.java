@@ -23,7 +23,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(to);
             helper.setSubject("Confirm your account");
             
-            String confirmationUrl = "http://localhost:4200/auth/confirm-email?token=" + token;
+            String confirmationUrl = "https://pawnshop17.vercel.app/auth/confirm-email?token=" + token;
             String emailContent = String.format(
                 "<h3>Welcome to our website!</h3>" +
                 "<p>Please click on the link below to confirm your email address:</p>" +
@@ -48,7 +48,7 @@ public class EmailServiceImpl implements EmailService {
             helper.setTo(to);
             helper.setSubject("Reset your password");
             
-            String resetUrl = "http://localhost:4200/auth/reset-password?token=" + token;
+            String resetUrl = "https://pawnshop17.vercel.app/auth/reset-password?token=" + token;
             String emailContent = String.format(
                 "<h3>Password Reset Request</h3>" +
                 "<p>Click the link below to reset your password:</p>" +

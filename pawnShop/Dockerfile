@@ -9,5 +9,5 @@ RUN gradle build -x test --no-daemon
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 COPY --from=build /app/build/libs/pawnShop-0.0.1-SNAPSHOT.jar /app/app.jar
-EXPOSE 8080
+EXPOSE ${PORT}
 CMD ["java", "-jar", "app.jar"]

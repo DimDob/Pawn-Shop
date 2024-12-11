@@ -23,7 +23,10 @@ import org.springframework.stereotype.Service;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
+@CrossOrigin(origins = {
+    "https://pawnshop17.vercel.app",
+    "http://localhost:4200"
+}, allowCredentials = "true")
 public class AuthController {
     @Autowired
     private final AuthService authService;
